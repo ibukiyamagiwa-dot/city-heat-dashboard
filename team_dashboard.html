@@ -125,9 +125,9 @@
       <h1>CrewAI 初期チーム確認画面</h1>
       <p class="muted">卒業制作向けの部門構成と進捗を確認するビューです。</p>
       <div class="status">
-        <span class="badge">エージェント数: <b>8</b></span>
-        <span class="badge">タスク数: <b>8</b></span>
-        <span class="badge">最終更新: <b>2026-05-15 03:02:22</b></span>
+        <span class="badge">エージェント数: <b>9</b></span>
+        <span class="badge">タスク数: <b>9</b></span>
+        <span class="badge">最終更新: <b>2026-05-15 03:09:43</b></span>
         <span class="badge ok">progress.md 連携: 有効</span>
       </div>
     </section>
@@ -142,7 +142,7 @@
         <div class="line"></div>
         <div class="line-h"></div>
         <div class="org-row">
-          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div><div class="org-node"><b>開発部門（α版実装担当）</b><br /><span class="muted">alpha_dev</span></div><div class="org-node"><b>開発部門（β版改善担当）</b><br /><span class="muted">beta_dev</span></div><div class="org-node"><b>リリース評価・品質判定担当</b><br /><span class="muted">release_reviewer</span></div>
+          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>データ収集・前処理担当</b><br /><span class="muted">data_collector</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div><div class="org-node"><b>開発部門（α版実装担当）</b><br /><span class="muted">alpha_dev</span></div><div class="org-node"><b>開発部門（β版改善担当）</b><br /><span class="muted">beta_dev</span></div><div class="org-node"><b>リリース評価・品質判定担当</b><br /><span class="muted">release_reviewer</span></div>
         </div>
       </div>
     </section>
@@ -192,6 +192,16 @@
             </section>
             
             <section class="card">
+              <h3>データ収集・前処理担当</h3>
+              <p><span class="label">キー:</span> <code>data_collector</code></p>
+              <p><span class="label">Goal:</span> 都市データを収集して、プロトタイプで使える形式に整形する。</p>
+              <p><span class="label">Backstory:</span> あなたはデータエンジニアです。欠損値や形式差異を吸収し、安定して再利用できるデータセットを短時間で作成します。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>data_collection_task</code></li></ul>
+            </section>
+            
+            <section class="card">
               <h3>UI/可視化デザイン担当</h3>
               <p><span class="label">キー:</span> <code>ux_visual</code></p>
               <p><span class="label">Goal:</span> 都市の状態を直感的に把握できる、シンプルで見やすい可視化体験を設計する。</p>
@@ -236,43 +246,45 @@
 
     <section class="panel">
       <h2>進捗サマリー（progress.md）</h2>
-      <pre># 進捗報告書
+      <pre># 進捗ドキュメント
 
-## 1. 決定したアプリ案の概要
-**Event Buzz Dashboard**は、地域イベントの熱狂度を可視化するアプリです。このアプリを使用することで、ユーザーは近隣で開催されているイベントの人気や関心を把握し、参加の判断に役立てることができます。
+## **1. 決定したアプリ案の概要**
+今回のアプリ案は「イベント熱狂度マップ」です。このアプリは、地域のイベントに対する人々の関心を可視化し、参加者の状況を把握することが目的です。具体的には、地図上に重要なイベントを表示し、参加者数の予測を示すヒートマップを用意します。また、各イベントの詳細情報を提供することで、ユーザーが簡単に参加意欲を高められるようにします。
 
-## 2. 監査班からの評価コメント
-監査班からは、実現可能性が高く、短期間で実装可能な機能が評価されました。しかし、UIの可読性やデータ信頼性に関する改善が必要であることが指摘されています。
+## **2. 監査班からの評価コメント**
+監査班からは、データの取得が安定している点や、社会的意義が明確である点が高く評価されました。しかし、Facebook Graph APIの利用規約に対する配慮が必要であることや、イベント情報の取得元が限られる可能性があるという懸念も指摘されました。
 
-## 3. α版の開発方針
-α版では、以下の必須機能に焦点を当てます。
-1. 地域イベントの熱狂度を表示するシンプルなダッシュボード
-2. イベントごとのフィルター機能
-3. 簡易的な時系列グラフ
-4. 人気イベントのリスト表示
+## **3. α版の開発方針**
+α版の開発では、以下の必須機能を優先的に実装します。
+- イベントを地図上に表示するマップ機能
+- 参加者数を予測するヒートマップ
+- イベントの詳細を表示するポップアップ
+- 過去のイベントデータを簡易グラフで表示
+- 地域や日時でのフィルタ機能
 
-## 4. β版の改善方針
-β版では、ユーザーのフィードバックを基に、以下の改善点に取り組みます。
-- UIの可読性向上
-- エラーハンドリングの強化
-- データ整合性の向上
+## **4. β版の改善方針**
+β版では、α版からのフィードバックを基に以下の改善を行います。
+- UIの可読性を向上させるため、フォントサイズや色合いを見直します。
+- イベント詳細表示の内容を充実させ、感情的でないデータの整理を行います。
+- フィルタ機能のインターフェースを改善し、ユーザーにわかりやすくします。
 
-## 5. 評価部門による最終判定
-最終的な評価スコアは**78点**で、改善が必要とされているため、次のステップへ進むとともに、指摘された改善項目に取り組んでいきます。
+## **5. 評価部門による最終判定**
+現段階での評価スコアは78点であり、要改善との判定が出ています。評価の強みとして、機能の多様性やデータ更新の自動化が挙げられていますが、実現可能性やUIの明瞭性において課題があることが指摘されました。
 
-## 6. 現在の完了ステータス
-現在、α版のMVP機能の開発が進行中です。予定通りの3週間内でリリースを目指しています。
+## **6. 現在の完了ステータス**
+現在、α版の開発は60%程度進んでおり、基本的な地図表示機能やヒートマップの実装が完了しています。それに伴い、データ取得のための準備も進めていますが、一部機能にはまだ取り組みが必要です。
 
-## 7. 次のステップ（ToDoリスト）
-- 初期設計とプロトタイピングの実施
-- API設定とデータ取得機能の実装
-- ユーザーインターフェースの最終調整
-- ユーザーテストの計画と実施
+## **7. 次のステップ（ToDoリスト）**
+- [ ] α版の残り機能（イベント詳細、フィルタ機能）の実装
+- [ ] α版の内部テストを行い、フィードバックを集める
+- [ ] UI改善のためのデザイン案を策定
+- [ ] β版改善計画に基づく実装計画の策定
+- [ ] API利用規約の確認とデータ取得元のバックアップ策を決定する
 
-## 8. 実現可能性を高めるための注意点（データ・法務・開発工数）
-- データ取得に関しては、APIの利用規約を遵守し、個人情報の取り扱いに注意を払います。
-- 必要なデータが安定的に取得できるかを常に確認し、バックアッププランを用意します。
-- 開発工数は予定通りに進めるため、チーム内で進捗を共有し、適時調整を行います。</pre>
+## **8. 実現可能性を高めるための注意点（データ・法務・開発工数）**
+- **データ**: APIの利用に際して、取得データの信頼性や安定性を確保するため、常にバックアップデータ源を考慮することが重要です。
+- **法務**: 利用するAPIの利用規約を遵守し、個人情報保護に関連するリスクを十分に注意する必要があります。
+- **開発工数**: 各機能の実装にかかる時間を適切に見積もり、スケジュール調整を行うことが重要です。特に依存するAPIが複数ある場合、遅延の要因となりうるため予備日を設定することをお勧めします。</pre>
     </section>
   </div>
 </body>

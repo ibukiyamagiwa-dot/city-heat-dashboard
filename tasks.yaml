@@ -50,6 +50,29 @@ feasibility_task:
   context:
     - planning_task
 
+data_collection_task:
+  # 追加部門タスク: 試作画面で使うデータを収集・整形
+  agent: data_collector
+  description: |
+    feasibility_task の結果を踏まえ、α版プロトタイプで使う最小データセットを定義してください。
+    対象:
+    - 都市名（最低4都市）
+    - 更新時刻
+    - 熱狂度スコア（0-100）
+    - スコア構成要素（人流・イベント・天候など）
+    - データ出典
+
+    出力フォーマット:
+    - JSONスキーマ案
+    - 収集頻度（日次/時間単位）
+    - 欠損時の補完ルール
+    - プロトタイプでの表示項目対応表
+  expected_output: "プロトタイプ用データ定義書（JSONスキーマと運用ルール）"
+  markdown: true
+  context:
+    - planning_task
+    - feasibility_task
+
 ux_concept_task:
   # 追加部門タスク: UIの最低構成を明確化
   agent: ux_visual
@@ -69,6 +92,7 @@ ux_concept_task:
   markdown: true
   context:
     - planning_task
+    - data_collection_task
 
 auditing_task:
   agent: critic
@@ -102,6 +126,7 @@ auditing_task:
   context:
     - planning_task
     - feasibility_task
+    - data_collection_task
     - ux_concept_task
 
 alpha_development_task:
@@ -126,6 +151,7 @@ alpha_development_task:
   context:
     - auditing_task
     - feasibility_task
+    - data_collection_task
     - ux_concept_task
 
 beta_development_task:
@@ -202,6 +228,7 @@ secretary_task:
   context:
     - planning_task
     - feasibility_task
+    - data_collection_task
     - ux_concept_task
     - auditing_task
     - alpha_development_task

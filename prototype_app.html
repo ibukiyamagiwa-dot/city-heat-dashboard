@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>都市熱狂度プロトタイプ（α版）</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+      background: #0b1020;
+      color: #e7eefc;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .panel {
+      background: #141d33;
+      border: 1px solid #2a3a63;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .city {
+      background: #1a2742;
+      border: 1px solid #334b78;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .score {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 6px 0;
+      color: #75b7ff;
+    }
+    .bar {
+      height: 10px;
+      background: #0f1a32;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid #2a3a63;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .muted { color: #b8c5df; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="panel">
+      <h1>都市熱狂度プロトタイプ（α版）</h1>
+      <p class="muted">最低限のデータ収集 + 可視化を確認するための実働サンプルです。</p>
+      <p class="muted" id="updatedAt"></p>
+    </section>
+
+    <section class="panel">
+      <h2>都市別スコア</h2>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <section class="panel">
+      <h2>データ詳細</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>都市</th>
+            <th>気温(℃)</th>
+            <th>降水(mm)</th>
+            <th>風速(m/s)</th>
+            <th>イベント補正</th>
+            <th>熱狂度</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    const dataset = {"generated_at": "2026-05-15T03:09:47+09:00", "records": [{"city": "TOKYO", "lat": 35.6762, "lon": 139.6503, "temperature_c": 13.4, "precipitation_mm": 0.0, "wind_speed_mps": 4.2, "event_bonus": 12.0, "heat_score": 69.4, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "OSAKA", "lat": 34.6937, "lon": 135.5023, "temperature_c": 15.0, "precipitation_mm": 0.0, "wind_speed_mps": 4.2, "event_bonus": 12.0, "heat_score": 72.1, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "NAGOYA", "lat": 35.1815, "lon": 136.9066, "temperature_c": 15.6, "precipitation_mm": 0.0, "wind_speed_mps": 2.4, "event_bonus": 12.0, "heat_score": 74.8, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "FUKUOKA", "lat": 33.5904, "lon": 130.4017, "temperature_c": 17.2, "precipitation_mm": 0.0, "wind_speed_mps": 2.6, "event_bonus": 12.0, "heat_score": 77.3, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}], "note": "prototype dataset for alpha demo"};
+    const cards = document.getElementById("cards");
+    const tableBody = document.getElementById("tableBody");
+    document.getElementById("updatedAt").textContent = "更新時刻: " + dataset.generated_at;
+
+    dataset.records.forEach((r) => {
+      const card = document.createElement("div");
+      card.className = "city";
+      card.innerHTML = `
+        <div><strong>${r.city}</strong></div>
+        <div class="score">${r.heat_score}</div>
+        <div class="bar"><div class="fill" style="width:${r.heat_score}%"></div></div>
+        <div class="muted">source: ${r.source}</div>
+      `;
+      cards.appendChild(card);
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.city}</td>
+        <td>${r.temperature_c}</td>
+        <td>${r.precipitation_mm}</td>
+        <td>${r.wind_speed_mps}</td>
+        <td>${r.event_bonus}</td>
+        <td><strong>${r.heat_score}</strong></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>

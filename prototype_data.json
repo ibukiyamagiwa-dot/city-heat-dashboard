@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-05-15T03:09:47+09:00",
+  "records": [
+    {
+      "city": "TOKYO",
+      "lat": 35.6762,
+      "lon": 139.6503,
+      "temperature_c": 13.4,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 4.2,
+      "event_bonus": 12.0,
+      "heat_score": 69.4,
+      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+    },
+    {
+      "city": "OSAKA",
+      "lat": 34.6937,
+      "lon": 135.5023,
+      "temperature_c": 15.0,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 4.2,
+      "event_bonus": 12.0,
+      "heat_score": 72.1,
+      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+    },
+    {
+      "city": "NAGOYA",
+      "lat": 35.1815,
+      "lon": 136.9066,
+      "temperature_c": 15.6,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 2.4,
+      "event_bonus": 12.0,
+      "heat_score": 74.8,
+      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+    },
+    {
+      "city": "FUKUOKA",
+      "lat": 33.5904,
+      "lon": 130.4017,
+      "temperature_c": 17.2,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 2.6,
+      "event_bonus": 12.0,
+      "heat_score": 77.3,
+      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+    }
+  ],
+  "note": "prototype dataset for alpha demo"
+}
