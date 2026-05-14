@@ -25,10 +25,19 @@
     .ok { color: var(--good); font-weight: 700; }
     .org-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
     .org-col { background: #16223a; border: 1px solid #33476f; border-radius: 10px; padding: 12px; }
+    .hierarchy-layer { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .hierarchy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .hierarchy-dep { background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; }
     .dep-title { font-weight: 700; margin-bottom: 8px; color: #9cc1ff; }
     .org-node { background: #1e2e4a; border: 1px solid #3d5788; border-radius: 8px; padding: 10px; text-align: center; }
+    .org-node.management { border-color: #9cc1ff; }
+    .org-node.execution { border-color: #77dd77; }
     .org-node.empty { opacity: 0.5; }
     .v-arrow { text-align: center; color: var(--sub); font-size: 13px; padding: 6px 0; }
+    .loop-card { background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; margin-top: 12px; }
+    .loop-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .loop-step { background: #0f1728; border: 1px solid #2a3652; border-radius: 999px; padding: 8px 10px; }
+    .loop-step small { display: block; color: var(--sub); font-size: 11px; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
     .card { background: #18233b; border: 1px solid #33476f; border-radius: 10px; padding: 14px; }
     .label { color: var(--sub); font-weight: 600; }
@@ -41,20 +50,111 @@
   <div class="container">
     <section class="panel">
       <h1>卒業制作 CrewAI 組織図</h1>
-      <p class="muted">実現可能性重視 / 反復改善サイクル</p>
+      <p class="muted">階層型組織 / αβ開発 / フィードバック再開発ループ</p>
       <div class="status">
-        <span class="badge">部門数: <b>5</b></span>
-        <span class="badge">エージェント数: <b>10</b></span>
-        <span class="badge">タスク数: <b>11</b></span>
-        <span class="badge">最終更新: <b>2026-05-15 03:17:58</b></span>
+        <span class="badge">部門数: <b>8</b></span>
+        <span class="badge">エージェント数: <b>16</b></span>
+        <span class="badge">タスク数: <b>17</b></span>
+        <span class="badge">最終更新: <b>2026-05-15 03:36:18</b></span>
         <span class="badge ok">progress.md 連携: 有効</span>
       </div>
     </section>
 
     <section class="panel">
-      <h2>組織図（縦連携 + 横連携）</h2>
+      <h2>階層型組織図</h2>
+      <p class="muted">Level 1からLevel 3へ降りる階層構造です。各部門内は管理担当と実行担当の二台体制です。</p>
+      
+            <section class="hierarchy-layer">
+              <h3>Level 1: 統括</h3>
+              <div class="hierarchy-grid">
+    <div class="hierarchy-dep">
+      <div class="dep-title">統括戦略室</div>
+      <div class="org-node management"><b>統括戦略室マネージャー</b><br /><span class='muted'>strategy_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>統括戦略室実行担当</b><br /><span class='muted'>strategy_exec</span></div>
+    </div>
+    
+    <div class="hierarchy-dep">
+      <div class="dep-title">PMO部門</div>
+      <div class="org-node management"><b>PMOマネージャー</b><br /><span class='muted'>pmo_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>PMO実行担当（秘書）</b><br /><span class='muted'>pmo_exec</span></div>
+    </div>
+    </div>
+            </section>
+            
+            <section class="hierarchy-layer">
+              <h3>Level 2: 方針・検証・改善</h3>
+              <div class="hierarchy-grid">
+    <div class="hierarchy-dep">
+      <div class="dep-title">企画部門</div>
+      <div class="org-node management"><b>企画部門マネージャー</b><br /><span class='muted'>planner_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>企画部門実行担当</b><br /><span class='muted'>planner_exec</span></div>
+    </div>
+    
+    <div class="hierarchy-dep">
+      <div class="dep-title">監査部門</div>
+      <div class="org-node management"><b>監査部門マネージャー</b><br /><span class='muted'>audit_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>監査部門実行担当</b><br /><span class='muted'>audit_exec</span></div>
+    </div>
+    
+    <div class="hierarchy-dep">
+      <div class="dep-title">改善解決案部門</div>
+      <div class="org-node management"><b>改善解決案部門マネージャー</b><br /><span class='muted'>solution_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>改善解決案部門実行担当</b><br /><span class='muted'>solution_exec</span></div>
+    </div>
+    
+    <div class="hierarchy-dep">
+      <div class="dep-title">フィードバック部門</div>
+      <div class="org-node management"><b>フィードバック部門マネージャー</b><br /><span class='muted'>feedback_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>フィードバック部門実行担当</b><br /><span class='muted'>feedback_exec</span></div>
+    </div>
+    </div>
+            </section>
+            
+            <section class="hierarchy-layer">
+              <h3>Level 3: 実行</h3>
+              <div class="hierarchy-grid">
+    <div class="hierarchy-dep">
+      <div class="dep-title">データ部門</div>
+      <div class="org-node management"><b>データ部門マネージャー</b><br /><span class='muted'>data_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>データ部門実行担当</b><br /><span class='muted'>data_exec</span></div>
+    </div>
+    
+    <div class="hierarchy-dep">
+      <div class="dep-title">開発部門</div>
+      <div class="org-node management"><b>開発部門マネージャー</b><br /><span class='muted'>dev_mgmt</span></div>
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      <div class="org-node execution"><b>開発部門実行担当</b><br /><span class='muted'>dev_exec</span></div>
+    </div>
+    </div>
+            </section>
+            
+    </section>
+
+    <section class="panel">
+      <h2>部門別二台体制（一覧）</h2>
       <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
       <div class="org-grid">
+            <div class="org-col">
+              <div class="dep-title">統括戦略室</div>
+              <div class="org-node"><b>統括戦略室マネージャー</b><br /><span class="muted">strategy_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>統括戦略室実行担当</b><br /><span class="muted">strategy_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">PMO部門</div>
+              <div class="org-node"><b>PMOマネージャー</b><br /><span class="muted">pmo_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>PMO実行担当（秘書）</b><br /><span class="muted">pmo_exec</span></div>
+            </div>
+            
             <div class="org-col">
               <div class="dep-title">企画部門</div>
               <div class="org-node"><b>企画部門マネージャー</b><br /><span class="muted">planner_mgmt</span></div>
@@ -70,6 +170,20 @@
             </div>
             
             <div class="org-col">
+              <div class="dep-title">改善解決案部門</div>
+              <div class="org-node"><b>改善解決案部門マネージャー</b><br /><span class="muted">solution_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>改善解決案部門実行担当</b><br /><span class="muted">solution_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">フィードバック部門</div>
+              <div class="org-node"><b>フィードバック部門マネージャー</b><br /><span class="muted">feedback_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>フィードバック部門実行担当</b><br /><span class="muted">feedback_exec</span></div>
+            </div>
+            
+            <div class="org-col">
               <div class="dep-title">データ部門</div>
               <div class="org-node"><b>データ部門マネージャー</b><br /><span class="muted">data_mgmt</span></div>
               <div class="v-arrow">↓ 縦連携</div>
@@ -82,20 +196,18 @@
               <div class="v-arrow">↓ 縦連携</div>
               <div class="org-node"><b>開発部門実行担当</b><br /><span class="muted">dev_exec</span></div>
             </div>
-            
-            <div class="org-col">
-              <div class="dep-title">PMO部門</div>
-              <div class="org-node"><b>PMOマネージャー</b><br /><span class="muted">pmo_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>PMO実行担当（秘書）</b><br /><span class="muted">pmo_exec</span></div>
-            </div>
             </div>
     </section>
 
     <section class="panel">
       <h2>連携一覧</h2>
-      <h3>縦連携（管理→実行）</h3><ul><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>planner_exec</code> (企画部門実行担当) / 企画方針の管理と実行</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>audit_exec</code> (監査部門実行担当) / 監査基準の管理と現場監査</li><li><code>data_mgmt</code> (データ部門マネージャー) → <code>data_exec</code> (データ部門実行担当) / データ運用方針の管理と収集実行</li><li><code>dev_mgmt</code> (開発部門マネージャー) → <code>dev_exec</code> (開発部門実行担当) / 開発優先度の管理と実装</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 統括管理と進捗可視化</li></ul>
-      <h3>横連携（部門間）</h3><ul><li><code>planner_exec</code> (企画部門実行担当) → <code>data_exec</code> (データ部門実行担当) / 要件とデータ仕様の同期</li><li><code>data_exec</code> (データ部門実行担当) → <code>audit_exec</code> (監査部門実行担当) / データ真偽と出典確認</li><li><code>audit_exec</code> (監査部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 監査指摘の実装反映</li><li><code>dev_exec</code> (開発部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 実装制約の企画フィードバック</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / スコープと納期の調整</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 品質基準とデータ運用基準の整合</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>planner_mgmt</code> (企画部門マネージャー) / 全体優先度の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>audit_mgmt</code> (監査部門マネージャー) / 提出判定条件の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 運用・法務リスクの調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / リソース計画の調整</li></ul>
+      <h3>縦連携（管理→実行）</h3><ul><li><code>strategy_mgmt</code> (統括戦略室マネージャー) → <code>strategy_exec</code> (統括戦略室実行担当) / 全体戦略の管理と実行</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 統括管理と進捗可視化</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>planner_exec</code> (企画部門実行担当) / 企画方針の管理と実行</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>audit_exec</code> (監査部門実行担当) / 監査基準の管理と現場監査</li><li><code>data_mgmt</code> (データ部門マネージャー) → <code>data_exec</code> (データ部門実行担当) / データ運用方針の管理と収集実行</li><li><code>dev_mgmt</code> (開発部門マネージャー) → <code>dev_exec</code> (開発部門実行担当) / 開発優先度の管理と実装</li><li><code>solution_mgmt</code> (改善解決案部門マネージャー) → <code>solution_exec</code> (改善解決案部門実行担当) / 改善方針の管理と解決案作成</li><li><code>feedback_mgmt</code> (フィードバック部門マネージャー) → <code>feedback_exec</code> (フィードバック部門実行担当) / 評価観点の管理とフィードバック収集</li></ul>
+      <h3>横連携（部門間）</h3><ul><li><code>strategy_exec</code> (統括戦略室実行担当) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 全体方針と進捗管理の同期</li><li><code>planner_exec</code> (企画部門実行担当) → <code>data_exec</code> (データ部門実行担当) / 要件とデータ仕様の同期</li><li><code>data_exec</code> (データ部門実行担当) → <code>audit_exec</code> (監査部門実行担当) / データ真偽と出典確認</li><li><code>audit_exec</code> (監査部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 監査指摘の実装反映</li><li><code>dev_exec</code> (開発部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 実装制約の企画フィードバック</li><li><code>feedback_exec</code> (フィードバック部門実行担当) → <code>solution_exec</code> (改善解決案部門実行担当) / αβ評価を改善案へ変換</li><li><code>solution_exec</code> (改善解決案部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 改善点に対する企画解決案</li><li><code>solution_exec</code> (改善解決案部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 再開発タスクとして実装へ戻す</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / スコープと納期の調整</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 品質基準とデータ運用基準の整合</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>planner_mgmt</code> (企画部門マネージャー) / 全体優先度の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>audit_mgmt</code> (監査部門マネージャー) / 提出判定条件の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 運用・法務リスクの調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / リソース計画の調整</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>改善ループ（α/β → フィードバック → 解決案 → 再開発）</h2>
+      <div class='loop-card'><h3>α版改善ループ</h3><div class='loop-flow'><span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>フィードバック部門実行担当<small>feedback_exec</small></span> → <span class='loop-step'>改善解決案部門実行担当<small>solution_exec</small></span> → <span class='loop-step'>企画部門実行担当<small>planner_exec</small></span> → <span class='loop-step'>データ部門実行担当<small>data_exec</small></span> → <span class='loop-step'>監査部門実行担当<small>audit_exec</small></span> → <span class='loop-step'>開発部門実行担当<small>dev_exec</small></span></div></div><div class='loop-card'><h3>β版改善ループ</h3><div class='loop-flow'><span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>フィードバック部門実行担当<small>feedback_exec</small></span> → <span class='loop-step'>改善解決案部門実行担当<small>solution_exec</small></span> → <span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>監査部門マネージャー<small>audit_mgmt</small></span></div></div>
     </section>
 
     <section class="panel">
@@ -178,7 +290,7 @@
               <p><span class="label">階層:</span> execution</p>
               <p><span class="label">Goal:</span> α版とβ版の実装計画を具体化し、改善サイクルに沿って機能品質を高める。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li></ul>
+              <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li><li><code>redevelopment_task</code></li></ul>
             </section>
             
             <section class="card">
@@ -188,7 +300,7 @@
               <p><span class="label">階層:</span> management</p>
               <p><span class="label">Goal:</span> 各部門の縦連携・横連携を調整し、反復改善サイクル全体を統括する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>program_alignment_task</code></li></ul>
+              <ul><li><code>coordination_task</code></li></ul>
             </section>
             
             <section class="card">
@@ -198,50 +310,138 @@
               <p><span class="label">階層:</span> execution</p>
               <p><span class="label">Goal:</span> 各部門の成果と進捗を可視化し、非エンジニア向けに分かりやすく報告する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>cross_function_review_task</code></li><li><code>secretary_task</code></li></ul>
+              <ul><li><code>cross_function_review_task</code></li><li><code>todo_iteration_task</code></li><li><code>secretary_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>統括戦略室マネージャー</h3>
+              <p><span class="label">キー:</span> <code>strategy_mgmt</code></p>
+              <p><span class="label">部門:</span> 統括戦略室</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> 卒業制作全体の上位方針、評価基準、到達目標を管理する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>program_alignment_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>統括戦略室実行担当</h3>
+              <p><span class="label">キー:</span> <code>strategy_exec</code></p>
+              <p><span class="label">部門:</span> 統括戦略室</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 部門横断の論点を整理し、スプリントごとの意思決定メモを作成する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li>（未割り当て）</li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>改善解決案部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>solution_mgmt</code></p>
+              <p><span class="label">部門:</span> 改善解決案部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> 監査・フィードバックで挙がった改善点に対し、実装可能な解決方針を決定する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li>（未割り当て）</li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>改善解決案部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>solution_exec</code></p>
+              <p><span class="label">部門:</span> 改善解決案部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 未達Todoやフィードバックを分解し、企画・データ・開発へ渡せる修正案に変換する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>solution_alpha_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>フィードバック部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>feedback_mgmt</code></p>
+              <p><span class="label">部門:</span> フィードバック部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> α版・β版の評価観点を管理し、改善サイクルへ戻すべき論点を決定する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li>（未割り当て）</li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>フィードバック部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>feedback_exec</code></p>
+              <p><span class="label">部門:</span> フィードバック部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> α版・β版に対するフィードバックを収集し、未達Todoと改善要望を分類する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>alpha_feedback_task</code></li><li><code>beta_feedback_task</code></li></ul>
             </section>
             </div>
     </section>
 
     <section class="panel">
       <h2>進捗サマリー（progress.md）</h2>
-      <pre># 非エンジニア向け進捗報告書
+      <pre># 進捗報告書
 
 ## 1. 現在の採用案（Round2）
-- **採用活動**は順調に進捗中で、現在約75%のポジションが埋まりました。残りのポジションについては、リファラルプログラムを強化し、応募者数の増加を目指しています。
+- **採用進捗**: 
+  - 現在、技術職の最終面接を進めており、候補者の質は高い。
+  - 次期スプリント内に新規メンバー2名の採用を見込んでいます。
 
 ## 2. データ真偽監査の結果
-- **データ監査結果**は以下の通りです：
-  - 参加者数とSNS投稿数に関して、独立した第三者確認を実施中。
-  - 不正確なデータが発見された場合、即座にデータ提供者に確認し、修正を求める体制が整っています。
+- **問題点**: 
+  - スパムアカウントによるデータの影響が顕著。
+  - 交通情報の整合性の欠如が確認されました。
+- **信頼性評価**:
+  - 熱狂度インデックス: ★★☆☆☆
+  - イベント数: ★★★☆☆
+  - 飲食店レビュー数: ★★★☆☆
+  - 交通状況: ★★☆☆☆
+  - 天気情報: ★★★★☆
 
 ## 3. α版の開発方針
-- **α版のリリース**は今後2〜3週間内を予定しています。主な機能には、イベント数、参加者数、SNS投稿数のリアルタイム表示を含みます。
-- ユーザーからのフィードバックをもとに、継続的な改善を行います。
+- **施策**: 
+  - 機能強化として、スパムアカウントフィルタリングを実装予定。
+  - ユーザーインターフェースの改善を図り、直感的な利用が可能なデザインを進めます。
 
-## 4. β版の改善方針
-- **β版では、以下の機能の追加を予定しています**：
-  - データ取得プロトコルの明確化と異常値検知機能の強化。
-  - ユーザーフィードバックを反映するためのフローの構築。
+## 4. α版フィードバックと解決案
+- **フィードバック**:
+  - ユーザーからのレビューで多機能性が高い反面、操作が難しいとの声。
+- **解決方針**:
+  - UX/UIの見直しを行い、特にイベント検索機能の強化を進めます。
 
-## 5. 縦連携（管理↔実行）の状況
-- 現在、管理チームと実行チームの間のコミュニケーションが改善され、タスクの進捗状況は良好です。週次でのレビュー会議を設け、問題点を迅速に共有しています。
+## 5. β版の改善方針
+- **改善プラン**:
+  - データ品質向上施策を強化し、異常値検知アルゴリズムを導入。
+  - 利用規約を再確認し、商業利用に関する透明性を高めます。
 
-## 6. 横連携（部門間）の状況
-- 部門間の協力が強化され、特にデータ提供と確認に関しては、各部門の理解が深まりつつあります。ただし、データソースの整合性については引き続き注意が必要です。
+## 6. β版フィードバックと再開発方針
+- **未達Todo**: 
+  - イベント検索機能のパフォーマンス向上。
+  - 名前の異なるデータソースの整合性を確保。
+- **再開発施策**:
+  - スパムフィルタリングの精度を向上させるため、新たなアルゴリズムを導入します。
 
-## 7. 現在の完了ステータス
-- 以下のタスクは完了しました：
-  - 市場調査
-  - デザインプロトタイプの作成
-  - α版機能の実装準備
-- 未完了タスクは圧縮し、優先順位を見直して進行中です。
+## 7. Todo達成状況と次Todo
+- **達成状況**:
+  - α版での課題を洗い出し、多くの問題点が確認され、次へのアクションプランを整備済み。
+- **次Todo**:
+  - スパムアカウントフィルタリングを実装。
+  - ユーザーインターフェースの改善に向けたユーザーテストを実施。
 
-## 8. 次のステップ（ToDo）
-- [ ] 完成したα版機能の内部テストとユーザビリティテストを実施。
-- [ ] データ監査結果に基づく修正点の実施。
-- [ ] β版の機能拡張に向けた提案書の提出。
-- [ ] ユーザーからのフィードバックを収集し、改善点をリストアップする。</pre>
+## 8. 縦連携（管理↔実行）の状況
+- **状況**: 
+  - プロジェクトの進行管理が円滑に行われている。定期的なミーティングで進捗確認と課題解決に向けた協力体制が維持されています。
+
+## 9. 横連携（部門間）の状況
+- **状況**: 
+  - 各部門間での情報共有が順調に行われており、特にデータ品質と関連する改善案についての意見を積極的に交換しています。
+
+## 10. 現在の完了ステータス
+- **完了ステータス**: 
+  - α版でのフィードバックを受け、新たな改善プランが策定され、実行に移されつつあります。
+
+## 11. 次のステップ（ToDo）
+- **今後のステップ**:
+  - スパムアカウントフィルタリングの実装。
+  - ユーザーインターフェースの改善、新機能のテスト実施に着手。
+  - データ品質管理の強化を目的とした定期レビューを実施。</pre>
     </section>
   </div>
 </body>

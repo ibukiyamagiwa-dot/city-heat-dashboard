@@ -3,16 +3,41 @@
 # horizontal_links: 横連携（部門をまたぐ連携）
 
 team_title: "卒業制作 CrewAI 組織図"
-team_subtitle: "実現可能性重視 / 反復改善サイクル"
+team_subtitle: "階層型組織 / αβ開発 / フィードバック再開発ループ"
+
+hierarchy_layers:
+  - name: "Level 1: 統括"
+    departments:
+      - "統括戦略室"
+      - "PMO部門"
+  - name: "Level 2: 方針・検証・改善"
+    departments:
+      - "企画部門"
+      - "監査部門"
+      - "改善解決案部門"
+      - "フィードバック部門"
+  - name: "Level 3: 実行"
+    departments:
+      - "データ部門"
+      - "開発部門"
 
 departments:
+  - "統括戦略室"
+  - "PMO部門"
   - "企画部門"
   - "監査部門"
+  - "改善解決案部門"
+  - "フィードバック部門"
   - "データ部門"
   - "開発部門"
-  - "PMO部門"
 
 vertical_links:
+  - from: "strategy_mgmt"
+    to: "strategy_exec"
+    note: "全体戦略の管理と実行"
+  - from: "pmo_mgmt"
+    to: "pmo_exec"
+    note: "統括管理と進捗可視化"
   - from: "planner_mgmt"
     to: "planner_exec"
     note: "企画方針の管理と実行"
@@ -25,11 +50,17 @@ vertical_links:
   - from: "dev_mgmt"
     to: "dev_exec"
     note: "開発優先度の管理と実装"
-  - from: "pmo_mgmt"
-    to: "pmo_exec"
-    note: "統括管理と進捗可視化"
+  - from: "solution_mgmt"
+    to: "solution_exec"
+    note: "改善方針の管理と解決案作成"
+  - from: "feedback_mgmt"
+    to: "feedback_exec"
+    note: "評価観点の管理とフィードバック収集"
 
 horizontal_links:
+  - from: "strategy_exec"
+    to: "pmo_exec"
+    note: "全体方針と進捗管理の同期"
   - from: "planner_exec"
     to: "data_exec"
     note: "要件とデータ仕様の同期"
@@ -42,6 +73,15 @@ horizontal_links:
   - from: "dev_exec"
     to: "planner_exec"
     note: "実装制約の企画フィードバック"
+  - from: "feedback_exec"
+    to: "solution_exec"
+    note: "αβ評価を改善案へ変換"
+  - from: "solution_exec"
+    to: "planner_exec"
+    note: "改善点に対する企画解決案"
+  - from: "solution_exec"
+    to: "dev_exec"
+    note: "再開発タスクとして実装へ戻す"
   - from: "planner_mgmt"
     to: "dev_mgmt"
     note: "スコープと納期の調整"
@@ -60,3 +100,21 @@ horizontal_links:
   - from: "pmo_mgmt"
     to: "dev_mgmt"
     note: "リソース計画の調整"
+
+iteration_loops:
+  - name: "α版改善ループ"
+    flow:
+      - "dev_exec"
+      - "feedback_exec"
+      - "solution_exec"
+      - "planner_exec"
+      - "data_exec"
+      - "audit_exec"
+      - "dev_exec"
+  - name: "β版改善ループ"
+    flow:
+      - "dev_exec"
+      - "feedback_exec"
+      - "solution_exec"
+      - "dev_exec"
+      - "audit_mgmt"

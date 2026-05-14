@@ -3,7 +3,7 @@
 # 縦（管理↔実行）と横（部門間）を意識した改善ループを回します。
 
 program_alignment_task:
-  agent: pmo_mgmt
+  agent: strategy_mgmt
   description: |
     今回のスプリント方針を定義してください。
     条件:
@@ -12,6 +12,19 @@ program_alignment_task:
     - 1スプリント内で完了可能な範囲に絞る
   expected_output: "スプリント目標、制約、評価指標をまとめた方針書"
   markdown: true
+
+coordination_task:
+  agent: pmo_mgmt
+  description: |
+    統括方針を受けて、各部門が横連携しながら改善を繰り返すための運用ルールを決めてください。
+    必須:
+    - 未達Todoを次ラウンドへ持ち越すルール
+    - α版/β版のフィードバックを開発へ戻すルール
+    - データ監査でNGが出た場合の差し戻しルール
+  expected_output: "反復改善サイクルの運用ルール"
+  markdown: true
+  context:
+    - program_alignment_task
 
 planning_round1_task:
   agent: planner_exec
@@ -26,6 +39,7 @@ planning_round1_task:
   markdown: true
   context:
     - program_alignment_task
+    - coordination_task
 
 data_round1_task:
   agent: data_exec
@@ -71,6 +85,38 @@ dev_alpha_task:
     - data_round1_task
     - audit_round1_task
 
+alpha_feedback_task:
+  agent: feedback_exec
+  description: |
+    α版計画に対して、プロデューサー・利用者・監査部門の視点からフィードバックを整理してください。
+    必須:
+    - 使いにくい点
+    - データ信頼性で不安な点
+    - 視覚的に分かりにくい点
+    - 未達Todo
+  expected_output: "α版フィードバックと未達Todo一覧"
+  markdown: true
+  context:
+    - dev_alpha_task
+    - audit_round1_task
+
+solution_alpha_task:
+  agent: solution_exec
+  description: |
+    α版フィードバックと未達Todoに対して、解決案を作成してください。
+    企画部門は初期企画だけでなく、改善点への解決案も出す必要があります。
+    必須:
+    - 未達Todoごとの原因
+    - 企画側の解決案
+    - データ側の解決案
+    - 開発側の解決案
+    - 次ラウンドで必ず直す項目
+  expected_output: "α版改善解決案（部門別の修正方針）"
+  markdown: true
+  context:
+    - alpha_feedback_task
+    - dev_alpha_task
+
 cross_function_review_task:
   agent: pmo_exec
   description: |
@@ -86,6 +132,8 @@ cross_function_review_task:
     - data_round1_task
     - audit_round1_task
     - dev_alpha_task
+    - alpha_feedback_task
+    - solution_alpha_task
 
 planning_round2_task:
   agent: planner_exec
@@ -95,10 +143,12 @@ planning_round2_task:
     - 変更理由を明記
     - 削る機能/追加する機能を分離
     - β版を見据えた拡張余地も示す
+    - α版フィードバックへの解決策を含める
   expected_output: "Round2企画案（差分付き）"
   markdown: true
   context:
     - cross_function_review_task
+    - solution_alpha_task
 
 data_round2_task:
   agent: data_exec
@@ -129,6 +179,57 @@ dev_beta_task:
     - data_round2_task
     - dev_alpha_task
 
+beta_feedback_task:
+  agent: feedback_exec
+  description: |
+    β版改善計画に対してフィードバックを行い、未達Todoを再抽出してください。
+    必須:
+    - α版から改善された点
+    - まだ弱い点
+    - 提出前に直すべき未達Todo
+    - 再開発が必要な箇所
+  expected_output: "β版フィードバックと再開発Todo"
+  markdown: true
+  context:
+    - dev_beta_task
+    - data_round2_task
+
+redevelopment_task:
+  agent: dev_exec
+  description: |
+    β版フィードバックを受けて、再開発計画を作成してください。
+    未達Todoが残っている場合は、達成するための修正計画を作り、
+    修正後に新しいTodoを作成して次の改善ループへつなげてください。
+    必須:
+    - 再開発対象
+    - 修正内容
+    - 完了条件
+    - 次に発生しうる新Todo
+  expected_output: "再開発計画と次Todoリスト"
+  markdown: true
+  context:
+    - beta_feedback_task
+    - dev_beta_task
+
+todo_iteration_task:
+  agent: pmo_exec
+  description: |
+    ここまでのTodoを整理し、未達Todoを達成済み/継続/新規に分類してください。
+    未達がある場合は、どの部門へ戻すべきかを明示してください。
+    必須:
+    - 達成済みTodo
+    - 未達Todo
+    - 未達の差し戻し先部門
+    - 新しく作成されたTodo
+    - 次スプリントの優先順位
+  expected_output: "反復Todo管理表"
+  markdown: true
+  context:
+    - alpha_feedback_task
+    - solution_alpha_task
+    - beta_feedback_task
+    - redevelopment_task
+
 management_gate_task:
   agent: audit_mgmt
   description: |
@@ -144,6 +245,9 @@ management_gate_task:
     - data_round2_task
     - dev_alpha_task
     - dev_beta_task
+    - beta_feedback_task
+    - redevelopment_task
+    - todo_iteration_task
 
 secretary_task:
   agent: pmo_exec
@@ -153,11 +257,14 @@ secretary_task:
     1. 現在の採用案（Round2）
     2. データ真偽監査の結果
     3. α版の開発方針
-    4. β版の改善方針
-    5. 縦連携（管理↔実行）の状況
-    6. 横連携（部門間）の状況
-    7. 現在の完了ステータス
-    8. 次のステップ（ToDo）
+    4. α版フィードバックと解決案
+    5. β版の改善方針
+    6. β版フィードバックと再開発方針
+    7. Todo達成状況と次Todo
+    8. 縦連携（管理↔実行）の状況
+    9. 横連携（部門間）の状況
+    10. 現在の完了ステータス
+    11. 次のステップ（ToDo）
   expected_output: "progress.md にそのまま使える日本語Markdown"
   markdown: true
   context:
@@ -166,9 +273,14 @@ secretary_task:
     - data_round1_task
     - audit_round1_task
     - dev_alpha_task
+    - alpha_feedback_task
+    - solution_alpha_task
     - cross_function_review_task
     - planning_round2_task
     - data_round2_task
     - dev_beta_task
+    - beta_feedback_task
+    - redevelopment_task
+    - todo_iteration_task
     - management_gate_task
   output_file: "progress.md"

@@ -20,6 +20,54 @@ CITY_COORDS = {
     "FUKUOKA": (33.5904, 130.4017),
 }
 
+ITERATION_STATE = {
+    "version": "β再開発候補",
+    "cycle": [
+        {"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"},
+        {"name": "データ収集", "status": "done", "note": "Open-Meteoから気象データを取得"},
+        {"name": "監査", "status": "doing", "note": "イベント補正が固定値のため改善対象"},
+        {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"},
+        {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"},
+        {"name": "解決案", "status": "todo", "note": "イベントデータAPIの候補選定"},
+        {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"},
+    ],
+    "todos": [
+        {
+            "id": "T-001",
+            "title": "イベント補正を固定値から実データへ置き換える",
+            "owner": "データ部門",
+            "status": "未達",
+            "next_action": "自治体イベントAPIまたは公開イベントカレンダーを調査",
+        },
+        {
+            "id": "T-002",
+            "title": "スコア根拠をユーザーに分かりやすく表示する",
+            "owner": "開発部門",
+            "status": "進行中",
+            "next_action": "都市カードに計算内訳を追加",
+        },
+        {
+            "id": "T-003",
+            "title": "データ真偽監査の結果を画面上に表示する",
+            "owner": "監査部門",
+            "status": "進行中",
+            "next_action": "出典・取得時刻・固定値利用有無を一覧化",
+        },
+        {
+            "id": "T-004",
+            "title": "β版で地図表示を追加する",
+            "owner": "開発部門",
+            "status": "新規",
+            "next_action": "Leaflet導入可否を検証",
+        },
+    ],
+    "feedback": [
+        "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
+        "イベント補正が固定値のため、現時点では熱狂度の一部が仮説ベースである。",
+        "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。",
+    ],
+}
+
 
 def clamp(value: float, lo: float, hi: float) -> float:
     return max(lo, min(value, hi))
@@ -135,6 +183,7 @@ def build_dataset() -> dict:
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "records": records,
         "note": "prototype dataset for alpha demo",
+        "iteration": ITERATION_STATE,
     }
 
 
@@ -145,7 +194,7 @@ def build_html(dataset: dict) -> str:
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>都市熱狂度プロトタイプ（α版）</title>
+  <title>都市熱狂度プロトタイプ（α/β改善ループ）</title>
   <style>
     body {{
       margin: 0;
@@ -154,7 +203,7 @@ def build_html(dataset: dict) -> str:
       color: #e7eefc;
     }}
     .wrap {{
-      max-width: 980px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 20px;
     }}
@@ -169,6 +218,35 @@ def build_html(dataset: dict) -> str:
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 10px;
+    }}
+    .grid2 {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }}
+    .loop {{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }}
+    .step {{
+      flex: 1 1 135px;
+      background: #1a2742;
+      border: 1px solid #334b78;
+      border-radius: 10px;
+      padding: 10px;
+    }}
+    .done {{ border-color: #77dd77; }}
+    .doing {{ border-color: #ffd166; }}
+    .todo {{ border-color: #ff6b6b; }}
+    .pill {{
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #0f1a32;
+      font-size: 12px;
+      color: #b8c5df;
     }}
     .city {{
       background: #1a2742;
@@ -208,9 +286,14 @@ def build_html(dataset: dict) -> str:
 <body>
   <div class="wrap">
     <section class="panel">
-      <h1>都市熱狂度プロトタイプ（α版）</h1>
-      <p class="muted">最低限のデータ収集 + 可視化を確認するための実働サンプルです。</p>
+      <h1>都市熱狂度プロトタイプ（α/β改善ループ）</h1>
+      <p class="muted">データ収集、監査、α版、フィードバック、解決案、β版再開発までを確認する試作画面です。</p>
       <p class="muted" id="updatedAt"></p>
+    </section>
+
+    <section class="panel">
+      <h2>改善サイクル</h2>
+      <div class="loop" id="cycle"></div>
     </section>
 
     <section class="panel">
@@ -234,13 +317,54 @@ def build_html(dataset: dict) -> str:
         <tbody id="tableBody"></tbody>
       </table>
     </section>
+
+    <section class="panel">
+      <h2>Todo達成状況</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Todo</th>
+            <th>担当</th>
+            <th>状態</th>
+            <th>次アクション</th>
+          </tr>
+        </thead>
+        <tbody id="todoBody"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>フィードバックと再開発方針</h2>
+      <div class="grid2">
+        <div>
+          <h3>フィードバック</h3>
+          <ul id="feedbackList"></ul>
+        </div>
+        <div>
+          <h3>現在の判定</h3>
+          <p>β版へ進めるが、<strong>イベント補正の実データ化</strong>と<strong>監査結果表示</strong>は未達。</p>
+          <p class="muted">未達Todoは次ループで解決案部門→企画/データ/開発へ差し戻す。</p>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
     const dataset = {data_json};
     const cards = document.getElementById("cards");
     const tableBody = document.getElementById("tableBody");
+    const cycle = document.getElementById("cycle");
+    const todoBody = document.getElementById("todoBody");
+    const feedbackList = document.getElementById("feedbackList");
     document.getElementById("updatedAt").textContent = "更新時刻: " + dataset.generated_at;
+
+    dataset.iteration.cycle.forEach((s) => {{
+      const div = document.createElement("div");
+      div.className = "step " + s.status;
+      div.innerHTML = `<strong>${{s.name}}</strong><br><span class="pill">${{s.status}}</span><p class="muted">${{s.note}}</p>`;
+      cycle.appendChild(div);
+    }});
 
     dataset.records.forEach((r) => {{
       const card = document.createElement("div");
@@ -263,6 +387,24 @@ def build_html(dataset: dict) -> str:
         <td><strong>${{r.heat_score}}</strong></td>
       `;
       tableBody.appendChild(tr);
+    }});
+
+    dataset.iteration.todos.forEach((t) => {{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${{t.id}}</td>
+        <td>${{t.title}}</td>
+        <td>${{t.owner}}</td>
+        <td><strong>${{t.status}}</strong></td>
+        <td>${{t.next_action}}</td>
+      `;
+      todoBody.appendChild(tr);
+    }});
+
+    dataset.iteration.feedback.forEach((f) => {{
+      const li = document.createElement("li");
+      li.textContent = f;
+      feedbackList.appendChild(li);
     }});
   </script>
 </body>

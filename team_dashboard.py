@@ -102,6 +102,53 @@ def build_org_matrix(agents: dict, departments: list[str]) -> str:
     return "".join(cells)
 
 
+def build_department_column(agents: dict, dep: str) -> str:
+    nodes: dict[str, str] = {}
+    for key, conf in agents.items():
+        if not isinstance(conf, dict) or str(conf.get("department")) != dep:
+            continue
+        tier = str(conf.get("tier", "execution"))
+        role = html.escape(str(conf.get("role", key)))
+        nodes[tier] = (
+            f'<div class="org-node {html.escape(tier)}">'
+            f"<b>{role}</b><br /><span class='muted'>{html.escape(key)}</span></div>"
+        )
+
+    return f"""
+    <div class="hierarchy-dep">
+      <div class="dep-title">{html.escape(dep)}</div>
+      {nodes.get("management", '<div class="org-node empty">管理: 未設定</div>')}
+      <div class="v-arrow">↓ 管理から実行へ</div>
+      {nodes.get("execution", '<div class="org-node empty">実行: 未設定</div>')}
+    </div>
+    """
+
+
+def build_hierarchy_view(agents: dict, org: dict) -> str:
+    layers = org.get("hierarchy_layers", [])
+    if not isinstance(layers, list) or not layers:
+        return "<p class='muted'>階層設定が未定義です。</p>"
+
+    html_layers: list[str] = []
+    for layer in layers:
+        if not isinstance(layer, dict):
+            continue
+        name = html.escape(str(layer.get("name", "階層")))
+        departments = layer.get("departments", [])
+        if not isinstance(departments, list):
+            departments = []
+        columns = "".join(build_department_column(agents, str(dep)) for dep in departments)
+        html_layers.append(
+            f"""
+            <section class="hierarchy-layer">
+              <h3>{name}</h3>
+              <div class="hierarchy-grid">{columns}</div>
+            </section>
+            """
+        )
+    return "".join(html_layers)
+
+
 def render_links(org: dict, agents: dict, link_key: str, title: str) -> str:
     links = org.get(link_key, [])
     if not isinstance(links, list) or not links:
@@ -124,6 +171,28 @@ def render_links(org: dict, agents: dict, link_key: str, title: str) -> str:
         )
 
     return f"<h3>{title}</h3><ul>{''.join(rows)}</ul>"
+
+
+def render_iteration_loops(org: dict, agents: dict) -> str:
+    loops = org.get("iteration_loops", [])
+    if not isinstance(loops, list) or not loops:
+        return "<p class='muted'>改善ループ未定義</p>"
+
+    cards = []
+    for loop in loops:
+        if not isinstance(loop, dict):
+            continue
+        name = html.escape(str(loop.get("name", "改善ループ")))
+        flow = loop.get("flow", [])
+        if not isinstance(flow, list):
+            flow = []
+        steps = []
+        for key in flow:
+            key_str = str(key)
+            role = html.escape(str(agents.get(key_str, {}).get("role", key_str)))
+            steps.append(f"<span class='loop-step'>{role}<small>{html.escape(key_str)}</small></span>")
+        cards.append(f"<div class='loop-card'><h3>{name}</h3><div class='loop-flow'>{' → '.join(steps)}</div></div>")
+    return "".join(cards)
 
 
 def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
@@ -163,8 +232,10 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
 
     progress_html = html.escape(progress_md)
     org_matrix_html = build_org_matrix(agents=agents, departments=departments)
+    hierarchy_html = build_hierarchy_view(agents=agents, org=org)
     vertical_links_html = render_links(org, agents, "vertical_links", "縦連携（管理→実行）")
     horizontal_links_html = render_links(org, agents, "horizontal_links", "横連携（部門間）")
+    iteration_loops_html = render_iteration_loops(org=org, agents=agents)
 
     return f"""<!doctype html>
 <html lang="ja">
@@ -193,10 +264,19 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
     .ok {{ color: var(--good); font-weight: 700; }}
     .org-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }}
     .org-col {{ background: #16223a; border: 1px solid #33476f; border-radius: 10px; padding: 12px; }}
+    .hierarchy-layer {{ margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }}
+    .hierarchy-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }}
+    .hierarchy-dep {{ background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; }}
     .dep-title {{ font-weight: 700; margin-bottom: 8px; color: #9cc1ff; }}
     .org-node {{ background: #1e2e4a; border: 1px solid #3d5788; border-radius: 8px; padding: 10px; text-align: center; }}
+    .org-node.management {{ border-color: #9cc1ff; }}
+    .org-node.execution {{ border-color: #77dd77; }}
     .org-node.empty {{ opacity: 0.5; }}
     .v-arrow {{ text-align: center; color: var(--sub); font-size: 13px; padding: 6px 0; }}
+    .loop-card {{ background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; margin-top: 12px; }}
+    .loop-flow {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
+    .loop-step {{ background: #0f1728; border: 1px solid #2a3652; border-radius: 999px; padding: 8px 10px; }}
+    .loop-step small {{ display: block; color: var(--sub); font-size: 11px; }}
     .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }}
     .card {{ background: #18233b; border: 1px solid #33476f; border-radius: 10px; padding: 14px; }}
     .label {{ color: var(--sub); font-weight: 600; }}
@@ -220,7 +300,13 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
     </section>
 
     <section class="panel">
-      <h2>組織図（縦連携 + 横連携）</h2>
+      <h2>階層型組織図</h2>
+      <p class="muted">Level 1からLevel 3へ降りる階層構造です。各部門内は管理担当と実行担当の二台体制です。</p>
+      {hierarchy_html}
+    </section>
+
+    <section class="panel">
+      <h2>部門別二台体制（一覧）</h2>
       <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
       <div class="org-grid">{org_matrix_html}</div>
     </section>
@@ -229,6 +315,11 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
       <h2>連携一覧</h2>
       {vertical_links_html}
       {horizontal_links_html}
+    </section>
+
+    <section class="panel">
+      <h2>改善ループ（α/β → フィードバック → 解決案 → 再開発）</h2>
+      {iteration_loops_html}
     </section>
 
     <section class="panel">
