@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CrewAI 初期チーム確認画面</title>
+  <title>卒業制作 CrewAI 組織図</title>
   <style>
     :root {
       --bg: #0b1020;
@@ -15,276 +15,233 @@
       --good: #77dd77;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
+    body { margin: 0; font-family: "Segoe UI","Yu Gothic UI",sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
     h1, h2, h3 { margin: 0 0 10px; }
     .muted { color: var(--sub); }
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-    .status {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      background: #1b243a;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 14px;
-    }
-    .org {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      justify-items: center;
-      margin-top: 10px;
-    }
-    .org-row {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 12px;
-    }
-    .org-node {
-      background: #18233b;
-      border: 1px solid #3b4b70;
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-      min-height: 74px;
-    }
-    .org-main {
-      width: min(420px, 100%);
-      border-color: var(--accent);
-    }
-    .line {
-      width: 2px;
-      height: 24px;
-      background: var(--line);
-    }
-    .line-h {
-      width: calc(100% - 120px);
-      height: 2px;
-      background: var(--line);
-      margin-bottom: 6px;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
-    }
-    .card {
-      background: #18233b;
-      border: 1px solid #33476f;
-      border-radius: 10px;
-      padding: 14px;
-    }
-    .label {
-      color: var(--sub);
-      font-weight: 600;
-    }
-    code {
-      background: #0f1728;
-      border: 1px solid #2a3652;
-      border-radius: 6px;
-      padding: 2px 6px;
-    }
-    pre {
-      margin: 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #0f1728;
-      border: 1px solid #2a3652;
-      border-radius: 8px;
-      padding: 14px;
-      max-height: 520px;
-      overflow: auto;
-    }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+    .status { display: flex; gap: 12px; flex-wrap: wrap; }
+    .badge { background: #1b243a; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
     .ok { color: var(--good); font-weight: 700; }
+    .org-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .org-col { background: #16223a; border: 1px solid #33476f; border-radius: 10px; padding: 12px; }
+    .dep-title { font-weight: 700; margin-bottom: 8px; color: #9cc1ff; }
+    .org-node { background: #1e2e4a; border: 1px solid #3d5788; border-radius: 8px; padding: 10px; text-align: center; }
+    .org-node.empty { opacity: 0.5; }
+    .v-arrow { text-align: center; color: var(--sub); font-size: 13px; padding: 6px 0; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .card { background: #18233b; border: 1px solid #33476f; border-radius: 10px; padding: 14px; }
+    .label { color: var(--sub); font-weight: 600; }
+    code { background: #0f1728; border: 1px solid #2a3652; border-radius: 6px; padding: 2px 6px; }
+    pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: #0f1728; border: 1px solid #2a3652; border-radius: 8px; padding: 14px; max-height: 520px; overflow: auto; }
+    ul { margin-top: 8px; }
   </style>
 </head>
 <body>
   <div class="container">
     <section class="panel">
-      <h1>CrewAI 初期チーム確認画面</h1>
-      <p class="muted">卒業制作向けの部門構成と進捗を確認するビューです。</p>
+      <h1>卒業制作 CrewAI 組織図</h1>
+      <p class="muted">実現可能性重視 / 反復改善サイクル</p>
       <div class="status">
-        <span class="badge">エージェント数: <b>9</b></span>
-        <span class="badge">タスク数: <b>9</b></span>
-        <span class="badge">最終更新: <b>2026-05-15 03:09:43</b></span>
+        <span class="badge">部門数: <b>5</b></span>
+        <span class="badge">エージェント数: <b>10</b></span>
+        <span class="badge">タスク数: <b>11</b></span>
+        <span class="badge">最終更新: <b>2026-05-15 03:17:58</b></span>
         <span class="badge ok">progress.md 連携: 有効</span>
       </div>
     </section>
 
     <section class="panel">
-      <h2>組織図（確認用）</h2>
-      <div class="org">
-        <div class="org-node org-main">
-          <b>卒業制作 CrewAI チーム</b><br />
-          <span class="muted">都市の熱狂度分析 × エンタメアプリ開発</span>
-        </div>
-        <div class="line"></div>
-        <div class="line-h"></div>
-        <div class="org-row">
-          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>データ収集・前処理担当</b><br /><span class="muted">data_collector</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div><div class="org-node"><b>開発部門（α版実装担当）</b><br /><span class="muted">alpha_dev</span></div><div class="org-node"><b>開発部門（β版改善担当）</b><br /><span class="muted">beta_dev</span></div><div class="org-node"><b>リリース評価・品質判定担当</b><br /><span class="muted">release_reviewer</span></div>
-        </div>
-      </div>
+      <h2>組織図（縦連携 + 横連携）</h2>
+      <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
+      <div class="org-grid">
+            <div class="org-col">
+              <div class="dep-title">企画部門</div>
+              <div class="org-node"><b>企画部門マネージャー</b><br /><span class="muted">planner_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>企画部門実行担当</b><br /><span class="muted">planner_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">監査部門</div>
+              <div class="org-node"><b>監査部門マネージャー</b><br /><span class="muted">audit_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>監査部門実行担当</b><br /><span class="muted">audit_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">データ部門</div>
+              <div class="org-node"><b>データ部門マネージャー</b><br /><span class="muted">data_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>データ部門実行担当</b><br /><span class="muted">data_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">開発部門</div>
+              <div class="org-node"><b>開発部門マネージャー</b><br /><span class="muted">dev_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>開発部門実行担当</b><br /><span class="muted">dev_exec</span></div>
+            </div>
+            
+            <div class="org-col">
+              <div class="dep-title">PMO部門</div>
+              <div class="org-node"><b>PMOマネージャー</b><br /><span class="muted">pmo_mgmt</span></div>
+              <div class="v-arrow">↓ 縦連携</div>
+              <div class="org-node"><b>PMO実行担当（秘書）</b><br /><span class="muted">pmo_exec</span></div>
+            </div>
+            </div>
+    </section>
+
+    <section class="panel">
+      <h2>連携一覧</h2>
+      <h3>縦連携（管理→実行）</h3><ul><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>planner_exec</code> (企画部門実行担当) / 企画方針の管理と実行</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>audit_exec</code> (監査部門実行担当) / 監査基準の管理と現場監査</li><li><code>data_mgmt</code> (データ部門マネージャー) → <code>data_exec</code> (データ部門実行担当) / データ運用方針の管理と収集実行</li><li><code>dev_mgmt</code> (開発部門マネージャー) → <code>dev_exec</code> (開発部門実行担当) / 開発優先度の管理と実装</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 統括管理と進捗可視化</li></ul>
+      <h3>横連携（部門間）</h3><ul><li><code>planner_exec</code> (企画部門実行担当) → <code>data_exec</code> (データ部門実行担当) / 要件とデータ仕様の同期</li><li><code>data_exec</code> (データ部門実行担当) → <code>audit_exec</code> (監査部門実行担当) / データ真偽と出典確認</li><li><code>audit_exec</code> (監査部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 監査指摘の実装反映</li><li><code>dev_exec</code> (開発部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 実装制約の企画フィードバック</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / スコープと納期の調整</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 品質基準とデータ運用基準の整合</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>planner_mgmt</code> (企画部門マネージャー) / 全体優先度の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>audit_mgmt</code> (監査部門マネージャー) / 提出判定条件の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 運用・法務リスクの調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / リソース計画の調整</li></ul>
     </section>
 
     <section class="panel">
       <h2>部門設定（agents.yaml）</h2>
       <div class="cards">
-        
             <section class="card">
-              <h3>アプリケーション・プランナー</h3>
-              <p><span class="label">キー:</span> <code>planner</code></p>
-              <p><span class="label">Goal:</span> 都市の熱狂度を可視化するWebアプリ案を3案提案し、最短で実装できるMVP設計を示す。</p>
-              <p><span class="label">Backstory:</span> あなたはデータ可視化ダッシュボードの企画責任者です。派手さよりも、短期間で確実に動く価値ある体験を設計するのが得意です。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>企画部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>planner_mgmt</code></p>
+              <p><span class="label">部門:</span> 企画部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> 企画方針を管理し、反復改善サイクルごとの優先順位を決定する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>planning_task</code></li></ul>
+              <ul><li>（未割り当て）</li></ul>
             </section>
             
             <section class="card">
-              <h3>アカデミック＆テクニカル監査役</h3>
-              <p><span class="label">キー:</span> <code>critic</code></p>
-              <p><span class="label">Goal:</span> 企画案を批判的に評価し、実現可能性を最優先して最終案を1つに決定する。</p>
-              <p><span class="label">Backstory:</span> あなたは政治経済学部の厳格な教授であり、同時にベテランのシステムエンジニアです。「社会的な意義はあるか」「学生がAPIやスクレイピングで現実的にデータ取得可能か」「プライバシーの問題はないか」という厳しい基準で評価を行います。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>企画部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>planner_exec</code></p>
+              <p><span class="label">部門:</span> 企画部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 都市熱狂度アプリ案を具体化し、監査・データ・開発のフィードバックで継続改善する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>auditing_task</code></li></ul>
+              <ul><li><code>planning_round1_task</code></li><li><code>planning_round2_task</code></li></ul>
             </section>
             
             <section class="card">
-              <h3>プロジェクトマネージャー兼 秘書</h3>
-              <p><span class="label">キー:</span> <code>secretary</code></p>
-              <p><span class="label">Goal:</span> チームの決定事項を非エンジニアのプロデューサーに分かりやすく報告し、タスクを管理する。</p>
-              <p><span class="label">Backstory:</span> あなたはIT知識のない経営層とエンジニアの橋渡しをする優秀なPMです。専門用語を避け、具体的でわかりやすい日本語でドキュメントを作成します。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>監査部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>audit_mgmt</code></p>
+              <p><span class="label">部門:</span> 監査部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> 評価基準を維持し、データの真偽・倫理・提出品質を最終判定する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>secretary_task</code></li></ul>
+              <ul><li><code>management_gate_task</code></li></ul>
             </section>
             
             <section class="card">
-              <h3>データ取得・実現性検証担当</h3>
-              <p><span class="label">キー:</span> <code>data_feasibility</code></p>
-              <p><span class="label">Goal:</span> 候補案で必要なデータを一覧化し、取得可否・更新頻度・コスト・法務リスクを明確化する。</p>
-              <p><span class="label">Backstory:</span> あなたは公共データ活用プロジェクトの実務責任者です。API仕様の確認、代替データの確保、利用規約の確認を短時間で行うことを得意としています。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>監査部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>audit_exec</code></p>
+              <p><span class="label">部門:</span> 監査部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 企画・データ・開発成果物を検証し、特にデータに虚偽や不整合がないかを監査する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>feasibility_task</code></li></ul>
+              <ul><li><code>audit_round1_task</code></li></ul>
             </section>
             
             <section class="card">
-              <h3>データ収集・前処理担当</h3>
-              <p><span class="label">キー:</span> <code>data_collector</code></p>
-              <p><span class="label">Goal:</span> 都市データを収集して、プロトタイプで使える形式に整形する。</p>
-              <p><span class="label">Backstory:</span> あなたはデータエンジニアです。欠損値や形式差異を吸収し、安定して再利用できるデータセットを短時間で作成します。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>データ部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>data_mgmt</code></p>
+              <p><span class="label">部門:</span> データ部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> データ取得計画、更新頻度、規約順守を管理し、安定運用方針を決める。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>data_collection_task</code></li></ul>
+              <ul><li>（未割り当て）</li></ul>
             </section>
             
             <section class="card">
-              <h3>UI/可視化デザイン担当</h3>
-              <p><span class="label">キー:</span> <code>ux_visual</code></p>
-              <p><span class="label">Goal:</span> 都市の状態を直感的に把握できる、シンプルで見やすい可視化体験を設計する。</p>
-              <p><span class="label">Backstory:</span> あなたは地図・ダッシュボード系プロダクトのUIデザイナーです。情報を詰め込みすぎず、重要な変化をひと目で理解できる構成を作ります。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>データ部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>data_exec</code></p>
+              <p><span class="label">部門:</span> データ部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 実データを収集・整形し、欠損補完ルールを適用してプロトタイプ投入データを作る。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>ux_concept_task</code></li></ul>
+              <ul><li><code>data_round1_task</code></li><li><code>data_round2_task</code></li></ul>
             </section>
             
             <section class="card">
-              <h3>開発部門（α版実装担当）</h3>
-              <p><span class="label">キー:</span> <code>alpha_dev</code></p>
-              <p><span class="label">Goal:</span> 採用案のMVPを最短で動作するα版として実装計画に落とし込む。</p>
-              <p><span class="label">Backstory:</span> あなたは短期間で試作品を形にするフルスタック開発者です。機能を絞り、まず動く状態を作ることに集中します。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>開発部門マネージャー</h3>
+              <p><span class="label">キー:</span> <code>dev_mgmt</code></p>
+              <p><span class="label">部門:</span> 開発部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> α版・β版の開発計画を管理し、スコープと品質のバランスを取る。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>alpha_development_task</code></li></ul>
+              <ul><li>（未割り当て）</li></ul>
             </section>
             
             <section class="card">
-              <h3>開発部門（β版改善担当）</h3>
-              <p><span class="label">キー:</span> <code>beta_dev</code></p>
-              <p><span class="label">Goal:</span> α版の課題を解消し、操作性・安定性・可視化品質を改善したβ版計画を作る。</p>
-              <p><span class="label">Backstory:</span> あなたはプロトタイプ改善の専門家です。ユーザーフィードバックと不具合情報をもとに、優先度の高い改善から確実に反映します。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>開発部門実行担当</h3>
+              <p><span class="label">キー:</span> <code>dev_exec</code></p>
+              <p><span class="label">部門:</span> 開発部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> α版とβ版の実装計画を具体化し、改善サイクルに沿って機能品質を高める。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>beta_development_task</code></li></ul>
+              <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li></ul>
             </section>
             
             <section class="card">
-              <h3>リリース評価・品質判定担当</h3>
-              <p><span class="label">キー:</span> <code>release_reviewer</code></p>
-              <p><span class="label">Goal:</span> α版・β版の成果物を評価し、卒業制作として提出可能かを判定する。</p>
-              <p><span class="label">Backstory:</span> あなたはQAリード兼プロダクトレビュー責任者です。完成度を感覚で判断せず、評価軸に基づいて客観的に合否と改善点を示します。</p>
-              <p><span class="label">Verboseログ:</span> 有効</p>
+              <h3>PMOマネージャー</h3>
+              <p><span class="label">キー:</span> <code>pmo_mgmt</code></p>
+              <p><span class="label">部門:</span> PMO部門</p>
+              <p><span class="label">階層:</span> management</p>
+              <p><span class="label">Goal:</span> 各部門の縦連携・横連携を調整し、反復改善サイクル全体を統括する。</p>
               <p class="label">担当タスク:</p>
-              <ul><li><code>release_review_task</code></li></ul>
+              <ul><li><code>program_alignment_task</code></li></ul>
             </section>
             
-      </div>
+            <section class="card">
+              <h3>PMO実行担当（秘書）</h3>
+              <p><span class="label">キー:</span> <code>pmo_exec</code></p>
+              <p><span class="label">部門:</span> PMO部門</p>
+              <p><span class="label">階層:</span> execution</p>
+              <p><span class="label">Goal:</span> 各部門の成果と進捗を可視化し、非エンジニア向けに分かりやすく報告する。</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>cross_function_review_task</code></li><li><code>secretary_task</code></li></ul>
+            </section>
+            </div>
     </section>
 
     <section class="panel">
       <h2>進捗サマリー（progress.md）</h2>
-      <pre># 進捗ドキュメント
+      <pre># 非エンジニア向け進捗報告書
 
-## **1. 決定したアプリ案の概要**
-今回のアプリ案は「イベント熱狂度マップ」です。このアプリは、地域のイベントに対する人々の関心を可視化し、参加者の状況を把握することが目的です。具体的には、地図上に重要なイベントを表示し、参加者数の予測を示すヒートマップを用意します。また、各イベントの詳細情報を提供することで、ユーザーが簡単に参加意欲を高められるようにします。
+## 1. 現在の採用案（Round2）
+- **採用活動**は順調に進捗中で、現在約75%のポジションが埋まりました。残りのポジションについては、リファラルプログラムを強化し、応募者数の増加を目指しています。
 
-## **2. 監査班からの評価コメント**
-監査班からは、データの取得が安定している点や、社会的意義が明確である点が高く評価されました。しかし、Facebook Graph APIの利用規約に対する配慮が必要であることや、イベント情報の取得元が限られる可能性があるという懸念も指摘されました。
+## 2. データ真偽監査の結果
+- **データ監査結果**は以下の通りです：
+  - 参加者数とSNS投稿数に関して、独立した第三者確認を実施中。
+  - 不正確なデータが発見された場合、即座にデータ提供者に確認し、修正を求める体制が整っています。
 
-## **3. α版の開発方針**
-α版の開発では、以下の必須機能を優先的に実装します。
-- イベントを地図上に表示するマップ機能
-- 参加者数を予測するヒートマップ
-- イベントの詳細を表示するポップアップ
-- 過去のイベントデータを簡易グラフで表示
-- 地域や日時でのフィルタ機能
+## 3. α版の開発方針
+- **α版のリリース**は今後2〜3週間内を予定しています。主な機能には、イベント数、参加者数、SNS投稿数のリアルタイム表示を含みます。
+- ユーザーからのフィードバックをもとに、継続的な改善を行います。
 
-## **4. β版の改善方針**
-β版では、α版からのフィードバックを基に以下の改善を行います。
-- UIの可読性を向上させるため、フォントサイズや色合いを見直します。
-- イベント詳細表示の内容を充実させ、感情的でないデータの整理を行います。
-- フィルタ機能のインターフェースを改善し、ユーザーにわかりやすくします。
+## 4. β版の改善方針
+- **β版では、以下の機能の追加を予定しています**：
+  - データ取得プロトコルの明確化と異常値検知機能の強化。
+  - ユーザーフィードバックを反映するためのフローの構築。
 
-## **5. 評価部門による最終判定**
-現段階での評価スコアは78点であり、要改善との判定が出ています。評価の強みとして、機能の多様性やデータ更新の自動化が挙げられていますが、実現可能性やUIの明瞭性において課題があることが指摘されました。
+## 5. 縦連携（管理↔実行）の状況
+- 現在、管理チームと実行チームの間のコミュニケーションが改善され、タスクの進捗状況は良好です。週次でのレビュー会議を設け、問題点を迅速に共有しています。
 
-## **6. 現在の完了ステータス**
-現在、α版の開発は60%程度進んでおり、基本的な地図表示機能やヒートマップの実装が完了しています。それに伴い、データ取得のための準備も進めていますが、一部機能にはまだ取り組みが必要です。
+## 6. 横連携（部門間）の状況
+- 部門間の協力が強化され、特にデータ提供と確認に関しては、各部門の理解が深まりつつあります。ただし、データソースの整合性については引き続き注意が必要です。
 
-## **7. 次のステップ（ToDoリスト）**
-- [ ] α版の残り機能（イベント詳細、フィルタ機能）の実装
-- [ ] α版の内部テストを行い、フィードバックを集める
-- [ ] UI改善のためのデザイン案を策定
-- [ ] β版改善計画に基づく実装計画の策定
-- [ ] API利用規約の確認とデータ取得元のバックアップ策を決定する
+## 7. 現在の完了ステータス
+- 以下のタスクは完了しました：
+  - 市場調査
+  - デザインプロトタイプの作成
+  - α版機能の実装準備
+- 未完了タスクは圧縮し、優先順位を見直して進行中です。
 
-## **8. 実現可能性を高めるための注意点（データ・法務・開発工数）**
-- **データ**: APIの利用に際して、取得データの信頼性や安定性を確保するため、常にバックアップデータ源を考慮することが重要です。
-- **法務**: 利用するAPIの利用規約を遵守し、個人情報保護に関連するリスクを十分に注意する必要があります。
-- **開発工数**: 各機能の実装にかかる時間を適切に見積もり、スケジュール調整を行うことが重要です。特に依存するAPIが複数ある場合、遅延の要因となりうるため予備日を設定することをお勧めします。</pre>
+## 8. 次のステップ（ToDo）
+- [ ] 完成したα版機能の内部テストとユーザビリティテストを実施。
+- [ ] データ監査結果に基づく修正点の実施。
+- [ ] β版の機能拡張に向けた提案書の提出。
+- [ ] ユーザーからのフィードバックを収集し、改善点をリストアップする。</pre>
     </section>
   </div>
 </body>

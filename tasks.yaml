@@ -1,238 +1,174 @@
-# このファイルは「タスク（作業指示）」の設定です。
-# description（実際の指示文）を編集すると、エージェントの出力内容が変わります。
-# expected_output は「どんな形で返してほしいか」を指定します。
-# context は「前のタスク結果を参照する」ための設定です。
-# 実行順はこのファイルの上から順です。
+# このファイルは「反復改善型のタスク定義」です。
+# 実行順は上から順番ですが、各タスクは複数部門の出力を参照し、
+# 縦（管理↔実行）と横（部門間）を意識した改善ループを回します。
 
-planning_task:
-  # agent: このタスクを担当するエージェント名（agents.yaml のキー名）
-  agent: planner
-  # description: エージェントへの具体的な依頼文
+program_alignment_task:
+  agent: pmo_mgmt
   description: |
-    卒業制作として実装可能なアプリ案を3つ提案してください。
-    必須条件:
-    - 「都市の熱狂度」を時系列で可視化できること
-    - Webブラウザで動作すること（PC/スマホ閲覧を想定）
-    - 学生開発として現実的なスコープであること（8〜12週間想定）
-    - 派手なゲーム要素より、見やすい情報提示を優先すること
-    - CITY SONARのような都市指標の定点観測体験を参考にすること
+    今回のスプリント方針を定義してください。
+    条件:
+    - 実現可能性を最優先
+    - 都市熱狂度の可視化価値を明確化
+    - 1スプリント内で完了可能な範囲に絞る
+  expected_output: "スプリント目標、制約、評価指標をまとめた方針書"
+  markdown: true
 
-    出力フォーマット:
-    1案ごとに以下を含める
-    - 案名
+planning_round1_task:
+  agent: planner_exec
+  description: |
+    方針書を基に、都市可視化アプリの初版企画案（Round1）を作成してください。
+    必須:
     - 想定ユーザー
-    - 体験価値（意思決定にどう役立つか）
-    - 使うデータ候補（API/公開データ/スクレイピング候補）
-    - MVP（最小実装）範囲
-    - 8〜12週間の開発見積もり（ざっくり）
-  expected_output: "3案分の企画提案（日本語、構造化された箇条書き）"
-  # markdown: true で Markdown 形式を強く促します
-  markdown: true
-
-feasibility_task:
-  # 追加部門タスク: データ取得可能性を先に潰し込む
-  agent: data_feasibility
-  description: |
-    planning_task の3案に対して、データ面の実現可能性監査を行ってください。
-    監査項目:
-    - 利用できるデータソース名
-    - 取得方法（公式API / オープンデータ / スクレイピング）
-    - 取得頻度（リアルタイム / 日次 / 週次）
-    - 利用規約・個人情報リスク
-    - 代替データ案（第一候補が使えない場合）
-
-    出力フォーマット:
-    - 案ごとに「実現性スコア（100点満点）」を付与
-    - ブロッカー（致命的な問題）を明記
-    - MVP時点で必須なデータだけを抽出
-  expected_output: "3案それぞれのデータ取得可能性レポート（スコア付き）"
+    - 表示する都市指標
+    - MVP画面構成
+    - 未対応機能（後回し）
+  expected_output: "Round1企画案"
   markdown: true
   context:
-    - planning_task
+    - program_alignment_task
 
-data_collection_task:
-  # 追加部門タスク: 試作画面で使うデータを収集・整形
-  agent: data_collector
+data_round1_task:
+  agent: data_exec
   description: |
-    feasibility_task の結果を踏まえ、α版プロトタイプで使う最小データセットを定義してください。
-    対象:
-    - 都市名（最低4都市）
-    - 更新時刻
-    - 熱狂度スコア（0-100）
-    - スコア構成要素（人流・イベント・天候など）
+    Round1企画案に必要なデータを収集・整形する計画を作成してください。
+    必須:
     - データ出典
-
-    出力フォーマット:
-    - JSONスキーマ案
-    - 収集頻度（日次/時間単位）
-    - 欠損時の補完ルール
-    - プロトタイプでの表示項目対応表
-  expected_output: "プロトタイプ用データ定義書（JSONスキーマと運用ルール）"
+    - 取得方法
+    - 更新頻度
+    - 欠損補完ルール
+  expected_output: "Round1データ設計と収集計画"
   markdown: true
   context:
-    - planning_task
-    - feasibility_task
+    - planning_round1_task
 
-ux_concept_task:
-  # 追加部門タスク: UIの最低構成を明確化
-  agent: ux_visual
+audit_round1_task:
+  agent: audit_exec
   description: |
-    planning_task の3案について、都市可視化アプリとしての画面構成を提案してください。
-    方針:
-    - 画面数は最小限（3〜5画面）
-    - ひと目で都市の状態が分かるダッシュボード中心
-    - PC/スマホ両対応を想定
-    - 使うグラフ種類を具体化（地図、折れ線、ヒートマップ等）
-
-    出力フォーマット:
-    - 案ごとの画面一覧
-    - 主要コンポーネント
-    - 初回リリースで削るべき機能（非MVP）
-  expected_output: "3案分のUI/可視化コンセプトとMVP画面構成"
+    Round1の企画案とデータ計画を監査してください。
+    特に以下を必須監査:
+    - データに虚偽・捏造・整合性崩れがないか
+    - 出典が追跡可能か
+    - 利用規約違反がないか
+    - 個人情報や倫理リスクがないか
+  expected_output: "Round1監査レポート（問題点・修正要求・信頼性判定）"
   markdown: true
   context:
-    - planning_task
-    - data_collection_task
+    - planning_round1_task
+    - data_round1_task
 
-auditing_task:
-  agent: critic
+dev_alpha_task:
+  agent: dev_exec
   description: |
-    企画案、データ実現性監査、UI案を踏まえて、最終採用案を1つ決定してください。
-    監査基準:
-    - 実現可能性（40点）
-    - データ取得の安定性（25点）
-    - 社会的意義（20点）
-    - UIのわかりやすさ（10点）
-    - 将来拡張性（5点）
-
-    重点条件:
-    - 合計点が高くても、致命的な実装ブロッカーがある案は不採用
-    - 最短で動くMVPを優先
-
-    最終判断時に必ず確認:
-    - 社会的意義
-    - データ取得の現実性（API/スクレイピング可否）
-    - プライバシー・倫理面の安全性
-    - 卒業制作としての実装可能性（期間/難易度）
-
-    出力フォーマット:
-    - 各案の点数内訳と評価（良い点・懸念点）
-    - 採用案（1つ）
-    - 採用理由（監査基準に基づく）
-    - 採用案のMVP実装範囲（必須機能3〜5個）
-  expected_output: "3案の監査結果と採用案1つの明確な決定（日本語）"
-  markdown: true
-  # context: 参照したい前タスクを配列で指定
-  context:
-    - planning_task
-    - feasibility_task
-    - data_collection_task
-    - ux_concept_task
-
-alpha_development_task:
-  # 追加部門タスク: α版の実装計画を具体化
-  agent: alpha_dev
-  description: |
-    auditing_task で採用された案について、α版（最初の動く版）の実装計画を作成してください。
+    Round1監査結果を反映し、α版の実装計画を作成してください。
     条件:
-    - 実装期間は 2〜3週間
-    - 必須機能は最大5個まで
-    - バックエンド・フロントエンド・データ取得を最小構成で定義
-    - 「後回し機能」を明確に分離
-
-    出力フォーマット:
-    - α版の機能一覧（必須/任意）
-    - 画面単位の実装内容
-    - API/データ処理フロー
-    - 実装スケジュール（週単位）
-    - 主要リスクと回避策
-  expected_output: "α版の実装計画書（機能・画面・スケジュール・リスク）"
+    - 2〜3週間で動作可能
+    - 必須機能は最大5個
+    - 監査で指摘されたデータ検証を実装項目に含める
+  expected_output: "α版実装計画（機能・画面・データ処理・検証）"
   markdown: true
   context:
-    - auditing_task
-    - feasibility_task
-    - data_collection_task
-    - ux_concept_task
+    - planning_round1_task
+    - data_round1_task
+    - audit_round1_task
 
-beta_development_task:
-  # 追加部門タスク: β版の改善計画を作成
-  agent: beta_dev
+cross_function_review_task:
+  agent: pmo_exec
   description: |
-    α版計画を基に、β版（改善版）の拡張計画を作成してください。
+    企画・監査・データ・開発のRound1成果を横断レビューしてください。
+    出力要件:
+    - 部門間の矛盾点
+    - 依存関係の詰まり
+    - 次ラウンドで優先修正すべき上位5項目
+  expected_output: "横断レビュー結果（部門横連携の課題と修正優先順位）"
+  markdown: true
+  context:
+    - planning_round1_task
+    - data_round1_task
+    - audit_round1_task
+    - dev_alpha_task
+
+planning_round2_task:
+  agent: planner_exec
+  description: |
+    横断レビューを受けて企画案をRound2へ改善してください。
     条件:
-    - β版は 2〜4週間の改善スプリント想定
-    - 優先順位は「可読性」「安定性」「ユーザー理解しやすさ」を上位にする
-    - 新規機能は最小限、既存品質の底上げを優先
-
-    出力フォーマット:
-    - α版からの改善点一覧（優先度A/B/C）
-    - UI改善項目
-    - データ精度・更新頻度の改善項目
-    - テスト観点（最低限の受け入れ基準）
-    - β版完了条件（Doneの定義）
-  expected_output: "β版の改善計画書（優先度付き改善バックログ）"
+    - 変更理由を明記
+    - 削る機能/追加する機能を分離
+    - β版を見据えた拡張余地も示す
+  expected_output: "Round2企画案（差分付き）"
   markdown: true
   context:
-    - alpha_development_task
-    - auditing_task
+    - cross_function_review_task
 
-release_review_task:
-  # 追加部門タスク: α/β成果物の評価を実施
-  agent: release_reviewer
+data_round2_task:
+  agent: data_exec
   description: |
-    α版計画・β版計画を評価し、卒業制作として提出可能な完成度かを判定してください。
-    評価基準:
-    - 実現可能性（35点）
-    - 要件適合度（25点）
-    - UI/UX明瞭性（15点）
-    - データ信頼性（15点）
-    - リスク管理（10点）
-
-    判定ルール:
-    - 合計80点以上で「提出可能」
-    - 80点未満は「要改善」とし、必須改善項目を3つ以上提示
-
-    出力フォーマット:
-    - 総合スコアと判定（提出可能 / 要改善）
-    - 評価コメント（強み・弱み）
-    - 必須改善項目（具体的ToDo）
-  expected_output: "α/β計画に対する最終評価レポート（スコア・判定・改善ToDo）"
+    Round2企画に合わせてデータ計画を更新してください。
+    必須:
+    - 真偽確認プロセス（出典照合/異常値検知）
+    - データ品質KPI
+    - 運用時のエラー対応フロー
+  expected_output: "Round2データ運用計画（品質管理付き）"
   markdown: true
   context:
-    - alpha_development_task
-    - beta_development_task
+    - planning_round2_task
+    - cross_function_review_task
+
+dev_beta_task:
+  agent: dev_exec
+  description: |
+    Round2成果を基にβ版改善計画を作成してください。
+    条件:
+    - 安定性と可読性の改善を優先
+    - 監査で指摘された検証機能を標準搭載
+    - 受け入れテスト項目を明確化
+  expected_output: "β版改善計画（優先度付きバックログ）"
+  markdown: true
+  context:
+    - planning_round2_task
+    - data_round2_task
+    - dev_alpha_task
+
+management_gate_task:
+  agent: audit_mgmt
+  description: |
+    各部門成果（Round2企画/データ計画/αβ開発計画）を管理者視点で最終評価してください。
+    必須:
+    - データ真偽監査の合否
+    - 卒業制作提出可否判定
+    - 不可の場合の必須修正3点以上
+  expected_output: "最終ゲート判定（提出可否・根拠・必須修正）"
+  markdown: true
+  context:
+    - planning_round2_task
+    - data_round2_task
+    - dev_alpha_task
+    - dev_beta_task
 
 secretary_task:
-  agent: secretary
+  agent: pmo_exec
   description: |
-    これまでの議論（企画案・監査結果）を踏まえて、
-    非エンジニアのプロデューサーが読んですぐ理解できる
-    日本語の進捗ドキュメントを作成してください。
-
-    重要:
-    - 専門用語は可能な限り避ける
-    - 断定的でわかりやすい文章にする
-    - 以下の見出しを必ず含める
-
+    すべての成果を統合し、非エンジニア向けの進捗報告書を作成してください。
     必須見出し:
-    1. 決定したアプリ案の概要
-    2. 監査班からの評価コメント
+    1. 現在の採用案（Round2）
+    2. データ真偽監査の結果
     3. α版の開発方針
     4. β版の改善方針
-    5. 評価部門による最終判定
-    6. 現在の完了ステータス
-    7. 次のステップ（ToDoリスト）
-    8. 実現可能性を高めるための注意点（データ・法務・開発工数）
-  expected_output: "progress.md の本文としてそのまま使える、日本語のMarkdownドキュメント"
+    5. 縦連携（管理↔実行）の状況
+    6. 横連携（部門間）の状況
+    7. 現在の完了ステータス
+    8. 次のステップ（ToDo）
+  expected_output: "progress.md にそのまま使える日本語Markdown"
   markdown: true
   context:
-    - planning_task
-    - feasibility_task
-    - data_collection_task
-    - ux_concept_task
-    - auditing_task
-    - alpha_development_task
-    - beta_development_task
-    - release_review_task
-  # output_file: このタスクの最終出力を書き出すファイル名
+    - program_alignment_task
+    - planning_round1_task
+    - data_round1_task
+    - audit_round1_task
+    - dev_alpha_task
+    - cross_function_review_task
+    - planning_round2_task
+    - data_round2_task
+    - dev_beta_task
+    - management_gate_task
   output_file: "progress.md"
