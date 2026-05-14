@@ -104,6 +104,78 @@ auditing_task:
     - feasibility_task
     - ux_concept_task
 
+alpha_development_task:
+  # 追加部門タスク: α版の実装計画を具体化
+  agent: alpha_dev
+  description: |
+    auditing_task で採用された案について、α版（最初の動く版）の実装計画を作成してください。
+    条件:
+    - 実装期間は 2〜3週間
+    - 必須機能は最大5個まで
+    - バックエンド・フロントエンド・データ取得を最小構成で定義
+    - 「後回し機能」を明確に分離
+
+    出力フォーマット:
+    - α版の機能一覧（必須/任意）
+    - 画面単位の実装内容
+    - API/データ処理フロー
+    - 実装スケジュール（週単位）
+    - 主要リスクと回避策
+  expected_output: "α版の実装計画書（機能・画面・スケジュール・リスク）"
+  markdown: true
+  context:
+    - auditing_task
+    - feasibility_task
+    - ux_concept_task
+
+beta_development_task:
+  # 追加部門タスク: β版の改善計画を作成
+  agent: beta_dev
+  description: |
+    α版計画を基に、β版（改善版）の拡張計画を作成してください。
+    条件:
+    - β版は 2〜4週間の改善スプリント想定
+    - 優先順位は「可読性」「安定性」「ユーザー理解しやすさ」を上位にする
+    - 新規機能は最小限、既存品質の底上げを優先
+
+    出力フォーマット:
+    - α版からの改善点一覧（優先度A/B/C）
+    - UI改善項目
+    - データ精度・更新頻度の改善項目
+    - テスト観点（最低限の受け入れ基準）
+    - β版完了条件（Doneの定義）
+  expected_output: "β版の改善計画書（優先度付き改善バックログ）"
+  markdown: true
+  context:
+    - alpha_development_task
+    - auditing_task
+
+release_review_task:
+  # 追加部門タスク: α/β成果物の評価を実施
+  agent: release_reviewer
+  description: |
+    α版計画・β版計画を評価し、卒業制作として提出可能な完成度かを判定してください。
+    評価基準:
+    - 実現可能性（35点）
+    - 要件適合度（25点）
+    - UI/UX明瞭性（15点）
+    - データ信頼性（15点）
+    - リスク管理（10点）
+
+    判定ルール:
+    - 合計80点以上で「提出可能」
+    - 80点未満は「要改善」とし、必須改善項目を3つ以上提示
+
+    出力フォーマット:
+    - 総合スコアと判定（提出可能 / 要改善）
+    - 評価コメント（強み・弱み）
+    - 必須改善項目（具体的ToDo）
+  expected_output: "α/β計画に対する最終評価レポート（スコア・判定・改善ToDo）"
+  markdown: true
+  context:
+    - alpha_development_task
+    - beta_development_task
+
 secretary_task:
   agent: secretary
   description: |
@@ -119,9 +191,12 @@ secretary_task:
     必須見出し:
     1. 決定したアプリ案の概要
     2. 監査班からの評価コメント
-    3. 現在の完了ステータス
-    4. 次のステップ（ToDoリスト）
-    5. 実現可能性を高めるための注意点（データ・法務・開発工数）
+    3. α版の開発方針
+    4. β版の改善方針
+    5. 評価部門による最終判定
+    6. 現在の完了ステータス
+    7. 次のステップ（ToDoリスト）
+    8. 実現可能性を高めるための注意点（データ・法務・開発工数）
   expected_output: "progress.md の本文としてそのまま使える、日本語のMarkdownドキュメント"
   markdown: true
   context:
@@ -129,5 +204,8 @@ secretary_task:
     - feasibility_task
     - ux_concept_task
     - auditing_task
+    - alpha_development_task
+    - beta_development_task
+    - release_review_task
   # output_file: このタスクの最終出力を書き出すファイル名
   output_file: "progress.md"

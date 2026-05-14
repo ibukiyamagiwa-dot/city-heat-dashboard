@@ -125,9 +125,9 @@
       <h1>CrewAI 初期チーム確認画面</h1>
       <p class="muted">卒業制作向けの部門構成と進捗を確認するビューです。</p>
       <div class="status">
-        <span class="badge">エージェント数: <b>5</b></span>
-        <span class="badge">タスク数: <b>5</b></span>
-        <span class="badge">最終更新: <b>2026-05-15 02:34:41</b></span>
+        <span class="badge">エージェント数: <b>8</b></span>
+        <span class="badge">タスク数: <b>8</b></span>
+        <span class="badge">最終更新: <b>2026-05-15 03:02:22</b></span>
         <span class="badge ok">progress.md 連携: 有効</span>
       </div>
     </section>
@@ -142,7 +142,7 @@
         <div class="line"></div>
         <div class="line-h"></div>
         <div class="org-row">
-          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div>
+          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div><div class="org-node"><b>開発部門（α版実装担当）</b><br /><span class="muted">alpha_dev</span></div><div class="org-node"><b>開発部門（β版改善担当）</b><br /><span class="muted">beta_dev</span></div><div class="org-node"><b>リリース評価・品質判定担当</b><br /><span class="muted">release_reviewer</span></div>
         </div>
       </div>
     </section>
@@ -201,43 +201,78 @@
               <ul><li><code>ux_concept_task</code></li></ul>
             </section>
             
+            <section class="card">
+              <h3>開発部門（α版実装担当）</h3>
+              <p><span class="label">キー:</span> <code>alpha_dev</code></p>
+              <p><span class="label">Goal:</span> 採用案のMVPを最短で動作するα版として実装計画に落とし込む。</p>
+              <p><span class="label">Backstory:</span> あなたは短期間で試作品を形にするフルスタック開発者です。機能を絞り、まず動く状態を作ることに集中します。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>alpha_development_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>開発部門（β版改善担当）</h3>
+              <p><span class="label">キー:</span> <code>beta_dev</code></p>
+              <p><span class="label">Goal:</span> α版の課題を解消し、操作性・安定性・可視化品質を改善したβ版計画を作る。</p>
+              <p><span class="label">Backstory:</span> あなたはプロトタイプ改善の専門家です。ユーザーフィードバックと不具合情報をもとに、優先度の高い改善から確実に反映します。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>beta_development_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>リリース評価・品質判定担当</h3>
+              <p><span class="label">キー:</span> <code>release_reviewer</code></p>
+              <p><span class="label">Goal:</span> α版・β版の成果物を評価し、卒業制作として提出可能かを判定する。</p>
+              <p><span class="label">Backstory:</span> あなたはQAリード兼プロダクトレビュー責任者です。完成度を感覚で判断せず、評価軸に基づいて客観的に合否と改善点を示します。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>release_review_task</code></li></ul>
+            </section>
+            
       </div>
     </section>
 
     <section class="panel">
       <h2>進捗サマリー（progress.md）</h2>
-      <pre># 進捗ドキュメント
+      <pre># 進捗報告書
 
 ## 1. 決定したアプリ案の概要
-選ばれたアプリ案は「トラフィックインサイト」です。このアプリは都市内の交通量を可視化し、ユーザーが混雑する時間帯を避けて効率的に移動できるようサポートします。主要機能として、交通データのリアルタイム表示、混雑度の通知機能などを実装予定です。
+**Event Buzz Dashboard**は、地域イベントの熱狂度を可視化するアプリです。このアプリを使用することで、ユーザーは近隣で開催されているイベントの人気や関心を把握し、参加の判断に役立てることができます。
 
 ## 2. 監査班からの評価コメント
-- **実現可能性**: 90点
-  - 公共交通機関APIやGoogle Maps APIを使用することができ、データ収集が容易。
-  - ユーザビリティを考慮した機能を提供。
-- **懸念点**: APIの利用制限が開発や運用に影響する可能性がある。
-  
-## 3. 現在の完了ステータス
-- **実施済み項目**:
-  - アプリ案の選定
-  - 初期のプロトタイピングと機能要件の整理
-- **進行中項目**:
-  - 必要なデータソースとの連携準備
+監査班からは、実現可能性が高く、短期間で実装可能な機能が評価されました。しかし、UIの可読性やデータ信頼性に関する改善が必要であることが指摘されています。
 
-## 4. 次のステップ（ToDoリスト）
-- [ ] 公共交通機関API及びGoogle Maps APIの申請と設定
-- [ ] 交通データのリアルタイム取得機能の実装
-- [ ] ユーザーテスト用の初期画面設計
-- [ ] 混雑度通知機能の開発
-- [ ] ヒートマップの表示機能の開発
+## 3. α版の開発方針
+α版では、以下の必須機能に焦点を当てます。
+1. 地域イベントの熱狂度を表示するシンプルなダッシュボード
+2. イベントごとのフィルター機能
+3. 簡易的な時系列グラフ
+4. 人気イベントのリスト表示
 
-## 5. 実現可能性を高めるための注意点（データ・法務・開発工数）
-- **データ**:
-  - APIの利用規約を確認し、過剰収集を避ける。
-- **法務**:
-  - 個人情報を含まないデータの使用を徹底する。
-- **開発工数**:
-  - 各機能の開発スケジュールを明確にし、人員配置を工夫することが重要。</pre>
+## 4. β版の改善方針
+β版では、ユーザーのフィードバックを基に、以下の改善点に取り組みます。
+- UIの可読性向上
+- エラーハンドリングの強化
+- データ整合性の向上
+
+## 5. 評価部門による最終判定
+最終的な評価スコアは**78点**で、改善が必要とされているため、次のステップへ進むとともに、指摘された改善項目に取り組んでいきます。
+
+## 6. 現在の完了ステータス
+現在、α版のMVP機能の開発が進行中です。予定通りの3週間内でリリースを目指しています。
+
+## 7. 次のステップ（ToDoリスト）
+- 初期設計とプロトタイピングの実施
+- API設定とデータ取得機能の実装
+- ユーザーインターフェースの最終調整
+- ユーザーテストの計画と実施
+
+## 8. 実現可能性を高めるための注意点（データ・法務・開発工数）
+- データ取得に関しては、APIの利用規約を遵守し、個人情報の取り扱いに注意を払います。
+- 必要なデータが安定的に取得できるかを常に確認し、バックアッププランを用意します。
+- 開発工数は予定通りに進めるため、チーム内で進捗を共有し、適時調整を行います。</pre>
     </section>
   </div>
 </body>
