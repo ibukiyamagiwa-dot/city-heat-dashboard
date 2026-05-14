@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CrewAI 初期チーム確認画面</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #131a2a;
+      --line: #2f3b59;
+      --text: #e8edf7;
+      --sub: #b7c1d9;
+      --accent: #6ea8fe;
+      --good: #77dd77;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 { margin: 0 0 10px; }
+    .muted { color: var(--sub); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .status {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: #1b243a;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    .org {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      justify-items: center;
+      margin-top: 10px;
+    }
+    .org-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+    .org-node {
+      background: #18233b;
+      border: 1px solid #3b4b70;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      min-height: 74px;
+    }
+    .org-main {
+      width: min(420px, 100%);
+      border-color: var(--accent);
+    }
+    .line {
+      width: 2px;
+      height: 24px;
+      background: var(--line);
+    }
+    .line-h {
+      width: calc(100% - 120px);
+      height: 2px;
+      background: var(--line);
+      margin-bottom: 6px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #18233b;
+      border: 1px solid #33476f;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .label {
+      color: var(--sub);
+      font-weight: 600;
+    }
+    code {
+      background: #0f1728;
+      border: 1px solid #2a3652;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0f1728;
+      border: 1px solid #2a3652;
+      border-radius: 8px;
+      padding: 14px;
+      max-height: 520px;
+      overflow: auto;
+    }
+    .ok { color: var(--good); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="panel">
+      <h1>CrewAI 初期チーム確認画面</h1>
+      <p class="muted">卒業制作向けの部門構成と進捗を確認するビューです。</p>
+      <div class="status">
+        <span class="badge">エージェント数: <b>5</b></span>
+        <span class="badge">タスク数: <b>5</b></span>
+        <span class="badge">最終更新: <b>2026-05-15 02:34:41</b></span>
+        <span class="badge ok">progress.md 連携: 有効</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>組織図（確認用）</h2>
+      <div class="org">
+        <div class="org-node org-main">
+          <b>卒業制作 CrewAI チーム</b><br />
+          <span class="muted">都市の熱狂度分析 × エンタメアプリ開発</span>
+        </div>
+        <div class="line"></div>
+        <div class="line-h"></div>
+        <div class="org-row">
+          <div class="org-node"><b>アプリケーション・プランナー</b><br /><span class="muted">planner</span></div><div class="org-node"><b>アカデミック＆テクニカル監査役</b><br /><span class="muted">critic</span></div><div class="org-node"><b>プロジェクトマネージャー兼 秘書</b><br /><span class="muted">secretary</span></div><div class="org-node"><b>データ取得・実現性検証担当</b><br /><span class="muted">data_feasibility</span></div><div class="org-node"><b>UI/可視化デザイン担当</b><br /><span class="muted">ux_visual</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>部門設定（agents.yaml）</h2>
+      <div class="cards">
+        
+            <section class="card">
+              <h3>アプリケーション・プランナー</h3>
+              <p><span class="label">キー:</span> <code>planner</code></p>
+              <p><span class="label">Goal:</span> 都市の熱狂度を可視化するWebアプリ案を3案提案し、最短で実装できるMVP設計を示す。</p>
+              <p><span class="label">Backstory:</span> あなたはデータ可視化ダッシュボードの企画責任者です。派手さよりも、短期間で確実に動く価値ある体験を設計するのが得意です。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>planning_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>アカデミック＆テクニカル監査役</h3>
+              <p><span class="label">キー:</span> <code>critic</code></p>
+              <p><span class="label">Goal:</span> 企画案を批判的に評価し、実現可能性を最優先して最終案を1つに決定する。</p>
+              <p><span class="label">Backstory:</span> あなたは政治経済学部の厳格な教授であり、同時にベテランのシステムエンジニアです。「社会的な意義はあるか」「学生がAPIやスクレイピングで現実的にデータ取得可能か」「プライバシーの問題はないか」という厳しい基準で評価を行います。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>auditing_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>プロジェクトマネージャー兼 秘書</h3>
+              <p><span class="label">キー:</span> <code>secretary</code></p>
+              <p><span class="label">Goal:</span> チームの決定事項を非エンジニアのプロデューサーに分かりやすく報告し、タスクを管理する。</p>
+              <p><span class="label">Backstory:</span> あなたはIT知識のない経営層とエンジニアの橋渡しをする優秀なPMです。専門用語を避け、具体的でわかりやすい日本語でドキュメントを作成します。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>secretary_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>データ取得・実現性検証担当</h3>
+              <p><span class="label">キー:</span> <code>data_feasibility</code></p>
+              <p><span class="label">Goal:</span> 候補案で必要なデータを一覧化し、取得可否・更新頻度・コスト・法務リスクを明確化する。</p>
+              <p><span class="label">Backstory:</span> あなたは公共データ活用プロジェクトの実務責任者です。API仕様の確認、代替データの確保、利用規約の確認を短時間で行うことを得意としています。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>feasibility_task</code></li></ul>
+            </section>
+            
+            <section class="card">
+              <h3>UI/可視化デザイン担当</h3>
+              <p><span class="label">キー:</span> <code>ux_visual</code></p>
+              <p><span class="label">Goal:</span> 都市の状態を直感的に把握できる、シンプルで見やすい可視化体験を設計する。</p>
+              <p><span class="label">Backstory:</span> あなたは地図・ダッシュボード系プロダクトのUIデザイナーです。情報を詰め込みすぎず、重要な変化をひと目で理解できる構成を作ります。</p>
+              <p><span class="label">Verboseログ:</span> 有効</p>
+              <p class="label">担当タスク:</p>
+              <ul><li><code>ux_concept_task</code></li></ul>
+            </section>
+            
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>進捗サマリー（progress.md）</h2>
+      <pre># 進捗ドキュメント
+
+## 1. 決定したアプリ案の概要
+選ばれたアプリ案は「トラフィックインサイト」です。このアプリは都市内の交通量を可視化し、ユーザーが混雑する時間帯を避けて効率的に移動できるようサポートします。主要機能として、交通データのリアルタイム表示、混雑度の通知機能などを実装予定です。
+
+## 2. 監査班からの評価コメント
+- **実現可能性**: 90点
+  - 公共交通機関APIやGoogle Maps APIを使用することができ、データ収集が容易。
+  - ユーザビリティを考慮した機能を提供。
+- **懸念点**: APIの利用制限が開発や運用に影響する可能性がある。
+  
+## 3. 現在の完了ステータス
+- **実施済み項目**:
+  - アプリ案の選定
+  - 初期のプロトタイピングと機能要件の整理
+- **進行中項目**:
+  - 必要なデータソースとの連携準備
+
+## 4. 次のステップ（ToDoリスト）
+- [ ] 公共交通機関API及びGoogle Maps APIの申請と設定
+- [ ] 交通データのリアルタイム取得機能の実装
+- [ ] ユーザーテスト用の初期画面設計
+- [ ] 混雑度通知機能の開発
+- [ ] ヒートマップの表示機能の開発
+
+## 5. 実現可能性を高めるための注意点（データ・法務・開発工数）
+- **データ**:
+  - APIの利用規約を確認し、過剰収集を避ける。
+- **法務**:
+  - 個人情報を含まないデータの使用を徹底する。
+- **開発工数**:
+  - 各機能の開発スケジュールを明確にし、人員配置を工夫することが重要。</pre>
+    </section>
+  </div>
+</body>
+</html>
