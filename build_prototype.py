@@ -23,6 +23,64 @@ CITY_COORDS = {
     "FUKUOKA": (33.5904, 130.4017),
 }
 
+CITY_LABELS = {
+    "TOKYO": "東京",
+    "OSAKA": "大阪",
+    "NAGOYA": "名古屋",
+    "FUKUOKA": "福岡",
+}
+
+DATA_SOURCE_CATALOG = [
+    {
+        "id": "weather",
+        "category": "気象",
+        "name": "気温・降水量・風速",
+        "provider": "Open-Meteo API",
+        "reference_year": "取得時刻ベース（リアルタイム）",
+        "trust_level": "high",
+        "trust_label": "高",
+        "trust_note": "APIから直接取得する実測値",
+        "used_in_score": "気温補正・降水/風ペナルティ",
+        "fixed_value": False,
+    },
+    {
+        "id": "flow",
+        "category": "人流",
+        "name": "主要ターミナル駅 乗降客数（5駅合計）",
+        "provider": "国土交通省 国土数値情報（駅別乗降客数）",
+        "reference_year": "2023年度（令和5年度）",
+        "trust_level": "medium",
+        "trust_label": "中",
+        "trust_note": "公的統計。都市間比較用に正規化して使用",
+        "used_in_score": "人流補正（flow_bonus）",
+        "fixed_value": False,
+    },
+    {
+        "id": "venue",
+        "category": "文化施設",
+        "name": "劇場・音楽堂 施設数",
+        "provider": "文部科学省 社会教育調査",
+        "reference_year": "2021年度（令和3年度）",
+        "trust_level": "medium",
+        "trust_label": "中",
+        "trust_note": "都道府県単位の施設数（開催数ではない）",
+        "used_in_score": "会場補正（venue_bonus）",
+        "fixed_value": False,
+    },
+    {
+        "id": "base",
+        "category": "設計",
+        "name": "基準点",
+        "provider": "本研究のスコア設計",
+        "reference_year": "—",
+        "trust_level": "medium",
+        "trust_label": "中",
+        "trust_note": "都市間比較の起点となる定数",
+        "used_in_score": "基準 52.0 点",
+        "fixed_value": True,
+    },
+]
+
 ITERATION_STATE = {
     "version": "β再開発候補",
     "cycle": [
@@ -30,9 +88,9 @@ ITERATION_STATE = {
         {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV人流データを取得"},
         {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"},
         {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"},
-        {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"},
-        {"name": "解決案", "status": "doing", "note": "劇場・音楽堂データをスコアに接続済み。追加施設は将来拡張"},
-        {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"},
+        {"name": "フィードバック", "status": "done", "note": "スコア内訳・出典表示を改善"},
+        {"name": "解決案", "status": "done", "note": "劇場・音楽堂データをスコアに接続済み"},
+        {"name": "β版再開発", "status": "todo", "note": "地図/時系列の追加"},
     ],
     "todos": [
         {
@@ -46,15 +104,15 @@ ITERATION_STATE = {
             "id": "T-002",
             "title": "スコア根拠をユーザーに分かりやすく表示する",
             "owner": "開発部門",
-            "status": "進行中",
-            "next_action": "都市カードに計算内訳を追加",
+            "status": "達成",
+            "next_action": "地図表示で視覚的説明を追加",
         },
         {
             "id": "T-003",
             "title": "データ真偽監査の結果を画面上に表示する",
             "owner": "監査部門",
-            "status": "進行中",
-            "next_action": "出典・取得時刻・固定値利用有無を一覧化",
+            "status": "達成",
+            "next_action": "取得時刻の自動記録を強化",
         },
         {
             "id": "T-004",
@@ -72,11 +130,54 @@ ITERATION_STATE = {
         },
     ],
     "feedback": [
-        "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
+        "スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。",
         "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。",
-        "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。",
+        "β版では地図・時系列推移を追加すると説得力がさらに上がる。",
     ],
 }
+
+
+def format_score_equation(record: dict) -> str:
+    """スコア計算式を人が読める形で返す。"""
+    c = record.get("components") or {}
+    terms: list[str] = [str(c.get("base", {}).get("value", 52.0))]
+    for key in ("temp_score", "flow_bonus", "venue_bonus", "entertainment_bonus"):
+        if key in c:
+            val = c[key]["value"]
+            terms.append(f"+ {val:.1f}" if val >= 0 else f"{val:.1f}")
+    for key in ("precip_penalty", "wind_penalty"):
+        if key in c:
+            terms.append(f"{c[key]['value']:+.1f}")
+    calc = sum(c[k]["value"] for k in c)
+    return " ".join(terms) + f" = {record['heat_score']}"
+
+
+def format_score_narrative(record: dict) -> str:
+    """都市スコアの平易な説明文を生成する。"""
+    label = record.get("city_label", record["city"])
+    pref = record.get("prefecture") or ""
+    area = f"{label}（{pref}）" if pref else label
+    c = record.get("components") or {}
+    temp = record.get("temperature_c", "—")
+    users = record.get("station_users")
+    venues = record.get("event_venues")
+    user_text = f"約{users:,}人/日" if users else "データなし"
+    venue_text = f"{venues}施設" if venues else "データなし"
+    return (
+        f"{area}の熱狂度は {record['heat_score']} 点です。"
+        f"主要駅利用者数（{user_text}）と劇場・音楽堂（{venue_text}）から"
+        f"人流 +{record.get('flow_bonus', 0)} / 会場 +{record.get('venue_bonus', 0)} を加点。"
+        f"本日の気温 {temp}℃ による補正 +{c.get('temp_score', {}).get('value', 0)}、"
+        f"降水・風速による減点を反映しています。"
+        f"スコアは「真実」ではなく、公開データに基づく推定指標です。"
+    )
+
+
+def attach_display_metadata(records: list[dict]) -> None:
+    for record in records:
+        record["city_label"] = CITY_LABELS.get(record["city"], record["city"])
+        record["score_equation"] = format_score_equation(record)
+        record["score_narrative"] = format_score_narrative(record)
 
 
 def clamp(value: float, lo: float, hi: float) -> float:
@@ -256,6 +357,8 @@ def fetch_city_weather(
 
     return {
         "city": city,
+        "city_label": CITY_LABELS.get(city, city),
+        "prefecture": urban.get("prefecture") if urban else None,
         "lat": lat,
         "lon": lon,
         "temperature_c": round(temp, 1),
@@ -348,14 +451,18 @@ def build_dataset() -> dict:
     if had_error or len(records) != len(CITY_COORDS):
         records = fallback_city_data(urban_bonuses)
 
+    attach_display_metadata(records)
+
     return {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "records": records,
         "note": "prototype dataset for alpha demo",
         "iteration": ITERATION_STATE,
+        "data_sources": DATA_SOURCE_CATALOG,
         "score_policy": {
             "formula": "52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty",
-            "warning": "flow_bonus=国交省駅乗降客数 / venue_bonus=文科省社会教育調査(劇場・音楽堂)。いずれも urban_indicators.csv 経由。",
+            "summary": "熱狂度は気象・人流・文化施設の3系統の公開データを組み合わせた推定スコアです。",
+            "warning": "固定の仮説値は使用していません。施設数は開催数ではなく、都道府県統計に基づく参考指標です。",
             "data_sources_file": DATA_SOURCES_FILE.name,
             "urban_csv": URBAN_CSV.name,
         },
@@ -363,261 +470,9 @@ def build_dataset() -> dict:
 
 
 def build_html(dataset: dict) -> str:
+    template = (BASE_DIR / "prototype_template.html").read_text(encoding="utf-8")
     data_json = json.dumps(dataset, ensure_ascii=False)
-    return f"""<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>都市熱狂度プロトタイプ（α/β改善ループ）</title>
-  <style>
-    body {{
-      margin: 0;
-      font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
-      background: #0b1020;
-      color: #e7eefc;
-    }}
-    .wrap {{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 20px;
-    }}
-    .panel {{
-      background: #141d33;
-      border: 1px solid #2a3a63;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 14px;
-    }}
-    .cards {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 10px;
-    }}
-    .grid2 {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
-    }}
-    .loop {{
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: stretch;
-    }}
-    .step {{
-      flex: 1 1 135px;
-      background: #1a2742;
-      border: 1px solid #334b78;
-      border-radius: 10px;
-      padding: 10px;
-    }}
-    .done {{ border-color: #77dd77; }}
-    .doing {{ border-color: #ffd166; }}
-    .todo {{ border-color: #ff6b6b; }}
-    .pill {{
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #0f1a32;
-      font-size: 12px;
-      color: #b8c5df;
-    }}
-    .trust-high {{ color: #77dd77; }}
-    .trust-medium {{ color: #ffd166; }}
-    .trust-low {{ color: #ff8fa3; }}
-    .component-list {{
-      margin-top: 8px;
-      padding-left: 18px;
-      color: #b8c5df;
-      font-size: 13px;
-    }}
-    .city {{
-      background: #1a2742;
-      border: 1px solid #334b78;
-      border-radius: 10px;
-      padding: 12px;
-    }}
-    .score {{
-      font-size: 28px;
-      font-weight: 800;
-      margin: 6px 0;
-      color: #75b7ff;
-    }}
-    .bar {{
-      height: 10px;
-      background: #0f1a32;
-      border-radius: 999px;
-      overflow: hidden;
-    }}
-    .fill {{
-      height: 100%;
-      background: linear-gradient(90deg, #4facfe, #00f2fe);
-    }}
-    table {{
-      width: 100%;
-      border-collapse: collapse;
-    }}
-    th, td {{
-      border-bottom: 1px solid #2a3a63;
-      padding: 8px;
-      text-align: left;
-      font-size: 14px;
-    }}
-    .muted {{ color: #b8c5df; font-size: 13px; }}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <section class="panel">
-      <h1>都市熱狂度プロトタイプ（α/β改善ループ）</h1>
-      <p class="muted">データ収集、監査、α版、フィードバック、解決案、β版再開発までを確認する試作画面です。</p>
-      <p class="muted" id="updatedAt"></p>
-    </section>
-
-    <section class="panel">
-      <h2>改善サイクル</h2>
-      <div class="loop" id="cycle"></div>
-    </section>
-
-    <section class="panel">
-      <h2>都市別スコア</h2>
-      <div class="cards" id="cards"></div>
-    </section>
-
-    <section class="panel">
-      <h2>スコア設計と監査メモ</h2>
-      <p><strong>計算式:</strong> <code id="formula"></code></p>
-      <p class="muted" id="scoreWarning"></p>
-      <p class="muted">信頼度: high=実データ / medium=推定含む / low=仮説値・サンプル</p>
-    </section>
-
-    <section class="panel">
-      <h2>データ詳細</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>都市</th>
-            <th>気温(℃)</th>
-            <th>降水(mm)</th>
-            <th>風速(m/s)</th>
-            <th>駅利用者数</th>
-            <th>劇場・音楽堂数</th>
-            <th>人流補正</th>
-            <th>会場補正</th>
-            <th>熱狂度</th>
-            <th>信頼度</th>
-            <th>監査メモ</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </section>
-
-    <section class="panel">
-      <h2>Todo達成状況</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Todo</th>
-            <th>担当</th>
-            <th>状態</th>
-            <th>次アクション</th>
-          </tr>
-        </thead>
-        <tbody id="todoBody"></tbody>
-      </table>
-    </section>
-
-    <section class="panel">
-      <h2>フィードバックと再開発方針</h2>
-      <div class="grid2">
-        <div>
-          <h3>フィードバック</h3>
-          <ul id="feedbackList"></ul>
-        </div>
-        <div>
-          <h3>現在の判定</h3>
-          <p>β版へ進めるが、<strong>CSV出典の正式化</strong>と<strong>監査結果表示</strong>は継続課題。</p>
-          <p class="muted">未達Todoは次ループで解決案部門→企画/データ/開発へ差し戻す。</p>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const dataset = {data_json};
-    const cards = document.getElementById("cards");
-    const tableBody = document.getElementById("tableBody");
-    const cycle = document.getElementById("cycle");
-    const todoBody = document.getElementById("todoBody");
-    const feedbackList = document.getElementById("feedbackList");
-    document.getElementById("updatedAt").textContent = "更新時刻: " + dataset.generated_at;
-    document.getElementById("formula").textContent = dataset.score_policy.formula;
-    document.getElementById("scoreWarning").textContent = dataset.score_policy.warning;
-
-    dataset.iteration.cycle.forEach((s) => {{
-      const div = document.createElement("div");
-      div.className = "step " + s.status;
-      div.innerHTML = `<strong>${{s.name}}</strong><br><span class="pill">${{s.status}}</span><p class="muted">${{s.note}}</p>`;
-      cycle.appendChild(div);
-    }});
-
-    dataset.records.forEach((r) => {{
-      const card = document.createElement("div");
-      card.className = "city";
-      const components = Object.values(r.components || {{}})
-        .map((c) => `<li>${{c.label}}: <strong>${{c.value}}</strong> <span class="trust-${{c.trust_level}}">(${{c.trust_level}})</span></li>`)
-        .join("");
-      card.innerHTML = `
-        <div><strong>${{r.city}}</strong></div>
-        <div class="score">${{r.heat_score}}</div>
-        <div class="bar"><div class="fill" style="width:${{r.heat_score}}%"></div></div>
-        <div class="muted">source: ${{r.source}}</div>
-        <div class="muted">監査: ${{r.audit_status}}</div>
-        <ul class="component-list">${{components}}</ul>
-      `;
-      cards.appendChild(card);
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${{r.city}}</td>
-        <td>${{r.temperature_c}}</td>
-        <td>${{r.precipitation_mm}}</td>
-        <td>${{r.wind_speed_mps}}</td>
-        <td>${{r.station_users ?? "—"}}</td>
-        <td>${{r.event_venues ?? "—"}}</td>
-        <td>${{r.flow_bonus}}</td>
-        <td>${{r.venue_bonus}}</td>
-        <td><strong>${{r.heat_score}}</strong></td>
-        <td class="trust-${{r.trust_level}}">${{r.trust_level}}</td>
-        <td>${{r.audit_status}}</td>
-      `;
-      tableBody.appendChild(tr);
-    }});
-
-    dataset.iteration.todos.forEach((t) => {{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${{t.id}}</td>
-        <td>${{t.title}}</td>
-        <td>${{t.owner}}</td>
-        <td><strong>${{t.status}}</strong></td>
-        <td>${{t.next_action}}</td>
-      `;
-      todoBody.appendChild(tr);
-    }});
-
-    dataset.iteration.feedback.forEach((f) => {{
-      const li = document.createElement("li");
-      li.textContent = f;
-      feedbackList.appendChild(li);
-    }});
-  </script>
-</body>
-</html>
-"""
+    return template.replace("__DATA_JSON__", data_json)
 
 
 def main() -> None:

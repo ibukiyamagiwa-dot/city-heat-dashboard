@@ -1,8 +1,10 @@
 {
-  "generated_at": "2026-05-21T16:04:28+09:00",
+  "generated_at": "2026-05-21T16:13:12+09:00",
   "records": [
     {
       "city": "TOKYO",
+      "city_label": "東京",
+      "prefecture": "東京都",
       "lat": 35.6762,
       "lon": 139.6503,
       "temperature_c": 16.5,
@@ -50,10 +52,14 @@
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）"
         }
-      }
+      },
+      "score_equation": "52.0 + 14.4 + 18.0 + 6.0 -0.5 -3.7 = 86.3",
+      "score_narrative": "東京（東京都）の熱狂度は 86.3 点です。主要駅利用者数（約4,250,258人/日）と劇場・音楽堂（132施設）から人流 +18.0 / 会場 +6.0 を加点。本日の気温 16.5℃ による補正 +14.4、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "OSAKA",
+      "city_label": "大阪",
+      "prefecture": "大阪府",
       "lat": 34.6937,
       "lon": 135.5023,
       "temperature_c": 22.8,
@@ -101,10 +107,14 @@
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）"
         }
-      }
+      },
+      "score_equation": "52.0 + 25.2 + 9.3 + 0.5 -0.0 -5.5 = 81.5",
+      "score_narrative": "大阪（大阪府）の熱狂度は 81.5 点です。主要駅利用者数（約2,028,399人/日）と劇場・音楽堂（69施設）から人流 +9.3 / 会場 +0.5 を加点。本日の気温 22.8℃ による補正 +25.2、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "NAGOYA",
+      "city_label": "名古屋",
+      "prefecture": "愛知県",
       "lat": 35.1815,
       "lon": 136.9066,
       "temperature_c": 23.1,
@@ -152,10 +162,14 @@
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）"
         }
-      }
+      },
+      "score_equation": "52.0 + 25.7 + 6.4 + 1.5 -1.5 -3.3 = 80.7",
+      "score_narrative": "名古屋（愛知県）の熱狂度は 80.7 点です。主要駅利用者数（約1,280,292人/日）と劇場・音楽堂（81施設）から人流 +6.4 / 会場 +1.5 を加点。本日の気温 23.1℃ による補正 +25.7、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "FUKUOKA",
+      "city_label": "福岡",
+      "prefecture": "福岡県",
       "lat": 33.5904,
       "lon": 130.4017,
       "temperature_c": 21.5,
@@ -203,7 +217,9 @@
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）"
         }
-      }
+      },
+      "score_equation": "52.0 + 22.9 + 4.0 + 1.1 -0.0 -12.3 = 67.7",
+      "score_narrative": "福岡（福岡県）の熱狂度は 67.7 点です。主要駅利用者数（約664,842人/日）と劇場・音楽堂（76施設）から人流 +4.0 / 会場 +1.1 を加点。本日の気温 21.5℃ による補正 +22.9、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     }
   ],
   "note": "prototype dataset for alpha demo",
@@ -232,18 +248,18 @@
       },
       {
         "name": "フィードバック",
-        "status": "doing",
-        "note": "見やすさと根拠表示を改善中"
+        "status": "done",
+        "note": "スコア内訳・出典表示を改善"
       },
       {
         "name": "解決案",
-        "status": "doing",
-        "note": "劇場・音楽堂データをスコアに接続済み。追加施設は将来拡張"
+        "status": "done",
+        "note": "劇場・音楽堂データをスコアに接続済み"
       },
       {
         "name": "β版再開発",
         "status": "todo",
-        "note": "地図/推移/根拠表示を追加"
+        "note": "地図/時系列の追加"
       }
     ],
     "todos": [
@@ -258,15 +274,15 @@
         "id": "T-002",
         "title": "スコア根拠をユーザーに分かりやすく表示する",
         "owner": "開発部門",
-        "status": "進行中",
-        "next_action": "都市カードに計算内訳を追加"
+        "status": "達成",
+        "next_action": "地図表示で視覚的説明を追加"
       },
       {
         "id": "T-003",
         "title": "データ真偽監査の結果を画面上に表示する",
         "owner": "監査部門",
-        "status": "進行中",
-        "next_action": "出典・取得時刻・固定値利用有無を一覧化"
+        "status": "達成",
+        "next_action": "取得時刻の自動記録を強化"
       },
       {
         "id": "T-004",
@@ -284,14 +300,65 @@
       }
     ],
     "feedback": [
-      "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
+      "スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。",
       "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。",
-      "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。"
+      "β版では地図・時系列推移を追加すると説得力がさらに上がる。"
     ]
   },
+  "data_sources": [
+    {
+      "id": "weather",
+      "category": "気象",
+      "name": "気温・降水量・風速",
+      "provider": "Open-Meteo API",
+      "reference_year": "取得時刻ベース（リアルタイム）",
+      "trust_level": "high",
+      "trust_label": "高",
+      "trust_note": "APIから直接取得する実測値",
+      "used_in_score": "気温補正・降水/風ペナルティ",
+      "fixed_value": false
+    },
+    {
+      "id": "flow",
+      "category": "人流",
+      "name": "主要ターミナル駅 乗降客数（5駅合計）",
+      "provider": "国土交通省 国土数値情報（駅別乗降客数）",
+      "reference_year": "2023年度（令和5年度）",
+      "trust_level": "medium",
+      "trust_label": "中",
+      "trust_note": "公的統計。都市間比較用に正規化して使用",
+      "used_in_score": "人流補正（flow_bonus）",
+      "fixed_value": false
+    },
+    {
+      "id": "venue",
+      "category": "文化施設",
+      "name": "劇場・音楽堂 施設数",
+      "provider": "文部科学省 社会教育調査",
+      "reference_year": "2021年度（令和3年度）",
+      "trust_level": "medium",
+      "trust_label": "中",
+      "trust_note": "都道府県単位の施設数（開催数ではない）",
+      "used_in_score": "会場補正（venue_bonus）",
+      "fixed_value": false
+    },
+    {
+      "id": "base",
+      "category": "設計",
+      "name": "基準点",
+      "provider": "本研究のスコア設計",
+      "reference_year": "—",
+      "trust_level": "medium",
+      "trust_label": "中",
+      "trust_note": "都市間比較の起点となる定数",
+      "used_in_score": "基準 52.0 点",
+      "fixed_value": true
+    }
+  ],
   "score_policy": {
     "formula": "52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty",
-    "warning": "flow_bonus=国交省駅乗降客数 / venue_bonus=文科省社会教育調査(劇場・音楽堂)。いずれも urban_indicators.csv 経由。",
+    "summary": "熱狂度は気象・人流・文化施設の3系統の公開データを組み合わせた推定スコアです。",
+    "warning": "固定の仮説値は使用していません。施設数は開催数ではなく、都道府県統計に基づく参考指標です。",
     "data_sources_file": "data_sources.yaml",
     "urban_csv": "urban_indicators.csv"
   }
