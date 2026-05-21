@@ -1,49 +1,205 @@
 {
-  "generated_at": "2026-05-15T03:42:05+09:00",
+  "generated_at": "2026-05-21T15:53:52+09:00",
   "records": [
     {
       "city": "TOKYO",
       "lat": 35.6762,
       "lon": 139.6503,
-      "temperature_c": 13.1,
-      "precipitation_mm": 0.0,
-      "wind_speed_mps": 2.3,
-      "event_bonus": 12.0,
-      "heat_score": 70.6,
-      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+      "temperature_c": 16.6,
+      "precipitation_mm": 0.1,
+      "wind_speed_mps": 4.5,
+      "station_users": 4250258,
+      "flow_bonus": 18.0,
+      "entertainment_bonus": 0.0,
+      "event_bonus": 18.0,
+      "heat_score": 80.1,
+      "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
+      "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
+      "source_mode": "mixed",
+      "trust_level": "high",
+      "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）",
+      "components": {
+        "base": {
+          "value": 52.0,
+          "trust_level": "medium",
+          "label": "基準値"
+        },
+        "temp_score": {
+          "value": 14.6,
+          "trust_level": "high",
+          "label": "気温補正（実データ）"
+        },
+        "flow_bonus": {
+          "value": 18.0,
+          "trust_level": "medium",
+          "label": "人流補正（CSV参照値）"
+        },
+        "entertainment_bonus": {
+          "value": 0.0,
+          "trust_level": "low",
+          "label": "エンタメ施設補正（未入力）"
+        },
+        "precip_penalty": {
+          "value": -0.5,
+          "trust_level": "high",
+          "label": "降水ペナルティ（実データ）"
+        },
+        "wind_penalty": {
+          "value": -4.0,
+          "trust_level": "high",
+          "label": "風速ペナルティ（実データ）"
+        }
+      }
     },
     {
       "city": "OSAKA",
       "lat": 34.6937,
       "lon": 135.5023,
-      "temperature_c": 14.5,
+      "temperature_c": 22.8,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 4.0,
-      "event_bonus": 12.0,
-      "heat_score": 71.5,
-      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+      "wind_speed_mps": 6.0,
+      "station_users": 2028399,
+      "flow_bonus": 9.3,
+      "entertainment_bonus": 0.0,
+      "event_bonus": 9.3,
+      "heat_score": 81.1,
+      "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
+      "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
+      "source_mode": "mixed",
+      "trust_level": "high",
+      "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）",
+      "components": {
+        "base": {
+          "value": 52.0,
+          "trust_level": "medium",
+          "label": "基準値"
+        },
+        "temp_score": {
+          "value": 25.2,
+          "trust_level": "high",
+          "label": "気温補正（実データ）"
+        },
+        "flow_bonus": {
+          "value": 9.3,
+          "trust_level": "medium",
+          "label": "人流補正（CSV参照値）"
+        },
+        "entertainment_bonus": {
+          "value": 0.0,
+          "trust_level": "low",
+          "label": "エンタメ施設補正（未入力）"
+        },
+        "precip_penalty": {
+          "value": -0.0,
+          "trust_level": "high",
+          "label": "降水ペナルティ（実データ）"
+        },
+        "wind_penalty": {
+          "value": -5.4,
+          "trust_level": "high",
+          "label": "風速ペナルティ（実データ）"
+        }
+      }
     },
     {
       "city": "NAGOYA",
       "lat": 35.1815,
       "lon": 136.9066,
-      "temperature_c": 15.1,
-      "precipitation_mm": 0.0,
-      "wind_speed_mps": 3.3,
-      "event_bonus": 12.0,
-      "heat_score": 73.1,
-      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+      "temperature_c": 23.2,
+      "precipitation_mm": 0.3,
+      "wind_speed_mps": 3.7,
+      "station_users": 1280292,
+      "flow_bonus": 6.4,
+      "entertainment_bonus": 0.0,
+      "event_bonus": 6.4,
+      "heat_score": 79.4,
+      "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
+      "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
+      "source_mode": "mixed",
+      "trust_level": "high",
+      "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）",
+      "components": {
+        "base": {
+          "value": 52.0,
+          "trust_level": "medium",
+          "label": "基準値"
+        },
+        "temp_score": {
+          "value": 25.8,
+          "trust_level": "high",
+          "label": "気温補正（実データ）"
+        },
+        "flow_bonus": {
+          "value": 6.4,
+          "trust_level": "medium",
+          "label": "人流補正（CSV参照値）"
+        },
+        "entertainment_bonus": {
+          "value": 0.0,
+          "trust_level": "low",
+          "label": "エンタメ施設補正（未入力）"
+        },
+        "precip_penalty": {
+          "value": -1.5,
+          "trust_level": "high",
+          "label": "降水ペナルティ（実データ）"
+        },
+        "wind_penalty": {
+          "value": -3.3,
+          "trust_level": "high",
+          "label": "風速ペナルティ（実データ）"
+        }
+      }
     },
     {
       "city": "FUKUOKA",
       "lat": 33.5904,
       "lon": 130.4017,
-      "temperature_c": 16.6,
+      "temperature_c": 21.5,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 1.5,
-      "event_bonus": 12.0,
-      "heat_score": 77.3,
-      "source": "Open-Meteo (weather) + prototype fixed bonus (events)"
+      "wind_speed_mps": 12.8,
+      "station_users": 664842,
+      "flow_bonus": 4.0,
+      "entertainment_bonus": 0.0,
+      "event_bonus": 4.0,
+      "heat_score": 67.4,
+      "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
+      "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
+      "source_mode": "mixed",
+      "trust_level": "high",
+      "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）",
+      "components": {
+        "base": {
+          "value": 52.0,
+          "trust_level": "medium",
+          "label": "基準値"
+        },
+        "temp_score": {
+          "value": 22.9,
+          "trust_level": "high",
+          "label": "気温補正（実データ）"
+        },
+        "flow_bonus": {
+          "value": 4.0,
+          "trust_level": "medium",
+          "label": "人流補正（CSV参照値）"
+        },
+        "entertainment_bonus": {
+          "value": 0.0,
+          "trust_level": "low",
+          "label": "エンタメ施設補正（未入力）"
+        },
+        "precip_penalty": {
+          "value": -0.0,
+          "trust_level": "high",
+          "label": "降水ペナルティ（実データ）"
+        },
+        "wind_penalty": {
+          "value": -11.5,
+          "trust_level": "high",
+          "label": "風速ペナルティ（実データ）"
+        }
+      }
     }
   ],
   "note": "prototype dataset for alpha demo",
@@ -58,12 +214,12 @@
       {
         "name": "データ収集",
         "status": "done",
-        "note": "Open-Meteoから気象データを取得"
+        "note": "Open-Meteo + CSV人流データを取得"
       },
       {
         "name": "監査",
         "status": "doing",
-        "note": "イベント補正が固定値のため改善対象"
+        "note": "CSV出典の正式化と数値検証を継続"
       },
       {
         "name": "α版開発",
@@ -77,8 +233,8 @@
       },
       {
         "name": "解決案",
-        "status": "todo",
-        "note": "イベントデータAPIの候補選定"
+        "status": "doing",
+        "note": "エンタメ施設データの重み付け調整"
       },
       {
         "name": "β版再開発",
@@ -89,10 +245,10 @@
     "todos": [
       {
         "id": "T-001",
-        "title": "イベント補正を固定値から実データへ置き換える",
+        "title": "CSV人流データをスコア計算に接続する",
         "owner": "データ部門",
-        "status": "未達",
-        "next_action": "自治体イベントAPIまたは公開イベントカレンダーを調査"
+        "status": "達成",
+        "next_action": "正式なオープンデータ出典へ差し替え"
       },
       {
         "id": "T-002",
@@ -118,8 +274,14 @@
     ],
     "feedback": [
       "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
-      "イベント補正が固定値のため、現時点では熱狂度の一部が仮説ベースである。",
+      "人流CSV接続により都市間差は出るが、数値の正式出典確認が必要。",
       "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。"
     ]
+  },
+  "score_policy": {
+    "formula": "52.0 + temp_score + flow_bonus + entertainment_bonus - precip_penalty - wind_penalty",
+    "warning": "flow_bonus / entertainment_bonus は urban_indicators.csv の参照値です。正式オープンデータ出典への差し替えを推奨します。",
+    "data_sources_file": "data_sources.yaml",
+    "urban_csv": "urban_indicators.csv"
   }
 }

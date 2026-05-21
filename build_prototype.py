@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,6 +12,8 @@ from urllib.request import urlopen
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_JSON = BASE_DIR / "prototype_data.json"
 OUTPUT_HTML = BASE_DIR / "prototype_app.html"
+DATA_SOURCES_FILE = BASE_DIR / "data_sources.yaml"
+URBAN_CSV = BASE_DIR / "urban_indicators.csv"
 
 # 試作対象都市（必要ならここへ都市を追加）
 CITY_COORDS = {
@@ -24,20 +27,20 @@ ITERATION_STATE = {
     "version": "β再開発候補",
     "cycle": [
         {"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"},
-        {"name": "データ収集", "status": "done", "note": "Open-Meteoから気象データを取得"},
-        {"name": "監査", "status": "doing", "note": "イベント補正が固定値のため改善対象"},
+        {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV人流データを取得"},
+        {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"},
         {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"},
         {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"},
-        {"name": "解決案", "status": "todo", "note": "イベントデータAPIの候補選定"},
+        {"name": "解決案", "status": "doing", "note": "エンタメ施設データの重み付け調整"},
         {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"},
     ],
     "todos": [
         {
             "id": "T-001",
-            "title": "イベント補正を固定値から実データへ置き換える",
+            "title": "CSV人流データをスコア計算に接続する",
             "owner": "データ部門",
-            "status": "未達",
-            "next_action": "自治体イベントAPIまたは公開イベントカレンダーを調査",
+            "status": "達成",
+            "next_action": "正式なオープンデータ出典へ差し替え",
         },
         {
             "id": "T-002",
@@ -63,7 +66,7 @@ ITERATION_STATE = {
     ],
     "feedback": [
         "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
-        "イベント補正が固定値のため、現時点では熱狂度の一部が仮説ベースである。",
+        "人流CSV接続により都市間差は出るが、数値の正式出典確認が必要。",
         "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。",
     ],
 }
@@ -73,7 +76,76 @@ def clamp(value: float, lo: float, hi: float) -> float:
     return max(lo, min(value, hi))
 
 
-def fetch_city_weather(city: str, lat: float, lon: float) -> dict:
+def normalize_to_range(
+    value: float, min_v: float, max_v: float, out_min: float, out_max: float
+) -> float:
+    if max_v <= min_v:
+        return (out_min + out_max) / 2
+    ratio = (value - min_v) / (max_v - min_v)
+    return out_min + ratio * (out_max - out_min)
+
+
+def parse_csv_int(value: str | None, default: int = 0) -> int:
+    text = (value or "").strip()
+    if not text:
+        return default
+    return int(text)
+
+
+def load_urban_indicators() -> dict[str, dict]:
+    """都市指標CSVを読み込む。"""
+    if not URBAN_CSV.exists():
+        return {}
+
+    rows: dict[str, dict] = {}
+    with URBAN_CSV.open(encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            city = row["city"].strip().upper()
+            entertainment_raw = (row.get("entertainment_facilities") or "").strip()
+            rows[city] = {
+                "prefecture": row.get("prefecture", "").strip(),
+                "station_users": parse_csv_int(row.get("station_users")),
+                "entertainment_facilities": parse_csv_int(row.get("entertainment_facilities")),
+                "entertainment_pending": not entertainment_raw,
+                "event_venues": parse_csv_int(row.get("event_venues")),
+                "source": row.get("source", "").strip(),
+                "notes": row.get("notes", "").strip(),
+            }
+    return rows
+
+
+def compute_urban_bonuses(indicators: dict[str, dict]) -> dict[str, dict]:
+    """駅利用者数・エンタメ施設数から都市別補正値を算出する。"""
+    if not indicators:
+        return {}
+
+    users = [v["station_users"] for v in indicators.values()]
+    ents = [v["entertainment_facilities"] for v in indicators.values()]
+    min_u, max_u = min(users), max(users)
+    has_entertainment = any(v > 0 for v in ents)
+    min_e, max_e = (min(ents), max(ents)) if has_entertainment else (0, 0)
+
+    result: dict[str, dict] = {}
+    for city, data in indicators.items():
+        flow_bonus = normalize_to_range(data["station_users"], min_u, max_u, 4.0, 18.0)
+        if has_entertainment and data["entertainment_facilities"] > 0:
+            entertainment_bonus = normalize_to_range(
+                data["entertainment_facilities"], min_e, max_e, 0.0, 6.0
+            )
+        else:
+            entertainment_bonus = 0.0
+        result[city] = {
+            **data,
+            "flow_bonus": round(flow_bonus, 1),
+            "entertainment_bonus": round(entertainment_bonus, 1),
+        }
+    return result
+
+
+def fetch_city_weather(
+    city: str, lat: float, lon: float, urban: dict | None = None
+) -> dict:
     """Open-Meteo から都市の最新気象データを取得する。"""
     params = urlencode(
         {
@@ -98,9 +170,38 @@ def fetch_city_weather(city: str, lat: float, lon: float) -> dict:
     temp_score = clamp((temp - 8.0) * 1.7, 0.0, 32.0)
     precip_penalty = clamp(precip * 5.0, 0.0, 20.0)
     wind_penalty = clamp(wind * 0.9, 0.0, 18.0)
-    event_bonus = 12.0  # MVPでは固定値（将来はイベントAPI連携で置き換え）
 
-    heat_score = clamp(52.0 + temp_score + event_bonus - precip_penalty - wind_penalty, 0, 100)
+    if urban:
+        flow_bonus = urban["flow_bonus"]
+        entertainment_bonus = urban["entertainment_bonus"]
+        station_users = urban["station_users"]
+        urban_source = urban["source"]
+        audit_status = "CSV人流データ接続済み（参照値・正式出典要確認）"
+        if urban.get("entertainment_pending"):
+            audit_status += " / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）"
+        trust_level = "high"
+        source = f"Open-Meteo (weather) + {URBAN_CSV.name} (urban indicators)"
+        source_mode = "mixed"
+    else:
+        flow_bonus = 0.0
+        entertainment_bonus = 0.0
+        station_users = None
+        urban_source = "未接続"
+        audit_status = "要注意: 人流CSVに該当都市なし"
+        trust_level = "medium"
+        source = "Open-Meteo (weather) only"
+        source_mode = "weather_only"
+
+    heat_score = clamp(
+        52.0
+        + temp_score
+        + flow_bonus
+        + entertainment_bonus
+        - precip_penalty
+        - wind_penalty,
+        0,
+        100,
+    )
 
     return {
         "city": city,
@@ -109,81 +210,129 @@ def fetch_city_weather(city: str, lat: float, lon: float) -> dict:
         "temperature_c": round(temp, 1),
         "precipitation_mm": round(precip, 1),
         "wind_speed_mps": round(wind, 1),
-        "event_bonus": round(event_bonus, 1),
+        "station_users": station_users,
+        "flow_bonus": flow_bonus,
+        "entertainment_bonus": entertainment_bonus,
+        "event_bonus": round(flow_bonus + entertainment_bonus, 1),
         "heat_score": round(heat_score, 1),
-        "source": "Open-Meteo (weather) + prototype fixed bonus (events)",
+        "urban_source": urban_source,
+        "source": source,
+        "source_mode": source_mode,
+        "trust_level": trust_level,
+        "audit_status": audit_status,
+        "components": {
+            "base": {"value": 52.0, "trust_level": "medium", "label": "基準値"},
+            "temp_score": {
+                "value": round(temp_score, 1),
+                "trust_level": "high",
+                "label": "気温補正（実データ）",
+            },
+            "flow_bonus": {
+                "value": flow_bonus,
+                "trust_level": "medium",
+                "label": "人流補正（CSV参照値）",
+            },
+            "entertainment_bonus": {
+                "value": entertainment_bonus,
+                "trust_level": "low" if urban.get("entertainment_pending") else "medium",
+                "label": "エンタメ施設補正（未入力）"
+                if urban.get("entertainment_pending")
+                else "エンタメ施設補正（CSV参照値）",
+            },
+            "precip_penalty": {
+                "value": round(-precip_penalty, 1),
+                "trust_level": "high",
+                "label": "降水ペナルティ（実データ）",
+            },
+            "wind_penalty": {
+                "value": round(-wind_penalty, 1),
+                "trust_level": "high",
+                "label": "風速ペナルティ（実データ）",
+            },
+        },
     }
 
 
-def fallback_city_data() -> list[dict]:
+def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dict]:
     """API取得失敗時のフォールバックデータ。"""
-    return [
-        {
-            "city": "TOKYO",
-            "lat": 35.6762,
-            "lon": 139.6503,
-            "temperature_c": 25.2,
-            "precipitation_mm": 0.0,
-            "wind_speed_mps": 3.9,
-            "event_bonus": 12.0,
-            "heat_score": 76.4,
-            "source": "fallback sample",
-        },
-        {
-            "city": "OSAKA",
-            "lat": 34.6937,
-            "lon": 135.5023,
-            "temperature_c": 24.0,
-            "precipitation_mm": 0.4,
-            "wind_speed_mps": 4.5,
-            "event_bonus": 12.0,
-            "heat_score": 69.5,
-            "source": "fallback sample",
-        },
-        {
-            "city": "NAGOYA",
-            "lat": 35.1815,
-            "lon": 136.9066,
-            "temperature_c": 23.3,
-            "precipitation_mm": 0.0,
-            "wind_speed_mps": 2.7,
-            "event_bonus": 12.0,
-            "heat_score": 72.1,
-            "source": "fallback sample",
-        },
-        {
-            "city": "FUKUOKA",
-            "lat": 33.5904,
-            "lon": 130.4017,
-            "temperature_c": 22.7,
-            "precipitation_mm": 1.0,
-            "wind_speed_mps": 5.0,
-            "event_bonus": 12.0,
-            "heat_score": 64.8,
-            "source": "fallback sample",
-        },
+    samples = [
+        ("TOKYO", 35.6762, 139.6503, 25.2, 0.0, 3.9),
+        ("OSAKA", 34.6937, 135.5023, 24.0, 0.4, 4.5),
+        ("NAGOYA", 35.1815, 136.9066, 23.3, 0.0, 2.7),
+        ("FUKUOKA", 33.5904, 130.4017, 22.7, 1.0, 5.0),
     ]
+    records: list[dict] = []
+    urban_bonuses = urban_bonuses or {}
+
+    for city, lat, lon, temp, precip, wind in samples:
+        urban = urban_bonuses.get(city)
+        temp_score = clamp((temp - 8.0) * 1.7, 0.0, 32.0)
+        precip_penalty = clamp(precip * 5.0, 0.0, 20.0)
+        wind_penalty = clamp(wind * 0.9, 0.0, 18.0)
+        flow_bonus = urban["flow_bonus"] if urban else 0.0
+        entertainment_bonus = urban["entertainment_bonus"] if urban else 0.0
+        heat_score = clamp(
+            52.0
+            + temp_score
+            + flow_bonus
+            + entertainment_bonus
+            - precip_penalty
+            - wind_penalty,
+            0,
+            100,
+        )
+        records.append(
+            {
+                "city": city,
+                "lat": lat,
+                "lon": lon,
+                "temperature_c": temp,
+                "precipitation_mm": precip,
+                "wind_speed_mps": wind,
+                "station_users": urban["station_users"] if urban else None,
+                "flow_bonus": flow_bonus,
+                "entertainment_bonus": entertainment_bonus,
+                "event_bonus": round(flow_bonus + entertainment_bonus, 1),
+                "heat_score": round(heat_score, 1),
+                "urban_source": urban["source"] if urban else "未接続",
+                "source": "fallback sample",
+                "source_mode": "fallback",
+                "trust_level": "low",
+                "audit_status": "要注意: API取得失敗時のサンプル値",
+                "components": {},
+            }
+        )
+    return records
 
 
 def build_dataset() -> dict:
+    urban_bonuses = compute_urban_bonuses(load_urban_indicators())
     records: list[dict] = []
     had_error = False
 
     for city, (lat, lon) in CITY_COORDS.items():
         try:
-            records.append(fetch_city_weather(city, lat, lon))
+            records.append(
+                fetch_city_weather(city, lat, lon, urban_bonuses.get(city))
+            )
         except (TimeoutError, URLError, ValueError):
             had_error = True
             break
 
     if had_error or len(records) != len(CITY_COORDS):
-        records = fallback_city_data()
+        records = fallback_city_data(urban_bonuses)
 
     return {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "records": records,
         "note": "prototype dataset for alpha demo",
         "iteration": ITERATION_STATE,
+        "score_policy": {
+            "formula": "52.0 + temp_score + flow_bonus + entertainment_bonus - precip_penalty - wind_penalty",
+            "warning": "flow_bonus / entertainment_bonus は urban_indicators.csv の参照値です。正式オープンデータ出典への差し替えを推奨します。",
+            "data_sources_file": DATA_SOURCES_FILE.name,
+            "urban_csv": URBAN_CSV.name,
+        },
     }
 
 
@@ -248,6 +397,15 @@ def build_html(dataset: dict) -> str:
       font-size: 12px;
       color: #b8c5df;
     }}
+    .trust-high {{ color: #77dd77; }}
+    .trust-medium {{ color: #ffd166; }}
+    .trust-low {{ color: #ff8fa3; }}
+    .component-list {{
+      margin-top: 8px;
+      padding-left: 18px;
+      color: #b8c5df;
+      font-size: 13px;
+    }}
     .city {{
       background: #1a2742;
       border: 1px solid #334b78;
@@ -302,6 +460,13 @@ def build_html(dataset: dict) -> str:
     </section>
 
     <section class="panel">
+      <h2>スコア設計と監査メモ</h2>
+      <p><strong>計算式:</strong> <code id="formula"></code></p>
+      <p class="muted" id="scoreWarning"></p>
+      <p class="muted">信頼度: high=実データ / medium=推定含む / low=仮説値・サンプル</p>
+    </section>
+
+    <section class="panel">
       <h2>データ詳細</h2>
       <table>
         <thead>
@@ -310,8 +475,12 @@ def build_html(dataset: dict) -> str:
             <th>気温(℃)</th>
             <th>降水(mm)</th>
             <th>風速(m/s)</th>
-            <th>イベント補正</th>
+            <th>駅利用者数</th>
+            <th>人流補正</th>
+            <th>エンタメ補正</th>
             <th>熱狂度</th>
+            <th>信頼度</th>
+            <th>監査メモ</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -343,7 +512,7 @@ def build_html(dataset: dict) -> str:
         </div>
         <div>
           <h3>現在の判定</h3>
-          <p>β版へ進めるが、<strong>イベント補正の実データ化</strong>と<strong>監査結果表示</strong>は未達。</p>
+          <p>β版へ進めるが、<strong>CSV出典の正式化</strong>と<strong>監査結果表示</strong>は継続課題。</p>
           <p class="muted">未達Todoは次ループで解決案部門→企画/データ/開発へ差し戻す。</p>
         </div>
       </div>
@@ -358,6 +527,8 @@ def build_html(dataset: dict) -> str:
     const todoBody = document.getElementById("todoBody");
     const feedbackList = document.getElementById("feedbackList");
     document.getElementById("updatedAt").textContent = "更新時刻: " + dataset.generated_at;
+    document.getElementById("formula").textContent = dataset.score_policy.formula;
+    document.getElementById("scoreWarning").textContent = dataset.score_policy.warning;
 
     dataset.iteration.cycle.forEach((s) => {{
       const div = document.createElement("div");
@@ -369,11 +540,16 @@ def build_html(dataset: dict) -> str:
     dataset.records.forEach((r) => {{
       const card = document.createElement("div");
       card.className = "city";
+      const components = Object.values(r.components || {{}})
+        .map((c) => `<li>${{c.label}}: <strong>${{c.value}}</strong> <span class="trust-${{c.trust_level}}">(${{c.trust_level}})</span></li>`)
+        .join("");
       card.innerHTML = `
         <div><strong>${{r.city}}</strong></div>
         <div class="score">${{r.heat_score}}</div>
         <div class="bar"><div class="fill" style="width:${{r.heat_score}}%"></div></div>
         <div class="muted">source: ${{r.source}}</div>
+        <div class="muted">監査: ${{r.audit_status}}</div>
+        <ul class="component-list">${{components}}</ul>
       `;
       cards.appendChild(card);
 
@@ -383,8 +559,12 @@ def build_html(dataset: dict) -> str:
         <td>${{r.temperature_c}}</td>
         <td>${{r.precipitation_mm}}</td>
         <td>${{r.wind_speed_mps}}</td>
-        <td>${{r.event_bonus}}</td>
+        <td>${{r.station_users ?? "—"}}</td>
+        <td>${{r.flow_bonus}}</td>
+        <td>${{r.entertainment_bonus}}</td>
         <td><strong>${{r.heat_score}}</strong></td>
+        <td class="trust-${{r.trust_level}}">${{r.trust_level}}</td>
+        <td>${{r.audit_status}}</td>
       `;
       tableBody.appendChild(tr);
     }});

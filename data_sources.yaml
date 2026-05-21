@@ -1,0 +1,37 @@
+# 卒業研究で使うデータソース定義です。
+# trust_level:
+#   high   = 実データとして扱える
+#   medium = 参考値として扱う
+#   low    = 仮説値・固定値。画面上で必ず明示する
+
+weather:
+  name: "Open-Meteo 現在気象データ"
+  category: "気象"
+  acquisition: "公式API"
+  trust_level: "high"
+  current_usage: "気温・降水量・風速を取得し、都市活動のしやすさの補助指標として使用"
+  audit_rule: "取得時刻・出典・API取得失敗時のフォールバック有無を記録する"
+
+event:
+  name: "都市イベントデータ"
+  category: "イベント"
+  acquisition: "未接続（自治体イベントAPI/公開カレンダーを候補調査中）"
+  trust_level: "low"
+  current_usage: "現時点では未使用。将来 event_venues 列の活用を検討"
+  audit_rule: "利用規約と取得方法の妥当性を確認するまでスコアには入れない"
+
+pedestrian_flow:
+  name: "人流・混雑データ"
+  category: "人流"
+  acquisition: "urban_indicators.csv（手動CSV）"
+  trust_level: "medium"
+  current_usage: "駅乗降客数 station_users を flow_bonus に正規化して使用"
+  audit_rule: "個人情報を含むデータは使わず、集計済み公開データのみ候補にする。正式出典の確認を継続"
+
+social_signal:
+  name: "SNS/検索トレンド"
+  category: "話題性"
+  acquisition: "未接続（将来候補）"
+  trust_level: "low"
+  current_usage: "現時点では未使用"
+  audit_rule: "利用規約と取得方法の妥当性を確認するまでスコアには入れない"

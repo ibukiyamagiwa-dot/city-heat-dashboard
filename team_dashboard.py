@@ -12,6 +12,8 @@ AGENTS_FILE = BASE_DIR / "agents.yaml"
 TASKS_FILE = BASE_DIR / "tasks.yaml"
 ORG_FILE = BASE_DIR / "org_structure.yaml"
 PROGRESS_FILE = BASE_DIR / "progress.md"
+DATA_SOURCES_FILE = BASE_DIR / "data_sources.yaml"
+SCORE_METHOD_FILE = BASE_DIR / "score_methodology.md"
 OUTPUT_FILE = BASE_DIR / "team_dashboard.html"
 INDEX_FILE = BASE_DIR / "index.html"
 
@@ -39,6 +41,12 @@ def normalize_progress_markdown(text: str) -> str:
     if lines and lines[-1].strip() == "```":
         lines = lines[:-1]
     return "\n".join(lines).strip()
+
+
+def read_text_optional(path: Path, fallback: str) -> str:
+    if not path.exists():
+        return fallback
+    return path.read_text(encoding="utf-8")
 
 
 def build_task_map(tasks: dict) -> dict[str, list[str]]:
@@ -195,7 +203,14 @@ def render_iteration_loops(org: dict, agents: dict) -> str:
     return "".join(cards)
 
 
-def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
+def create_html(
+    agents: dict,
+    tasks: dict,
+    org: dict,
+    progress_md: str,
+    data_sources_text: str,
+    score_method_text: str,
+) -> str:
     updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     task_map = build_task_map(tasks)
     departments = get_departments(agents, org)
@@ -231,6 +246,8 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
         )
 
     progress_html = html.escape(progress_md)
+    data_sources_html = html.escape(data_sources_text)
+    score_method_html = html.escape(score_method_text)
     org_matrix_html = build_org_matrix(agents=agents, departments=departments)
     hierarchy_html = build_hierarchy_view(agents=agents, org=org)
     vertical_links_html = render_links(org, agents, "vertical_links", "縦連携（管理→実行）")
@@ -323,6 +340,21 @@ def create_html(agents: dict, tasks: dict, org: dict, progress_md: str) -> str:
     </section>
 
     <section class="panel">
+      <h2>データ設計フェーズ</h2>
+      <p class="muted">実データ・仮説値・未接続データを分け、卒業研究として説明できる状態にする段階です。</p>
+      <div class="cards">
+        <section class="card">
+          <h3>データソース定義</h3>
+          <pre>{data_sources_html}</pre>
+        </section>
+        <section class="card">
+          <h3>スコア設計</h3>
+          <pre>{score_method_html}</pre>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2>部門設定（agents.yaml）</h2>
       <div class="cards">{''.join(agent_cards)}</div>
     </section>
@@ -345,8 +377,23 @@ def main() -> None:
         progress_md = "progress.md がまだ作成されていません。まず main.py を実行してください。"
     else:
         progress_md = normalize_progress_markdown(PROGRESS_FILE.read_text(encoding="utf-8"))
+    data_sources_text = read_text_optional(
+        DATA_SOURCES_FILE,
+        "data_sources.yaml がまだ作成されていません。",
+    )
+    score_method_text = read_text_optional(
+        SCORE_METHOD_FILE,
+        "score_methodology.md がまだ作成されていません。",
+    )
 
-    html_text = create_html(agents=agents, tasks=tasks, org=org, progress_md=progress_md)
+    html_text = create_html(
+        agents=agents,
+        tasks=tasks,
+        org=org,
+        progress_md=progress_md,
+        data_sources_text=data_sources_text,
+        score_method_text=score_method_text,
+    )
     OUTPUT_FILE.write_text(html_text, encoding="utf-8")
     INDEX_FILE.write_text(html_text, encoding="utf-8")
     print(f"作成完了: {OUTPUT_FILE}")

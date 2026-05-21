@@ -57,6 +57,15 @@
       font-size: 12px;
       color: #b8c5df;
     }
+    .trust-high { color: #77dd77; }
+    .trust-medium { color: #ffd166; }
+    .trust-low { color: #ff8fa3; }
+    .component-list {
+      margin-top: 8px;
+      padding-left: 18px;
+      color: #b8c5df;
+      font-size: 13px;
+    }
     .city {
       background: #1a2742;
       border: 1px solid #334b78;
@@ -111,6 +120,13 @@
     </section>
 
     <section class="panel">
+      <h2>スコア設計と監査メモ</h2>
+      <p><strong>計算式:</strong> <code id="formula"></code></p>
+      <p class="muted" id="scoreWarning"></p>
+      <p class="muted">信頼度: high=実データ / medium=推定含む / low=仮説値・サンプル</p>
+    </section>
+
+    <section class="panel">
       <h2>データ詳細</h2>
       <table>
         <thead>
@@ -119,8 +135,12 @@
             <th>気温(℃)</th>
             <th>降水(mm)</th>
             <th>風速(m/s)</th>
-            <th>イベント補正</th>
+            <th>駅利用者数</th>
+            <th>人流補正</th>
+            <th>エンタメ補正</th>
             <th>熱狂度</th>
+            <th>信頼度</th>
+            <th>監査メモ</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -152,7 +172,7 @@
         </div>
         <div>
           <h3>現在の判定</h3>
-          <p>β版へ進めるが、<strong>イベント補正の実データ化</strong>と<strong>監査結果表示</strong>は未達。</p>
+          <p>β版へ進めるが、<strong>CSV出典の正式化</strong>と<strong>監査結果表示</strong>は継続課題。</p>
           <p class="muted">未達Todoは次ループで解決案部門→企画/データ/開発へ差し戻す。</p>
         </div>
       </div>
@@ -160,13 +180,15 @@
   </div>
 
   <script>
-    const dataset = {"generated_at": "2026-05-15T03:42:05+09:00", "records": [{"city": "TOKYO", "lat": 35.6762, "lon": 139.6503, "temperature_c": 13.1, "precipitation_mm": 0.0, "wind_speed_mps": 2.3, "event_bonus": 12.0, "heat_score": 70.6, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "OSAKA", "lat": 34.6937, "lon": 135.5023, "temperature_c": 14.5, "precipitation_mm": 0.0, "wind_speed_mps": 4.0, "event_bonus": 12.0, "heat_score": 71.5, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "NAGOYA", "lat": 35.1815, "lon": 136.9066, "temperature_c": 15.1, "precipitation_mm": 0.0, "wind_speed_mps": 3.3, "event_bonus": 12.0, "heat_score": 73.1, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}, {"city": "FUKUOKA", "lat": 33.5904, "lon": 130.4017, "temperature_c": 16.6, "precipitation_mm": 0.0, "wind_speed_mps": 1.5, "event_bonus": 12.0, "heat_score": 77.3, "source": "Open-Meteo (weather) + prototype fixed bonus (events)"}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteoから気象データを取得"}, {"name": "監査", "status": "doing", "note": "イベント補正が固定値のため改善対象"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"}, {"name": "解決案", "status": "todo", "note": "イベントデータAPIの候補選定"}, {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"}], "todos": [{"id": "T-001", "title": "イベント補正を固定値から実データへ置き換える", "owner": "データ部門", "status": "未達", "next_action": "自治体イベントAPIまたは公開イベントカレンダーを調査"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "進行中", "next_action": "都市カードに計算内訳を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "進行中", "next_action": "出典・取得時刻・固定値利用有無を一覧化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "新規", "next_action": "Leaflet導入可否を検証"}], "feedback": ["α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。", "イベント補正が固定値のため、現時点では熱狂度の一部が仮説ベースである。", "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。"]}};
+    const dataset = {"generated_at": "2026-05-21T15:53:52+09:00", "records": [{"city": "TOKYO", "lat": 35.6762, "lon": 139.6503, "temperature_c": 16.6, "precipitation_mm": 0.1, "wind_speed_mps": 4.5, "station_users": 4250258, "flow_bonus": 18.0, "entertainment_bonus": 0.0, "event_bonus": 18.0, "heat_score": 80.1, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 14.6, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 18.0, "trust_level": "medium", "label": "人流補正（CSV参照値）"}, "entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "エンタメ施設補正（未入力）"}, "precip_penalty": {"value": -0.5, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -4.0, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}}, {"city": "OSAKA", "lat": 34.6937, "lon": 135.5023, "temperature_c": 22.8, "precipitation_mm": 0.0, "wind_speed_mps": 6.0, "station_users": 2028399, "flow_bonus": 9.3, "entertainment_bonus": 0.0, "event_bonus": 9.3, "heat_score": 81.1, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 25.2, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 9.3, "trust_level": "medium", "label": "人流補正（CSV参照値）"}, "entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "エンタメ施設補正（未入力）"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -5.4, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}}, {"city": "NAGOYA", "lat": 35.1815, "lon": 136.9066, "temperature_c": 23.2, "precipitation_mm": 0.3, "wind_speed_mps": 3.7, "station_users": 1280292, "flow_bonus": 6.4, "entertainment_bonus": 0.0, "event_bonus": 6.4, "heat_score": 79.4, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 25.8, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 6.4, "trust_level": "medium", "label": "人流補正（CSV参照値）"}, "entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "エンタメ施設補正（未入力）"}, "precip_penalty": {"value": -1.5, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -3.3, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}}, {"city": "FUKUOKA", "lat": 33.5904, "lon": 130.4017, "temperature_c": 21.5, "precipitation_mm": 0.0, "wind_speed_mps": 12.8, "station_users": 664842, "flow_bonus": 4.0, "entertainment_bonus": 0.0, "event_bonus": 4.0, "heat_score": 67.4, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV人流データ接続済み（参照値・正式出典要確認） / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 22.9, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 4.0, "trust_level": "medium", "label": "人流補正（CSV参照値）"}, "entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "エンタメ施設補正（未入力）"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -11.5, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV人流データを取得"}, {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"}, {"name": "解決案", "status": "doing", "note": "エンタメ施設データの重み付け調整"}, {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"}], "todos": [{"id": "T-001", "title": "CSV人流データをスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "正式なオープンデータ出典へ差し替え"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "進行中", "next_action": "都市カードに計算内訳を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "進行中", "next_action": "出典・取得時刻・固定値利用有無を一覧化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "新規", "next_action": "Leaflet導入可否を検証"}], "feedback": ["α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。", "人流CSV接続により都市間差は出るが、数値の正式出典確認が必要。", "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。"]}, "score_policy": {"formula": "52.0 + temp_score + flow_bonus + entertainment_bonus - precip_penalty - wind_penalty", "warning": "flow_bonus / entertainment_bonus は urban_indicators.csv の参照値です。正式オープンデータ出典への差し替えを推奨します。", "data_sources_file": "data_sources.yaml", "urban_csv": "urban_indicators.csv"}};
     const cards = document.getElementById("cards");
     const tableBody = document.getElementById("tableBody");
     const cycle = document.getElementById("cycle");
     const todoBody = document.getElementById("todoBody");
     const feedbackList = document.getElementById("feedbackList");
     document.getElementById("updatedAt").textContent = "更新時刻: " + dataset.generated_at;
+    document.getElementById("formula").textContent = dataset.score_policy.formula;
+    document.getElementById("scoreWarning").textContent = dataset.score_policy.warning;
 
     dataset.iteration.cycle.forEach((s) => {
       const div = document.createElement("div");
@@ -178,11 +200,16 @@
     dataset.records.forEach((r) => {
       const card = document.createElement("div");
       card.className = "city";
+      const components = Object.values(r.components || {})
+        .map((c) => `<li>${c.label}: <strong>${c.value}</strong> <span class="trust-${c.trust_level}">(${c.trust_level})</span></li>`)
+        .join("");
       card.innerHTML = `
         <div><strong>${r.city}</strong></div>
         <div class="score">${r.heat_score}</div>
         <div class="bar"><div class="fill" style="width:${r.heat_score}%"></div></div>
         <div class="muted">source: ${r.source}</div>
+        <div class="muted">監査: ${r.audit_status}</div>
+        <ul class="component-list">${components}</ul>
       `;
       cards.appendChild(card);
 
@@ -192,8 +219,12 @@
         <td>${r.temperature_c}</td>
         <td>${r.precipitation_mm}</td>
         <td>${r.wind_speed_mps}</td>
-        <td>${r.event_bonus}</td>
+        <td>${r.station_users ?? "—"}</td>
+        <td>${r.flow_bonus}</td>
+        <td>${r.entertainment_bonus}</td>
         <td><strong>${r.heat_score}</strong></td>
+        <td class="trust-${r.trust_level}">${r.trust_level}</td>
+        <td>${r.audit_status}</td>
       `;
       tableBody.appendChild(tr);
     });
