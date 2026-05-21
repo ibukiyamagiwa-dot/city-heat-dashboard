@@ -1,56 +1,24 @@
-# 都市熱狂度スコア設計 v0.2
-
-## 現在の段階
-
-現在は卒業研究の Phase 2「データ設計」→ Phase 3「α版プロトタイプ」移行中です。  
-目的は、嘘のデータを使わず、実データ・参照値・未接続データを明確に分けることです。
+# 都市熱狂度スコア設計 v0.3
 
 ## 現在のスコア式
 
 ```text
-heat_score = 52.0 + temp_score + flow_bonus + entertainment_bonus - precip_penalty - wind_penalty
+heat_score = 52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty
 ```
 
 ## 構成要素
 
-- `temp_score`
-  - 出典: Open-Meteo
-  - 信頼度: high
-  - 意味: 気温が高いほど外出・都市活動が起こりやすいという仮説
+- `temp_score` — Open-Meteo（high）
+- `flow_bonus` — 国交省 駅別乗降客数 → `urban_indicators.csv` の station_users を正規化（4.0〜18.0）
+- `venue_bonus` — 文科省 社会教育調査（劇場・音楽堂）→ `event_venues` を正規化（0.5〜6.0）
+- `precip_penalty` / `wind_penalty` — Open-Meteo（high）
 
-- `precip_penalty`
-  - 出典: Open-Meteo
-  - 信頼度: high
-  - 意味: 降水があると都市活動が下がる可能性があるため減点
+## 廃止したもの
 
-- `wind_penalty`
-  - 出典: Open-Meteo
-  - 信頼度: high
-  - 意味: 強風は屋外活動を下げる可能性があるため減点
+- 固定 `event_bonus=12.0`（仮説値）→ 廃止
+- `event_bonus` 合成フィールド → 廃止（flow + venue を個別表示）
 
-- `flow_bonus`
-  - 出典: `urban_indicators.csv`（駅乗降客数など人流の代替指標）
-  - 信頼度: medium
-  - 算出: 都市間の `station_users` を正規化し、4.0〜18.0 の範囲にマッピング
-  - 意味: 人流が多い都市ほど熱狂度が高いという仮説
+## 将来拡張
 
-- `entertainment_bonus`
-  - 出典: `urban_indicators.csv`（エンタメ施設数）
-  - 信頼度: medium
-  - 算出: 都市間の `entertainment_facilities` を正規化し、0.0〜6.0 の範囲にマッピング
-  - 意味: エンタメ施設が多い都市ほど活動が活発という補助仮説
-
-## 監査ルール
-
-1. 実データは出典と取得時刻を必ず保存する。
-2. CSV参照値は画面上で「参照値」と表示し、正式出典の確認を継続する。
-3. API取得に失敗してフォールバックデータを使った場合は、信頼度を下げる。
-4. 個人を特定できるデータは使わない。
-5. スコアは「真実」ではなく「推定指標」であることを明示する。
-
-## 次に改善すること
-
-1. CSV数値を正式なオープンデータ出典へ差し替える。
-2. イベント開催数APIの接続を検討する。
-3. 地図表示・時系列推移をβ版に追加する。
-4. 監査部門がデータ真偽チェックを行える形式を強化する。
+- `entertainment_facilities`（遊園地等）— 任意。入力時のみ最大 +3.0
+- OpenStreetMap による施設種別の自動取得

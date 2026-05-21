@@ -31,7 +31,7 @@ ITERATION_STATE = {
         {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"},
         {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"},
         {"name": "フィードバック", "status": "doing", "note": "見やすさと根拠表示を改善中"},
-        {"name": "解決案", "status": "doing", "note": "エンタメ施設データの重み付け調整"},
+        {"name": "解決案", "status": "doing", "note": "劇場・音楽堂データをスコアに接続済み。追加施設は将来拡張"},
         {"name": "β版再開発", "status": "todo", "note": "地図/推移/根拠表示を追加"},
     ],
     "todos": [
@@ -63,10 +63,17 @@ ITERATION_STATE = {
             "status": "新規",
             "next_action": "Leaflet導入可否を検証",
         },
+        {
+            "id": "T-005",
+            "title": "event_venues（劇場・音楽堂）をスコア計算に接続する",
+            "owner": "データ部門",
+            "status": "達成",
+            "next_action": "OpenStreetMap等での施設種別拡張を検討",
+        },
     ],
     "feedback": [
         "α版は都市ごとの比較は分かりやすいが、スコア根拠の説明が不足している。",
-        "人流CSV接続により都市間差は出るが、数値の正式出典確認が必要。",
+        "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。",
         "β版では地図・時系列推移・監査ステータスを追加すると説得力が上がる。",
     ],
 }
@@ -116,28 +123,32 @@ def load_urban_indicators() -> dict[str, dict]:
 
 
 def compute_urban_bonuses(indicators: dict[str, dict]) -> dict[str, dict]:
-    """駅利用者数・エンタメ施設数から都市別補正値を算出する。"""
+    """駅利用者数・劇場音楽堂数・（任意）エンタメ施設数から都市別補正値を算出する。"""
     if not indicators:
         return {}
 
     users = [v["station_users"] for v in indicators.values()]
+    venues = [v["event_venues"] for v in indicators.values()]
     ents = [v["entertainment_facilities"] for v in indicators.values()]
     min_u, max_u = min(users), max(users)
+    min_v, max_v = min(venues), max(venues)
     has_entertainment = any(v > 0 for v in ents)
     min_e, max_e = (min(ents), max(ents)) if has_entertainment else (0, 0)
 
     result: dict[str, dict] = {}
     for city, data in indicators.items():
         flow_bonus = normalize_to_range(data["station_users"], min_u, max_u, 4.0, 18.0)
+        venue_bonus = normalize_to_range(data["event_venues"], min_v, max_v, 0.5, 6.0)
         if has_entertainment and data["entertainment_facilities"] > 0:
             entertainment_bonus = normalize_to_range(
-                data["entertainment_facilities"], min_e, max_e, 0.0, 6.0
+                data["entertainment_facilities"], min_e, max_e, 0.0, 3.0
             )
         else:
             entertainment_bonus = 0.0
         result[city] = {
             **data,
             "flow_bonus": round(flow_bonus, 1),
+            "venue_bonus": round(venue_bonus, 1),
             "entertainment_bonus": round(entertainment_bonus, 1),
         }
     return result
@@ -173,19 +184,23 @@ def fetch_city_weather(
 
     if urban:
         flow_bonus = urban["flow_bonus"]
+        venue_bonus = urban["venue_bonus"]
         entertainment_bonus = urban["entertainment_bonus"]
         station_users = urban["station_users"]
+        event_venues = urban["event_venues"]
         urban_source = urban["source"]
-        audit_status = "CSV人流データ接続済み（参照値・正式出典要確認）"
+        audit_status = "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査)"
         if urban.get("entertainment_pending"):
-            audit_status += " / エンタメ施設数は未入力（MANUAL_DATA_GUIDE.md参照）"
+            audit_status += " / 遊園地等は未接続（将来拡張）"
         trust_level = "high"
         source = f"Open-Meteo (weather) + {URBAN_CSV.name} (urban indicators)"
         source_mode = "mixed"
     else:
         flow_bonus = 0.0
+        venue_bonus = 0.0
         entertainment_bonus = 0.0
         station_users = None
+        event_venues = None
         urban_source = "未接続"
         audit_status = "要注意: 人流CSVに該当都市なし"
         trust_level = "medium"
@@ -196,12 +211,48 @@ def fetch_city_weather(
         52.0
         + temp_score
         + flow_bonus
+        + venue_bonus
         + entertainment_bonus
         - precip_penalty
         - wind_penalty,
         0,
         100,
     )
+
+    components = {
+        "base": {"value": 52.0, "trust_level": "medium", "label": "基準値"},
+        "temp_score": {
+            "value": round(temp_score, 1),
+            "trust_level": "high",
+            "label": "気温補正（実データ）",
+        },
+        "flow_bonus": {
+            "value": flow_bonus,
+            "trust_level": "medium",
+            "label": "人流補正（国交省CSV）",
+        },
+        "venue_bonus": {
+            "value": venue_bonus,
+            "trust_level": "medium",
+            "label": "劇場・音楽堂補正（文科省調査）",
+        },
+        "precip_penalty": {
+            "value": round(-precip_penalty, 1),
+            "trust_level": "high",
+            "label": "降水ペナルティ（実データ）",
+        },
+        "wind_penalty": {
+            "value": round(-wind_penalty, 1),
+            "trust_level": "high",
+            "label": "風速ペナルティ（実データ）",
+        },
+    }
+    if entertainment_bonus > 0:
+        components["entertainment_bonus"] = {
+            "value": entertainment_bonus,
+            "trust_level": "medium",
+            "label": "エンタメ施設補正（CSV参照値）",
+        }
 
     return {
         "city": city,
@@ -211,45 +262,17 @@ def fetch_city_weather(
         "precipitation_mm": round(precip, 1),
         "wind_speed_mps": round(wind, 1),
         "station_users": station_users,
+        "event_venues": event_venues,
         "flow_bonus": flow_bonus,
+        "venue_bonus": venue_bonus,
         "entertainment_bonus": entertainment_bonus,
-        "event_bonus": round(flow_bonus + entertainment_bonus, 1),
         "heat_score": round(heat_score, 1),
         "urban_source": urban_source,
         "source": source,
         "source_mode": source_mode,
         "trust_level": trust_level,
         "audit_status": audit_status,
-        "components": {
-            "base": {"value": 52.0, "trust_level": "medium", "label": "基準値"},
-            "temp_score": {
-                "value": round(temp_score, 1),
-                "trust_level": "high",
-                "label": "気温補正（実データ）",
-            },
-            "flow_bonus": {
-                "value": flow_bonus,
-                "trust_level": "medium",
-                "label": "人流補正（CSV参照値）",
-            },
-            "entertainment_bonus": {
-                "value": entertainment_bonus,
-                "trust_level": "low" if urban.get("entertainment_pending") else "medium",
-                "label": "エンタメ施設補正（未入力）"
-                if urban.get("entertainment_pending")
-                else "エンタメ施設補正（CSV参照値）",
-            },
-            "precip_penalty": {
-                "value": round(-precip_penalty, 1),
-                "trust_level": "high",
-                "label": "降水ペナルティ（実データ）",
-            },
-            "wind_penalty": {
-                "value": round(-wind_penalty, 1),
-                "trust_level": "high",
-                "label": "風速ペナルティ（実データ）",
-            },
-        },
+        "components": components,
     }
 
 
@@ -270,11 +293,13 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
         precip_penalty = clamp(precip * 5.0, 0.0, 20.0)
         wind_penalty = clamp(wind * 0.9, 0.0, 18.0)
         flow_bonus = urban["flow_bonus"] if urban else 0.0
+        venue_bonus = urban["venue_bonus"] if urban else 0.0
         entertainment_bonus = urban["entertainment_bonus"] if urban else 0.0
         heat_score = clamp(
             52.0
             + temp_score
             + flow_bonus
+            + venue_bonus
             + entertainment_bonus
             - precip_penalty
             - wind_penalty,
@@ -290,9 +315,10 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 "precipitation_mm": precip,
                 "wind_speed_mps": wind,
                 "station_users": urban["station_users"] if urban else None,
+                "event_venues": urban["event_venues"] if urban else None,
                 "flow_bonus": flow_bonus,
+                "venue_bonus": venue_bonus,
                 "entertainment_bonus": entertainment_bonus,
-                "event_bonus": round(flow_bonus + entertainment_bonus, 1),
                 "heat_score": round(heat_score, 1),
                 "urban_source": urban["source"] if urban else "未接続",
                 "source": "fallback sample",
@@ -328,8 +354,8 @@ def build_dataset() -> dict:
         "note": "prototype dataset for alpha demo",
         "iteration": ITERATION_STATE,
         "score_policy": {
-            "formula": "52.0 + temp_score + flow_bonus + entertainment_bonus - precip_penalty - wind_penalty",
-            "warning": "flow_bonus / entertainment_bonus は urban_indicators.csv の参照値です。正式オープンデータ出典への差し替えを推奨します。",
+            "formula": "52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty",
+            "warning": "flow_bonus=国交省駅乗降客数 / venue_bonus=文科省社会教育調査(劇場・音楽堂)。いずれも urban_indicators.csv 経由。",
             "data_sources_file": DATA_SOURCES_FILE.name,
             "urban_csv": URBAN_CSV.name,
         },
@@ -476,8 +502,9 @@ def build_html(dataset: dict) -> str:
             <th>降水(mm)</th>
             <th>風速(m/s)</th>
             <th>駅利用者数</th>
+            <th>劇場・音楽堂数</th>
             <th>人流補正</th>
-            <th>エンタメ補正</th>
+            <th>会場補正</th>
             <th>熱狂度</th>
             <th>信頼度</th>
             <th>監査メモ</th>
@@ -560,8 +587,9 @@ def build_html(dataset: dict) -> str:
         <td>${{r.precipitation_mm}}</td>
         <td>${{r.wind_speed_mps}}</td>
         <td>${{r.station_users ?? "—"}}</td>
+        <td>${{r.event_venues ?? "—"}}</td>
         <td>${{r.flow_bonus}}</td>
-        <td>${{r.entertainment_bonus}}</td>
+        <td>${{r.venue_bonus}}</td>
         <td><strong>${{r.heat_score}}</strong></td>
         <td class="trust-${{r.trust_level}}">${{r.trust_level}}</td>
         <td>${{r.audit_status}}</td>

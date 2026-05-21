@@ -13,12 +13,12 @@ weather:
   audit_rule: "取得時刻・出典・API取得失敗時のフォールバック有無を記録する"
 
 event:
-  name: "都市イベントデータ"
-  category: "イベント"
-  acquisition: "未接続（自治体イベントAPI/公開カレンダーを候補調査中）"
-  trust_level: "low"
-  current_usage: "現時点では未使用。将来 event_venues 列の活用を検討"
-  audit_rule: "利用規約と取得方法の妥当性を確認するまでスコアには入れない"
+  name: "劇場・音楽堂（社会教育調査）"
+  category: "イベント会場"
+  acquisition: "urban_indicators.csv（文科省 社会教育調査 令和3年度）"
+  trust_level: "medium"
+  current_usage: "event_venues を venue_bonus に正規化してスコアに使用"
+  audit_rule: "施設数は都道府県単位の公的統計。開催数ではない点を画面上で明示する"
 
 pedestrian_flow:
   name: "人流・混雑データ"
