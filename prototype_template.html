@@ -119,6 +119,28 @@
     }
     .city-card:hover, .city-card.selected { border-color: var(--accent); }
     .city-card .score { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+    .rank {
+      display: inline-block; min-width: 34px; text-align: center;
+      padding: 2px 8px; margin-right: 6px; border-radius: 999px;
+      background: rgba(117,183,255,.16); color: var(--accent); font-weight: 800;
+    }
+    .metric-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin: 10px 0;
+    }
+    .metric-box {
+      background: #0f1a32; border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px;
+    }
+    .metric-box .label { color: var(--muted); font-size: 12px; }
+    .metric-box .value { font-size: 1.25rem; font-weight: 800; }
+    .insight {
+      margin-top: 8px; padding: 8px 10px;
+      border-radius: 9px; background: rgba(255,255,255,.04);
+      font-size: 13px;
+    }
+    .weak { color: #ffb1c1; }
+    .strong { color: #a7f3b8; }
     .compare-bar { height: 10px; background: #0f1a32; border-radius: 999px; overflow: hidden; margin-top: 6px; }
     .compare-fill { height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
@@ -195,9 +217,12 @@
           <tr>
             <th>都市</th>
             <th>熱狂度</th>
+            <th>都市の底力</th>
+            <th>今日のブースト</th>
             <th>気温</th>
             <th>駅利用者数/日</th>
             <th>劇場・音楽堂</th>
+            <th>強み / 弱み</th>
             <th>監査メモ</th>
           </tr>
         </thead>
@@ -264,10 +289,15 @@
         div.className = "city-card" + (r.city === selectedCity ? " selected" : "");
         div.onclick = () => { selectedCity = r.city; renderAll(); };
         div.innerHTML = `
-          <div><strong>${r.city_label || r.city}</strong> <span class="muted">${r.prefecture || ""}</span></div>
+          <div><span class="rank">${r.rank}位</span><strong>${r.city_label || r.city}</strong> <span class="muted">${r.prefecture || ""}</span></div>
           <div class="score">${r.heat_score}</div>
+          <div class="metric-row">
+            <div class="metric-box"><div class="label">都市の底力</div><div class="value">${r.city_power_score}</div></div>
+            <div class="metric-box"><div class="label">今日のブースト</div><div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</div></div>
+          </div>
           <div class="compare-bar"><div class="compare-fill" style="width:${r.heat_score}%"></div></div>
-          <div class="muted">人流 +${r.flow_bonus} / 会場 +${r.venue_bonus}</div>
+          <div class="insight strong">${r.strength_text}</div>
+          <div class="insight weak">${r.weakness_text}</div>
         `;
         cards.appendChild(div);
       });
@@ -307,15 +337,31 @@
       el.innerHTML = `
         <div class="detail-grid">
           <div>
-            <h3>${r.city_label || r.city}（${r.prefecture || ""}）の熱狂度</h3>
+            <h3><span class="rank">${r.rank}位</span>${r.city_label || r.city}（${r.prefecture || ""}）の熱狂度</h3>
             <div class="score-big">${r.heat_score} 点</div>
+            <div class="metric-row">
+              <div class="metric-box">
+                <div class="label">都市の底力（固定データ）</div>
+                <div class="value">${r.city_power_score} 点</div>
+                <div class="muted">人流 +${r.flow_bonus} / 会場 +${r.venue_bonus}</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">今日のブースト（気象）</div>
+                <div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost} 点</div>
+                <div class="muted">気温・降水・風速</div>
+              </div>
+            </div>
             <p class="muted">総合信頼度: ${trustPill(r.trust_level)}</p>
             <div class="equation">${r.score_equation || ""}</div>
-            <p class="muted" style="margin-top:8px;">計算式: ${dataset.score_policy.formula}</p>
+            <p class="muted" style="margin-top:8px;">総合式: ${dataset.score_policy.formula}</p>
+            <p class="muted">底力式: ${dataset.score_policy.city_power_formula}</p>
+            <p class="muted">ブースト式: ${dataset.score_policy.weather_formula}</p>
           </div>
           <div>
             <h3>平易な説明</h3>
             <div class="narrative">${r.score_narrative || ""}</div>
+            <div class="insight strong">${r.strength_text}</div>
+            <div class="insight weak">${r.weakness_text}</div>
             <p class="muted" style="margin-top:10px;">監査: ${r.audit_status}</p>
           </div>
         </div>
@@ -334,9 +380,12 @@
         tr.innerHTML = `
           <td><strong>${r.city_label || r.city}</strong></td>
           <td><strong>${r.heat_score}</strong></td>
+          <td>${r.city_power_score}</td>
+          <td>${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</td>
           <td>${r.temperature_c}℃ / 降水${r.precipitation_mm}mm / 風${r.wind_speed_mps}m/s</td>
           <td>${fmt(r.station_users)}</td>
           <td>${fmt(r.event_venues)}</td>
+          <td><span class="strong">${r.strength_text}</span><br><span class="weak">${r.weakness_text}</span></td>
           <td class="muted">${r.audit_status}</td>
         `;
         body.appendChild(tr);

@@ -119,6 +119,28 @@
     }
     .city-card:hover, .city-card.selected { border-color: var(--accent); }
     .city-card .score { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+    .rank {
+      display: inline-block; min-width: 34px; text-align: center;
+      padding: 2px 8px; margin-right: 6px; border-radius: 999px;
+      background: rgba(117,183,255,.16); color: var(--accent); font-weight: 800;
+    }
+    .metric-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin: 10px 0;
+    }
+    .metric-box {
+      background: #0f1a32; border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px;
+    }
+    .metric-box .label { color: var(--muted); font-size: 12px; }
+    .metric-box .value { font-size: 1.25rem; font-weight: 800; }
+    .insight {
+      margin-top: 8px; padding: 8px 10px;
+      border-radius: 9px; background: rgba(255,255,255,.04);
+      font-size: 13px;
+    }
+    .weak { color: #ffb1c1; }
+    .strong { color: #a7f3b8; }
     .compare-bar { height: 10px; background: #0f1a32; border-radius: 999px; overflow: hidden; margin-top: 6px; }
     .compare-fill { height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
@@ -195,9 +217,12 @@
           <tr>
             <th>都市</th>
             <th>熱狂度</th>
+            <th>都市の底力</th>
+            <th>今日のブースト</th>
             <th>気温</th>
             <th>駅利用者数/日</th>
             <th>劇場・音楽堂</th>
+            <th>強み / 弱み</th>
             <th>監査メモ</th>
           </tr>
         </thead>
@@ -216,7 +241,7 @@
   </div>
 
   <script>
-    const dataset = {"generated_at": "2026-05-21T16:13:12+09:00", "records": [{"city": "TOKYO", "city_label": "東京", "prefecture": "東京都", "lat": 35.6762, "lon": 139.6503, "temperature_c": 16.5, "precipitation_mm": 0.1, "wind_speed_mps": 4.1, "station_users": 4250258, "event_venues": 132, "flow_bonus": 18.0, "venue_bonus": 6.0, "entertainment_bonus": 0.0, "heat_score": 86.3, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 14.4, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 18.0, "trust_level": "medium", "label": "人流補正（国交省CSV）"}, "venue_bonus": {"value": 6.0, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）"}, "precip_penalty": {"value": -0.5, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -3.7, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}, "score_equation": "52.0 + 14.4 + 18.0 + 6.0 -0.5 -3.7 = 86.3", "score_narrative": "東京（東京都）の熱狂度は 86.3 点です。主要駅利用者数（約4,250,258人/日）と劇場・音楽堂（132施設）から人流 +18.0 / 会場 +6.0 を加点。本日の気温 16.5℃ による補正 +14.4、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "OSAKA", "city_label": "大阪", "prefecture": "大阪府", "lat": 34.6937, "lon": 135.5023, "temperature_c": 22.8, "precipitation_mm": 0.0, "wind_speed_mps": 6.1, "station_users": 2028399, "event_venues": 69, "flow_bonus": 9.3, "venue_bonus": 0.5, "entertainment_bonus": 0.0, "heat_score": 81.5, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 25.2, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 9.3, "trust_level": "medium", "label": "人流補正（国交省CSV）"}, "venue_bonus": {"value": 0.5, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -5.5, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}, "score_equation": "52.0 + 25.2 + 9.3 + 0.5 -0.0 -5.5 = 81.5", "score_narrative": "大阪（大阪府）の熱狂度は 81.5 点です。主要駅利用者数（約2,028,399人/日）と劇場・音楽堂（69施設）から人流 +9.3 / 会場 +0.5 を加点。本日の気温 22.8℃ による補正 +25.2、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "NAGOYA", "city_label": "名古屋", "prefecture": "愛知県", "lat": 35.1815, "lon": 136.9066, "temperature_c": 23.1, "precipitation_mm": 0.3, "wind_speed_mps": 3.7, "station_users": 1280292, "event_venues": 81, "flow_bonus": 6.4, "venue_bonus": 1.5, "entertainment_bonus": 0.0, "heat_score": 80.7, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 25.7, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 6.4, "trust_level": "medium", "label": "人流補正（国交省CSV）"}, "venue_bonus": {"value": 1.5, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）"}, "precip_penalty": {"value": -1.5, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -3.3, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}, "score_equation": "52.0 + 25.7 + 6.4 + 1.5 -1.5 -3.3 = 80.7", "score_narrative": "名古屋（愛知県）の熱狂度は 80.7 点です。主要駅利用者数（約1,280,292人/日）と劇場・音楽堂（81施設）から人流 +6.4 / 会場 +1.5 を加点。本日の気温 23.1℃ による補正 +25.7、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "FUKUOKA", "city_label": "福岡", "prefecture": "福岡県", "lat": 33.5904, "lon": 130.4017, "temperature_c": 21.5, "precipitation_mm": 0.0, "wind_speed_mps": 13.7, "station_users": 664842, "event_venues": 76, "flow_bonus": 4.0, "venue_bonus": 1.1, "entertainment_bonus": 0.0, "heat_score": 67.7, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"base": {"value": 52.0, "trust_level": "medium", "label": "基準値"}, "temp_score": {"value": 22.9, "trust_level": "high", "label": "気温補正（実データ）"}, "flow_bonus": {"value": 4.0, "trust_level": "medium", "label": "人流補正（国交省CSV）"}, "venue_bonus": {"value": 1.1, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）"}, "wind_penalty": {"value": -12.3, "trust_level": "high", "label": "風速ペナルティ（実データ）"}}, "score_equation": "52.0 + 22.9 + 4.0 + 1.1 -0.0 -12.3 = 67.7", "score_narrative": "福岡（福岡県）の熱狂度は 67.7 点です。主要駅利用者数（約664,842人/日）と劇場・音楽堂（76施設）から人流 +4.0 / 会場 +1.1 を加点。本日の気温 21.5℃ による補正 +22.9、降水・風速による減点を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV人流データを取得"}, {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "done", "note": "スコア内訳・出典表示を改善"}, {"name": "解決案", "status": "done", "note": "劇場・音楽堂データをスコアに接続済み"}, {"name": "β版再開発", "status": "todo", "note": "地図/時系列の追加"}], "todos": [{"id": "T-001", "title": "CSV人流データをスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "正式なオープンデータ出典へ差し替え"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "達成", "next_action": "地図表示で視覚的説明を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "達成", "next_action": "取得時刻の自動記録を強化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "新規", "next_action": "Leaflet導入可否を検証"}, {"id": "T-005", "title": "event_venues（劇場・音楽堂）をスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "OpenStreetMap等での施設種別拡張を検討"}], "feedback": ["スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。", "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。", "β版では地図・時系列推移を追加すると説得力がさらに上がる。"]}, "data_sources": [{"id": "weather", "category": "気象", "name": "気温・降水量・風速", "provider": "Open-Meteo API", "reference_year": "取得時刻ベース（リアルタイム）", "trust_level": "high", "trust_label": "高", "trust_note": "APIから直接取得する実測値", "used_in_score": "気温補正・降水/風ペナルティ", "fixed_value": false}, {"id": "flow", "category": "人流", "name": "主要ターミナル駅 乗降客数（5駅合計）", "provider": "国土交通省 国土数値情報（駅別乗降客数）", "reference_year": "2023年度（令和5年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "公的統計。都市間比較用に正規化して使用", "used_in_score": "人流補正（flow_bonus）", "fixed_value": false}, {"id": "venue", "category": "文化施設", "name": "劇場・音楽堂 施設数", "provider": "文部科学省 社会教育調査", "reference_year": "2021年度（令和3年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "都道府県単位の施設数（開催数ではない）", "used_in_score": "会場補正（venue_bonus）", "fixed_value": false}, {"id": "base", "category": "設計", "name": "基準点", "provider": "本研究のスコア設計", "reference_year": "—", "trust_level": "medium", "trust_label": "中", "trust_note": "都市間比較の起点となる定数", "used_in_score": "基準 52.0 点", "fixed_value": true}], "score_policy": {"formula": "52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty", "summary": "熱狂度は気象・人流・文化施設の3系統の公開データを組み合わせた推定スコアです。", "warning": "固定の仮説値は使用していません。施設数は開催数ではなく、都道府県統計に基づく参考指標です。", "data_sources_file": "data_sources.yaml", "urban_csv": "urban_indicators.csv"}};
+    const dataset = {"generated_at": "2026-05-21T16:34:59+09:00", "records": [{"city": "TOKYO", "city_label": "東京", "prefecture": "東京都", "lat": 35.6762, "lon": 139.6503, "temperature_c": 16.4, "precipitation_mm": 0.3, "wind_speed_mps": 4.3, "station_users": 4250258, "event_venues": 132, "city_power_score": 80.0, "weather_boost": 1.4, "flow_bonus": 25.0, "venue_bonus": 10.0, "entertainment_bonus": 0.0, "heat_score": 81.5, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"city_power_base": {"value": 45.0, "trust_level": "medium", "label": "底力の基準点", "layer": "都市の底力"}, "temp_score": {"value": 7.7, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 25.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "都市の底力"}, "venue_bonus": {"value": 10.0, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）", "layer": "都市の底力"}, "precip_penalty": {"value": -1.5, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -4.7, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 1, "city_power_rank": 1, "weather_rank": 3, "flow_rank": 1, "venue_rank": 1, "strength_text": "強み: 主要駅利用者数が4都市中1位、劇場・音楽堂数が4都市中1位", "weakness_text": "弱み: 今日の気象条件が4都市中3位", "score_equation": "都市の底力 80.0 + 今日のブースト 1.4 = 81.5", "score_narrative": "東京（東京都）の熱狂度は 81.5 点です。都市の底力は 80.0 点で、主要駅利用者数（約4,250,258人/日）と劇場・音楽堂（132施設）が主な根拠です。今日のブーストは 1.4 点で、気温 16.4℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "OSAKA", "city_label": "大阪", "prefecture": "大阪府", "lat": 34.6937, "lon": 135.5023, "temperature_c": 22.7, "precipitation_mm": 0.0, "wind_speed_mps": 5.7, "station_users": 2028399, "event_venues": 69, "city_power_score": 54.5, "weather_boost": 9.0, "flow_bonus": 9.5, "venue_bonus": 0.0, "entertainment_bonus": 0.0, "heat_score": 63.5, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"city_power_base": {"value": 45.0, "trust_level": "medium", "label": "底力の基準点", "layer": "都市の底力"}, "temp_score": {"value": 15.2, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 9.5, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "都市の底力"}, "venue_bonus": {"value": 0.0, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）", "layer": "都市の底力"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -6.3, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 2, "city_power_rank": 2, "weather_rank": 2, "flow_rank": 2, "venue_rank": 4, "strength_text": "強み: 都市の底力が4都市中2位", "weakness_text": "弱み: 劇場・音楽堂数が4都市中最少", "score_equation": "都市の底力 54.5 + 今日のブースト 9.0 = 63.5", "score_narrative": "大阪（大阪府）の熱狂度は 63.5 点です。都市の底力は 54.5 点で、主要駅利用者数（約2,028,399人/日）と劇場・音楽堂（69施設）が主な根拠です。今日のブーストは 9.0 点で、気温 22.7℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "NAGOYA", "city_label": "名古屋", "prefecture": "愛知県", "lat": 35.1815, "lon": 136.9066, "temperature_c": 22.9, "precipitation_mm": 0.4, "wind_speed_mps": 4.0, "station_users": 1280292, "event_venues": 81, "city_power_score": 51.2, "weather_boost": 9.1, "flow_bonus": 4.3, "venue_bonus": 1.9, "entertainment_bonus": 0.0, "heat_score": 60.3, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"city_power_base": {"value": 45.0, "trust_level": "medium", "label": "底力の基準点", "layer": "都市の底力"}, "temp_score": {"value": 15.5, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 4.3, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "都市の底力"}, "venue_bonus": {"value": 1.9, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）", "layer": "都市の底力"}, "precip_penalty": {"value": -2.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -4.4, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 3, "city_power_rank": 3, "weather_rank": 1, "flow_rank": 3, "venue_rank": 2, "strength_text": "強み: 今日の気象条件が最も追い風", "weakness_text": "弱み: 都市の底力が4都市中3位", "score_equation": "都市の底力 51.2 + 今日のブースト 9.1 = 60.3", "score_narrative": "名古屋（愛知県）の熱狂度は 60.3 点です。都市の底力は 51.2 点で、主要駅利用者数（約1,280,292人/日）と劇場・音楽堂（81施設）が主な根拠です。今日のブーストは 9.1 点で、気温 22.9℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "FUKUOKA", "city_label": "福岡", "prefecture": "福岡県", "lat": 33.5904, "lon": 130.4017, "temperature_c": 21.4, "precipitation_mm": 0.0, "wind_speed_mps": 14.6, "station_users": 664842, "event_venues": 76, "city_power_score": 46.1, "weather_boost": -2.4, "flow_bonus": 0.0, "venue_bonus": 1.1, "entertainment_bonus": 0.0, "heat_score": 43.7, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 劇場・音楽堂(文科省社会教育調査) / 遊園地等は未接続（将来拡張）", "components": {"city_power_base": {"value": 45.0, "trust_level": "medium", "label": "底力の基準点", "layer": "都市の底力"}, "temp_score": {"value": 13.7, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 0.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "都市の底力"}, "venue_bonus": {"value": 1.1, "trust_level": "medium", "label": "劇場・音楽堂補正（文科省調査）", "layer": "都市の底力"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -16.1, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 4, "city_power_rank": 4, "weather_rank": 4, "flow_rank": 4, "venue_rank": 3, "strength_text": "強み: 劇場・音楽堂数が4都市中3位", "weakness_text": "弱み: 主要駅利用者数が4都市中最少、今日の気象条件が最も向かい風", "score_equation": "都市の底力 46.1 - 今日のブースト 2.4 = 43.7", "score_narrative": "福岡（福岡県）の熱狂度は 43.7 点です。都市の底力は 46.1 点で、主要駅利用者数（約664,842人/日）と劇場・音楽堂（76施設）が主な根拠です。今日のブーストは -2.4 点で、気温 21.4℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV人流データを取得"}, {"name": "監査", "status": "doing", "note": "CSV出典の正式化と数値検証を継続"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "done", "note": "スコア内訳・出典表示を改善"}, {"name": "解決案", "status": "done", "note": "劇場・音楽堂データをスコアに接続済み"}, {"name": "β版再開発", "status": "todo", "note": "地図/時系列の追加"}], "todos": [{"id": "T-001", "title": "CSV人流データをスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "正式なオープンデータ出典へ差し替え"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "達成", "next_action": "地図表示で視覚的説明を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "達成", "next_action": "取得時刻の自動記録を強化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "新規", "next_action": "Leaflet導入可否を検証"}, {"id": "T-005", "title": "event_venues（劇場・音楽堂）をスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "OpenStreetMap等での施設種別拡張を検討"}], "feedback": ["スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。", "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。", "β版では地図・時系列推移を追加すると説得力がさらに上がる。"]}, "data_sources": [{"id": "weather", "category": "気象", "name": "気温・降水量・風速", "provider": "Open-Meteo API", "reference_year": "取得時刻ベース（リアルタイム）", "trust_level": "high", "trust_label": "高", "trust_note": "APIから直接取得する実測値", "used_in_score": "今日のブースト（weather_boost）", "fixed_value": false}, {"id": "flow", "category": "人流", "name": "主要ターミナル駅 乗降客数（5駅合計）", "provider": "国土交通省 国土数値情報（駅別乗降客数）", "reference_year": "2023年度（令和5年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "公的統計。都市間比較用に正規化して使用", "used_in_score": "都市の底力（city_power_score）", "fixed_value": false}, {"id": "venue", "category": "文化施設", "name": "劇場・音楽堂 施設数", "provider": "文部科学省 社会教育調査", "reference_year": "2021年度（令和3年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "都道府県単位の施設数（開催数ではない）", "used_in_score": "都市の底力（city_power_score）", "fixed_value": false}, {"id": "base", "category": "設計", "name": "基準点", "provider": "本研究のスコア設計", "reference_year": "—", "trust_level": "medium", "trust_label": "中", "trust_note": "都市間比較の起点となる定数", "used_in_score": "底力の基準 45.0 点", "fixed_value": true}], "score_policy": {"formula": "heat_score = city_power_score + weather_boost", "city_power_formula": "city_power_score = 45.0 + flow_bonus + venue_bonus", "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty", "summary": "熱狂度は、都市の底力（人流・文化施設）と今日のブースト（気象）を分けて評価する2層スコアです。", "warning": "固定の仮説値は使用していません。施設数は開催数ではなく、都道府県統計に基づく参考指標です。", "data_sources_file": "data_sources.yaml", "urban_csv": "urban_indicators.csv"}};
     let selectedCity = dataset.records[0]?.city || "";
 
     const TRUST = {
@@ -264,10 +289,15 @@
         div.className = "city-card" + (r.city === selectedCity ? " selected" : "");
         div.onclick = () => { selectedCity = r.city; renderAll(); };
         div.innerHTML = `
-          <div><strong>${r.city_label || r.city}</strong> <span class="muted">${r.prefecture || ""}</span></div>
+          <div><span class="rank">${r.rank}位</span><strong>${r.city_label || r.city}</strong> <span class="muted">${r.prefecture || ""}</span></div>
           <div class="score">${r.heat_score}</div>
+          <div class="metric-row">
+            <div class="metric-box"><div class="label">都市の底力</div><div class="value">${r.city_power_score}</div></div>
+            <div class="metric-box"><div class="label">今日のブースト</div><div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</div></div>
+          </div>
           <div class="compare-bar"><div class="compare-fill" style="width:${r.heat_score}%"></div></div>
-          <div class="muted">人流 +${r.flow_bonus} / 会場 +${r.venue_bonus}</div>
+          <div class="insight strong">${r.strength_text}</div>
+          <div class="insight weak">${r.weakness_text}</div>
         `;
         cards.appendChild(div);
       });
@@ -307,15 +337,31 @@
       el.innerHTML = `
         <div class="detail-grid">
           <div>
-            <h3>${r.city_label || r.city}（${r.prefecture || ""}）の熱狂度</h3>
+            <h3><span class="rank">${r.rank}位</span>${r.city_label || r.city}（${r.prefecture || ""}）の熱狂度</h3>
             <div class="score-big">${r.heat_score} 点</div>
+            <div class="metric-row">
+              <div class="metric-box">
+                <div class="label">都市の底力（固定データ）</div>
+                <div class="value">${r.city_power_score} 点</div>
+                <div class="muted">人流 +${r.flow_bonus} / 会場 +${r.venue_bonus}</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">今日のブースト（気象）</div>
+                <div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost} 点</div>
+                <div class="muted">気温・降水・風速</div>
+              </div>
+            </div>
             <p class="muted">総合信頼度: ${trustPill(r.trust_level)}</p>
             <div class="equation">${r.score_equation || ""}</div>
-            <p class="muted" style="margin-top:8px;">計算式: ${dataset.score_policy.formula}</p>
+            <p class="muted" style="margin-top:8px;">総合式: ${dataset.score_policy.formula}</p>
+            <p class="muted">底力式: ${dataset.score_policy.city_power_formula}</p>
+            <p class="muted">ブースト式: ${dataset.score_policy.weather_formula}</p>
           </div>
           <div>
             <h3>平易な説明</h3>
             <div class="narrative">${r.score_narrative || ""}</div>
+            <div class="insight strong">${r.strength_text}</div>
+            <div class="insight weak">${r.weakness_text}</div>
             <p class="muted" style="margin-top:10px;">監査: ${r.audit_status}</p>
           </div>
         </div>
@@ -334,9 +380,12 @@
         tr.innerHTML = `
           <td><strong>${r.city_label || r.city}</strong></td>
           <td><strong>${r.heat_score}</strong></td>
+          <td>${r.city_power_score}</td>
+          <td>${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</td>
           <td>${r.temperature_c}℃ / 降水${r.precipitation_mm}mm / 風${r.wind_speed_mps}m/s</td>
           <td>${fmt(r.station_users)}</td>
           <td>${fmt(r.event_venues)}</td>
+          <td><span class="strong">${r.strength_text}</span><br><span class="weak">${r.weakness_text}</span></td>
           <td class="muted">${r.audit_status}</td>
         `;
         body.appendChild(tr);

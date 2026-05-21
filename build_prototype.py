@@ -40,7 +40,7 @@ DATA_SOURCE_CATALOG = [
         "trust_level": "high",
         "trust_label": "高",
         "trust_note": "APIから直接取得する実測値",
-        "used_in_score": "気温補正・降水/風ペナルティ",
+        "used_in_score": "今日のブースト（weather_boost）",
         "fixed_value": False,
     },
     {
@@ -52,7 +52,7 @@ DATA_SOURCE_CATALOG = [
         "trust_level": "medium",
         "trust_label": "中",
         "trust_note": "公的統計。都市間比較用に正規化して使用",
-        "used_in_score": "人流補正（flow_bonus）",
+        "used_in_score": "都市の底力（city_power_score）",
         "fixed_value": False,
     },
     {
@@ -64,7 +64,7 @@ DATA_SOURCE_CATALOG = [
         "trust_level": "medium",
         "trust_label": "中",
         "trust_note": "都道府県単位の施設数（開催数ではない）",
-        "used_in_score": "会場補正（venue_bonus）",
+        "used_in_score": "都市の底力（city_power_score）",
         "fixed_value": False,
     },
     {
@@ -76,10 +76,16 @@ DATA_SOURCE_CATALOG = [
         "trust_level": "medium",
         "trust_label": "中",
         "trust_note": "都市間比較の起点となる定数",
-        "used_in_score": "基準 52.0 点",
+        "used_in_score": "底力の基準 45.0 点",
         "fixed_value": True,
     },
 ]
+
+CITY_POWER_BASE = 45.0
+FLOW_BONUS_RANGE = (0.0, 25.0)
+VENUE_BONUS_RANGE = (0.0, 10.0)
+ENTERTAINMENT_BONUS_RANGE = (0.0, 5.0)
+WEATHER_BOOST_RANGE = (-20.0, 20.0)
 
 ITERATION_STATE = {
     "version": "β再開発候補",
@@ -138,18 +144,14 @@ ITERATION_STATE = {
 
 
 def format_score_equation(record: dict) -> str:
-    """スコア計算式を人が読める形で返す。"""
-    c = record.get("components") or {}
-    terms: list[str] = [str(c.get("base", {}).get("value", 52.0))]
-    for key in ("temp_score", "flow_bonus", "venue_bonus", "entertainment_bonus"):
-        if key in c:
-            val = c[key]["value"]
-            terms.append(f"+ {val:.1f}" if val >= 0 else f"{val:.1f}")
-    for key in ("precip_penalty", "wind_penalty"):
-        if key in c:
-            terms.append(f"{c[key]['value']:+.1f}")
-    calc = sum(c[k]["value"] for k in c)
-    return " ".join(terms) + f" = {record['heat_score']}"
+    """2層スコアの計算式を人が読める形で返す。"""
+    city_power = record.get("city_power_score", 0.0)
+    weather_boost = record.get("weather_boost", 0.0)
+    sign = "+" if weather_boost >= 0 else "-"
+    return (
+        f"都市の底力 {city_power:.1f} {sign} "
+        f"今日のブースト {abs(weather_boost):.1f} = {record['heat_score']}"
+    )
 
 
 def format_score_narrative(record: dict) -> str:
@@ -165,15 +167,79 @@ def format_score_narrative(record: dict) -> str:
     venue_text = f"{venues}施設" if venues else "データなし"
     return (
         f"{area}の熱狂度は {record['heat_score']} 点です。"
-        f"主要駅利用者数（{user_text}）と劇場・音楽堂（{venue_text}）から"
-        f"人流 +{record.get('flow_bonus', 0)} / 会場 +{record.get('venue_bonus', 0)} を加点。"
-        f"本日の気温 {temp}℃ による補正 +{c.get('temp_score', {}).get('value', 0)}、"
-        f"降水・風速による減点を反映しています。"
+        f"都市の底力は {record.get('city_power_score', 0)} 点で、"
+        f"主要駅利用者数（{user_text}）と劇場・音楽堂（{venue_text}）が主な根拠です。"
+        f"今日のブーストは {record.get('weather_boost', 0)} 点で、"
+        f"気温 {temp}℃、降水、風速の影響を反映しています。"
         f"スコアは「真実」ではなく、公開データに基づく推定指標です。"
     )
 
 
+def rank_records(records: list[dict], key: str, reverse: bool = True) -> dict[str, int]:
+    ordered = sorted(records, key=lambda r: (r.get(key) is not None, r.get(key) or 0), reverse=reverse)
+    return {record["city"]: idx + 1 for idx, record in enumerate(ordered)}
+
+
+def attach_rank_and_insights(records: list[dict]) -> None:
+    """順位と強み/弱みを自動生成する。"""
+    if not records:
+        return
+
+    total = len(records)
+    ranks = {
+        "heat_score": rank_records(records, "heat_score"),
+        "city_power_score": rank_records(records, "city_power_score"),
+        "weather_boost": rank_records(records, "weather_boost"),
+        "station_users": rank_records(records, "station_users"),
+        "event_venues": rank_records(records, "event_venues"),
+    }
+
+    for record in records:
+        city = record["city"]
+        record["rank"] = ranks["heat_score"][city]
+        record["city_power_rank"] = ranks["city_power_score"][city]
+        record["weather_rank"] = ranks["weather_boost"][city]
+        record["flow_rank"] = ranks["station_users"][city]
+        record["venue_rank"] = ranks["event_venues"][city]
+
+        strengths: list[str] = []
+        weaknesses: list[str] = []
+        if record["flow_rank"] == 1:
+            strengths.append("主要駅利用者数が4都市中1位")
+        elif record["flow_rank"] == total:
+            weaknesses.append("主要駅利用者数が4都市中最少")
+
+        if record["venue_rank"] == 1:
+            strengths.append("劇場・音楽堂数が4都市中1位")
+        elif record["venue_rank"] == total:
+            weaknesses.append("劇場・音楽堂数が4都市中最少")
+
+        if record["weather_rank"] == 1:
+            strengths.append("今日の気象条件が最も追い風")
+        elif record["weather_rank"] == total:
+            weaknesses.append("今日の気象条件が最も向かい風")
+
+        if not strengths:
+            if record["city_power_rank"] <= 2:
+                strengths.append(f"都市の底力が4都市中{record['city_power_rank']}位")
+            elif record["venue_rank"] < total:
+                strengths.append(f"劇場・音楽堂数が4都市中{record['venue_rank']}位")
+            else:
+                strengths.append("気象条件改善時の伸びしろが大きい")
+        if not weaknesses:
+            if record["weather_rank"] > 1:
+                weaknesses.append(f"今日の気象条件が4都市中{record['weather_rank']}位")
+            elif record["city_power_rank"] > 1:
+                weaknesses.append(f"都市の底力が4都市中{record['city_power_rank']}位")
+            else:
+                weaknesses.append("目立った弱みは少ないが、気象次第で変動")
+
+        record["strength_text"] = "強み: " + "、".join(strengths)
+        record["weakness_text"] = "弱み: " + "、".join(weaknesses)
+
+
 def attach_display_metadata(records: list[dict]) -> None:
+    attach_rank_and_insights(records)
     for record in records:
         record["city_label"] = CITY_LABELS.get(record["city"], record["city"])
         record["score_equation"] = format_score_equation(record)
@@ -238,19 +304,41 @@ def compute_urban_bonuses(indicators: dict[str, dict]) -> dict[str, dict]:
 
     result: dict[str, dict] = {}
     for city, data in indicators.items():
-        flow_bonus = normalize_to_range(data["station_users"], min_u, max_u, 4.0, 18.0)
-        venue_bonus = normalize_to_range(data["event_venues"], min_v, max_v, 0.5, 6.0)
+        flow_bonus = normalize_to_range(
+            data["station_users"],
+            min_u,
+            max_u,
+            FLOW_BONUS_RANGE[0],
+            FLOW_BONUS_RANGE[1],
+        )
+        venue_bonus = normalize_to_range(
+            data["event_venues"],
+            min_v,
+            max_v,
+            VENUE_BONUS_RANGE[0],
+            VENUE_BONUS_RANGE[1],
+        )
         if has_entertainment and data["entertainment_facilities"] > 0:
             entertainment_bonus = normalize_to_range(
-                data["entertainment_facilities"], min_e, max_e, 0.0, 3.0
+                data["entertainment_facilities"],
+                min_e,
+                max_e,
+                ENTERTAINMENT_BONUS_RANGE[0],
+                ENTERTAINMENT_BONUS_RANGE[1],
             )
         else:
             entertainment_bonus = 0.0
+        city_power_score = clamp(
+            CITY_POWER_BASE + flow_bonus + venue_bonus + entertainment_bonus,
+            0.0,
+            100.0,
+        )
         result[city] = {
             **data,
             "flow_bonus": round(flow_bonus, 1),
             "venue_bonus": round(venue_bonus, 1),
             "entertainment_bonus": round(entertainment_bonus, 1),
+            "city_power_score": round(city_power_score, 1),
         }
     return result
 
@@ -276,17 +364,18 @@ def fetch_city_weather(
     precip = float(current.get("precipitation", 0.0))
     wind = float(current.get("wind_speed_10m", 3.0))
 
-    # 都市の熱狂度（簡易版）:
-    # - 気温が高いほど活動量が上がる前提で加点
-    # - 降水/強風は人流抑制要因として減点
-    temp_score = clamp((temp - 8.0) * 1.7, 0.0, 32.0)
-    precip_penalty = clamp(precip * 5.0, 0.0, 20.0)
-    wind_penalty = clamp(wind * 0.9, 0.0, 18.0)
+    # 2層スコア:
+    # - 都市の底力は人流・劇場数など固定データで決める
+    # - 今日のブーストは気象で上下させる
+    temp_score = clamp((temp - 10.0) * 1.2, 0.0, 18.0)
+    precip_penalty = clamp(precip * 5.0, 0.0, 18.0)
+    wind_penalty = clamp(wind * 1.1, 0.0, 18.0)
 
     if urban:
         flow_bonus = urban["flow_bonus"]
         venue_bonus = urban["venue_bonus"]
         entertainment_bonus = urban["entertainment_bonus"]
+        city_power_score = urban["city_power_score"]
         station_users = urban["station_users"]
         event_venues = urban["event_venues"]
         urban_source = urban["source"]
@@ -300,6 +389,7 @@ def fetch_city_weather(
         flow_bonus = 0.0
         venue_bonus = 0.0
         entertainment_bonus = 0.0
+        city_power_score = CITY_POWER_BASE
         station_users = None
         event_venues = None
         urban_source = "未接続"
@@ -308,44 +398,49 @@ def fetch_city_weather(
         source = "Open-Meteo (weather) only"
         source_mode = "weather_only"
 
-    heat_score = clamp(
-        52.0
-        + temp_score
-        + flow_bonus
-        + venue_bonus
-        + entertainment_bonus
-        - precip_penalty
-        - wind_penalty,
-        0,
-        100,
+    weather_boost = clamp(
+        temp_score - precip_penalty - wind_penalty,
+        WEATHER_BOOST_RANGE[0],
+        WEATHER_BOOST_RANGE[1],
     )
+    heat_score = clamp(city_power_score + weather_boost, 0, 100)
 
     components = {
-        "base": {"value": 52.0, "trust_level": "medium", "label": "基準値"},
+        "city_power_base": {
+            "value": CITY_POWER_BASE,
+            "trust_level": "medium",
+            "label": "底力の基準点",
+            "layer": "都市の底力",
+        },
         "temp_score": {
             "value": round(temp_score, 1),
             "trust_level": "high",
             "label": "気温補正（実データ）",
+            "layer": "今日のブースト",
         },
         "flow_bonus": {
             "value": flow_bonus,
             "trust_level": "medium",
             "label": "人流補正（国交省CSV）",
+            "layer": "都市の底力",
         },
         "venue_bonus": {
             "value": venue_bonus,
             "trust_level": "medium",
             "label": "劇場・音楽堂補正（文科省調査）",
+            "layer": "都市の底力",
         },
         "precip_penalty": {
             "value": round(-precip_penalty, 1),
             "trust_level": "high",
             "label": "降水ペナルティ（実データ）",
+            "layer": "今日のブースト",
         },
         "wind_penalty": {
             "value": round(-wind_penalty, 1),
             "trust_level": "high",
             "label": "風速ペナルティ（実データ）",
+            "layer": "今日のブースト",
         },
     }
     if entertainment_bonus > 0:
@@ -353,6 +448,7 @@ def fetch_city_weather(
             "value": entertainment_bonus,
             "trust_level": "medium",
             "label": "エンタメ施設補正（CSV参照値）",
+            "layer": "都市の底力",
         }
 
     return {
@@ -366,6 +462,8 @@ def fetch_city_weather(
         "wind_speed_mps": round(wind, 1),
         "station_users": station_users,
         "event_venues": event_venues,
+        "city_power_score": round(city_power_score, 1),
+        "weather_boost": round(weather_boost, 1),
         "flow_bonus": flow_bonus,
         "venue_bonus": venue_bonus,
         "entertainment_bonus": entertainment_bonus,
@@ -392,26 +490,26 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
 
     for city, lat, lon, temp, precip, wind in samples:
         urban = urban_bonuses.get(city)
-        temp_score = clamp((temp - 8.0) * 1.7, 0.0, 32.0)
-        precip_penalty = clamp(precip * 5.0, 0.0, 20.0)
-        wind_penalty = clamp(wind * 0.9, 0.0, 18.0)
+        temp_score = clamp((temp - 10.0) * 1.2, 0.0, 18.0)
+        precip_penalty = clamp(precip * 5.0, 0.0, 18.0)
+        wind_penalty = clamp(wind * 1.1, 0.0, 18.0)
         flow_bonus = urban["flow_bonus"] if urban else 0.0
         venue_bonus = urban["venue_bonus"] if urban else 0.0
         entertainment_bonus = urban["entertainment_bonus"] if urban else 0.0
-        heat_score = clamp(
-            52.0
-            + temp_score
-            + flow_bonus
-            + venue_bonus
-            + entertainment_bonus
-            - precip_penalty
-            - wind_penalty,
-            0,
-            100,
+        city_power_score = (
+            urban["city_power_score"] if urban else CITY_POWER_BASE
         )
+        weather_boost = clamp(
+            temp_score - precip_penalty - wind_penalty,
+            WEATHER_BOOST_RANGE[0],
+            WEATHER_BOOST_RANGE[1],
+        )
+        heat_score = clamp(city_power_score + weather_boost, 0, 100)
         records.append(
             {
                 "city": city,
+                "city_label": CITY_LABELS.get(city, city),
+                "prefecture": urban.get("prefecture") if urban else None,
                 "lat": lat,
                 "lon": lon,
                 "temperature_c": temp,
@@ -419,6 +517,8 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 "wind_speed_mps": wind,
                 "station_users": urban["station_users"] if urban else None,
                 "event_venues": urban["event_venues"] if urban else None,
+                "city_power_score": round(city_power_score, 1),
+                "weather_boost": round(weather_boost, 1),
                 "flow_bonus": flow_bonus,
                 "venue_bonus": venue_bonus,
                 "entertainment_bonus": entertainment_bonus,
@@ -460,8 +560,10 @@ def build_dataset() -> dict:
         "iteration": ITERATION_STATE,
         "data_sources": DATA_SOURCE_CATALOG,
         "score_policy": {
-            "formula": "52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty",
-            "summary": "熱狂度は気象・人流・文化施設の3系統の公開データを組み合わせた推定スコアです。",
+            "formula": "heat_score = city_power_score + weather_boost",
+            "city_power_formula": "city_power_score = 45.0 + flow_bonus + venue_bonus",
+            "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty",
+            "summary": "熱狂度は、都市の底力（人流・文化施設）と今日のブースト（気象）を分けて評価する2層スコアです。",
             "warning": "固定の仮説値は使用していません。施設数は開催数ではなく、都道府県統計に基づく参考指標です。",
             "data_sources_file": DATA_SOURCES_FILE.name,
             "urban_csv": URBAN_CSV.name,

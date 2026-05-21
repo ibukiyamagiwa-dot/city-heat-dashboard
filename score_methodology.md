@@ -1,24 +1,80 @@
-# 都市熱狂度スコア設計 v0.3
+# 都市熱狂度スコア設計 v0.4
 
 ## 現在のスコア式
 
+都市熱狂度は、都市そのものが持つ構造的な強さと、その日の気象による一時的な追い風・向かい風を分けて評価する。
+
 ```text
-heat_score = 52.0 + temp_score + flow_bonus + venue_bonus - precip_penalty - wind_penalty
+heat_score = city_power_score + weather_boost
 ```
+
+```text
+city_power_score = 45.0 + flow_bonus + venue_bonus + entertainment_bonus
+weather_boost = temp_score - precip_penalty - wind_penalty
+```
+
+## 2層式にした理由
+
+単一スコアだけで表すと、気温など日々変動する要因が大きく効きすぎて、「東京は人流も会場数も多いのに、今日は気温が低いから大阪とほぼ同点」のように、都市の構造的な差が見えにくくなる。
+
+そこで、本研究ではスコアを次の2層に分ける。
+
+- `city_power_score`
+  - 都市の底力を表す固定データ層。
+  - 主要駅乗降客数、劇場・音楽堂数など、日々大きく変わらない公開統計で計算する。
+  - 「その都市がもともと持っている集客・文化活動の土台」を説明する。
+
+- `weather_boost`
+  - 今日のブーストを表す変動データ層。
+  - 気温・降水量・風速など、当日の活動しやすさを反映する。
+  - 「今日はなぜ伸びた/伸びなかったのか」を説明する。
+
+この分離により、教授陣や非エンジニアにも「都市として強いのか」「今日は条件が良いだけなのか」を区別して説明できる。卒論上は、構造要因と一時要因を分けることで、スコアの解釈可能性と監査可能性を高める狙いがある。
 
 ## 構成要素
 
-- `temp_score` — Open-Meteo（high）
-- `flow_bonus` — 国交省 駅別乗降客数 → `urban_indicators.csv` の station_users を正規化（4.0〜18.0）
-- `venue_bonus` — 文科省 社会教育調査（劇場・音楽堂）→ `event_venues` を正規化（0.5〜6.0）
-- `precip_penalty` / `wind_penalty` — Open-Meteo（high）
+- `flow_bonus`
+  - 出典: 国土交通省 国土数値情報 駅別乗降客数
+  - 信頼度: medium
+  - 算出: `station_users` を4都市間で正規化し、0.0〜25.0点に変換
+  - 意味: 主要駅利用者が多い都市ほど、人流の底力が高い
+
+- `venue_bonus`
+  - 出典: 文部科学省 社会教育調査（劇場・音楽堂）
+  - 信頼度: medium
+  - 算出: `event_venues` を4都市間で正規化し、0.0〜10.0点に変換
+  - 意味: 文化施設が多い都市ほど、イベント・文化活動の受け皿が大きい
+
+- `temp_score`
+  - 出典: Open-Meteo
+  - 信頼度: high
+  - 算出: 気温を0.0〜18.0点に変換
+  - 意味: 気温が活動しやすいほど今日のブーストが上がる
+
+- `precip_penalty` / `wind_penalty`
+  - 出典: Open-Meteo
+  - 信頼度: high
+  - 意味: 降水・強風は屋外活動を下げる可能性があるため減点
+
+## UI上の説明
+
+画面では、総合スコアだけでなく以下を表示する。
+
+- 順位
+- `city_power_score`（都市の底力）
+- `weather_boost`（今日のブースト）
+- 強み（例: 主要駅利用者数が4都市中1位）
+- 弱み（例: 劇場・音楽堂数が4都市中最少）
+
+これにより、点数差から「なぜ高いのか」「なぜ低いのか」という問いが自然に生まれるようにする。
 
 ## 廃止したもの
 
 - 固定 `event_bonus=12.0`（仮説値）→ 廃止
-- `event_bonus` 合成フィールド → 廃止（flow + venue を個別表示）
+- `event_bonus` 合成フィールド → 廃止（底力と気象を分離）
 
 ## 将来拡張
 
-- `entertainment_facilities`（遊園地等）— 任意。入力時のみ最大 +3.0
-- OpenStreetMap による施設種別の自動取得
+- `entertainment_facilities`（遊園地等）— 任意。入力時のみ最大 +5.0
+- OpenStreetMap による映画館・劇場・テーマパーク等の自動取得
+- 時系列データ化による「昨日との差」「週末との差」の可視化
