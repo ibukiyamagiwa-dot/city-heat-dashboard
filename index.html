@@ -51,7 +51,37 @@
     .status { display: flex; gap: 12px; flex-wrap: wrap; }
     .badge { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #9a3412; font-weight: 700; }
     .ok { color: var(--good); font-weight: 700; }
-    .dept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+    .pyramid { display: grid; gap: 18px; }
+    .pyramid-layer { display: grid; gap: 10px; }
+    .pyramid-title {
+      justify-self: center;
+      color: #9a3412;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-weight: 900;
+      box-shadow: 0 6px 16px rgba(243, 152, 0, .10);
+    }
+    .pyramid-row {
+      display: grid;
+      grid-template-columns: repeat(var(--cols, auto-fit), minmax(250px, 1fr));
+      gap: 14px;
+      justify-content: center;
+      align-items: start;
+    }
+    .pyramid-layer:nth-child(1) .pyramid-row { max-width: 620px; margin: 0 auto; --cols: 2; }
+    .pyramid-layer:nth-child(2) .pyramid-row { max-width: 1120px; margin: 0 auto; --cols: 4; }
+    .pyramid-layer:nth-child(3) .pyramid-row { max-width: 620px; margin: 0 auto; --cols: 2; }
+    @media (max-width: 760px) {
+      .pyramid-row,
+      .pyramid-layer:nth-child(1) .pyramid-row,
+      .pyramid-layer:nth-child(2) .pyramid-row,
+      .pyramid-layer:nth-child(3) .pyramid-row {
+        grid-template-columns: 1fr;
+        max-width: none;
+      }
+    }
     .dept-card {
       background: #ffffff;
       border: 1px solid var(--line);
@@ -92,6 +122,7 @@
     }
     .dept-summary-text strong { display: block; font-size: 1.02rem; }
     .dept-summary-text small { display: block; color: var(--sub); line-height: 1.45; }
+    .dept-summary-text em { display: block; color: #c2410c; font-style: normal; font-size: 12px; margin-top: 3px; }
     .tap-hint { color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 4px 9px; font-size: 12px; font-weight: 800; white-space: nowrap; }
     .dept-detail { border-top: 1px solid var(--line); padding: 14px; background: #fffdf8; }
     .dept-role { margin: 0 0 12px; color: var(--text); }
@@ -99,6 +130,10 @@
     .dept-agent { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
     .dept-agent h4 { margin: 0 0 8px; color: var(--accent-strong); }
     .dept-agent.empty { opacity: .65; }
+    .dept-link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px; }
+    .dept-links { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+    .dept-links h4 { margin: 0 0 8px; color: #9a3412; }
+    .dept-links ul { padding-left: 18px; }
     .compact-section summary {
       cursor: pointer;
       color: #9a3412;
@@ -144,28 +179,34 @@
         <span class="badge">部門数: <b>8</b></span>
         <span class="badge">エージェント数: <b>16</b></span>
         <span class="badge">タスク数: <b>17</b></span>
-        <span class="badge">最終更新: <b>2026-05-26 00:25:30</b></span>
+        <span class="badge">最終更新: <b>2026-05-26 00:43:43</b></span>
         <span class="badge ok">progress.md 連携: 有効</span>
       </div>
     </section>
 
     <section class="panel">
-      <h2>部門をクリックして役割を見る</h2>
-      <p class="muted">最初は部門のアイコンカードだけを表示します。気になる部門を開くと、管理担当・実行担当・Goal・担当タスクを確認できます。</p>
-      <div class="dept-grid">
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">統</span>
-                <span class="dept-summary-text">
-                  <strong>統括戦略室</strong>
-                  <small>全体方針と卒業制作としての到達点を決める司令塔。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">研究全体の方向性、評価基準、意思決定をまとめる部門です。</p>
-                <div class="dept-agent-grid">
-                  
+      <h2>ピラミッド型の階層組織図</h2>
+      <p class="muted">上から統括、方針・検証・改善、実行へ降りるCrewAI組織です。部門カードを開くと、管理担当・実行担当・Goal・担当タスク・関連連携を確認できます。</p>
+      <div class='pyramid'>
+            <section class="pyramid-layer">
+              <div class="pyramid-title">Level 1: 統括</div>
+              <div class="pyramid-row">
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="羅針盤 / 王冠">
+          ♕
+        </span>
+        <span class="dept-summary-text">
+          <strong>統括戦略室</strong>
+          <small>全体方針と卒業制作としての到達点を決める司令塔。</small>
+          <em>羅針盤 / 王冠</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">研究全体の方向性、評価基準、意思決定をまとめる部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>統括戦略室マネージャー</b><br /><code>strategy_mgmt</code></p>
@@ -174,7 +215,7 @@
       <ul><li><code>program_alignment_task</code></li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>統括戦略室実行担当</b><br /><code>strategy_exec</code></p>
@@ -183,23 +224,30 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
-            
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">管</span>
-                <span class="dept-summary-text">
-                  <strong>PMO部門</strong>
-                  <small>進捗・連携・提出品質を見守る管理ハブ。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">各部門の進捗を整理し、作業が迷子にならないように調整する部門です。</p>
-                <div class="dept-agent-grid">
-                  
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>strategy_mgmt</code> 統括戦略室マネージャー → <code>strategy_exec</code> 統括戦略室実行担当<br /><span class='muted'>全体戦略の管理と実行</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>strategy_exec</code> 統括戦略室実行担当 → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>全体方針と進捗管理の同期</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="カレンダー / チェックリスト">
+          ✓
+        </span>
+        <span class="dept-summary-text">
+          <strong>PMO部門</strong>
+          <small>進捗・連携・提出品質を見守る管理ハブ。</small>
+          <em>カレンダー / チェックリスト</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">各部門の進捗を整理し、作業が迷子にならないように調整する部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>PMOマネージャー</b><br /><code>pmo_mgmt</code></p>
@@ -208,7 +256,7 @@
       <ul><li><code>coordination_task</code></li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>PMO実行担当（秘書）</b><br /><code>pmo_exec</code></p>
@@ -217,23 +265,35 @@
       <ul><li><code>cross_function_review_task</code></li><li><code>todo_iteration_task</code></li><li><code>secretary_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>pmo_mgmt</code> PMOマネージャー → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>統括管理と進捗可視化</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>strategy_exec</code> 統括戦略室実行担当 → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>全体方針と進捗管理の同期</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>planner_mgmt</code> 企画部門マネージャー<br /><span class='muted'>全体優先度の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>audit_mgmt</code> 監査部門マネージャー<br /><span class='muted'>提出判定条件の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>運用・法務リスクの調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>リソース計画の調整</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    </div>
+            </section>
             
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">企</span>
-                <span class="dept-summary-text">
-                  <strong>企画部門</strong>
-                  <small>都市熱狂度アプリの価値と見せ方を考える部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">誰に何を伝えるアプリなのかを定義し、改善の方向性を作る部門です。</p>
-                <div class="dept-agent-grid">
-                  
+            <section class="pyramid-layer">
+              <div class="pyramid-title">Level 2: 方針・検証・改善</div>
+              <div class="pyramid-row">
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="電球">
+          灯
+        </span>
+        <span class="dept-summary-text">
+          <strong>企画部門</strong>
+          <small>都市熱狂度アプリの価値と見せ方を考える部門。</small>
+          <em>電球</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">誰に何を伝えるアプリなのかを定義し、改善の方向性を作る部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>企画部門マネージャー</b><br /><code>planner_mgmt</code></p>
@@ -242,7 +302,7 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>企画部門実行担当</b><br /><code>planner_exec</code></p>
@@ -251,23 +311,30 @@
       <ul><li><code>planning_round1_task</code></li><li><code>planning_round2_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
-            
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">監</span>
-                <span class="dept-summary-text">
-                  <strong>監査部門</strong>
-                  <small>データの信頼性と説明可能性を確認する部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">使っているデータやスコア根拠が卒論として説明できるかを確認する部門です。</p>
-                <div class="dept-agent-grid">
-                  
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>planner_mgmt</code> 企画部門マネージャー → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>企画方針の管理と実行</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>planner_exec</code> 企画部門実行担当 → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>要件とデータ仕様の同期</span></li><li><code>dev_exec</code> 開発部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>実装制約の企画フィードバック</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>改善点に対する企画解決案</span></li><li><code>planner_mgmt</code> 企画部門マネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>スコープと納期の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>planner_mgmt</code> 企画部門マネージャー<br /><span class='muted'>全体優先度の調整</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="虫眼鏡 / 盾">
+          盾
+        </span>
+        <span class="dept-summary-text">
+          <strong>監査部門</strong>
+          <small>データの信頼性と説明可能性を確認する部門。</small>
+          <em>虫眼鏡 / 盾</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">使っているデータやスコア根拠が卒論として説明できるかを確認する部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>監査部門マネージャー</b><br /><code>audit_mgmt</code></p>
@@ -276,7 +343,7 @@
       <ul><li><code>management_gate_task</code></li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>監査部門実行担当</b><br /><code>audit_exec</code></p>
@@ -285,23 +352,30 @@
       <ul><li><code>audit_round1_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
-            
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">改</span>
-                <span class="dept-summary-text">
-                  <strong>改善解決案部門</strong>
-                  <small>指摘や課題を次の改善案に変換する部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">フィードバックを実装可能な修正案に分解し、次の開発へ渡す部門です。</p>
-                <div class="dept-agent-grid">
-                  
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>audit_mgmt</code> 監査部門マネージャー → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>監査基準の管理と現場監査</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>data_exec</code> データ部門実行担当 → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>データ真偽と出典確認</span></li><li><code>audit_exec</code> 監査部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>監査指摘の実装反映</span></li><li><code>audit_mgmt</code> 監査部門マネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>品質基準とデータ運用基準の整合</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>audit_mgmt</code> 監査部門マネージャー<br /><span class='muted'>提出判定条件の調整</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="工具 / スパナ">
+          工
+        </span>
+        <span class="dept-summary-text">
+          <strong>改善解決案部門</strong>
+          <small>指摘や課題を次の改善案に変換する部門。</small>
+          <em>工具 / スパナ</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">フィードバックを実装可能な修正案に分解し、次の開発へ渡す部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>改善解決案部門マネージャー</b><br /><code>solution_mgmt</code></p>
@@ -310,7 +384,7 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>改善解決案部門実行担当</b><br /><code>solution_exec</code></p>
@@ -319,23 +393,30 @@
       <ul><li><code>solution_alpha_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
-            
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">声</span>
-                <span class="dept-summary-text">
-                  <strong>フィードバック部門</strong>
-                  <small>見た人の反応を集め、改善点を見つける部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">教授・ユーザー・非エンジニア視点の疑問や改善要望を整理する部門です。</p>
-                <div class="dept-agent-grid">
-                  
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>solution_mgmt</code> 改善解決案部門マネージャー → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>改善方針の管理と解決案作成</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>feedback_exec</code> フィードバック部門実行担当 → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>αβ評価を改善案へ変換</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>改善点に対する企画解決案</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>再開発タスクとして実装へ戻す</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="吹き出し">
+          吹
+        </span>
+        <span class="dept-summary-text">
+          <strong>フィードバック部門</strong>
+          <small>見た人の反応を集め、改善点を見つける部門。</small>
+          <em>吹き出し</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">教授・ユーザー・非エンジニア視点の疑問や改善要望を整理する部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>フィードバック部門マネージャー</b><br /><code>feedback_mgmt</code></p>
@@ -344,7 +425,7 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>フィードバック部門実行担当</b><br /><code>feedback_exec</code></p>
@@ -353,23 +434,35 @@
       <ul><li><code>alpha_feedback_task</code></li><li><code>beta_feedback_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>feedback_mgmt</code> フィードバック部門マネージャー → <code>feedback_exec</code> フィードバック部門実行担当<br /><span class='muted'>評価観点の管理とフィードバック収集</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>feedback_exec</code> フィードバック部門実行担当 → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>αβ評価を改善案へ変換</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    </div>
+            </section>
             
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">デ</span>
-                <span class="dept-summary-text">
-                  <strong>データ部門</strong>
-                  <small>気象・人流・施設などの根拠データを扱う部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">公開データを集め、スコア計算に使える形へ整える部門です。</p>
-                <div class="dept-agent-grid">
-                  
+            <section class="pyramid-layer">
+              <div class="pyramid-title">Level 3: 実行</div>
+              <div class="pyramid-row">
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="データベース">
+          DB
+        </span>
+        <span class="dept-summary-text">
+          <strong>データ部門</strong>
+          <small>気象・人流・施設などの根拠データを扱う部門。</small>
+          <em>データベース</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">公開データを集め、スコア計算に使える形へ整える部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>データ部門マネージャー</b><br /><code>data_mgmt</code></p>
@@ -378,7 +471,7 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>データ部門実行担当</b><br /><code>data_exec</code></p>
@@ -387,23 +480,30 @@
       <ul><li><code>data_round1_task</code></li><li><code>data_round2_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
-            
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">開</span>
-                <span class="dept-summary-text">
-                  <strong>開発部門</strong>
-                  <small>ダッシュボードとプロトタイプを形にする部門。</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">企画・データ・監査の内容を画面や生成スクリプトとして実装する部門です。</p>
-                <div class="dept-agent-grid">
-                  
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>data_mgmt</code> データ部門マネージャー → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>データ運用方針の管理と収集実行</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>planner_exec</code> 企画部門実行担当 → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>要件とデータ仕様の同期</span></li><li><code>data_exec</code> データ部門実行担当 → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>データ真偽と出典確認</span></li><li><code>audit_mgmt</code> 監査部門マネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>品質基準とデータ運用基準の整合</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>運用・法務リスクの調整</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="ノートPC / コード">
+          &lt;/&gt;
+        </span>
+        <span class="dept-summary-text">
+          <strong>開発部門</strong>
+          <small>ダッシュボードとプロトタイプを形にする部門。</small>
+          <em>ノートPC / コード</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">企画・データ・監査の内容を画面や生成スクリプトとして実装する部門です。</p>
+        <div class="dept-agent-grid">
+          
     <div class="dept-agent">
       <h4>管理担当</h4>
       <p><b>開発部門マネージャー</b><br /><code>dev_mgmt</code></p>
@@ -412,7 +512,7 @@
       <ul><li>（未割り当て）</li></ul>
     </div>
     
-                  
+          
     <div class="dept-agent">
       <h4>実行担当</h4>
       <p><b>開発部門実行担当</b><br /><code>dev_exec</code></p>
@@ -421,9 +521,15 @@
       <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li><li><code>redevelopment_task</code></li></ul>
     </div>
     
-                </div>
-              </div>
-            </details>
+        </div>
+        <div class="dept-link-grid">
+          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>dev_mgmt</code> 開発部門マネージャー → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>開発優先度の管理と実装</span></li></ul></div>
+          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>audit_exec</code> 監査部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>監査指摘の実装反映</span></li><li><code>dev_exec</code> 開発部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>実装制約の企画フィードバック</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>再開発タスクとして実装へ戻す</span></li><li><code>planner_mgmt</code> 企画部門マネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>スコープと納期の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>リソース計画の調整</span></li></ul></div>
+        </div>
+      </div>
+    </details>
+    </div>
+            </section>
             </div>
     </section>
 

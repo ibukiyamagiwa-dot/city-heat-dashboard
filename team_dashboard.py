@@ -19,42 +19,50 @@ INDEX_FILE = BASE_DIR / "index.html"
 
 DEPARTMENT_META = {
     "統括戦略室": {
-        "icon": "統",
+        "icon": "♕",
+        "icon_label": "羅針盤 / 王冠",
         "summary": "全体方針と卒業制作としての到達点を決める司令塔。",
         "role": "研究全体の方向性、評価基準、意思決定をまとめる部門です。",
     },
     "PMO部門": {
-        "icon": "管",
+        "icon": "✓",
+        "icon_label": "カレンダー / チェックリスト",
         "summary": "進捗・連携・提出品質を見守る管理ハブ。",
         "role": "各部門の進捗を整理し、作業が迷子にならないように調整する部門です。",
     },
     "企画部門": {
-        "icon": "企",
+        "icon": "灯",
+        "icon_label": "電球",
         "summary": "都市熱狂度アプリの価値と見せ方を考える部門。",
         "role": "誰に何を伝えるアプリなのかを定義し、改善の方向性を作る部門です。",
     },
     "監査部門": {
-        "icon": "監",
+        "icon": "盾",
+        "icon_label": "虫眼鏡 / 盾",
         "summary": "データの信頼性と説明可能性を確認する部門。",
         "role": "使っているデータやスコア根拠が卒論として説明できるかを確認する部門です。",
     },
     "改善解決案部門": {
-        "icon": "改",
+        "icon": "工",
+        "icon_label": "工具 / スパナ",
         "summary": "指摘や課題を次の改善案に変換する部門。",
         "role": "フィードバックを実装可能な修正案に分解し、次の開発へ渡す部門です。",
     },
     "フィードバック部門": {
-        "icon": "声",
+        "icon": "吹",
+        "icon_label": "吹き出し",
         "summary": "見た人の反応を集め、改善点を見つける部門。",
         "role": "教授・ユーザー・非エンジニア視点の疑問や改善要望を整理する部門です。",
     },
     "データ部門": {
-        "icon": "デ",
+        "icon": "DB",
+        "icon_label": "データベース",
         "summary": "気象・人流・施設などの根拠データを扱う部門。",
         "role": "公開データを集め、スコア計算に使える形へ整える部門です。",
     },
     "開発部門": {
-        "icon": "開",
+        "icon": "</>",
+        "icon_label": "ノートPC / コード",
         "summary": "ダッシュボードとプロトタイプを形にする部門。",
         "role": "企画・データ・監査の内容を画面や生成スクリプトとして実装する部門です。",
     },
@@ -169,6 +177,43 @@ def find_department_agents(agents: dict, dep: str) -> dict[str, tuple[str, dict]
     return found
 
 
+def agent_department_map(agents: dict) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    for key, conf in agents.items():
+        if isinstance(conf, dict):
+            mapping[key] = str(conf.get("department", "未分類"))
+    return mapping
+
+
+def render_related_links(
+    dep: str, org: dict, agents: dict, link_key: str, title: str
+) -> str:
+    links = org.get(link_key, [])
+    if not isinstance(links, list):
+        links = []
+    dep_by_agent = agent_department_map(agents)
+    rows: list[str] = []
+    for link in links:
+        if not isinstance(link, dict):
+            continue
+        src = str(link.get("from", ""))
+        dst = str(link.get("to", ""))
+        if dep_by_agent.get(src) != dep and dep_by_agent.get(dst) != dep:
+            continue
+        note = html.escape(str(link.get("note", "")))
+        src_role = html.escape(str(agents.get(src, {}).get("role", src)))
+        dst_role = html.escape(str(agents.get(dst, {}).get("role", dst)))
+        rows.append(
+            f"<li><code>{html.escape(src)}</code> {src_role} → "
+            f"<code>{html.escape(dst)}</code> {dst_role}"
+            + (f"<br /><span class='muted'>{note}</span>" if note else "")
+            + "</li>"
+        )
+    if not rows:
+        return f"<div class='dept-links'><h4>{html.escape(title)}</h4><p class='muted'>関連連携なし</p></div>"
+    return f"<div class='dept-links'><h4>{html.escape(title)}</h4><ul>{''.join(rows)}</ul></div>"
+
+
 def render_agent_detail(
     title: str, item: tuple[str, dict] | None, task_map: dict[str, list[str]]
 ) -> str:
@@ -195,42 +240,81 @@ def render_agent_detail(
     """
 
 
-def build_department_overview(agents: dict, departments: list[str], task_map: dict[str, list[str]]) -> str:
+def build_department_card(dep: str, agents: dict, task_map: dict[str, list[str]], org: dict) -> str:
+    meta = DEPARTMENT_META.get(
+        dep,
+        {
+            "icon": dep[:1],
+            "icon_label": "部門",
+            "summary": "この部門の役割を確認できます。",
+            "role": "プロジェクト内の担当範囲を整理する部門です。",
+        },
+    )
+    dep_agents = find_department_agents(agents, dep)
+    management_html = render_agent_detail("管理担当", dep_agents.get("management"), task_map)
+    execution_html = render_agent_detail("実行担当", dep_agents.get("execution"), task_map)
+    vertical_html = render_related_links(dep, org, agents, "vertical_links", "関連する縦連携")
+    horizontal_html = render_related_links(dep, org, agents, "horizontal_links", "関連する横連携")
+    return f"""
+    <details class="dept-card">
+      <summary>
+        <span class="dept-icon" aria-label="{html.escape(str(meta["icon_label"]))}">
+          {html.escape(str(meta["icon"]))}
+        </span>
+        <span class="dept-summary-text">
+          <strong>{html.escape(dep)}</strong>
+          <small>{html.escape(str(meta["summary"]))}</small>
+          <em>{html.escape(str(meta["icon_label"]))}</em>
+        </span>
+        <span class="tap-hint">クリックで詳細</span>
+      </summary>
+      <div class="dept-detail">
+        <p class="dept-role">{html.escape(str(meta["role"]))}</p>
+        <div class="dept-agent-grid">
+          {management_html}
+          {execution_html}
+        </div>
+        <div class="dept-link-grid">
+          {vertical_html}
+          {horizontal_html}
+        </div>
+      </div>
+    </details>
+    """
+
+
+def build_department_overview(
+    agents: dict, departments: list[str], task_map: dict[str, list[str]], org: dict
+) -> str:
     cards: list[str] = []
     for dep in departments:
-        meta = DEPARTMENT_META.get(
-            dep,
-            {
-                "icon": dep[:1],
-                "summary": "この部門の役割を確認できます。",
-                "role": "プロジェクト内の担当範囲を整理する部門です。",
-            },
-        )
-        dep_agents = find_department_agents(agents, dep)
-        management_html = render_agent_detail("管理担当", dep_agents.get("management"), task_map)
-        execution_html = render_agent_detail("実行担当", dep_agents.get("execution"), task_map)
-        cards.append(
+        cards.append(build_department_card(dep, agents, task_map, org))
+    return "".join(cards)
+
+
+def build_department_pyramid(agents: dict, org: dict, task_map: dict[str, list[str]]) -> str:
+    layers = org.get("hierarchy_layers", [])
+    if not isinstance(layers, list) or not layers:
+        return f"<div class='dept-grid'>{build_department_overview(agents, get_departments(agents, org), task_map, org)}</div>"
+
+    html_layers: list[str] = []
+    for layer in layers:
+        if not isinstance(layer, dict):
+            continue
+        name = html.escape(str(layer.get("name", "階層")))
+        departments = layer.get("departments", [])
+        if not isinstance(departments, list):
+            departments = []
+        cards = "".join(build_department_card(str(dep), agents, task_map, org) for dep in departments)
+        html_layers.append(
             f"""
-            <details class="dept-card">
-              <summary>
-                <span class="dept-icon">{html.escape(str(meta["icon"]))}</span>
-                <span class="dept-summary-text">
-                  <strong>{html.escape(dep)}</strong>
-                  <small>{html.escape(str(meta["summary"]))}</small>
-                </span>
-                <span class="tap-hint">クリックで詳細</span>
-              </summary>
-              <div class="dept-detail">
-                <p class="dept-role">{html.escape(str(meta["role"]))}</p>
-                <div class="dept-agent-grid">
-                  {management_html}
-                  {execution_html}
-                </div>
-              </div>
-            </details>
+            <section class="pyramid-layer">
+              <div class="pyramid-title">{name}</div>
+              <div class="pyramid-row">{cards}</div>
+            </section>
             """
         )
-    return "".join(cards)
+    return f"<div class='pyramid'>{''.join(html_layers)}</div>"
 
 
 def build_department_column(agents: dict, dep: str) -> str:
@@ -373,9 +457,7 @@ def create_html(
     score_method_html = html.escape(score_method_text)
     org_matrix_html = build_org_matrix(agents=agents, departments=departments)
     hierarchy_html = build_hierarchy_view(agents=agents, org=org)
-    department_overview_html = build_department_overview(
-        agents=agents, departments=departments, task_map=task_map
-    )
+    department_pyramid_html = build_department_pyramid(agents=agents, org=org, task_map=task_map)
     vertical_links_html = render_links(org, agents, "vertical_links", "縦連携（管理→実行）")
     horizontal_links_html = render_links(org, agents, "horizontal_links", "横連携（部門間）")
     iteration_loops_html = render_iteration_loops(org=org, agents=agents)
@@ -433,7 +515,37 @@ def create_html(
     .status {{ display: flex; gap: 12px; flex-wrap: wrap; }}
     .badge {{ background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #9a3412; font-weight: 700; }}
     .ok {{ color: var(--good); font-weight: 700; }}
-    .dept-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }}
+    .pyramid {{ display: grid; gap: 18px; }}
+    .pyramid-layer {{ display: grid; gap: 10px; }}
+    .pyramid-title {{
+      justify-self: center;
+      color: #9a3412;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-weight: 900;
+      box-shadow: 0 6px 16px rgba(243, 152, 0, .10);
+    }}
+    .pyramid-row {{
+      display: grid;
+      grid-template-columns: repeat(var(--cols, auto-fit), minmax(250px, 1fr));
+      gap: 14px;
+      justify-content: center;
+      align-items: start;
+    }}
+    .pyramid-layer:nth-child(1) .pyramid-row {{ max-width: 620px; margin: 0 auto; --cols: 2; }}
+    .pyramid-layer:nth-child(2) .pyramid-row {{ max-width: 1120px; margin: 0 auto; --cols: 4; }}
+    .pyramid-layer:nth-child(3) .pyramid-row {{ max-width: 620px; margin: 0 auto; --cols: 2; }}
+    @media (max-width: 760px) {{
+      .pyramid-row,
+      .pyramid-layer:nth-child(1) .pyramid-row,
+      .pyramid-layer:nth-child(2) .pyramid-row,
+      .pyramid-layer:nth-child(3) .pyramid-row {{
+        grid-template-columns: 1fr;
+        max-width: none;
+      }}
+    }}
     .dept-card {{
       background: #ffffff;
       border: 1px solid var(--line);
@@ -474,6 +586,7 @@ def create_html(
     }}
     .dept-summary-text strong {{ display: block; font-size: 1.02rem; }}
     .dept-summary-text small {{ display: block; color: var(--sub); line-height: 1.45; }}
+    .dept-summary-text em {{ display: block; color: #c2410c; font-style: normal; font-size: 12px; margin-top: 3px; }}
     .tap-hint {{ color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 4px 9px; font-size: 12px; font-weight: 800; white-space: nowrap; }}
     .dept-detail {{ border-top: 1px solid var(--line); padding: 14px; background: #fffdf8; }}
     .dept-role {{ margin: 0 0 12px; color: var(--text); }}
@@ -481,6 +594,10 @@ def create_html(
     .dept-agent {{ background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }}
     .dept-agent h4 {{ margin: 0 0 8px; color: var(--accent-strong); }}
     .dept-agent.empty {{ opacity: .65; }}
+    .dept-link-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px; }}
+    .dept-links {{ background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }}
+    .dept-links h4 {{ margin: 0 0 8px; color: #9a3412; }}
+    .dept-links ul {{ padding-left: 18px; }}
     .compact-section summary {{
       cursor: pointer;
       color: #9a3412;
@@ -532,9 +649,9 @@ def create_html(
     </section>
 
     <section class="panel">
-      <h2>部門をクリックして役割を見る</h2>
-      <p class="muted">最初は部門のアイコンカードだけを表示します。気になる部門を開くと、管理担当・実行担当・Goal・担当タスクを確認できます。</p>
-      <div class="dept-grid">{department_overview_html}</div>
+      <h2>ピラミッド型の階層組織図</h2>
+      <p class="muted">上から統括、方針・検証・改善、実行へ降りるCrewAI組織です。部門カードを開くと、管理担当・実行担当・Goal・担当タスク・関連連携を確認できます。</p>
+      {department_pyramid_html}
     </section>
 
     <section class="panel">
