@@ -17,6 +17,49 @@ SCORE_METHOD_FILE = BASE_DIR / "score_methodology.md"
 OUTPUT_FILE = BASE_DIR / "team_dashboard.html"
 INDEX_FILE = BASE_DIR / "index.html"
 
+DEPARTMENT_META = {
+    "統括戦略室": {
+        "icon": "統",
+        "summary": "全体方針と卒業制作としての到達点を決める司令塔。",
+        "role": "研究全体の方向性、評価基準、意思決定をまとめる部門です。",
+    },
+    "PMO部門": {
+        "icon": "管",
+        "summary": "進捗・連携・提出品質を見守る管理ハブ。",
+        "role": "各部門の進捗を整理し、作業が迷子にならないように調整する部門です。",
+    },
+    "企画部門": {
+        "icon": "企",
+        "summary": "都市熱狂度アプリの価値と見せ方を考える部門。",
+        "role": "誰に何を伝えるアプリなのかを定義し、改善の方向性を作る部門です。",
+    },
+    "監査部門": {
+        "icon": "監",
+        "summary": "データの信頼性と説明可能性を確認する部門。",
+        "role": "使っているデータやスコア根拠が卒論として説明できるかを確認する部門です。",
+    },
+    "改善解決案部門": {
+        "icon": "改",
+        "summary": "指摘や課題を次の改善案に変換する部門。",
+        "role": "フィードバックを実装可能な修正案に分解し、次の開発へ渡す部門です。",
+    },
+    "フィードバック部門": {
+        "icon": "声",
+        "summary": "見た人の反応を集め、改善点を見つける部門。",
+        "role": "教授・ユーザー・非エンジニア視点の疑問や改善要望を整理する部門です。",
+    },
+    "データ部門": {
+        "icon": "デ",
+        "summary": "気象・人流・施設などの根拠データを扱う部門。",
+        "role": "公開データを集め、スコア計算に使える形へ整える部門です。",
+    },
+    "開発部門": {
+        "icon": "開",
+        "summary": "ダッシュボードとプロトタイプを形にする部門。",
+        "role": "企画・データ・監査の内容を画面や生成スクリプトとして実装する部門です。",
+    },
+}
+
 
 def load_yaml(path: Path) -> dict:
     if not path.exists():
@@ -108,6 +151,86 @@ def build_org_matrix(agents: dict, departments: list[str]) -> str:
             """
         )
     return "".join(cells)
+
+
+def format_task_list(task_names: list[str]) -> str:
+    if not task_names:
+        return "<li>（未割り当て）</li>"
+    return "".join(f"<li><code>{html.escape(task_name)}</code></li>" for task_name in task_names)
+
+
+def find_department_agents(agents: dict, dep: str) -> dict[str, tuple[str, dict]]:
+    found: dict[str, tuple[str, dict]] = {}
+    for key, conf in agents.items():
+        if not isinstance(conf, dict) or str(conf.get("department")) != dep:
+            continue
+        tier = str(conf.get("tier", "execution"))
+        found[tier] = (key, conf)
+    return found
+
+
+def render_agent_detail(
+    title: str, item: tuple[str, dict] | None, task_map: dict[str, list[str]]
+) -> str:
+    if item is None:
+        return f"""
+        <div class="dept-agent empty">
+          <h4>{html.escape(title)}</h4>
+          <p class="muted">未設定</p>
+        </div>
+        """
+
+    key, conf = item
+    role = html.escape(str(conf.get("role", key)))
+    goal = html.escape(str(conf.get("goal", "")))
+    tasks_html = format_task_list(task_map.get(key, []))
+    return f"""
+    <div class="dept-agent">
+      <h4>{html.escape(title)}</h4>
+      <p><b>{role}</b><br /><code>{html.escape(key)}</code></p>
+      <p class="muted">{goal}</p>
+      <p class="label">担当タスク</p>
+      <ul>{tasks_html}</ul>
+    </div>
+    """
+
+
+def build_department_overview(agents: dict, departments: list[str], task_map: dict[str, list[str]]) -> str:
+    cards: list[str] = []
+    for dep in departments:
+        meta = DEPARTMENT_META.get(
+            dep,
+            {
+                "icon": dep[:1],
+                "summary": "この部門の役割を確認できます。",
+                "role": "プロジェクト内の担当範囲を整理する部門です。",
+            },
+        )
+        dep_agents = find_department_agents(agents, dep)
+        management_html = render_agent_detail("管理担当", dep_agents.get("management"), task_map)
+        execution_html = render_agent_detail("実行担当", dep_agents.get("execution"), task_map)
+        cards.append(
+            f"""
+            <details class="dept-card">
+              <summary>
+                <span class="dept-icon">{html.escape(str(meta["icon"]))}</span>
+                <span class="dept-summary-text">
+                  <strong>{html.escape(dep)}</strong>
+                  <small>{html.escape(str(meta["summary"]))}</small>
+                </span>
+                <span class="tap-hint">クリックで詳細</span>
+              </summary>
+              <div class="dept-detail">
+                <p class="dept-role">{html.escape(str(meta["role"]))}</p>
+                <div class="dept-agent-grid">
+                  {management_html}
+                  {execution_html}
+                </div>
+              </div>
+            </details>
+            """
+        )
+    return "".join(cards)
 
 
 def build_department_column(agents: dict, dep: str) -> str:
@@ -250,6 +373,9 @@ def create_html(
     score_method_html = html.escape(score_method_text)
     org_matrix_html = build_org_matrix(agents=agents, departments=departments)
     hierarchy_html = build_hierarchy_view(agents=agents, org=org)
+    department_overview_html = build_department_overview(
+        agents=agents, departments=departments, task_map=task_map
+    )
     vertical_links_html = render_links(org, agents, "vertical_links", "縦連携（管理→実行）")
     horizontal_links_html = render_links(org, agents, "horizontal_links", "横連携（部門間）")
     iteration_loops_html = render_iteration_loops(org=org, agents=agents)
@@ -307,6 +433,66 @@ def create_html(
     .status {{ display: flex; gap: 12px; flex-wrap: wrap; }}
     .badge {{ background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #9a3412; font-weight: 700; }}
     .ok {{ color: var(--good); font-weight: 700; }}
+    .dept-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }}
+    .dept-card {{
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .07);
+      overflow: hidden;
+    }}
+    .dept-card[open] {{ border-color: #fed7aa; box-shadow: 0 14px 30px rgba(243, 152, 0, .16); }}
+    .dept-card summary {{
+      list-style: none;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      position: relative;
+    }}
+    .dept-card summary::-webkit-details-marker {{ display: none; }}
+    .dept-card summary::before {{
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--brand-gradient);
+    }}
+    .dept-icon {{
+      width: 48px;
+      height: 48px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #e60012, #f39800 70%, #fff100);
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 19px;
+      box-shadow: 0 8px 18px rgba(230, 0, 18, .18);
+    }}
+    .dept-summary-text strong {{ display: block; font-size: 1.02rem; }}
+    .dept-summary-text small {{ display: block; color: var(--sub); line-height: 1.45; }}
+    .tap-hint {{ color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 4px 9px; font-size: 12px; font-weight: 800; white-space: nowrap; }}
+    .dept-detail {{ border-top: 1px solid var(--line); padding: 14px; background: #fffdf8; }}
+    .dept-role {{ margin: 0 0 12px; color: var(--text); }}
+    .dept-agent-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }}
+    .dept-agent {{ background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }}
+    .dept-agent h4 {{ margin: 0 0 8px; color: var(--accent-strong); }}
+    .dept-agent.empty {{ opacity: .65; }}
+    .compact-section summary {{
+      cursor: pointer;
+      color: #9a3412;
+      font-weight: 800;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 8px 12px;
+      display: inline-block;
+      margin-top: 8px;
+    }}
+    .compact-section[open] summary {{ margin-bottom: 14px; }}
     .org-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }}
     .org-col {{ background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; }}
     .hierarchy-layer {{ margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }}
@@ -346,15 +532,24 @@ def create_html(
     </section>
 
     <section class="panel">
-      <h2>階層型組織図</h2>
-      <p class="muted">Level 1からLevel 3へ降りる階層構造です。各部門内は管理担当と実行担当の二台体制です。</p>
-      {hierarchy_html}
+      <h2>部門をクリックして役割を見る</h2>
+      <p class="muted">最初は部門のアイコンカードだけを表示します。気になる部門を開くと、管理担当・実行担当・Goal・担当タスクを確認できます。</p>
+      <div class="dept-grid">{department_overview_html}</div>
     </section>
 
     <section class="panel">
-      <h2>部門別二台体制（一覧）</h2>
-      <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
-      <div class="org-grid">{org_matrix_html}</div>
+      <h2>詳しい組織図</h2>
+      <p class="muted">発表時は必要に応じて開けるように、詳細な組織図は折りたたみ表示にしています。</p>
+      <details class="compact-section">
+        <summary>階層型組織図を開く</summary>
+        <p class="muted">Level 1からLevel 3へ降りる階層構造です。各部門内は管理担当と実行担当の二台体制です。</p>
+        {hierarchy_html}
+      </details>
+      <details class="compact-section">
+        <summary>部門別二台体制を開く</summary>
+        <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
+        <div class="org-grid">{org_matrix_html}</div>
+      </details>
     </section>
 
     <section class="panel">
