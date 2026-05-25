@@ -84,6 +84,37 @@ CITY_LABELS = {
     "FUKUOKA": "福岡",
 }
 
+CITY_STATIONS = {
+    "TOKYO": [
+        {"name": "新宿駅", "station_users": 1205116},
+        {"name": "渋谷駅", "station_users": 936944},
+        {"name": "池袋駅", "station_users": 917582},
+        {"name": "東京駅", "station_users": 693316},
+        {"name": "品川駅", "station_users": 497300},
+    ],
+    "OSAKA": [
+        {"name": "大阪駅", "station_users": 694156},
+        {"name": "大阪梅田駅", "station_users": 402947},
+        {"name": "梅田駅", "station_users": 376997},
+        {"name": "難波駅", "station_users": 298803},
+        {"name": "天王寺駅", "station_users": 255496},
+    ],
+    "NAGOYA": [
+        {"name": "名古屋駅（JR）", "station_users": 354486},
+        {"name": "名古屋駅（市営）", "station_users": 334170},
+        {"name": "名鉄名古屋駅", "station_users": 255163},
+        {"name": "栄駅", "station_users": 183400},
+        {"name": "金山駅", "station_users": 153073},
+    ],
+    "FUKUOKA": [
+        {"name": "博多駅（JR）", "station_users": 216766},
+        {"name": "博多駅（市営）", "station_users": 136165},
+        {"name": "天神駅", "station_users": 118279},
+        {"name": "西鉄福岡駅", "station_users": 109641},
+        {"name": "姪浜駅", "station_users": 83991},
+    ],
+}
+
 DATA_SOURCE_CATALOG = [
     {
         "id": "weather",
@@ -131,6 +162,18 @@ DATA_SOURCE_CATALOG = [
         "trust_label": "低",
         "trust_note": "OSM登録状況に依存するため、カテゴリ別内訳つきの補助指標として扱う",
         "used_in_score": "現代エンタメ補正（modern_entertainment_bonus）",
+        "fixed_value": False,
+    },
+    {
+        "id": "station_focus",
+        "category": "駅別プロトタイプ",
+        "name": "注目駅の乗降客数・周辺エンタメ推定",
+        "provider": "国土数値情報 + OSM都市合計の駅利用者比按分",
+        "reference_year": "2023年度 + OSM取得時点",
+        "trust_level": "low",
+        "trust_label": "低",
+        "trust_note": "駅別ビューの枠を確認するためのプロトタイプ推定",
+        "used_in_score": "駅別熱狂度プロトタイプ（都市スコア本体には未使用）",
         "fixed_value": False,
     },
     {
@@ -474,6 +517,90 @@ def normalize_modern_entertainment_breakdown(raw_breakdown: list[dict] | None) -
     ]
 
 
+def station_profile_label(flow_rank: int, density_rank: int) -> str:
+    if flow_rank == 1 and density_rank > 2:
+        return "人流型"
+    if density_rank <= 2 and flow_rank > 2:
+        return "カルチャー型"
+    if flow_rank <= 2 and density_rank <= 2:
+        return "総合熱狂型"
+    return "バランス型"
+
+
+def build_station_focus(city: str, urban: dict, weather_boost: float) -> list[dict]:
+    """都市内ドリルダウン用の駅別プロトタイプ指標を作る。"""
+    stations = CITY_STATIONS.get(city, [])
+    if not stations:
+        return []
+
+    station_users = [station["station_users"] for station in stations]
+    total_users = sum(station_users) or urban.get("station_users", 0) or 1
+    city_entertainment = urban.get("modern_entertainment_facilities", 0) or 0
+
+    station_rows: list[dict] = []
+    for station in stations:
+        users = station["station_users"]
+        user_share = users / total_users
+        # 駅別OSM取得は次フェーズ。現時点は都市OSM合計を駅利用者比で按分した透明な試算。
+        station_entertainment = round(city_entertainment * user_share)
+        entertainment_density = per_capita(station_entertainment, users, 1_000_000)
+        station_rows.append(
+            {
+                "name": station["name"],
+                "station_users": users,
+                "station_user_share": round(user_share, 3),
+                "station_osm_entertainment_facilities": station_entertainment,
+                "entertainment_density_per_million_users": round(
+                    entertainment_density, 2
+                ),
+                "source_mode": "city_osm_share_prototype",
+                "trust_level": "low",
+            }
+        )
+
+    user_ranks = rank_records(
+        [{"city": row["name"], "station_users": row["station_users"]} for row in station_rows],
+        "station_users",
+    )
+    density_ranks = rank_records(
+        [
+            {
+                "city": row["name"],
+                "density": row["entertainment_density_per_million_users"],
+            }
+            for row in station_rows
+        ],
+        "density",
+    )
+    min_users, max_users = min(station_users), max(station_users)
+    densities = [row["entertainment_density_per_million_users"] for row in station_rows]
+    min_density, max_density = min(densities), max(densities)
+
+    for row in station_rows:
+        flow_bonus = normalize_to_range(row["station_users"], min_users, max_users, 0.0, 36.0)
+        density_bonus = normalize_to_range(
+            row["entertainment_density_per_million_users"],
+            min_density,
+            max_density,
+            0.0,
+            24.0,
+        )
+        station_weather = clamp(weather_boost * 0.3, -6.0, 6.0)
+        station_heat = clamp(35.0 + flow_bonus + density_bonus + station_weather, 0.0, 100.0)
+        flow_rank = user_ranks[row["name"]]
+        density_rank = density_ranks[row["name"]]
+        row["flow_rank"] = flow_rank
+        row["density_rank"] = density_rank
+        row["station_heat_score"] = round(station_heat, 1)
+        row["profile_type"] = station_profile_label(flow_rank, density_rank)
+        row["score_note"] = (
+            "駅別熱狂度は都市スコア本体とは別枠の試算です。"
+            "乗降客数と都市OSM現代エンタメ合計の按分値から算出しています。"
+        )
+
+    return sorted(station_rows, key=lambda row: row["station_heat_score"], reverse=True)
+
+
 def fetch_modern_entertainment_count(city: str, lat: float, lon: float, cache: dict[str, dict]) -> dict:
     """Overpass APIで現代エンタメ施設数とカテゴリ内訳を取得する。"""
     cached = cache.get(city)
@@ -801,6 +928,7 @@ def fetch_city_weather(
         "modern_entertainment_radius_m": (
             urban.get("modern_entertainment_radius_m") if urban else None
         ),
+        "station_focus": build_station_focus(city, urban, weather_boost) if urban else [],
         "culture_venues_per_100k": urban.get("culture_venues_per_100k") if urban else None,
         "modern_entertainment_per_100k": (
             urban.get("modern_entertainment_per_100k") if urban else None
@@ -880,6 +1008,9 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 ),
                 "modern_entertainment_radius_m": (
                     urban["modern_entertainment_radius_m"] if urban else None
+                ),
+                "station_focus": (
+                    build_station_focus(city, urban, weather_boost) if urban else []
                 ),
                 "culture_venues_per_100k": (
                     urban["culture_venues_per_100k"] if urban else None
@@ -963,6 +1094,7 @@ def build_dataset() -> dict:
             "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty",
             "summary": "熱狂度は、絶対量の規模パワー、人口/人流あたりの充実度、今日のブーストを分けて評価するモデル検証版です。",
             "warning": "固定の仮説値は使用していません。公的統計とOSM補助指標は信頼度を分けて表示し、施設数は開催数ではない点に注意してください。",
+            "station_view_note": "駅別ビューは都市スコア式を変更しないプロトタイプ枠です。駅周辺OSM数は現時点では都市OSM合計を駅利用者比で按分した試算として表示します。",
             "data_sources_file": DATA_SOURCES_FILE.name,
             "urban_csv": URBAN_CSV.name,
         },

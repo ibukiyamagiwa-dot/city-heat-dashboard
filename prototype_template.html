@@ -247,6 +247,41 @@
     .entertainment-name strong { display: block; }
     .entertainment-name small { color: var(--muted); }
     .entertainment-count { font-weight: 900; color: var(--accent-strong); }
+    .station-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .station-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, .05);
+      position: relative;
+      overflow: hidden;
+    }
+    .station-card::before {
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -10px -10px 8px;
+      background: var(--brand-gradient);
+    }
+    .station-title { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+    .station-type {
+      display: inline-block;
+      color: #9a3412;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .station-score { font-size: 1.55rem; color: var(--accent-strong); font-weight: 900; margin-top: 6px; }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
     .ok { color: var(--high); }
     .warn { color: var(--medium); }
@@ -576,6 +611,41 @@
       `;
     }
 
+    function renderStationFocus(r) {
+      const stations = r.station_focus || [];
+      if (!stations.length) {
+        return `<p class="muted">駅別ビューはこの都市ではまだ未設定です。</p>`;
+      }
+      return `
+        <div class="station-grid">
+          ${stations.map((station, idx) => `
+            <div class="station-card">
+              <div class="station-title">
+                <strong>${idx + 1}. ${station.name}</strong>
+                <span class="station-type">${station.profile_type}</span>
+              </div>
+              <div class="station-score">${station.station_heat_score} 点</div>
+              <div class="metric-row">
+                <div class="metric-box">
+                  <div class="label">乗降客数</div>
+                  <div class="value">${fmt(station.station_users)}</div>
+                </div>
+                <div class="metric-box">
+                  <div class="label">周辺OSM現代エンタメ</div>
+                  <div class="value">${fmt(station.station_osm_entertainment_facilities)}</div>
+                </div>
+              </div>
+              <p class="muted">文化/エンタメ密度: ${station.entertainment_density_per_million_users} 施設 / 駅利用100万人</p>
+              <p class="muted">人流順位: ${station.flow_rank}位 / 密度順位: ${station.density_rank}位</p>
+            </div>
+          `).join("")}
+        </div>
+        <p class="muted" style="margin-top:8px;">
+          ${dataset.score_policy.station_view_note || ""}
+        </p>
+      `;
+    }
+
     function renderDetail() {
       const r = dataset.records.find((x) => x.city === selectedCity) || dataset.records[0];
       if (!r) return;
@@ -648,6 +718,9 @@
         <h3 style="margin-top:16px;">現代エンタメ施設の内訳（OSM）</h3>
         <p class="muted">合計値だけでなく、どの施設種別を現代エンタメとして数えたかを表示します。</p>
         ${renderEntertainmentBreakdown(r)}
+        <h3 style="margin-top:16px;">${r.city_label || r.city}の中の注目駅</h3>
+        <p class="muted">都市単位の完成版スコアは維持しつつ、次の拡張として駅別熱狂度のプロトタイプ枠を表示します。</p>
+        ${renderStationFocus(r)}
         <h3 style="margin-top:16px;">内訳一覧</h3>
         <ul class="breakdown-list">${items}
           <li><div>合計（熱狂度）</div><div></div><div><strong>${r.heat_score}</strong></div></li>

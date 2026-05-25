@@ -53,6 +53,14 @@ pedestrian_flow:
   current_usage: "駅乗降客数 station_users を flow_bonus に正規化して使用"
   audit_rule: "個人情報を含むデータは使わず、集計済み公開データのみ候補にする。venues_per_million_station_users の分母にも使う"
 
+station_focus:
+  name: "都市内ドリルダウン / 駅別熱狂度プロトタイプ"
+  category: "駅別プロトタイプ"
+  acquisition: "urban_indicators.csv の主要駅乗降客数 + OSM都市合計の駅利用者比按分"
+  trust_level: "low"
+  current_usage: "都市スコア式は変更せず、都市詳細内で注目駅の仮スコア・分類・密度を表示"
+  audit_rule: "駅周辺OSMの厳密取得ではなくプロトタイプ推定。今後は駅中心半径500m〜1kmのOSM直接取得や駅勢圏人口で検証する"
+
 social_signal:
   name: "SNS/検索トレンド"
   category: "話題性"
