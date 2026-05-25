@@ -12,22 +12,28 @@
   />
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: #141d33;
-      --panel2: #1a2742;
-      --border: #2a3a63;
-      --text: #e7eefc;
-      --muted: #b8c5df;
-      --high: #77dd77;
-      --medium: #ffd166;
-      --low: #ff8fa3;
-      --accent: #75b7ff;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel2: #fff7ed;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #64748b;
+      --high: #059669;
+      --medium: #f39800;
+      --low: #e60012;
+      --accent: #f39800;
+      --accent-strong: #e60012;
+      --accent-yellow: #fff100;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
       color: var(--text);
       line-height: 1.55;
     }
@@ -41,14 +47,26 @@
       border-radius: 14px;
       padding: 16px 18px;
       margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -16px -18px 14px;
+      background: var(--brand-gradient);
     }
     .hero-lead { color: var(--muted); margin: 0 0 6px; max-width: 720px; }
     .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 10px; border-radius: 999px;
-      background: var(--panel2); border: 1px solid var(--border);
+      background: #fff7ed; border: 1px solid #fed7aa;
       font-size: 12px;
+      color: #9a3412;
+      font-weight: 700;
     }
     .info-grid {
       display: grid;
@@ -69,32 +87,38 @@
       display: inline-block; padding: 2px 8px; border-radius: 999px;
       font-size: 12px; font-weight: 700;
     }
-    .trust-pill.high { background: rgba(119,221,119,.15); color: var(--high); }
-    .trust-pill.medium { background: rgba(255,209,102,.15); color: var(--medium); }
-    .trust-pill.low { background: rgba(255,143,163,.15); color: var(--low); }
+    .trust-pill.high { background: #dcfce7; color: var(--high); }
+    .trust-pill.medium { background: #ffedd5; color: #c2410c; }
+    .trust-pill.low { background: #fee2e2; color: var(--low); }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { border-bottom: 1px solid var(--border); padding: 9px 8px; text-align: left; vertical-align: top; }
-    th { color: var(--muted); font-weight: 600; }
+    th { color: #334155; font-weight: 700; background: #f8fafc; }
     .muted { color: var(--muted); font-size: 13px; }
     .city-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .city-tab {
-      background: var(--panel2); border: 1px solid var(--border);
+      background: #ffffff; border: 1px solid var(--border);
       color: var(--text); border-radius: 999px; padding: 8px 14px;
       cursor: pointer; font-size: 14px;
     }
-    .city-tab.active { border-color: var(--accent); background: rgba(117,183,255,.12); }
+    .city-tab.active {
+      border-color: var(--accent);
+      background: linear-gradient(90deg, rgba(230,0,18,.1), rgba(243,152,0,.15));
+      color: #9a3412;
+      font-weight: 800;
+    }
     .detail-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
     @media (max-width: 760px) { .detail-grid { grid-template-columns: 1fr; } }
-    .score-big { font-size: 2.4rem; font-weight: 800; color: var(--accent); margin: 4px 0; }
+    .score-big { font-size: 2.4rem; font-weight: 800; color: var(--accent-strong); margin: 4px 0; }
     .equation {
       font-family: Consolas, monospace;
-      background: #0f1a32; border: 1px solid var(--border);
+      background: #fffbeb; border: 1px solid #fde68a;
       border-radius: 8px; padding: 10px 12px; font-size: 14px;
       word-break: break-all;
+      color: #7c2d12;
     }
     .narrative {
       background: var(--panel2); border-left: 3px solid var(--accent);
@@ -109,7 +133,7 @@
     }
     .breakdown-list li:last-child { border-bottom: none; font-weight: 700; }
     .bar-track {
-      height: 8px; background: #0f1a32; border-radius: 999px;
+      height: 8px; background: #f1f5f9; border-radius: 999px;
       overflow: hidden; margin-top: 4px;
     }
     .bar-fill { height: 100%; border-radius: 999px; }
@@ -122,33 +146,43 @@
       background: var(--panel2); border: 1px solid var(--border);
       border-radius: 12px; padding: 12px; cursor: pointer;
       transition: border-color .15s;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
+      position: relative;
+      overflow: hidden;
     }
-    .city-card:hover, .city-card.selected { border-color: var(--accent); }
-    .city-card .score { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+    .city-card::before {
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -12px -12px 10px;
+      background: var(--brand-gradient);
+    }
+    .city-card:hover, .city-card.selected { border-color: var(--accent); box-shadow: 0 12px 28px rgba(243, 152, 0, .18); }
+    .city-card .score { font-size: 1.8rem; font-weight: 800; color: var(--accent-strong); }
     .rank {
       display: inline-block; min-width: 34px; text-align: center;
       padding: 2px 8px; margin-right: 6px; border-radius: 999px;
-      background: rgba(117,183,255,.16); color: var(--accent); font-weight: 800;
+      background: linear-gradient(90deg, #e60012, #f39800); color: #ffffff; font-weight: 800;
     }
     .metric-row {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;
       margin: 10px 0;
     }
     .metric-box {
-      background: #0f1a32; border: 1px solid var(--border);
+      background: #ffffff; border: 1px solid var(--border);
       border-radius: 10px; padding: 9px;
     }
     .metric-box .label { color: var(--muted); font-size: 12px; }
     .metric-box .value { font-size: 1.25rem; font-weight: 800; }
     .insight {
       margin-top: 8px; padding: 8px 10px;
-      border-radius: 9px; background: rgba(255,255,255,.04);
+      border-radius: 9px; background: #f8fafc;
       font-size: 13px;
     }
-    .weak { color: #ffb1c1; }
-    .strong { color: #a7f3b8; }
-    .compare-bar { height: 10px; background: #0f1a32; border-radius: 999px; overflow: hidden; margin-top: 6px; }
-    .compare-fill { height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); }
+    .weak { color: #be123c; }
+    .strong { color: #047857; }
+    .compare-bar { height: 10px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 6px; }
+    .compare-fill { height: 100%; background: var(--brand-gradient); }
     .map-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr);
@@ -160,10 +194,10 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
-      background: #0f1a32;
+      background: #ffffff;
     }
     .map-side {
-      background: var(--panel2);
+      background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px;
@@ -184,14 +218,15 @@
       vertical-align: -1px;
     }
     .leaflet-container {
-      background: #0f1a32;
-      color: #1a2742;
+      background: #ffffff;
+      color: var(--text);
     }
     .leaflet-popup-content-wrapper,
     .leaflet-popup-tip {
-      background: #141d33;
+      background: #ffffff;
       color: var(--text);
       border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
     .map-popup strong { color: var(--accent); }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
@@ -317,7 +352,7 @@
     crossorigin=""
   ></script>
   <script>
-    const dataset = {"generated_at": "2026-05-25T23:43:13+09:00", "records": [{"city": "TOKYO", "city_label": "東京", "prefecture": "東京都", "lat": 35.6762, "lon": 139.6503, "temperature_c": 18.3, "precipitation_mm": 0.0, "wind_speed_mps": 2.7, "population": 14086000, "station_users": 4250258, "event_venues": 132, "modern_entertainment_facilities": 1372, "culture_venues_per_100k": 0.937, "modern_entertainment_per_100k": 9.74, "culture_venues_per_million_station_users": 31.06, "scale_power": 68.0, "accessibility_power": 9.7, "city_power_score": 77.7, "weather_boost": 7.0, "flow_bonus": 18.0, "culture_venue_bonus": 7.0, "modern_entertainment_bonus": 8.0, "heat_score": 84.7, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:cache)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 10.0, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 18.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 7.0, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 8.0, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 9.7, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -3.0, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 1, "city_power_rank": 1, "weather_rank": 3, "scale_rank": 1, "accessibility_rank": 2, "flow_rank": 1, "culture_venue_rank": 1, "venue_rank": 1, "modern_entertainment_rank": 1, "culture_per_population_rank": 3, "modern_per_population_rank": 1, "culture_per_flow_rank": 4, "strength_text": "強み: 主要駅利用者数が4都市中1位、文化施設数が4都市中1位、現代エンタメ施設数が4都市中1位、人口あたり現代エンタメ施設数が4都市中1位", "weakness_text": "弱み: 今日の気象条件が4都市中3位", "score_equation": "規模パワー 68.0 + 充実度 9.7 + 今日のブースト 7.0 = 84.7", "score_narrative": "東京（東京都）の熱狂度は 84.7 点です。規模パワーは 68.0 点で、主要駅利用者数（約4,250,258人/日）、文化施設（132施設）、現代エンタメ施設（1372施設）が主な根拠です。充実度は 9.7 点で、人口（約14,086,000人）や人流あたりの施設数を反映しています。今日のブーストは 7.0 点で、気温 18.3℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "OSAKA", "city_label": "大阪", "prefecture": "大阪府", "lat": 34.6937, "lon": 135.5023, "temperature_c": 20.2, "precipitation_mm": 0.0, "wind_speed_mps": 3.3, "population": 8763000, "station_users": 2028399, "event_venues": 69, "modern_entertainment_facilities": 644, "culture_venues_per_100k": 0.787, "modern_entertainment_per_100k": 7.349, "culture_venues_per_million_station_users": 34.02, "scale_power": 45.2, "accessibility_power": 5.6, "city_power_score": 50.7, "weather_boost": 8.6, "flow_bonus": 6.8, "culture_venue_bonus": 0.0, "modern_entertainment_bonus": 3.3, "heat_score": 59.3, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 12.2, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 6.8, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 0.0, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 3.3, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 5.6, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -3.6, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 2, "city_power_rank": 2, "weather_rank": 2, "scale_rank": 2, "accessibility_rank": 4, "flow_rank": 2, "culture_venue_rank": 4, "venue_rank": 4, "modern_entertainment_rank": 2, "culture_per_population_rank": 4, "modern_per_population_rank": 2, "culture_per_flow_rank": 3, "strength_text": "強み: 絶対量の規模パワーが4都市中2位", "weakness_text": "弱み: 文化施設数が4都市中最少、人口あたり文化施設数が4都市中最少", "score_equation": "規模パワー 45.2 + 充実度 5.6 + 今日のブースト 8.6 = 59.3", "score_narrative": "大阪（大阪府）の熱狂度は 59.3 点です。規模パワーは 45.2 点で、主要駅利用者数（約2,028,399人/日）、文化施設（69施設）、現代エンタメ施設（644施設）が主な根拠です。充実度は 5.6 点で、人口（約8,763,000人）や人流あたりの施設数を反映しています。今日のブーストは 8.6 点で、気温 20.2℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "NAGOYA", "city_label": "名古屋", "prefecture": "愛知県", "lat": 35.1815, "lon": 136.9066, "temperature_c": 19.7, "precipitation_mm": 0.0, "wind_speed_mps": 1.0, "population": 7477000, "station_users": 1280292, "event_venues": 81, "modern_entertainment_facilities": 312, "culture_venues_per_100k": 1.083, "modern_entertainment_per_100k": 4.173, "culture_venues_per_million_station_users": 63.27, "scale_power": 40.6, "accessibility_power": 7.5, "city_power_score": 48.1, "weather_boost": 10.5, "flow_bonus": 3.1, "culture_venue_bonus": 1.3, "modern_entertainment_bonus": 1.2, "heat_score": 58.6, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 11.6, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 3.1, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 1.3, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 1.2, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 7.5, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -1.1, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 3, "city_power_rank": 4, "weather_rank": 1, "scale_rank": 3, "accessibility_rank": 3, "flow_rank": 3, "culture_venue_rank": 2, "venue_rank": 2, "modern_entertainment_rank": 3, "culture_per_population_rank": 2, "modern_per_population_rank": 3, "culture_per_flow_rank": 2, "strength_text": "強み: 今日の気象条件が最も追い風", "weakness_text": "弱み: 人口/人流あたり充実度が4都市中3位", "score_equation": "規模パワー 40.6 + 充実度 7.5 + 今日のブースト 10.5 = 58.6", "score_narrative": "名古屋（愛知県）の熱狂度は 58.6 点です。規模パワーは 40.6 点で、主要駅利用者数（約1,280,292人/日）、文化施設（81施設）、現代エンタメ施設（312施設）が主な根拠です。充実度は 7.5 点で、人口（約7,477,000人）や人流あたりの施設数を反映しています。今日のブーストは 10.5 点で、気温 19.7℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "FUKUOKA", "city_label": "福岡", "prefecture": "福岡県", "lat": 33.5904, "lon": 130.4017, "temperature_c": 22.1, "precipitation_mm": 0.0, "wind_speed_mps": 7.4, "population": 5103000, "station_users": 664842, "event_venues": 76, "modern_entertainment_facilities": 128, "culture_venues_per_100k": 1.489, "modern_entertainment_per_100k": 2.508, "culture_venues_per_million_station_users": 114.31, "scale_power": 35.8, "accessibility_power": 14.0, "city_power_score": 49.8, "weather_boost": 6.4, "flow_bonus": 0.0, "culture_venue_bonus": 0.8, "modern_entertainment_bonus": 0.0, "heat_score": 56.2, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 14.5, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 0.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 0.8, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 14.0, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -8.1, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 4, "city_power_rank": 3, "weather_rank": 4, "scale_rank": 4, "accessibility_rank": 1, "flow_rank": 4, "culture_venue_rank": 3, "venue_rank": 3, "modern_entertainment_rank": 4, "culture_per_population_rank": 1, "modern_per_population_rank": 4, "culture_per_flow_rank": 1, "strength_text": "強み: 人口あたり文化施設数が4都市中1位", "weakness_text": "弱み: 主要駅利用者数が4都市中最少、現代エンタメ施設数が4都市中最少、人口あたり現代エンタメ施設数が4都市中最少、今日の気象条件が最も向かい風", "score_equation": "規模パワー 35.8 + 充実度 14.0 + 今日のブースト 6.4 = 56.2", "score_narrative": "福岡（福岡県）の熱狂度は 56.2 点です。規模パワーは 35.8 点で、主要駅利用者数（約664,842人/日）、文化施設（76施設）、現代エンタメ施設（128施設）が主な根拠です。充実度は 14.0 点で、人口（約5,103,000人）や人流あたりの施設数を反映しています。今日のブーストは 6.4 点で、気温 22.1℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV + OSM施設数を取得"}, {"name": "監査", "status": "doing", "note": "人口補正とOSM補助指標の妥当性を検証"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "done", "note": "スコア内訳・出典表示を改善"}, {"name": "解決案", "status": "done", "note": "絶対量と人口/人流あたり充実度を分離"}, {"name": "β版再開発", "status": "todo", "note": "OSMタグ精査と時系列の追加"}], "todos": [{"id": "T-001", "title": "CSV人流データをスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "正式なオープンデータ出典へ差し替え"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "達成", "next_action": "地図表示で視覚的説明を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "達成", "next_action": "取得時刻の自動記録を強化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "達成", "next_action": "時系列推移の追加を検討"}, {"id": "T-005", "title": "劇場・音楽堂を文化施設スコアとして再定義する", "owner": "データ部門", "status": "達成", "next_action": "文化施設以外の現代エンタメ指標と分離して説明"}, {"id": "T-006", "title": "人口・人流あたり施設充実度を追加する", "owner": "分析部門", "status": "達成", "next_action": "都道府県単位から市区町村単位への改善を検討"}, {"id": "T-007", "title": "OSMで現代エンタメ施設数を自動取得する", "owner": "開発部門", "status": "検証中", "next_action": "タグの重複・網羅性を監査"}], "feedback": ["スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。", "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。", "人口・人流あたり補正により、大都市偏重の疑問に答えやすくなった。"]}, "data_sources": [{"id": "weather", "category": "気象", "name": "気温・降水量・風速", "provider": "Open-Meteo API", "reference_year": "取得時刻ベース（リアルタイム）", "trust_level": "high", "trust_label": "高", "trust_note": "APIから直接取得する実測値", "used_in_score": "今日のブースト（weather_boost）", "fixed_value": false}, {"id": "flow", "category": "人流", "name": "主要ターミナル駅 乗降客数（5駅合計）", "provider": "国土交通省 国土数値情報（駅別乗降客数）", "reference_year": "2023年度（令和5年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "公的統計。都市間比較用に正規化して使用", "used_in_score": "規模パワー（scale_power）", "fixed_value": false}, {"id": "culture_venue", "category": "文化施設", "name": "劇場・音楽堂 施設数", "provider": "文部科学省 社会教育調査", "reference_year": "2021年度（令和3年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "都道府県単位の施設数（開催数ではない）", "used_in_score": "文化施設スコア（culture_venue_bonus）", "fixed_value": false}, {"id": "modern_entertainment", "category": "現代エンタメ", "name": "映画館・博物館・スタジアム等", "provider": "OpenStreetMap / Overpass API", "reference_year": "取得時点ベース", "trust_level": "low", "trust_label": "低", "trust_note": "OSM登録状況に依存するため、補助指標として扱う", "used_in_score": "現代エンタメ補正（modern_entertainment_bonus）", "fixed_value": false}, {"id": "population", "category": "人口", "name": "都道府県人口", "provider": "総務省 人口推計", "reference_year": "2023年10月1日現在", "trust_level": "medium", "trust_label": "中", "trust_note": "人口あたり施設充実度の分母として使用", "used_in_score": "充実度スコア（accessibility_power）", "fixed_value": false}, {"id": "base", "category": "設計", "name": "基準点", "provider": "本研究のスコア設計", "reference_year": "—", "trust_level": "medium", "trust_label": "中", "trust_note": "都市間比較の起点となる定数", "used_in_score": "規模パワーの基準 35.0 点", "fixed_value": true}], "score_policy": {"formula": "heat_score = scale_power + accessibility_power + weather_boost", "city_power_formula": "city_power_score = scale_power + accessibility_power", "scale_formula": "scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus", "accessibility_formula": "accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus", "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty", "summary": "熱狂度は、絶対量の規模パワー、人口/人流あたりの充実度、今日のブーストを分けて評価するモデル検証版です。", "warning": "固定の仮説値は使用していません。公的統計とOSM補助指標は信頼度を分けて表示し、施設数は開催数ではない点に注意してください。", "data_sources_file": "data_sources.yaml", "urban_csv": "urban_indicators.csv"}};
+    const dataset = {"generated_at": "2026-05-26T00:01:38+09:00", "records": [{"city": "TOKYO", "city_label": "東京", "prefecture": "東京都", "lat": 35.6762, "lon": 139.6503, "temperature_c": 18.2, "precipitation_mm": 0.0, "wind_speed_mps": 2.3, "population": 14086000, "station_users": 4250258, "event_venues": 132, "modern_entertainment_facilities": 1372, "culture_venues_per_100k": 0.937, "modern_entertainment_per_100k": 9.74, "culture_venues_per_million_station_users": 31.06, "scale_power": 68.0, "accessibility_power": 9.7, "city_power_score": 77.7, "weather_boost": 7.3, "flow_bonus": 18.0, "culture_venue_bonus": 7.0, "modern_entertainment_bonus": 8.0, "heat_score": 85.0, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:cache)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 9.8, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 18.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 7.0, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 8.0, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 9.7, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -2.5, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 1, "city_power_rank": 1, "weather_rank": 3, "scale_rank": 1, "accessibility_rank": 2, "flow_rank": 1, "culture_venue_rank": 1, "venue_rank": 1, "modern_entertainment_rank": 1, "culture_per_population_rank": 3, "modern_per_population_rank": 1, "culture_per_flow_rank": 4, "strength_text": "強み: 主要駅利用者数が4都市中1位、文化施設数が4都市中1位、現代エンタメ施設数が4都市中1位、人口あたり現代エンタメ施設数が4都市中1位", "weakness_text": "弱み: 今日の気象条件が4都市中3位", "score_equation": "規模パワー 68.0 + 充実度 9.7 + 今日のブースト 7.3 = 85.0", "score_narrative": "東京（東京都）の熱狂度は 85.0 点です。規模パワーは 68.0 点で、主要駅利用者数（約4,250,258人/日）、文化施設（132施設）、現代エンタメ施設（1372施設）が主な根拠です。充実度は 9.7 点で、人口（約14,086,000人）や人流あたりの施設数を反映しています。今日のブーストは 7.3 点で、気温 18.2℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "OSAKA", "city_label": "大阪", "prefecture": "大阪府", "lat": 34.6937, "lon": 135.5023, "temperature_c": 20.0, "precipitation_mm": 0.0, "wind_speed_mps": 3.3, "population": 8763000, "station_users": 2028399, "event_venues": 69, "modern_entertainment_facilities": 644, "culture_venues_per_100k": 0.787, "modern_entertainment_per_100k": 7.349, "culture_venues_per_million_station_users": 34.02, "scale_power": 45.2, "accessibility_power": 5.6, "city_power_score": 50.7, "weather_boost": 8.4, "flow_bonus": 6.8, "culture_venue_bonus": 0.0, "modern_entertainment_bonus": 3.3, "heat_score": 59.1, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:cache)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 12.0, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 6.8, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 0.0, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 3.3, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 5.6, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -3.6, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 2, "city_power_rank": 2, "weather_rank": 2, "scale_rank": 2, "accessibility_rank": 4, "flow_rank": 2, "culture_venue_rank": 4, "venue_rank": 4, "modern_entertainment_rank": 2, "culture_per_population_rank": 4, "modern_per_population_rank": 2, "culture_per_flow_rank": 3, "strength_text": "強み: 絶対量の規模パワーが4都市中2位", "weakness_text": "弱み: 文化施設数が4都市中最少、人口あたり文化施設数が4都市中最少", "score_equation": "規模パワー 45.2 + 充実度 5.6 + 今日のブースト 8.4 = 59.1", "score_narrative": "大阪（大阪府）の熱狂度は 59.1 点です。規模パワーは 45.2 点で、主要駅利用者数（約2,028,399人/日）、文化施設（69施設）、現代エンタメ施設（644施設）が主な根拠です。充実度は 5.6 点で、人口（約8,763,000人）や人流あたりの施設数を反映しています。今日のブーストは 8.4 点で、気温 20.0℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "NAGOYA", "city_label": "名古屋", "prefecture": "愛知県", "lat": 35.1815, "lon": 136.9066, "temperature_c": 19.4, "precipitation_mm": 0.0, "wind_speed_mps": 1.8, "population": 7477000, "station_users": 1280292, "event_venues": 81, "modern_entertainment_facilities": 312, "culture_venues_per_100k": 1.083, "modern_entertainment_per_100k": 4.173, "culture_venues_per_million_station_users": 63.27, "scale_power": 40.6, "accessibility_power": 7.5, "city_power_score": 48.1, "weather_boost": 9.3, "flow_bonus": 3.1, "culture_venue_bonus": 1.3, "modern_entertainment_bonus": 1.2, "heat_score": 57.4, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 11.3, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 3.1, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 1.3, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 1.2, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 7.5, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -2.0, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 3, "city_power_rank": 4, "weather_rank": 1, "scale_rank": 3, "accessibility_rank": 3, "flow_rank": 3, "culture_venue_rank": 2, "venue_rank": 2, "modern_entertainment_rank": 3, "culture_per_population_rank": 2, "modern_per_population_rank": 3, "culture_per_flow_rank": 2, "strength_text": "強み: 今日の気象条件が最も追い風", "weakness_text": "弱み: 人口/人流あたり充実度が4都市中3位", "score_equation": "規模パワー 40.6 + 充実度 7.5 + 今日のブースト 9.3 = 57.4", "score_narrative": "名古屋（愛知県）の熱狂度は 57.4 点です。規模パワーは 40.6 点で、主要駅利用者数（約1,280,292人/日）、文化施設（81施設）、現代エンタメ施設（312施設）が主な根拠です。充実度は 7.5 点で、人口（約7,477,000人）や人流あたりの施設数を反映しています。今日のブーストは 9.3 点で、気温 19.4℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}, {"city": "FUKUOKA", "city_label": "福岡", "prefecture": "福岡県", "lat": 33.5904, "lon": 130.4017, "temperature_c": 22.2, "precipitation_mm": 0.0, "wind_speed_mps": 8.2, "population": 5103000, "station_users": 664842, "event_venues": 76, "modern_entertainment_facilities": 128, "culture_venues_per_100k": 1.489, "modern_entertainment_per_100k": 2.508, "culture_venues_per_million_station_users": 114.31, "scale_power": 35.8, "accessibility_power": 14.0, "city_power_score": 49.8, "weather_boost": 5.6, "flow_bonus": 0.0, "culture_venue_bonus": 0.8, "modern_entertainment_bonus": 0.0, "heat_score": 55.4, "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023", "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)", "source_mode": "mixed", "trust_level": "high", "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)", "components": {"scale_base": {"value": 35.0, "trust_level": "medium", "label": "規模パワーの基準点", "layer": "規模パワー"}, "temp_score": {"value": 14.6, "trust_level": "high", "label": "気温補正（実データ）", "layer": "今日のブースト"}, "flow_bonus": {"value": 0.0, "trust_level": "medium", "label": "人流補正（国交省CSV）", "layer": "規模パワー"}, "culture_venue_bonus": {"value": 0.8, "trust_level": "medium", "label": "文化施設補正（劇場・音楽堂）", "layer": "規模パワー"}, "modern_entertainment_bonus": {"value": 0.0, "trust_level": "low", "label": "現代エンタメ補正（OSM）", "layer": "規模パワー"}, "accessibility_power": {"value": 14.0, "trust_level": "medium", "label": "人口/人流あたり充実度", "layer": "充実度"}, "precip_penalty": {"value": -0.0, "trust_level": "high", "label": "降水ペナルティ（実データ）", "layer": "今日のブースト"}, "wind_penalty": {"value": -9.0, "trust_level": "high", "label": "風速ペナルティ（実データ）", "layer": "今日のブースト"}}, "rank": 4, "city_power_rank": 3, "weather_rank": 4, "scale_rank": 4, "accessibility_rank": 1, "flow_rank": 4, "culture_venue_rank": 3, "venue_rank": 3, "modern_entertainment_rank": 4, "culture_per_population_rank": 1, "modern_per_population_rank": 4, "culture_per_flow_rank": 1, "strength_text": "強み: 人口あたり文化施設数が4都市中1位", "weakness_text": "弱み: 主要駅利用者数が4都市中最少、現代エンタメ施設数が4都市中最少、人口あたり現代エンタメ施設数が4都市中最少、今日の気象条件が最も向かい風", "score_equation": "規模パワー 35.8 + 充実度 14.0 + 今日のブースト 5.6 = 55.4", "score_narrative": "福岡（福岡県）の熱狂度は 55.4 点です。規模パワーは 35.8 点で、主要駅利用者数（約664,842人/日）、文化施設（76施設）、現代エンタメ施設（128施設）が主な根拠です。充実度は 14.0 点で、人口（約5,103,000人）や人流あたりの施設数を反映しています。今日のブーストは 5.6 点で、気温 22.2℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"}], "note": "prototype dataset for alpha demo", "iteration": {"version": "β再開発候補", "cycle": [{"name": "企画", "status": "done", "note": "都市熱狂度の可視化価値を定義"}, {"name": "データ収集", "status": "done", "note": "Open-Meteo + CSV + OSM施設数を取得"}, {"name": "監査", "status": "doing", "note": "人口補正とOSM補助指標の妥当性を検証"}, {"name": "α版開発", "status": "done", "note": "都市カードと詳細表を実装"}, {"name": "フィードバック", "status": "done", "note": "スコア内訳・出典表示を改善"}, {"name": "解決案", "status": "done", "note": "絶対量と人口/人流あたり充実度を分離"}, {"name": "β版再開発", "status": "todo", "note": "OSMタグ精査と時系列の追加"}], "todos": [{"id": "T-001", "title": "CSV人流データをスコア計算に接続する", "owner": "データ部門", "status": "達成", "next_action": "正式なオープンデータ出典へ差し替え"}, {"id": "T-002", "title": "スコア根拠をユーザーに分かりやすく表示する", "owner": "開発部門", "status": "達成", "next_action": "地図表示で視覚的説明を追加"}, {"id": "T-003", "title": "データ真偽監査の結果を画面上に表示する", "owner": "監査部門", "status": "達成", "next_action": "取得時刻の自動記録を強化"}, {"id": "T-004", "title": "β版で地図表示を追加する", "owner": "開発部門", "status": "達成", "next_action": "時系列推移の追加を検討"}, {"id": "T-005", "title": "劇場・音楽堂を文化施設スコアとして再定義する", "owner": "データ部門", "status": "達成", "next_action": "文化施設以外の現代エンタメ指標と分離して説明"}, {"id": "T-006", "title": "人口・人流あたり施設充実度を追加する", "owner": "分析部門", "status": "達成", "next_action": "都道府県単位から市区町村単位への改善を検討"}, {"id": "T-007", "title": "OSMで現代エンタメ施設数を自動取得する", "owner": "開発部門", "status": "検証中", "next_action": "タグの重複・網羅性を監査"}], "feedback": ["スコア内訳と出典一覧により、非エンジニアにも説明しやすくなった。", "人流と劇場・音楽堂数の接続により、都市間差が公的データベースで説明できる。", "人口・人流あたり補正により、大都市偏重の疑問に答えやすくなった。"]}, "data_sources": [{"id": "weather", "category": "気象", "name": "気温・降水量・風速", "provider": "Open-Meteo API", "reference_year": "取得時刻ベース（リアルタイム）", "trust_level": "high", "trust_label": "高", "trust_note": "APIから直接取得する実測値", "used_in_score": "今日のブースト（weather_boost）", "fixed_value": false}, {"id": "flow", "category": "人流", "name": "主要ターミナル駅 乗降客数（5駅合計）", "provider": "国土交通省 国土数値情報（駅別乗降客数）", "reference_year": "2023年度（令和5年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "公的統計。都市間比較用に正規化して使用", "used_in_score": "規模パワー（scale_power）", "fixed_value": false}, {"id": "culture_venue", "category": "文化施設", "name": "劇場・音楽堂 施設数", "provider": "文部科学省 社会教育調査", "reference_year": "2021年度（令和3年度）", "trust_level": "medium", "trust_label": "中", "trust_note": "都道府県単位の施設数（開催数ではない）", "used_in_score": "文化施設スコア（culture_venue_bonus）", "fixed_value": false}, {"id": "modern_entertainment", "category": "現代エンタメ", "name": "映画館・博物館・スタジアム等", "provider": "OpenStreetMap / Overpass API", "reference_year": "取得時点ベース", "trust_level": "low", "trust_label": "低", "trust_note": "OSM登録状況に依存するため、補助指標として扱う", "used_in_score": "現代エンタメ補正（modern_entertainment_bonus）", "fixed_value": false}, {"id": "population", "category": "人口", "name": "都道府県人口", "provider": "総務省 人口推計", "reference_year": "2023年10月1日現在", "trust_level": "medium", "trust_label": "中", "trust_note": "人口あたり施設充実度の分母として使用", "used_in_score": "充実度スコア（accessibility_power）", "fixed_value": false}, {"id": "base", "category": "設計", "name": "基準点", "provider": "本研究のスコア設計", "reference_year": "—", "trust_level": "medium", "trust_label": "中", "trust_note": "都市間比較の起点となる定数", "used_in_score": "規模パワーの基準 35.0 点", "fixed_value": true}], "score_policy": {"formula": "heat_score = scale_power + accessibility_power + weather_boost", "city_power_formula": "city_power_score = scale_power + accessibility_power", "scale_formula": "scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus", "accessibility_formula": "accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus", "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty", "summary": "熱狂度は、絶対量の規模パワー、人口/人流あたりの充実度、今日のブーストを分けて評価するモデル検証版です。", "warning": "固定の仮説値は使用していません。公的統計とOSM補助指標は信頼度を分けて表示し、施設数は開催数ではない点に注意してください。", "data_sources_file": "data_sources.yaml", "urban_csv": "urban_indicators.csv"}};
     let selectedCity = dataset.records[0]?.city || "";
     let cityMap;
     const cityMarkers = {};
@@ -594,7 +629,7 @@
       const cycle = document.getElementById("cycle");
       (dataset.iteration?.cycle || []).forEach((s) => {
         const div = document.createElement("div");
-        div.style.cssText = "flex:1 1 120px;background:#1a2742;border:1px solid #334b78;border-radius:8px;padding:8px;font-size:12px;";
+        div.style.cssText = "flex:1 1 120px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:8px;font-size:12px;";
         div.innerHTML = `<strong>${s.name}</strong><br><span class="muted">${s.status}</span>`;
         cycle.appendChild(div);
       });

@@ -262,43 +262,72 @@ def create_html(
   <title>{team_title}</title>
   <style>
     :root {{
-      --bg: #0b1020;
-      --panel: #131a2a;
-      --line: #2f3b59;
-      --text: #e8edf7;
-      --sub: #b7c1d9;
-      --accent: #6ea8fe;
-      --good: #77dd77;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-soft: #fff7ed;
+      --line: #e5e7eb;
+      --text: #1f2937;
+      --sub: #64748b;
+      --accent: #f39800;
+      --accent-strong: #e60012;
+      --accent-yellow: #fff100;
+      --good: #059669;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
     }}
     * {{ box-sizing: border-box; }}
-    body {{ margin: 0; font-family: "Segoe UI","Yu Gothic UI",sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
+    body {{
+      margin: 0;
+      font-family: "Segoe UI","Yu Gothic UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }}
     .container {{ max-width: 1280px; margin: 0 auto; padding: 24px; }}
     h1, h2, h3 {{ margin: 0 0 10px; }}
     .muted {{ color: var(--sub); }}
-    .panel {{ background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 18px; }}
+    .panel {{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }}
+    .panel::before {{
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -18px -18px 14px;
+      background: var(--brand-gradient);
+    }}
     .status {{ display: flex; gap: 12px; flex-wrap: wrap; }}
-    .badge {{ background: #1b243a; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 14px; }}
+    .badge {{ background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #9a3412; font-weight: 700; }}
     .ok {{ color: var(--good); font-weight: 700; }}
     .org-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }}
-    .org-col {{ background: #16223a; border: 1px solid #33476f; border-radius: 10px; padding: 12px; }}
+    .org-col {{ background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; }}
     .hierarchy-layer {{ margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }}
     .hierarchy-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }}
-    .hierarchy-dep {{ background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; }}
-    .dep-title {{ font-weight: 700; margin-bottom: 8px; color: #9cc1ff; }}
-    .org-node {{ background: #1e2e4a; border: 1px solid #3d5788; border-radius: 8px; padding: 10px; text-align: center; }}
-    .org-node.management {{ border-color: #9cc1ff; }}
-    .org-node.execution {{ border-color: #77dd77; }}
+    .hierarchy-dep {{ background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; }}
+    .dep-title {{ font-weight: 800; margin-bottom: 8px; color: var(--accent-strong); }}
+    .org-node {{ background: #ffffff; border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; box-shadow: 0 6px 16px rgba(15, 23, 42, .05); }}
+    .org-node.management {{ border-color: var(--accent-strong); }}
+    .org-node.execution {{ border-color: var(--good); }}
     .org-node.empty {{ opacity: 0.5; }}
     .v-arrow {{ text-align: center; color: var(--sub); font-size: 13px; padding: 6px 0; }}
-    .loop-card {{ background: #16223a; border: 1px solid #33476f; border-radius: 12px; padding: 12px; margin-top: 12px; }}
+    .loop-card {{ background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; margin-top: 12px; }}
     .loop-flow {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
-    .loop-step {{ background: #0f1728; border: 1px solid #2a3652; border-radius: 999px; padding: 8px 10px; }}
+    .loop-step {{ background: #ffffff; border: 1px solid var(--line); border-radius: 999px; padding: 8px 10px; box-shadow: 0 4px 12px rgba(15, 23, 42, .05); }}
     .loop-step small {{ display: block; color: var(--sub); font-size: 11px; }}
     .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }}
-    .card {{ background: #18233b; border: 1px solid #33476f; border-radius: 10px; padding: 14px; }}
+    .card {{ background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; box-shadow: 0 8px 22px rgba(15, 23, 42, .06); overflow: hidden; }}
+    .card::before {{ content: ""; display: block; height: 4px; margin: -14px -14px 12px; background: var(--brand-gradient); }}
     .label {{ color: var(--sub); font-weight: 600; }}
-    code {{ background: #0f1728; border: 1px solid #2a3652; border-radius: 6px; padding: 2px 6px; }}
-    pre {{ margin: 0; white-space: pre-wrap; word-break: break-word; background: #0f1728; border: 1px solid #2a3652; border-radius: 8px; padding: 14px; max-height: 520px; overflow: auto; }}
+    code {{ background: #fffbeb; border: 1px solid #fde68a; color: #7c2d12; border-radius: 6px; padding: 2px 6px; }}
+    pre {{ margin: 0; white-space: pre-wrap; word-break: break-word; background: #fffbeb; border: 1px solid #fde68a; color: #1f2937; border-radius: 10px; padding: 14px; max-height: 520px; overflow: auto; }}
     ul {{ margin-top: 8px; }}
   </style>
 </head>

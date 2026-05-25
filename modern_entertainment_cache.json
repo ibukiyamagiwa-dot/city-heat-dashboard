@@ -20,7 +20,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-25T23:43:06+09:00",
+    "fetched_at": "2026-05-26T00:01:29+09:00",
     "radius_m": 15000
   },
   "FUKUOKA": {
@@ -28,7 +28,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-25T23:43:09+09:00",
+    "fetched_at": "2026-05-26T00:01:33+09:00",
     "radius_m": 15000
   }
 }
