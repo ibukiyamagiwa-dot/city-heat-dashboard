@@ -229,6 +229,24 @@
       box-shadow: var(--shadow);
     }
     .map-popup strong { color: var(--accent); }
+    .entertainment-breakdown {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .entertainment-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) minmax(120px, 1.2fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+    .entertainment-name strong { display: block; }
+    .entertainment-name small { color: var(--muted); }
+    .entertainment-count { font-weight: 900; color: var(--accent-strong); }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
     .ok { color: var(--high); }
     .warn { color: var(--medium); }
@@ -526,6 +544,38 @@
       });
     }
 
+    function renderEntertainmentBreakdown(r) {
+      const breakdown = r.modern_entertainment_breakdown || [];
+      if (!breakdown.length) {
+        return `<p class="muted">現代エンタメ施設のカテゴリ内訳は未取得です。</p>`;
+      }
+      const maxCount = Math.max(...breakdown.map((item) => item.count || 0), 1);
+      const sourceMode = r.modern_entertainment_source_mode || "unknown";
+      return `
+        <div class="entertainment-breakdown">
+          ${breakdown.map((item) => {
+            const width = Math.max(3, Math.round(((item.count || 0) / maxCount) * 100));
+            return `
+              <div class="entertainment-row">
+                <div class="entertainment-name">
+                  <strong>${item.label}</strong>
+                  <small>${item.tag}</small>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width:${width}%;background:var(--brand-gradient);"></div>
+                </div>
+                <div class="entertainment-count">${fmt(item.count)}件</div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+        <p class="muted" style="margin-top:8px;">
+          取得方法: OSM / Overpass API（${sourceMode}、半径${fmt(r.modern_entertainment_radius_m)}m）。
+          OSMは登録密度やタグ揺れの影響を受けるため補助指標として扱います。
+        </p>
+      `;
+    }
+
     function renderDetail() {
       const r = dataset.records.find((x) => x.city === selectedCity) || dataset.records[0];
       if (!r) return;
@@ -595,6 +645,9 @@
             <p class="muted" style="margin-top:10px;">監査: ${r.audit_status}</p>
           </div>
         </div>
+        <h3 style="margin-top:16px;">現代エンタメ施設の内訳（OSM）</h3>
+        <p class="muted">合計値だけでなく、どの施設種別を現代エンタメとして数えたかを表示します。</p>
+        ${renderEntertainmentBreakdown(r)}
         <h3 style="margin-top:16px;">内訳一覧</h3>
         <ul class="breakdown-list">${items}
           <li><div>合計（熱狂度）</div><div></div><div><strong>${r.heat_score}</strong></div></li>

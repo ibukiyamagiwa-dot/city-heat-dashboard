@@ -1,34 +1,298 @@
 {
   "TOKYO": {
-    "count": 1372,
+    "count": 1373,
+    "breakdown": [
+      {
+        "id": "cinema",
+        "label": "映画館",
+        "tag": "amenity=cinema",
+        "count": 66,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "museum",
+        "label": "博物館・美術館",
+        "tag": "tourism=museum",
+        "count": 419,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "stadium",
+        "label": "スタジアム",
+        "tag": "leisure=stadium",
+        "count": 26,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theme_park",
+        "label": "テーマパーク",
+        "tag": "tourism=theme_park",
+        "count": 14,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "arts_centre",
+        "label": "アートセンター",
+        "tag": "amenity=arts_centre",
+        "count": 36,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "nightclub",
+        "label": "クラブ",
+        "tag": "amenity=nightclub",
+        "count": 165,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theatre",
+        "label": "劇場",
+        "tag": "amenity=theatre",
+        "count": 190,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "sports_centre",
+        "label": "スポーツセンター",
+        "tag": "leisure=sports_centre",
+        "count": 457,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      }
+    ],
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-25T23:41:22+09:00",
+    "fetched_at": "2026-05-26T01:01:20+09:00",
     "radius_m": 15000
   },
   "OSAKA": {
     "count": 644,
+    "breakdown": [
+      {
+        "id": "cinema",
+        "label": "映画館",
+        "tag": "amenity=cinema",
+        "count": 31,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "museum",
+        "label": "博物館・美術館",
+        "tag": "tourism=museum",
+        "count": 123,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "stadium",
+        "label": "スタジアム",
+        "tag": "leisure=stadium",
+        "count": 29,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theme_park",
+        "label": "テーマパーク",
+        "tag": "tourism=theme_park",
+        "count": 6,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "arts_centre",
+        "label": "アートセンター",
+        "tag": "amenity=arts_centre",
+        "count": 14,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "nightclub",
+        "label": "クラブ",
+        "tag": "amenity=nightclub",
+        "count": 27,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theatre",
+        "label": "劇場",
+        "tag": "amenity=theatre",
+        "count": 160,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "sports_centre",
+        "label": "スポーツセンター",
+        "tag": "leisure=sports_centre",
+        "count": 254,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      }
+    ],
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-25T23:42:57+09:00",
+    "fetched_at": "2026-05-26T01:01:29+09:00",
     "radius_m": 15000
   },
   "NAGOYA": {
-    "count": 312,
+    "count": 314,
+    "breakdown": [
+      {
+        "id": "cinema",
+        "label": "映画館",
+        "tag": "amenity=cinema",
+        "count": 12,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "museum",
+        "label": "博物館・美術館",
+        "tag": "tourism=museum",
+        "count": 138,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "stadium",
+        "label": "スタジアム",
+        "tag": "leisure=stadium",
+        "count": 13,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theme_park",
+        "label": "テーマパーク",
+        "tag": "tourism=theme_park",
+        "count": 4,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "arts_centre",
+        "label": "アートセンター",
+        "tag": "amenity=arts_centre",
+        "count": 4,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "nightclub",
+        "label": "クラブ",
+        "tag": "amenity=nightclub",
+        "count": 2,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theatre",
+        "label": "劇場",
+        "tag": "amenity=theatre",
+        "count": 45,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "sports_centre",
+        "label": "スポーツセンター",
+        "tag": "leisure=sports_centre",
+        "count": 96,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      }
+    ],
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T00:01:29+09:00",
+    "fetched_at": "2026-05-26T01:01:37+09:00",
     "radius_m": 15000
   },
   "FUKUOKA": {
     "count": 128,
+    "breakdown": [
+      {
+        "id": "cinema",
+        "label": "映画館",
+        "tag": "amenity=cinema",
+        "count": 10,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "museum",
+        "label": "博物館・美術館",
+        "tag": "tourism=museum",
+        "count": 45,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "stadium",
+        "label": "スタジアム",
+        "tag": "leisure=stadium",
+        "count": 10,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theme_park",
+        "label": "テーマパーク",
+        "tag": "tourism=theme_park",
+        "count": 3,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "arts_centre",
+        "label": "アートセンター",
+        "tag": "amenity=arts_centre",
+        "count": 5,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "nightclub",
+        "label": "クラブ",
+        "tag": "amenity=nightclub",
+        "count": 8,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "theatre",
+        "label": "劇場",
+        "tag": "amenity=theatre",
+        "count": 14,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      },
+      {
+        "id": "sports_centre",
+        "label": "スポーツセンター",
+        "tag": "leisure=sports_centre",
+        "count": 33,
+        "trust_level": "low",
+        "source": "OpenStreetMap Overpass API"
+      }
+    ],
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T00:01:33+09:00",
+    "fetched_at": "2026-05-26T01:01:41+09:00",
     "radius_m": 15000
   }
 }

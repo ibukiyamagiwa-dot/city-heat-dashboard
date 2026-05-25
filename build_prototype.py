@@ -18,6 +18,57 @@ OSM_CACHE = BASE_DIR / "modern_entertainment_cache.json"
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 OSM_SEARCH_RADIUS_M = 15000
 
+OSM_ENTERTAINMENT_CATEGORIES = [
+    {
+        "id": "cinema",
+        "label": "映画館",
+        "selector": '["amenity"="cinema"]',
+        "tag": "amenity=cinema",
+    },
+    {
+        "id": "museum",
+        "label": "博物館・美術館",
+        "selector": '["tourism"="museum"]',
+        "tag": "tourism=museum",
+    },
+    {
+        "id": "stadium",
+        "label": "スタジアム",
+        "selector": '["leisure"="stadium"]',
+        "tag": "leisure=stadium",
+    },
+    {
+        "id": "theme_park",
+        "label": "テーマパーク",
+        "selector": '["tourism"="theme_park"]',
+        "tag": "tourism=theme_park",
+    },
+    {
+        "id": "arts_centre",
+        "label": "アートセンター",
+        "selector": '["amenity"="arts_centre"]',
+        "tag": "amenity=arts_centre",
+    },
+    {
+        "id": "nightclub",
+        "label": "クラブ",
+        "selector": '["amenity"="nightclub"]',
+        "tag": "amenity=nightclub",
+    },
+    {
+        "id": "theatre",
+        "label": "劇場",
+        "selector": '["amenity"="theatre"]',
+        "tag": "amenity=theatre",
+    },
+    {
+        "id": "sports_centre",
+        "label": "スポーツセンター",
+        "selector": '["leisure"="sports_centre"]',
+        "tag": "leisure=sports_centre",
+    },
+]
+
 # 試作対象都市（必要ならここへ都市を追加）
 CITY_COORDS = {
     "TOKYO": (35.6762, 139.6503),
@@ -78,7 +129,7 @@ DATA_SOURCE_CATALOG = [
         "reference_year": "取得時点ベース",
         "trust_level": "low",
         "trust_label": "低",
-        "trust_note": "OSM登録状況に依存するため、補助指標として扱う",
+        "trust_note": "OSM登録状況に依存するため、カテゴリ別内訳つきの補助指標として扱う",
         "used_in_score": "現代エンタメ補正（modern_entertainment_bonus）",
         "fixed_value": False,
     },
@@ -212,11 +263,24 @@ def format_score_narrative(record: dict) -> str:
     venue_text = f"{venues}施設" if venues else "データなし"
     population_text = f"約{population:,}人" if population else "データなし"
     modern_text = f"{modern}施設" if modern is not None else "データなし"
+    modern_breakdown = sorted(
+        record.get("modern_entertainment_breakdown") or [],
+        key=lambda item: item.get("count", 0),
+        reverse=True,
+    )
+    top_modern = [item for item in modern_breakdown if item.get("count", 0) > 0][:2]
+    modern_detail = (
+        "（"
+        + "、".join(f"{item['label']} {item['count']}件" for item in top_modern)
+        + "が中心）"
+        if top_modern
+        else ""
+    )
     return (
         f"{area}の熱狂度は {record['heat_score']} 点です。"
         f"規模パワーは {record.get('scale_power', 0)} 点で、"
         f"主要駅利用者数（{user_text}）、文化施設（{venue_text}）、"
-        f"現代エンタメ施設（{modern_text}）が主な根拠です。"
+        f"現代エンタメ施設（{modern_text}）{modern_detail}が主な根拠です。"
         f"充実度は {record.get('accessibility_power', 0)} 点で、"
         f"人口（{population_text}）や人流あたりの施設数を反映しています。"
         f"今日のブーストは {record.get('weather_boost', 0)} 点で、"
@@ -371,35 +435,49 @@ def save_osm_cache(cache: dict[str, dict]) -> None:
     OSM_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def build_overpass_query(lat: float, lon: float, radius_m: int = OSM_SEARCH_RADIUS_M) -> str:
-    """現代エンタメ施設を都市中心から半径検索するOverpass QL。"""
-    selectors = [
-        '["amenity"="cinema"]',
-        '["amenity"="theatre"]',
-        '["amenity"="arts_centre"]',
-        '["amenity"="nightclub"]',
-        '["tourism"="museum"]',
-        '["tourism"="theme_park"]',
-        '["leisure"="stadium"]',
-        '["leisure"="sports_centre"]',
-    ]
-    lines = ["[out:json][timeout:25];", "("]
-    for selector in selectors:
+def build_overpass_breakdown_query(
+    lat: float, lon: float, radius_m: int = OSM_SEARCH_RADIUS_M
+) -> str:
+    """現代エンタメ施設をカテゴリ別に数えるOverpass QL。"""
+    lines = ["[out:json][timeout:45];"]
+    for category in OSM_ENTERTAINMENT_CATEGORIES:
+        selector = category["selector"]
         lines.extend(
             [
+                "(",
                 f"  node(around:{radius_m},{lat},{lon}){selector};",
                 f"  way(around:{radius_m},{lat},{lon}){selector};",
                 f"  relation(around:{radius_m},{lat},{lon}){selector};",
+                f")->.{category['id']};",
+                f".{category['id']} out count;",
             ]
         )
-    lines.extend([");", "out count;"])
     return "\n".join(lines)
 
 
+def normalize_modern_entertainment_breakdown(raw_breakdown: list[dict] | None) -> list[dict]:
+    by_id = {
+        str(item.get("id")): int(item.get("count", 0))
+        for item in (raw_breakdown or [])
+        if isinstance(item, dict)
+    }
+    return [
+        {
+            "id": category["id"],
+            "label": category["label"],
+            "tag": category["tag"],
+            "count": by_id.get(category["id"], 0),
+            "trust_level": "low",
+            "source": "OpenStreetMap Overpass API",
+        }
+        for category in OSM_ENTERTAINMENT_CATEGORIES
+    ]
+
+
 def fetch_modern_entertainment_count(city: str, lat: float, lon: float, cache: dict[str, dict]) -> dict:
-    """Overpass APIで現代エンタメ施設数を取得。失敗時はキャッシュを利用する。"""
+    """Overpass APIで現代エンタメ施設数とカテゴリ内訳を取得する。"""
     cached = cache.get(city)
-    query = build_overpass_query(lat, lon)
+    query = build_overpass_breakdown_query(lat, lon)
     body = urlencode({"data": query}).encode("utf-8")
     req = Request(
         OVERPASS_URL,
@@ -411,12 +489,27 @@ def fetch_modern_entertainment_count(city: str, lat: float, lon: float, cache: d
         method="POST",
     )
     try:
-        with urlopen(req, timeout=35) as resp:
+        with urlopen(req, timeout=60) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
-        tags = (payload.get("elements") or [{}])[0].get("tags", {})
-        count = int(tags.get("total", 0))
+        elements = payload.get("elements") or []
+        breakdown: list[dict] = []
+        for category, element in zip(OSM_ENTERTAINMENT_CATEGORIES, elements):
+            tags = element.get("tags", {}) if isinstance(element, dict) else {}
+            breakdown.append(
+                {
+                    "id": category["id"],
+                    "label": category["label"],
+                    "tag": category["tag"],
+                    "count": int(tags.get("total", 0)),
+                    "trust_level": "low",
+                    "source": "OpenStreetMap Overpass API",
+                }
+            )
+        breakdown = normalize_modern_entertainment_breakdown(breakdown)
+        count = sum(item["count"] for item in breakdown)
         result = {
             "count": count,
+            "breakdown": breakdown,
             "source": "OpenStreetMap Overpass API",
             "source_mode": "live",
             "trust_level": "low",
@@ -427,9 +520,12 @@ def fetch_modern_entertainment_count(city: str, lat: float, lon: float, cache: d
         return result
     except Exception:
         if cached:
-            return {**cached, "source_mode": "cache"}
+            breakdown = normalize_modern_entertainment_breakdown(cached.get("breakdown"))
+            count = sum(item["count"] for item in breakdown) or int(cached.get("count", 0))
+            return {**cached, "count": count, "breakdown": breakdown, "source_mode": "cache"}
         return {
             "count": 0,
+            "breakdown": normalize_modern_entertainment_breakdown(None),
             "source": "OpenStreetMap Overpass API",
             "source_mode": "unavailable",
             "trust_level": "low",
@@ -695,6 +791,16 @@ def fetch_city_weather(
         "station_users": station_users,
         "event_venues": event_venues,
         "modern_entertainment_facilities": modern_entertainment_facilities,
+        "modern_entertainment_breakdown": (
+            urban.get("modern_entertainment_breakdown") if urban else []
+        ),
+        "modern_entertainment_categories": OSM_ENTERTAINMENT_CATEGORIES,
+        "modern_entertainment_source_mode": (
+            urban.get("modern_entertainment_source_mode") if urban else None
+        ),
+        "modern_entertainment_radius_m": (
+            urban.get("modern_entertainment_radius_m") if urban else None
+        ),
         "culture_venues_per_100k": urban.get("culture_venues_per_100k") if urban else None,
         "modern_entertainment_per_100k": (
             urban.get("modern_entertainment_per_100k") if urban else None
@@ -765,6 +871,16 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 "modern_entertainment_facilities": (
                     urban["modern_entertainment_facilities"] if urban else None
                 ),
+                "modern_entertainment_breakdown": (
+                    urban["modern_entertainment_breakdown"] if urban else []
+                ),
+                "modern_entertainment_categories": OSM_ENTERTAINMENT_CATEGORIES,
+                "modern_entertainment_source_mode": (
+                    urban["modern_entertainment_source_mode"] if urban else None
+                ),
+                "modern_entertainment_radius_m": (
+                    urban["modern_entertainment_radius_m"] if urban else None
+                ),
                 "culture_venues_per_100k": (
                     urban["culture_venues_per_100k"] if urban else None
                 ),
@@ -803,6 +919,9 @@ def build_dataset() -> dict:
         before = dict(osm_cache)
         osm_result = fetch_modern_entertainment_count(city, lat, lon, osm_cache)
         urban_indicators[city]["modern_entertainment_facilities"] = osm_result["count"]
+        urban_indicators[city]["modern_entertainment_breakdown"] = osm_result[
+            "breakdown"
+        ]
         urban_indicators[city]["modern_entertainment_source"] = osm_result["source"]
         urban_indicators[city]["modern_entertainment_source_mode"] = osm_result[
             "source_mode"

@@ -23,10 +23,19 @@ culture_venue:
 modern_entertainment:
   name: "現代エンタメ施設（OSM）"
   category: "現代エンタメ"
-  acquisition: "OpenStreetMap / Overpass API（都市中心から半径15kmの件数）"
+  acquisition: "OpenStreetMap / Overpass API（都市中心から半径15kmのカテゴリ別件数）"
   trust_level: "low"
-  current_usage: "映画館・博物館・美術館・スタジアム・テーマパーク・クラブ・アートセンター等を modern_entertainment_bonus に正規化して使用"
-  audit_rule: "OSMは登録密度やタグ揺れに依存するため、公的統計と分けて補助指標として表示する"
+  current_usage: "cinema / museum / stadium / theme_park / arts_centre / nightclub / theatre / sports_centre を取得し、合計を modern_entertainment_bonus に正規化して使用"
+  audit_rule: "OSMは登録密度の地域差、タグ表記の揺れ、node/way/relationの重複カウントが起こりうるため、公的統計と分けて補助指標として表示する"
+  osm_tags:
+    cinema: "amenity=cinema"
+    museum: "tourism=museum"
+    stadium: "leisure=stadium"
+    theme_park: "tourism=theme_park"
+    arts_centre: "amenity=arts_centre"
+    nightclub: "amenity=nightclub"
+    theatre: "amenity=theatre"
+    sports_centre: "leisure=sports_centre"
 
 population:
   name: "都道府県人口"
