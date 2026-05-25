@@ -124,8 +124,8 @@ ITERATION_STATE = {
             "id": "T-004",
             "title": "β版で地図表示を追加する",
             "owner": "開発部門",
-            "status": "新規",
-            "next_action": "Leaflet導入可否を検証",
+            "status": "達成",
+            "next_action": "時系列推移の追加を検討",
         },
         {
             "id": "T-005",

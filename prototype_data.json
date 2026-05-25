@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-21T16:34:59+09:00",
+  "generated_at": "2026-05-25T22:16:14+09:00",
   "records": [
     {
       "city": "TOKYO",
@@ -7,17 +7,17 @@
       "prefecture": "東京都",
       "lat": 35.6762,
       "lon": 139.6503,
-      "temperature_c": 16.4,
-      "precipitation_mm": 0.3,
-      "wind_speed_mps": 4.3,
+      "temperature_c": 19.0,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 2.4,
       "station_users": 4250258,
       "event_venues": 132,
       "city_power_score": 80.0,
-      "weather_boost": 1.4,
+      "weather_boost": 8.2,
       "flow_bonus": 25.0,
       "venue_bonus": 10.0,
       "entertainment_bonus": 0.0,
-      "heat_score": 81.5,
+      "heat_score": 88.2,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -31,7 +31,7 @@
           "layer": "都市の底力"
         },
         "temp_score": {
-          "value": 7.7,
+          "value": 10.8,
           "trust_level": "high",
           "label": "気温補正（実データ）",
           "layer": "今日のブースト"
@@ -49,13 +49,13 @@
           "layer": "都市の底力"
         },
         "precip_penalty": {
-          "value": -1.5,
+          "value": -0.0,
           "trust_level": "high",
           "label": "降水ペナルティ（実データ）",
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -4.7,
+          "value": -2.6,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -63,13 +63,13 @@
       },
       "rank": 1,
       "city_power_rank": 1,
-      "weather_rank": 3,
+      "weather_rank": 4,
       "flow_rank": 1,
       "venue_rank": 1,
       "strength_text": "強み: 主要駅利用者数が4都市中1位、劇場・音楽堂数が4都市中1位",
-      "weakness_text": "弱み: 今日の気象条件が4都市中3位",
-      "score_equation": "都市の底力 80.0 + 今日のブースト 1.4 = 81.5",
-      "score_narrative": "東京（東京都）の熱狂度は 81.5 点です。都市の底力は 80.0 点で、主要駅利用者数（約4,250,258人/日）と劇場・音楽堂（132施設）が主な根拠です。今日のブーストは 1.4 点で、気温 16.4℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "weakness_text": "弱み: 今日の気象条件が最も向かい風",
+      "score_equation": "都市の底力 80.0 + 今日のブースト 8.2 = 88.2",
+      "score_narrative": "東京（東京都）の熱狂度は 88.2 点です。都市の底力は 80.0 点で、主要駅利用者数（約4,250,258人/日）と劇場・音楽堂（132施設）が主な根拠です。今日のブーストは 8.2 点で、気温 19.0℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "OSAKA",
@@ -77,17 +77,17 @@
       "prefecture": "大阪府",
       "lat": 34.6937,
       "lon": 135.5023,
-      "temperature_c": 22.7,
+      "temperature_c": 20.8,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 5.7,
+      "wind_speed_mps": 2.1,
       "station_users": 2028399,
       "event_venues": 69,
       "city_power_score": 54.5,
-      "weather_boost": 9.0,
+      "weather_boost": 10.7,
       "flow_bonus": 9.5,
       "venue_bonus": 0.0,
       "entertainment_bonus": 0.0,
-      "heat_score": 63.5,
+      "heat_score": 65.2,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -101,7 +101,7 @@
           "layer": "都市の底力"
         },
         "temp_score": {
-          "value": 15.2,
+          "value": 13.0,
           "trust_level": "high",
           "label": "気温補正（実データ）",
           "layer": "今日のブースト"
@@ -125,7 +125,7 @@
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -6.3,
+          "value": -2.3,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -133,13 +133,13 @@
       },
       "rank": 2,
       "city_power_rank": 2,
-      "weather_rank": 2,
+      "weather_rank": 1,
       "flow_rank": 2,
       "venue_rank": 4,
-      "strength_text": "強み: 都市の底力が4都市中2位",
+      "strength_text": "強み: 今日の気象条件が最も追い風",
       "weakness_text": "弱み: 劇場・音楽堂数が4都市中最少",
-      "score_equation": "都市の底力 54.5 + 今日のブースト 9.0 = 63.5",
-      "score_narrative": "大阪（大阪府）の熱狂度は 63.5 点です。都市の底力は 54.5 点で、主要駅利用者数（約2,028,399人/日）と劇場・音楽堂（69施設）が主な根拠です。今日のブーストは 9.0 点で、気温 22.7℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "score_equation": "都市の底力 54.5 + 今日のブースト 10.7 = 65.2",
+      "score_narrative": "大阪（大阪府）の熱狂度は 65.2 点です。都市の底力は 54.5 点で、主要駅利用者数（約2,028,399人/日）と劇場・音楽堂（69施設）が主な根拠です。今日のブーストは 10.7 点で、気温 20.8℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "NAGOYA",
@@ -147,17 +147,17 @@
       "prefecture": "愛知県",
       "lat": 35.1815,
       "lon": 136.9066,
-      "temperature_c": 22.9,
-      "precipitation_mm": 0.4,
-      "wind_speed_mps": 4.0,
+      "temperature_c": 20.3,
+      "precipitation_mm": 0.0,
+      "wind_speed_mps": 2.5,
       "station_users": 1280292,
       "event_venues": 81,
       "city_power_score": 51.2,
-      "weather_boost": 9.1,
+      "weather_boost": 9.6,
       "flow_bonus": 4.3,
       "venue_bonus": 1.9,
       "entertainment_bonus": 0.0,
-      "heat_score": 60.3,
+      "heat_score": 60.8,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -171,7 +171,7 @@
           "layer": "都市の底力"
         },
         "temp_score": {
-          "value": 15.5,
+          "value": 12.4,
           "trust_level": "high",
           "label": "気温補正（実データ）",
           "layer": "今日のブースト"
@@ -189,13 +189,13 @@
           "layer": "都市の底力"
         },
         "precip_penalty": {
-          "value": -2.0,
+          "value": -0.0,
           "trust_level": "high",
           "label": "降水ペナルティ（実データ）",
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -4.4,
+          "value": -2.8,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -203,13 +203,13 @@
       },
       "rank": 3,
       "city_power_rank": 3,
-      "weather_rank": 1,
+      "weather_rank": 2,
       "flow_rank": 3,
       "venue_rank": 2,
-      "strength_text": "強み: 今日の気象条件が最も追い風",
-      "weakness_text": "弱み: 都市の底力が4都市中3位",
-      "score_equation": "都市の底力 51.2 + 今日のブースト 9.1 = 60.3",
-      "score_narrative": "名古屋（愛知県）の熱狂度は 60.3 点です。都市の底力は 51.2 点で、主要駅利用者数（約1,280,292人/日）と劇場・音楽堂（81施設）が主な根拠です。今日のブーストは 9.1 点で、気温 22.9℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "strength_text": "強み: 劇場・音楽堂数が4都市中2位",
+      "weakness_text": "弱み: 今日の気象条件が4都市中2位",
+      "score_equation": "都市の底力 51.2 + 今日のブースト 9.6 = 60.8",
+      "score_narrative": "名古屋（愛知県）の熱狂度は 60.8 点です。都市の底力は 51.2 点で、主要駅利用者数（約1,280,292人/日）と劇場・音楽堂（81施設）が主な根拠です。今日のブーストは 9.6 点で、気温 20.3℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "FUKUOKA",
@@ -217,17 +217,17 @@
       "prefecture": "福岡県",
       "lat": 33.5904,
       "lon": 130.4017,
-      "temperature_c": 21.4,
+      "temperature_c": 22.0,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 14.6,
+      "wind_speed_mps": 5.4,
       "station_users": 664842,
       "event_venues": 76,
       "city_power_score": 46.1,
-      "weather_boost": -2.4,
+      "weather_boost": 8.5,
       "flow_bonus": 0.0,
       "venue_bonus": 1.1,
       "entertainment_bonus": 0.0,
-      "heat_score": 43.7,
+      "heat_score": 54.6,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂)",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -241,7 +241,7 @@
           "layer": "都市の底力"
         },
         "temp_score": {
-          "value": 13.7,
+          "value": 14.4,
           "trust_level": "high",
           "label": "気温補正（実データ）",
           "layer": "今日のブースト"
@@ -265,7 +265,7 @@
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -16.1,
+          "value": -5.9,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -273,13 +273,13 @@
       },
       "rank": 4,
       "city_power_rank": 4,
-      "weather_rank": 4,
+      "weather_rank": 3,
       "flow_rank": 4,
       "venue_rank": 3,
       "strength_text": "強み: 劇場・音楽堂数が4都市中3位",
-      "weakness_text": "弱み: 主要駅利用者数が4都市中最少、今日の気象条件が最も向かい風",
-      "score_equation": "都市の底力 46.1 - 今日のブースト 2.4 = 43.7",
-      "score_narrative": "福岡（福岡県）の熱狂度は 43.7 点です。都市の底力は 46.1 点で、主要駅利用者数（約664,842人/日）と劇場・音楽堂（76施設）が主な根拠です。今日のブーストは -2.4 点で、気温 21.4℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "weakness_text": "弱み: 主要駅利用者数が4都市中最少",
+      "score_equation": "都市の底力 46.1 + 今日のブースト 8.5 = 54.6",
+      "score_narrative": "福岡（福岡県）の熱狂度は 54.6 点です。都市の底力は 46.1 点で、主要駅利用者数（約664,842人/日）と劇場・音楽堂（76施設）が主な根拠です。今日のブーストは 8.5 点で、気温 22.0℃、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     }
   ],
   "note": "prototype dataset for alpha demo",
@@ -348,8 +348,8 @@
         "id": "T-004",
         "title": "β版で地図表示を追加する",
         "owner": "開発部門",
-        "status": "新規",
-        "next_action": "Leaflet導入可否を検証"
+        "status": "達成",
+        "next_action": "時系列推移の追加を検討"
       },
       {
         "id": "T-005",
