@@ -209,6 +209,25 @@ MODERN_ENTERTAINMENT_BONUS_RANGE = (0.0, 8.0)
 ACCESSIBILITY_BONUS_RANGE = (0.0, 22.0)
 WEATHER_BOOST_RANGE = (-20.0, 20.0)
 
+STATION_PROFILE_DEFINITIONS = {
+    "人流型": {
+        "summary": "駅利用者数が特に多く、施設密度よりも人の流れが熱狂度を押し上げるタイプ。",
+        "criteria": "駅利用者数が都市内1位、かつエンタメ密度順位が3位以下。",
+    },
+    "カルチャー型": {
+        "summary": "利用者数の規模より、駅利用者あたりのエンタメ密度が強いタイプ。",
+        "criteria": "エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。",
+    },
+    "総合熱狂型": {
+        "summary": "人流もエンタメ密度も上位で、規模と濃さの両方があるタイプ。",
+        "criteria": "駅利用者数順位が2位以内、かつエンタメ密度順位も2位以内。",
+    },
+    "バランス型": {
+        "summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
+        "criteria": "上記3タイプに当てはまらない駅。",
+    },
+}
+
 ITERATION_STATE = {
     "version": "β再開発候補",
     "cycle": [
@@ -527,6 +546,16 @@ def station_profile_label(flow_rank: int, density_rank: int) -> str:
     return "バランス型"
 
 
+def station_profile_reason(profile_type: str, flow_rank: int, density_rank: int) -> str:
+    if profile_type == "人流型":
+        return f"乗降客数が都市内{flow_rank}位で特に強く、密度順位は{density_rank}位のため人流中心と判定。"
+    if profile_type == "カルチャー型":
+        return f"エンタメ密度が都市内{density_rank}位で上位、乗降客数は{flow_rank}位のため密度中心と判定。"
+    if profile_type == "総合熱狂型":
+        return f"乗降客数が{flow_rank}位、エンタメ密度が{density_rank}位でどちらも上位のため総合型と判定。"
+    return f"乗降客数が{flow_rank}位、エンタメ密度が{density_rank}位で、特定の軸に偏りすぎないためバランス型と判定。"
+
+
 def build_station_focus(city: str, urban: dict, weather_boost: float) -> list[dict]:
     """都市内ドリルダウン用の駅別プロトタイプ指標を作る。"""
     stations = CITY_STATIONS.get(city, [])
@@ -593,6 +622,11 @@ def build_station_focus(city: str, urban: dict, weather_boost: float) -> list[di
         row["density_rank"] = density_rank
         row["station_heat_score"] = round(station_heat, 1)
         row["profile_type"] = station_profile_label(flow_rank, density_rank)
+        row["profile_summary"] = STATION_PROFILE_DEFINITIONS[row["profile_type"]]["summary"]
+        row["profile_criteria"] = STATION_PROFILE_DEFINITIONS[row["profile_type"]]["criteria"]
+        row["profile_reason"] = station_profile_reason(
+            row["profile_type"], flow_rank, density_rank
+        )
         row["score_note"] = (
             "駅別熱狂度は都市スコア本体とは別枠の試算です。"
             "乗降客数と都市OSM現代エンタメ合計の按分値から算出しています。"
@@ -1095,6 +1129,7 @@ def build_dataset() -> dict:
             "summary": "熱狂度は、絶対量の規模パワー、人口/人流あたりの充実度、今日のブーストを分けて評価するモデル検証版です。",
             "warning": "固定の仮説値は使用していません。公的統計とOSM補助指標は信頼度を分けて表示し、施設数は開催数ではない点に注意してください。",
             "station_view_note": "駅別ビューは都市スコア式を変更しないプロトタイプ枠です。駅周辺OSM数は現時点では都市OSM合計を駅利用者比で按分した試算として表示します。",
+            "station_profile_definitions": STATION_PROFILE_DEFINITIONS,
             "data_sources_file": DATA_SOURCES_FILE.name,
             "urban_csv": URBAN_CSV.name,
         },
