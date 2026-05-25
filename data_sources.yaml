@@ -12,13 +12,29 @@ weather:
   current_usage: "気温・降水量・風速を取得し、都市活動のしやすさの補助指標として使用"
   audit_rule: "取得時刻・出典・API取得失敗時のフォールバック有無を記録する"
 
-event:
+culture_venue:
   name: "劇場・音楽堂（社会教育調査）"
-  category: "イベント会場"
+  category: "文化施設"
   acquisition: "urban_indicators.csv（文科省 社会教育調査 令和3年度）"
   trust_level: "medium"
-  current_usage: "event_venues を venue_bonus に正規化してスコアに使用"
-  audit_rule: "施設数は都道府県単位の公的統計。開催数ではない点を画面上で明示する"
+  current_usage: "event_venues を culture_venue_bonus に正規化してスコアに使用"
+  audit_rule: "施設数は都道府県単位の公的統計。現代エンタメ全体ではなく、文化施設指標として明示する"
+
+modern_entertainment:
+  name: "現代エンタメ施設（OSM）"
+  category: "現代エンタメ"
+  acquisition: "OpenStreetMap / Overpass API（都市中心から半径15kmの件数）"
+  trust_level: "low"
+  current_usage: "映画館・博物館・美術館・スタジアム・テーマパーク・クラブ・アートセンター等を modern_entertainment_bonus に正規化して使用"
+  audit_rule: "OSMは登録密度やタグ揺れに依存するため、公的統計と分けて補助指標として表示する"
+
+population:
+  name: "都道府県人口"
+  category: "人口"
+  acquisition: "urban_indicators.csv（総務省 人口推計 2023年10月1日現在）"
+  trust_level: "medium"
+  current_usage: "venues_per_100k / entertainment_per_100k の分母として使用"
+  audit_rule: "都市名ではなく都道府県単位で比較している点を明示する"
 
 pedestrian_flow:
   name: "人流・混雑データ"
@@ -26,7 +42,7 @@ pedestrian_flow:
   acquisition: "urban_indicators.csv（手動CSV）"
   trust_level: "medium"
   current_usage: "駅乗降客数 station_users を flow_bonus に正規化して使用"
-  audit_rule: "個人情報を含むデータは使わず、集計済み公開データのみ候補にする。正式出典の確認を継続"
+  audit_rule: "個人情報を含むデータは使わず、集計済み公開データのみ候補にする。venues_per_million_station_users の分母にも使う"
 
 social_signal:
   name: "SNS/検索トレンド"
