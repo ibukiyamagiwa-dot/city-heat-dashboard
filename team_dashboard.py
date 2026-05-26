@@ -410,6 +410,186 @@ def render_iteration_loops(org: dict, agents: dict) -> str:
     return "".join(cards)
 
 
+def create_presentation_html(
+    *,
+    updated_at: str,
+    agent_count: int,
+    dept_count: int,
+) -> str:
+    return f"""<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>都市熱狂度分析 — マルチエージェントシステム</title>
+  <style>
+    :root {{
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --line: #e5e7eb;
+      --text: #1f2937;
+      --sub: #64748b;
+      --accent-strong: #e60012;
+      --good: #059669;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{
+      margin: 0;
+      font-family: "Segoe UI","Yu Gothic UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }}
+    .container {{ max-width: 960px; margin: 0 auto; padding: 24px; }}
+    h1, h2 {{ margin: 0 0 12px; }}
+    h1 {{ font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; }}
+    .muted {{ color: var(--sub); }}
+    .panel {{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }}
+    .panel::before {{
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -20px -22px 16px;
+      background: var(--brand-gradient);
+      border-radius: 14px 14px 0 0;
+    }}
+    .hero .status {{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }}
+    .badge {{
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #9a3412;
+      font-weight: 700;
+    }}
+    ul {{ margin: 8px 0 0; padding-left: 1.25rem; }}
+    li + li {{ margin-top: 6px; }}
+    .demo-frame {{
+      width: 100%;
+      height: 560px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }}
+    .footer-nav {{
+      margin-top: 8px;
+      font-size: 14px;
+    }}
+    .footer-nav a {{ color: var(--accent-strong); font-weight: 700; }}
+    code {{
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #7c2d12;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.92em;
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="panel hero">
+      <h1>都市熱狂度分析<br />マルチエージェントシステム</h1>
+      <p class="muted">
+        CrewAI による階層型マルチエージェントで、都市のにぎわい・活動しやすさ・注目度を
+        非専門家にも追える Web ダッシュボード（CITY SONAR 型）を研究・開発する卒業制作です。
+      </p>
+      <div class="status">
+        <span class="badge">対象都市: <b>東京・大阪・名古屋・福岡</b></span>
+        <span class="badge">部門: <b>{dept_count}</b></span>
+        <span class="badge">エージェント: <b>{agent_count}</b></span>
+        <span class="badge">更新: <b>{html.escape(updated_at)}</b></span>
+      </div>
+      <p class="footer-nav" style="margin-top:14px;">
+        発表スライド（全画面推奨）: <a href="slides.html">slides.html</a>
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>ビジョン</h2>
+      <p>
+        複数の公開データ（気象・人流・文化施設・現代エンタメ施設など）を統合し、
+        「今日、その都市はどれだけ活動しやすく、注目されやすいか」を直感的に比較できるようにする。
+        派手なエンタメアプリではなく、スコアの根拠・信頼度・内訳まで説明可能な研究用ダッシュボードを目指す。
+      </p>
+      <p class="muted">
+        開発プロセス自体も CrewAI の8部門・16エージェントが企画・データ・監査・実装・フィードバックを分担し、
+        α版→β版の改善ループで反復する構成とする。
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>現状の問題</h2>
+      <ul>
+        <li>施設数の<strong>絶対量だけ</strong>で比較すると大都市（特に東京）が有利になりやすく、卒論としての説得力が弱い。</li>
+        <li>イベント開催数・SNS/検索トレンドなど「その日の熱量」に近いデータは未接続。</li>
+        <li>OSM 由来の現代エンタメ施設は地域の編集密度に依存し、信頼度が公的統計より低い。</li>
+        <li>駅別ドリルダウンは UI 検証用の試算段階であり、厳密な駅勢圏分析ではない。</li>
+        <li><code>progress.md</code> は CrewAI 生成文書のため、記述と実装が一致しない場合がある。</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>デモ: 都市別スコア</h2>
+      <p class="muted">
+        下の埋め込みはプロトタイプ画面です。順位・<code>scale_power</code>（絶対規模）・
+        <code>accessibility_power</code>（人口・人流あたりの充実度）・<code>weather_boost</code>（当日気象）を分けて表示します。
+      </p>
+      <iframe class="demo-frame" src="prototype_app.html" title="都市熱狂度プロトタイプ"></iframe>
+      <p class="footer-nav muted">
+        全画面で見る: <a href="prototype_app.html">prototype_app.html</a> ／
+        組織図・進捗: <a href="team_dashboard.html">team_dashboard.html</a>
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>課題</h2>
+      <ul>
+        <li>絶対量（<code>scale_power</code>）と相対量（<code>accessibility_power</code>）をどう併記し、読み手に誤解なく伝えるか。</li>
+        <li>文科省・国土数値情報・人口推計と OSM を混ぜず、信頼度ラベルで役割分担を説明し続けること。</li>
+        <li>マルチエージェントの役割分担と、実際のコード変更・データ更新の対応関係を発表で示すこと。</li>
+        <li>プロトタイプは研究用の初期実証であり、地図・時系列・実ユーザーフィードバック収集はこれから。</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>今後の改善</h2>
+      <ul>
+        <li>イベント開催数・人流の実データ連携（固定・按分値の置き換え）。</li>
+        <li>Overpass の検索範囲を行政区域ポリゴン化し、駅中心半径での本実装ドリルダウン。</li>
+        <li>地図表示・時系列（昨日との差・週末との差）の追加。</li>
+        <li>対象都市の拡大、スコア式 v0.8 以降の検証とデータ品質 KPI の定義。</li>
+        <li>β版 UI と同意確認・出典追跡の強化、研究評価実験の実施。</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>聞きたいフィードバック</h2>
+      <ul>
+        <li>「大都市だから強い」という印象を、今の二軸スコア（絶対＋人口/人流あたり）で十分に払拭できているか。</li>
+        <li>非専門家向けに、画面のどこを見れば「なぜこの都市が高い/低いか」が伝わるか。</li>
+        <li>次に優先すべきデータは、イベント・人流・SNS のどれか（ほかにあれば教えてください）。</li>
+        <li>CrewAI マルチエージェント構成を卒論の方法論として据える妥当性と、見せ方の改善点。</li>
+        <li>発表・卒論で「研究の新規性」として強調すべきポイントは何か。</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>"""
+
+
 def create_html(
     agents: dict,
     tasks: dict,
@@ -727,7 +907,10 @@ def main() -> None:
         "score_methodology.md がまだ作成されていません。",
     )
 
-    html_text = create_html(
+    updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    departments = get_departments(agents, org)
+
+    dashboard_html = create_html(
         agents=agents,
         tasks=tasks,
         org=org,
@@ -735,10 +918,15 @@ def main() -> None:
         data_sources_text=data_sources_text,
         score_method_text=score_method_text,
     )
-    OUTPUT_FILE.write_text(html_text, encoding="utf-8")
-    INDEX_FILE.write_text(html_text, encoding="utf-8")
+    presentation_html = create_presentation_html(
+        updated_at=updated_at,
+        agent_count=len(agents),
+        dept_count=len(departments),
+    )
+    OUTPUT_FILE.write_text(dashboard_html, encoding="utf-8")
+    INDEX_FILE.write_text(presentation_html, encoding="utf-8")
     print(f"作成完了: {OUTPUT_FILE}")
-    print(f"作成完了: {INDEX_FILE}")
+    print(f"作成完了: {INDEX_FILE} (発表用ランディング)")
 
 
 if __name__ == "__main__":

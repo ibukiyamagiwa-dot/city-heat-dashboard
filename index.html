@@ -3,18 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>卒業制作 CrewAI 組織図</title>
+  <title>都市熱狂度分析 — マルチエージェントシステム</title>
   <style>
     :root {
       --bg: #f8fafc;
       --panel: #ffffff;
-      --panel-soft: #fff7ed;
       --line: #e5e7eb;
       --text: #1f2937;
       --sub: #64748b;
-      --accent: #f39800;
       --accent-strong: #e60012;
-      --accent-yellow: #fff100;
       --good: #059669;
       --shadow: 0 12px 30px rgba(15, 23, 42, .08);
       --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
@@ -27,1119 +24,148 @@
         radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
         linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
     }
-    .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
-    h1, h2, h3 { margin: 0 0 10px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; }
     .muted { color: var(--sub); }
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 18px;
+      padding: 20px 22px;
       margin-bottom: 18px;
       box-shadow: var(--shadow);
-      overflow: hidden;
     }
     .panel::before {
       content: "";
       display: block;
       height: 4px;
-      margin: -18px -18px 14px;
+      margin: -20px -22px 16px;
       background: var(--brand-gradient);
+      border-radius: 14px 14px 0 0;
     }
-    .status { display: flex; gap: 12px; flex-wrap: wrap; }
-    .badge { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #9a3412; font-weight: 700; }
-    .ok { color: var(--good); font-weight: 700; }
-    .pyramid { display: grid; gap: 18px; }
-    .pyramid-layer { display: grid; gap: 10px; }
-    .pyramid-title {
-      justify-self: center;
-      color: #9a3412;
+    .hero .status { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .badge {
       background: #fff7ed;
       border: 1px solid #fed7aa;
       border-radius: 999px;
-      padding: 6px 14px;
-      font-weight: 900;
-      box-shadow: 0 6px 16px rgba(243, 152, 0, .10);
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #9a3412;
+      font-weight: 700;
     }
-    .pyramid-row {
-      display: grid;
-      grid-template-columns: repeat(var(--cols, auto-fit), minmax(250px, 1fr));
-      gap: 14px;
-      justify-content: center;
-      align-items: start;
-    }
-    .pyramid-layer:nth-child(1) .pyramid-row { max-width: 620px; margin: 0 auto; --cols: 2; }
-    .pyramid-layer:nth-child(2) .pyramid-row { max-width: 1120px; margin: 0 auto; --cols: 4; }
-    .pyramid-layer:nth-child(3) .pyramid-row { max-width: 620px; margin: 0 auto; --cols: 2; }
-    @media (max-width: 760px) {
-      .pyramid-row,
-      .pyramid-layer:nth-child(1) .pyramid-row,
-      .pyramid-layer:nth-child(2) .pyramid-row,
-      .pyramid-layer:nth-child(3) .pyramid-row {
-        grid-template-columns: 1fr;
-        max-width: none;
-      }
-    }
-    .dept-card {
-      background: #ffffff;
+    ul { margin: 8px 0 0; padding-left: 1.25rem; }
+    li + li { margin-top: 6px; }
+    .demo-frame {
+      width: 100%;
+      height: 560px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, .07);
-      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
     }
-    .dept-card[open] { border-color: #fed7aa; box-shadow: 0 14px 30px rgba(243, 152, 0, .16); }
-    .dept-card summary {
-      list-style: none;
-      cursor: pointer;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 14px;
-      position: relative;
-    }
-    .dept-card summary::-webkit-details-marker { display: none; }
-    .dept-card summary::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 4px;
-      background: var(--brand-gradient);
-    }
-    .dept-icon {
-      width: 48px;
-      height: 48px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #e60012, #f39800 70%, #fff100);
-      color: #ffffff;
-      font-weight: 900;
-      font-size: 19px;
-      box-shadow: 0 8px 18px rgba(230, 0, 18, .18);
-    }
-    .dept-summary-text strong { display: block; font-size: 1.02rem; }
-    .dept-summary-text small { display: block; color: var(--sub); line-height: 1.45; }
-    .dept-summary-text em { display: block; color: #c2410c; font-style: normal; font-size: 12px; margin-top: 3px; }
-    .tap-hint { color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 999px; padding: 4px 9px; font-size: 12px; font-weight: 800; white-space: nowrap; }
-    .dept-detail { border-top: 1px solid var(--line); padding: 14px; background: #fffdf8; }
-    .dept-role { margin: 0 0 12px; color: var(--text); }
-    .dept-agent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-    .dept-agent { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-    .dept-agent h4 { margin: 0 0 8px; color: var(--accent-strong); }
-    .dept-agent.empty { opacity: .65; }
-    .dept-link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px; }
-    .dept-links { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-    .dept-links h4 { margin: 0 0 8px; color: #9a3412; }
-    .dept-links ul { padding-left: 18px; }
-    .compact-section summary {
-      cursor: pointer;
-      color: #9a3412;
-      font-weight: 800;
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      border-radius: 999px;
-      padding: 8px 12px;
-      display: inline-block;
+    .footer-nav {
       margin-top: 8px;
+      font-size: 14px;
     }
-    .compact-section[open] summary { margin-bottom: 14px; }
-    .org-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-    .org-col { background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; }
-    .hierarchy-layer { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-    .hierarchy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
-    .hierarchy-dep { background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; }
-    .dep-title { font-weight: 800; margin-bottom: 8px; color: var(--accent-strong); }
-    .org-node { background: #ffffff; border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; box-shadow: 0 6px 16px rgba(15, 23, 42, .05); }
-    .org-node.management { border-color: var(--accent-strong); }
-    .org-node.execution { border-color: var(--good); }
-    .org-node.empty { opacity: 0.5; }
-    .v-arrow { text-align: center; color: var(--sub); font-size: 13px; padding: 6px 0; }
-    .loop-card { background: var(--panel-soft); border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; margin-top: 12px; }
-    .loop-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .loop-step { background: #ffffff; border: 1px solid var(--line); border-radius: 999px; padding: 8px 10px; box-shadow: 0 4px 12px rgba(15, 23, 42, .05); }
-    .loop-step small { display: block; color: var(--sub); font-size: 11px; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-    .card { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; box-shadow: 0 8px 22px rgba(15, 23, 42, .06); overflow: hidden; }
-    .card::before { content: ""; display: block; height: 4px; margin: -14px -14px 12px; background: var(--brand-gradient); }
-    .label { color: var(--sub); font-weight: 600; }
-    code { background: #fffbeb; border: 1px solid #fde68a; color: #7c2d12; border-radius: 6px; padding: 2px 6px; }
-    pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: #fffbeb; border: 1px solid #fde68a; color: #1f2937; border-radius: 10px; padding: 14px; max-height: 520px; overflow: auto; }
-    ul { margin-top: 8px; }
+    .footer-nav a { color: var(--accent-strong); font-weight: 700; }
+    code {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #7c2d12;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.92em;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <section class="panel">
-      <h1>卒業制作 CrewAI 組織図</h1>
-      <p class="muted">階層型組織 / αβ開発 / フィードバック再開発ループ</p>
+    <section class="panel hero">
+      <h1>都市熱狂度分析<br />マルチエージェントシステム</h1>
+      <p class="muted">
+        CrewAI による階層型マルチエージェントで、都市のにぎわい・活動しやすさ・注目度を
+        非専門家にも追える Web ダッシュボード（CITY SONAR 型）を研究・開発する卒業制作です。
+      </p>
       <div class="status">
-        <span class="badge">部門数: <b>8</b></span>
-        <span class="badge">エージェント数: <b>16</b></span>
-        <span class="badge">タスク数: <b>17</b></span>
-        <span class="badge">最終更新: <b>2026-05-26 01:36:23</b></span>
-        <span class="badge ok">progress.md 連携: 有効</span>
+        <span class="badge">対象都市: <b>東京・大阪・名古屋・福岡</b></span>
+        <span class="badge">部門: <b>8</b></span>
+        <span class="badge">エージェント: <b>16</b></span>
+        <span class="badge">更新: <b>2026-05-26 10:58:43</b></span>
       </div>
+      <p class="footer-nav" style="margin-top:14px;">
+        発表スライド（全画面推奨）: <a href="slides.html">slides.html</a>
+      </p>
     </section>
 
     <section class="panel">
-      <h2>ピラミッド型の階層組織図</h2>
-      <p class="muted">上から統括、方針・検証・改善、実行へ降りるCrewAI組織です。部門カードを開くと、管理担当・実行担当・Goal・担当タスク・関連連携を確認できます。</p>
-      <div class='pyramid'>
-            <section class="pyramid-layer">
-              <div class="pyramid-title">Level 1: 統括</div>
-              <div class="pyramid-row">
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="羅針盤 / 王冠">
-          ♕
-        </span>
-        <span class="dept-summary-text">
-          <strong>統括戦略室</strong>
-          <small>全体方針と卒業制作としての到達点を決める司令塔。</small>
-          <em>羅針盤 / 王冠</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">研究全体の方向性、評価基準、意思決定をまとめる部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>統括戦略室マネージャー</b><br /><code>strategy_mgmt</code></p>
-      <p class="muted">卒業制作全体の上位方針、評価基準、到達目標を管理する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>program_alignment_task</code></li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>統括戦略室実行担当</b><br /><code>strategy_exec</code></p>
-      <p class="muted">部門横断の論点を整理し、スプリントごとの意思決定メモを作成する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>strategy_mgmt</code> 統括戦略室マネージャー → <code>strategy_exec</code> 統括戦略室実行担当<br /><span class='muted'>全体戦略の管理と実行</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>strategy_exec</code> 統括戦略室実行担当 → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>全体方針と進捗管理の同期</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="カレンダー / チェックリスト">
-          ✓
-        </span>
-        <span class="dept-summary-text">
-          <strong>PMO部門</strong>
-          <small>進捗・連携・提出品質を見守る管理ハブ。</small>
-          <em>カレンダー / チェックリスト</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">各部門の進捗を整理し、作業が迷子にならないように調整する部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>PMOマネージャー</b><br /><code>pmo_mgmt</code></p>
-      <p class="muted">各部門の縦連携・横連携を調整し、反復改善サイクル全体を統括する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>coordination_task</code></li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>PMO実行担当（秘書）</b><br /><code>pmo_exec</code></p>
-      <p class="muted">各部門の成果と進捗を可視化し、非エンジニア向けに分かりやすく報告する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>cross_function_review_task</code></li><li><code>todo_iteration_task</code></li><li><code>secretary_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>pmo_mgmt</code> PMOマネージャー → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>統括管理と進捗可視化</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>strategy_exec</code> 統括戦略室実行担当 → <code>pmo_exec</code> PMO実行担当（秘書）<br /><span class='muted'>全体方針と進捗管理の同期</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>planner_mgmt</code> 企画部門マネージャー<br /><span class='muted'>全体優先度の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>audit_mgmt</code> 監査部門マネージャー<br /><span class='muted'>提出判定条件の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>運用・法務リスクの調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>リソース計画の調整</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    </div>
-            </section>
-            
-            <section class="pyramid-layer">
-              <div class="pyramid-title">Level 2: 方針・検証・改善</div>
-              <div class="pyramid-row">
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="電球">
-          灯
-        </span>
-        <span class="dept-summary-text">
-          <strong>企画部門</strong>
-          <small>都市熱狂度アプリの価値と見せ方を考える部門。</small>
-          <em>電球</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">誰に何を伝えるアプリなのかを定義し、改善の方向性を作る部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>企画部門マネージャー</b><br /><code>planner_mgmt</code></p>
-      <p class="muted">企画方針を管理し、反復改善サイクルごとの優先順位を決定する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>企画部門実行担当</b><br /><code>planner_exec</code></p>
-      <p class="muted">都市熱狂度アプリ案を具体化し、監査・データ・開発のフィードバックで継続改善する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>planning_round1_task</code></li><li><code>planning_round2_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>planner_mgmt</code> 企画部門マネージャー → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>企画方針の管理と実行</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>planner_exec</code> 企画部門実行担当 → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>要件とデータ仕様の同期</span></li><li><code>dev_exec</code> 開発部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>実装制約の企画フィードバック</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>改善点に対する企画解決案</span></li><li><code>planner_mgmt</code> 企画部門マネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>スコープと納期の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>planner_mgmt</code> 企画部門マネージャー<br /><span class='muted'>全体優先度の調整</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="虫眼鏡 / 盾">
-          盾
-        </span>
-        <span class="dept-summary-text">
-          <strong>監査部門</strong>
-          <small>データの信頼性と説明可能性を確認する部門。</small>
-          <em>虫眼鏡 / 盾</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">使っているデータやスコア根拠が卒論として説明できるかを確認する部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>監査部門マネージャー</b><br /><code>audit_mgmt</code></p>
-      <p class="muted">評価基準を維持し、データの真偽・倫理・提出品質を最終判定する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>management_gate_task</code></li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>監査部門実行担当</b><br /><code>audit_exec</code></p>
-      <p class="muted">企画・データ・開発成果物を検証し、特にデータに虚偽や不整合がないかを監査する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>audit_round1_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>audit_mgmt</code> 監査部門マネージャー → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>監査基準の管理と現場監査</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>data_exec</code> データ部門実行担当 → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>データ真偽と出典確認</span></li><li><code>audit_exec</code> 監査部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>監査指摘の実装反映</span></li><li><code>audit_mgmt</code> 監査部門マネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>品質基準とデータ運用基準の整合</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>audit_mgmt</code> 監査部門マネージャー<br /><span class='muted'>提出判定条件の調整</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="工具 / スパナ">
-          工
-        </span>
-        <span class="dept-summary-text">
-          <strong>改善解決案部門</strong>
-          <small>指摘や課題を次の改善案に変換する部門。</small>
-          <em>工具 / スパナ</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">フィードバックを実装可能な修正案に分解し、次の開発へ渡す部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>改善解決案部門マネージャー</b><br /><code>solution_mgmt</code></p>
-      <p class="muted">監査・フィードバックで挙がった改善点に対し、実装可能な解決方針を決定する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>改善解決案部門実行担当</b><br /><code>solution_exec</code></p>
-      <p class="muted">未達Todoやフィードバックを分解し、企画・データ・開発へ渡せる修正案に変換する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>solution_alpha_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>solution_mgmt</code> 改善解決案部門マネージャー → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>改善方針の管理と解決案作成</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>feedback_exec</code> フィードバック部門実行担当 → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>αβ評価を改善案へ変換</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>改善点に対する企画解決案</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>再開発タスクとして実装へ戻す</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="吹き出し">
-          吹
-        </span>
-        <span class="dept-summary-text">
-          <strong>フィードバック部門</strong>
-          <small>見た人の反応を集め、改善点を見つける部門。</small>
-          <em>吹き出し</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">教授・ユーザー・非エンジニア視点の疑問や改善要望を整理する部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>フィードバック部門マネージャー</b><br /><code>feedback_mgmt</code></p>
-      <p class="muted">α版・β版の評価観点を管理し、改善サイクルへ戻すべき論点を決定する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>フィードバック部門実行担当</b><br /><code>feedback_exec</code></p>
-      <p class="muted">α版・β版に対するフィードバックを収集し、未達Todoと改善要望を分類する。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>alpha_feedback_task</code></li><li><code>beta_feedback_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>feedback_mgmt</code> フィードバック部門マネージャー → <code>feedback_exec</code> フィードバック部門実行担当<br /><span class='muted'>評価観点の管理とフィードバック収集</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>feedback_exec</code> フィードバック部門実行担当 → <code>solution_exec</code> 改善解決案部門実行担当<br /><span class='muted'>αβ評価を改善案へ変換</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    </div>
-            </section>
-            
-            <section class="pyramid-layer">
-              <div class="pyramid-title">Level 3: 実行</div>
-              <div class="pyramid-row">
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="データベース">
-          DB
-        </span>
-        <span class="dept-summary-text">
-          <strong>データ部門</strong>
-          <small>気象・人流・施設などの根拠データを扱う部門。</small>
-          <em>データベース</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">公開データを集め、スコア計算に使える形へ整える部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>データ部門マネージャー</b><br /><code>data_mgmt</code></p>
-      <p class="muted">データ取得計画、更新頻度、規約順守を管理し、安定運用方針を決める。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>データ部門実行担当</b><br /><code>data_exec</code></p>
-      <p class="muted">実データを収集・整形し、欠損補完ルールを適用してプロトタイプ投入データを作る。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>data_round1_task</code></li><li><code>data_round2_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>data_mgmt</code> データ部門マネージャー → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>データ運用方針の管理と収集実行</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>planner_exec</code> 企画部門実行担当 → <code>data_exec</code> データ部門実行担当<br /><span class='muted'>要件とデータ仕様の同期</span></li><li><code>data_exec</code> データ部門実行担当 → <code>audit_exec</code> 監査部門実行担当<br /><span class='muted'>データ真偽と出典確認</span></li><li><code>audit_mgmt</code> 監査部門マネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>品質基準とデータ運用基準の整合</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>data_mgmt</code> データ部門マネージャー<br /><span class='muted'>運用・法務リスクの調整</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    
-    <details class="dept-card">
-      <summary>
-        <span class="dept-icon" aria-label="ノートPC / コード">
-          &lt;/&gt;
-        </span>
-        <span class="dept-summary-text">
-          <strong>開発部門</strong>
-          <small>ダッシュボードとプロトタイプを形にする部門。</small>
-          <em>ノートPC / コード</em>
-        </span>
-        <span class="tap-hint">クリックで詳細</span>
-      </summary>
-      <div class="dept-detail">
-        <p class="dept-role">企画・データ・監査の内容を画面や生成スクリプトとして実装する部門です。</p>
-        <div class="dept-agent-grid">
-          
-    <div class="dept-agent">
-      <h4>管理担当</h4>
-      <p><b>開発部門マネージャー</b><br /><code>dev_mgmt</code></p>
-      <p class="muted">α版・β版の開発計画を管理し、スコープと品質のバランスを取る。</p>
-      <p class="label">担当タスク</p>
-      <ul><li>（未割り当て）</li></ul>
-    </div>
-    
-          
-    <div class="dept-agent">
-      <h4>実行担当</h4>
-      <p><b>開発部門実行担当</b><br /><code>dev_exec</code></p>
-      <p class="muted">α版とβ版の実装計画を具体化し、改善サイクルに沿って機能品質を高める。</p>
-      <p class="label">担当タスク</p>
-      <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li><li><code>redevelopment_task</code></li></ul>
-    </div>
-    
-        </div>
-        <div class="dept-link-grid">
-          <div class='dept-links'><h4>関連する縦連携</h4><ul><li><code>dev_mgmt</code> 開発部門マネージャー → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>開発優先度の管理と実装</span></li></ul></div>
-          <div class='dept-links'><h4>関連する横連携</h4><ul><li><code>audit_exec</code> 監査部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>監査指摘の実装反映</span></li><li><code>dev_exec</code> 開発部門実行担当 → <code>planner_exec</code> 企画部門実行担当<br /><span class='muted'>実装制約の企画フィードバック</span></li><li><code>solution_exec</code> 改善解決案部門実行担当 → <code>dev_exec</code> 開発部門実行担当<br /><span class='muted'>再開発タスクとして実装へ戻す</span></li><li><code>planner_mgmt</code> 企画部門マネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>スコープと納期の調整</span></li><li><code>pmo_mgmt</code> PMOマネージャー → <code>dev_mgmt</code> 開発部門マネージャー<br /><span class='muted'>リソース計画の調整</span></li></ul></div>
-        </div>
-      </div>
-    </details>
-    </div>
-            </section>
-            </div>
+      <h2>ビジョン</h2>
+      <p>
+        複数の公開データ（気象・人流・文化施設・現代エンタメ施設など）を統合し、
+        「今日、その都市はどれだけ活動しやすく、注目されやすいか」を直感的に比較できるようにする。
+        派手なエンタメアプリではなく、スコアの根拠・信頼度・内訳まで説明可能な研究用ダッシュボードを目指す。
+      </p>
+      <p class="muted">
+        開発プロセス自体も CrewAI の8部門・16エージェントが企画・データ・監査・実装・フィードバックを分担し、
+        α版→β版の改善ループで反復する構成とする。
+      </p>
     </section>
 
     <section class="panel">
-      <h2>詳しい組織図</h2>
-      <p class="muted">発表時は必要に応じて開けるように、詳細な組織図は折りたたみ表示にしています。</p>
-      <details class="compact-section">
-        <summary>階層型組織図を開く</summary>
-        <p class="muted">Level 1からLevel 3へ降りる階層構造です。各部門内は管理担当と実行担当の二台体制です。</p>
-        
-            <section class="hierarchy-layer">
-              <h3>Level 1: 統括</h3>
-              <div class="hierarchy-grid">
-    <div class="hierarchy-dep">
-      <div class="dep-title">統括戦略室</div>
-      <div class="org-node management"><b>統括戦略室マネージャー</b><br /><span class='muted'>strategy_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>統括戦略室実行担当</b><br /><span class='muted'>strategy_exec</span></div>
-    </div>
-    
-    <div class="hierarchy-dep">
-      <div class="dep-title">PMO部門</div>
-      <div class="org-node management"><b>PMOマネージャー</b><br /><span class='muted'>pmo_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>PMO実行担当（秘書）</b><br /><span class='muted'>pmo_exec</span></div>
-    </div>
-    </div>
-            </section>
-            
-            <section class="hierarchy-layer">
-              <h3>Level 2: 方針・検証・改善</h3>
-              <div class="hierarchy-grid">
-    <div class="hierarchy-dep">
-      <div class="dep-title">企画部門</div>
-      <div class="org-node management"><b>企画部門マネージャー</b><br /><span class='muted'>planner_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>企画部門実行担当</b><br /><span class='muted'>planner_exec</span></div>
-    </div>
-    
-    <div class="hierarchy-dep">
-      <div class="dep-title">監査部門</div>
-      <div class="org-node management"><b>監査部門マネージャー</b><br /><span class='muted'>audit_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>監査部門実行担当</b><br /><span class='muted'>audit_exec</span></div>
-    </div>
-    
-    <div class="hierarchy-dep">
-      <div class="dep-title">改善解決案部門</div>
-      <div class="org-node management"><b>改善解決案部門マネージャー</b><br /><span class='muted'>solution_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>改善解決案部門実行担当</b><br /><span class='muted'>solution_exec</span></div>
-    </div>
-    
-    <div class="hierarchy-dep">
-      <div class="dep-title">フィードバック部門</div>
-      <div class="org-node management"><b>フィードバック部門マネージャー</b><br /><span class='muted'>feedback_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>フィードバック部門実行担当</b><br /><span class='muted'>feedback_exec</span></div>
-    </div>
-    </div>
-            </section>
-            
-            <section class="hierarchy-layer">
-              <h3>Level 3: 実行</h3>
-              <div class="hierarchy-grid">
-    <div class="hierarchy-dep">
-      <div class="dep-title">データ部門</div>
-      <div class="org-node management"><b>データ部門マネージャー</b><br /><span class='muted'>data_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>データ部門実行担当</b><br /><span class='muted'>data_exec</span></div>
-    </div>
-    
-    <div class="hierarchy-dep">
-      <div class="dep-title">開発部門</div>
-      <div class="org-node management"><b>開発部門マネージャー</b><br /><span class='muted'>dev_mgmt</span></div>
-      <div class="v-arrow">↓ 管理から実行へ</div>
-      <div class="org-node execution"><b>開発部門実行担当</b><br /><span class='muted'>dev_exec</span></div>
-    </div>
-    </div>
-            </section>
-            
-      </details>
-      <details class="compact-section">
-        <summary>部門別二台体制を開く</summary>
-        <p class="muted">各列が部門、上段が管理、下段が実行です。列内が縦連携です。</p>
-        <div class="org-grid">
-            <div class="org-col">
-              <div class="dep-title">統括戦略室</div>
-              <div class="org-node"><b>統括戦略室マネージャー</b><br /><span class="muted">strategy_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>統括戦略室実行担当</b><br /><span class="muted">strategy_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">PMO部門</div>
-              <div class="org-node"><b>PMOマネージャー</b><br /><span class="muted">pmo_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>PMO実行担当（秘書）</b><br /><span class="muted">pmo_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">企画部門</div>
-              <div class="org-node"><b>企画部門マネージャー</b><br /><span class="muted">planner_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>企画部門実行担当</b><br /><span class="muted">planner_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">監査部門</div>
-              <div class="org-node"><b>監査部門マネージャー</b><br /><span class="muted">audit_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>監査部門実行担当</b><br /><span class="muted">audit_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">改善解決案部門</div>
-              <div class="org-node"><b>改善解決案部門マネージャー</b><br /><span class="muted">solution_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>改善解決案部門実行担当</b><br /><span class="muted">solution_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">フィードバック部門</div>
-              <div class="org-node"><b>フィードバック部門マネージャー</b><br /><span class="muted">feedback_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>フィードバック部門実行担当</b><br /><span class="muted">feedback_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">データ部門</div>
-              <div class="org-node"><b>データ部門マネージャー</b><br /><span class="muted">data_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>データ部門実行担当</b><br /><span class="muted">data_exec</span></div>
-            </div>
-            
-            <div class="org-col">
-              <div class="dep-title">開発部門</div>
-              <div class="org-node"><b>開発部門マネージャー</b><br /><span class="muted">dev_mgmt</span></div>
-              <div class="v-arrow">↓ 縦連携</div>
-              <div class="org-node"><b>開発部門実行担当</b><br /><span class="muted">dev_exec</span></div>
-            </div>
-            </div>
-      </details>
+      <h2>現状の問題</h2>
+      <ul>
+        <li>施設数の<strong>絶対量だけ</strong>で比較すると大都市（特に東京）が有利になりやすく、卒論としての説得力が弱い。</li>
+        <li>イベント開催数・SNS/検索トレンドなど「その日の熱量」に近いデータは未接続。</li>
+        <li>OSM 由来の現代エンタメ施設は地域の編集密度に依存し、信頼度が公的統計より低い。</li>
+        <li>駅別ドリルダウンは UI 検証用の試算段階であり、厳密な駅勢圏分析ではない。</li>
+        <li><code>progress.md</code> は CrewAI 生成文書のため、記述と実装が一致しない場合がある。</li>
+      </ul>
     </section>
 
     <section class="panel">
-      <h2>連携一覧</h2>
-      <h3>縦連携（管理→実行）</h3><ul><li><code>strategy_mgmt</code> (統括戦略室マネージャー) → <code>strategy_exec</code> (統括戦略室実行担当) / 全体戦略の管理と実行</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 統括管理と進捗可視化</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>planner_exec</code> (企画部門実行担当) / 企画方針の管理と実行</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>audit_exec</code> (監査部門実行担当) / 監査基準の管理と現場監査</li><li><code>data_mgmt</code> (データ部門マネージャー) → <code>data_exec</code> (データ部門実行担当) / データ運用方針の管理と収集実行</li><li><code>dev_mgmt</code> (開発部門マネージャー) → <code>dev_exec</code> (開発部門実行担当) / 開発優先度の管理と実装</li><li><code>solution_mgmt</code> (改善解決案部門マネージャー) → <code>solution_exec</code> (改善解決案部門実行担当) / 改善方針の管理と解決案作成</li><li><code>feedback_mgmt</code> (フィードバック部門マネージャー) → <code>feedback_exec</code> (フィードバック部門実行担当) / 評価観点の管理とフィードバック収集</li></ul>
-      <h3>横連携（部門間）</h3><ul><li><code>strategy_exec</code> (統括戦略室実行担当) → <code>pmo_exec</code> (PMO実行担当（秘書）) / 全体方針と進捗管理の同期</li><li><code>planner_exec</code> (企画部門実行担当) → <code>data_exec</code> (データ部門実行担当) / 要件とデータ仕様の同期</li><li><code>data_exec</code> (データ部門実行担当) → <code>audit_exec</code> (監査部門実行担当) / データ真偽と出典確認</li><li><code>audit_exec</code> (監査部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 監査指摘の実装反映</li><li><code>dev_exec</code> (開発部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 実装制約の企画フィードバック</li><li><code>feedback_exec</code> (フィードバック部門実行担当) → <code>solution_exec</code> (改善解決案部門実行担当) / αβ評価を改善案へ変換</li><li><code>solution_exec</code> (改善解決案部門実行担当) → <code>planner_exec</code> (企画部門実行担当) / 改善点に対する企画解決案</li><li><code>solution_exec</code> (改善解決案部門実行担当) → <code>dev_exec</code> (開発部門実行担当) / 再開発タスクとして実装へ戻す</li><li><code>planner_mgmt</code> (企画部門マネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / スコープと納期の調整</li><li><code>audit_mgmt</code> (監査部門マネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 品質基準とデータ運用基準の整合</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>planner_mgmt</code> (企画部門マネージャー) / 全体優先度の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>audit_mgmt</code> (監査部門マネージャー) / 提出判定条件の調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>data_mgmt</code> (データ部門マネージャー) / 運用・法務リスクの調整</li><li><code>pmo_mgmt</code> (PMOマネージャー) → <code>dev_mgmt</code> (開発部門マネージャー) / リソース計画の調整</li></ul>
+      <h2>デモ: 都市別スコア</h2>
+      <p class="muted">
+        下の埋め込みはプロトタイプ画面です。順位・<code>scale_power</code>（絶対規模）・
+        <code>accessibility_power</code>（人口・人流あたりの充実度）・<code>weather_boost</code>（当日気象）を分けて表示します。
+      </p>
+      <iframe class="demo-frame" src="prototype_app.html" title="都市熱狂度プロトタイプ"></iframe>
+      <p class="footer-nav muted">
+        全画面で見る: <a href="prototype_app.html">prototype_app.html</a> ／
+        組織図・進捗: <a href="team_dashboard.html">team_dashboard.html</a>
+      </p>
     </section>
 
     <section class="panel">
-      <h2>改善ループ（α/β → フィードバック → 解決案 → 再開発）</h2>
-      <div class='loop-card'><h3>α版改善ループ</h3><div class='loop-flow'><span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>フィードバック部門実行担当<small>feedback_exec</small></span> → <span class='loop-step'>改善解決案部門実行担当<small>solution_exec</small></span> → <span class='loop-step'>企画部門実行担当<small>planner_exec</small></span> → <span class='loop-step'>データ部門実行担当<small>data_exec</small></span> → <span class='loop-step'>監査部門実行担当<small>audit_exec</small></span> → <span class='loop-step'>開発部門実行担当<small>dev_exec</small></span></div></div><div class='loop-card'><h3>β版改善ループ</h3><div class='loop-flow'><span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>フィードバック部門実行担当<small>feedback_exec</small></span> → <span class='loop-step'>改善解決案部門実行担当<small>solution_exec</small></span> → <span class='loop-step'>開発部門実行担当<small>dev_exec</small></span> → <span class='loop-step'>監査部門マネージャー<small>audit_mgmt</small></span></div></div>
+      <h2>課題</h2>
+      <ul>
+        <li>絶対量（<code>scale_power</code>）と相対量（<code>accessibility_power</code>）をどう併記し、読み手に誤解なく伝えるか。</li>
+        <li>文科省・国土数値情報・人口推計と OSM を混ぜず、信頼度ラベルで役割分担を説明し続けること。</li>
+        <li>マルチエージェントの役割分担と、実際のコード変更・データ更新の対応関係を発表で示すこと。</li>
+        <li>プロトタイプは研究用の初期実証であり、地図・時系列・実ユーザーフィードバック収集はこれから。</li>
+      </ul>
     </section>
 
     <section class="panel">
-      <h2>データ設計フェーズ</h2>
-      <p class="muted">実データ・仮説値・未接続データを分け、卒業研究として説明できる状態にする段階です。</p>
-      <div class="cards">
-        <section class="card">
-          <h3>データソース定義</h3>
-          <pre># 卒業研究で使うデータソース定義です。
-# trust_level:
-#   high   = 実データとして扱える
-#   medium = 参考値として扱う
-#   low    = 仮説値・固定値。画面上で必ず明示する
-
-weather:
-  name: &quot;Open-Meteo 現在気象データ&quot;
-  category: &quot;気象&quot;
-  acquisition: &quot;公式API&quot;
-  trust_level: &quot;high&quot;
-  current_usage: &quot;気温・降水量・風速を取得し、都市活動のしやすさの補助指標として使用&quot;
-  audit_rule: &quot;取得時刻・出典・API取得失敗時のフォールバック有無を記録する&quot;
-
-culture_venue:
-  name: &quot;劇場・音楽堂（社会教育調査）&quot;
-  category: &quot;文化施設&quot;
-  acquisition: &quot;urban_indicators.csv（文科省 社会教育調査 令和3年度）&quot;
-  trust_level: &quot;medium&quot;
-  current_usage: &quot;event_venues を culture_venue_bonus に正規化してスコアに使用&quot;
-  audit_rule: &quot;施設数は都道府県単位の公的統計。現代エンタメ全体ではなく、文化施設指標として明示する&quot;
-
-modern_entertainment:
-  name: &quot;現代エンタメ施設（OSM）&quot;
-  category: &quot;現代エンタメ&quot;
-  acquisition: &quot;OpenStreetMap / Overpass API（都市中心から半径15kmのカテゴリ別件数）&quot;
-  trust_level: &quot;low&quot;
-  current_usage: &quot;cinema / museum / stadium / theme_park / arts_centre / nightclub / theatre / sports_centre を取得し、合計を modern_entertainment_bonus に正規化して使用&quot;
-  audit_rule: &quot;OSMは登録密度の地域差、タグ表記の揺れ、node/way/relationの重複カウントが起こりうるため、公的統計と分けて補助指標として表示する&quot;
-  osm_tags:
-    cinema: &quot;amenity=cinema&quot;
-    museum: &quot;tourism=museum&quot;
-    stadium: &quot;leisure=stadium&quot;
-    theme_park: &quot;tourism=theme_park&quot;
-    arts_centre: &quot;amenity=arts_centre&quot;
-    nightclub: &quot;amenity=nightclub&quot;
-    theatre: &quot;amenity=theatre&quot;
-    sports_centre: &quot;leisure=sports_centre&quot;
-
-population:
-  name: &quot;都道府県人口&quot;
-  category: &quot;人口&quot;
-  acquisition: &quot;urban_indicators.csv（総務省 人口推計 2023年10月1日現在）&quot;
-  trust_level: &quot;medium&quot;
-  current_usage: &quot;venues_per_100k / entertainment_per_100k の分母として使用&quot;
-  audit_rule: &quot;都市名ではなく都道府県単位で比較している点を明示する&quot;
-
-pedestrian_flow:
-  name: &quot;人流・混雑データ&quot;
-  category: &quot;人流&quot;
-  acquisition: &quot;urban_indicators.csv（手動CSV）&quot;
-  trust_level: &quot;medium&quot;
-  current_usage: &quot;駅乗降客数 station_users を flow_bonus に正規化して使用&quot;
-  audit_rule: &quot;個人情報を含むデータは使わず、集計済み公開データのみ候補にする。venues_per_million_station_users の分母にも使う&quot;
-
-station_focus:
-  name: &quot;都市内ドリルダウン / 駅別熱狂度プロトタイプ&quot;
-  category: &quot;駅別プロトタイプ&quot;
-  acquisition: &quot;urban_indicators.csv の主要駅乗降客数 + OSM都市合計の駅利用者比按分&quot;
-  trust_level: &quot;low&quot;
-  current_usage: &quot;都市スコア式は変更せず、都市詳細内で注目駅の仮スコア・分類・密度を表示&quot;
-  audit_rule: &quot;駅周辺OSMの厳密取得ではなくプロトタイプ推定。今後は駅中心半径500m〜1kmのOSM直接取得や駅勢圏人口で検証する&quot;
-
-social_signal:
-  name: &quot;SNS/検索トレンド&quot;
-  category: &quot;話題性&quot;
-  acquisition: &quot;未接続（将来候補）&quot;
-  trust_level: &quot;low&quot;
-  current_usage: &quot;現時点では未使用&quot;
-  audit_rule: &quot;利用規約と取得方法の妥当性を確認するまでスコアには入れない&quot;
-</pre>
-        </section>
-        <section class="card">
-          <h3>スコア設計</h3>
-          <pre># 都市熱狂度スコア設計 v0.7
-
-## 現在のスコア式
-
-都市熱狂度は、都市の絶対的な規模、人口・人流あたりの施設充実度、その日の気象による一時的な追い風・向かい風を分けて評価する。
-
-```text
-heat_score = scale_power + accessibility_power + weather_boost
-```
-
-```text
-scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus
-accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus
-weather_boost = temp_score - precip_penalty - wind_penalty
-```
-
-## モデル拡張の理由
-
-従来のモデルは、主要駅利用者数や施設数の絶対量を重視していた。そのため、東京のような大都市は人口・人流・施設数の母数が大きく、単純な施設数比較では有利になりやすい。
-
-教授からの指摘である「施設数だけだと東京が勝ちやすい。人口や有効的な人数に対する施設数で見ないと説得力が弱い」を受け、今回のモデルでは次の2つを分けて評価する。
-
-- `scale_power`
-  - 人流、文化施設数、現代エンタメ施設数などの絶対量。
-  - 「都市としてどれだけ大きな受け皿を持つか」を示す。
-
-- `accessibility_power`
-  - 人口あたり・駅利用者あたりの施設充実度。
-  - 「都市規模に対して、施設がどれくらい身近に存在するか」を示す。
-
-これにより、「東京が強いのは単に大きいからなのか」「小規模でも人口あたりでは充実している都市があるのか」という問いに答えられる。卒論上は、絶対量と相対量を併記することで、都市規模バイアスを完全に消すのではなく、見える化して検証可能にする狙いがある。
-
-`weather_boost` は従来どおり、気温・降水量・風速など日々変動する要因を別枠で扱う。これにより、構造的な強さと当日の条件を混同しない。
-
-## 構成要素
-
-- `flow_bonus`
-  - 出典: 国土交通省 国土数値情報 駅別乗降客数
-  - 信頼度: medium
-  - 算出: `station_users` を4都市間で正規化し、0.0〜18.0点に変換
-  - 意味: 主要駅利用者が多い都市ほど、人流の底力が高い
-
-- `culture_venue_bonus`
-  - 出典: 文部科学省 社会教育調査（劇場・音楽堂）
-  - 信頼度: medium
-  - 算出: `event_venues` を4都市間で正規化し、0.0〜7.0点に変換
-  - 意味: 劇場・音楽堂を「現代エンタメ全体」ではなく、公的統計に基づく文化施設指標として扱う
-
-- `modern_entertainment_bonus`
-  - 出典: OpenStreetMap / Overpass API
-  - 信頼度: low
-  - 対象カテゴリ:
-    - `amenity=cinema`（映画館）
-    - `tourism=museum`（博物館・美術館）
-    - `leisure=stadium`（スタジアム）
-    - `tourism=theme_park`（テーマパーク）
-    - `amenity=arts_centre`（アートセンター）
-    - `amenity=nightclub`（クラブ）
-    - `amenity=theatre`（劇場）
-    - `leisure=sports_centre`（スポーツセンター）
-  - 算出: 都市中心から半径15km以内の施設数を4都市間で正規化し、0.0〜8.0点に変換
-  - 意味: 文科省の劇場・音楽堂だけでは捉えきれない、現代的な余暇・娯楽施設の厚みを補助的に評価する
-  - 表示: 合計値だけでなく `modern_entertainment_breakdown` としてカテゴリ別件数も画面に表示する
-
-- `accessibility_power`
-  - 出典: 総務省人口推計、国土数値情報駅利用者数、文科省社会教育調査、OSM
-  - 信頼度: medium〜low
-  - 使用指標:
-    - `culture_venues_per_100k` = 文化施設数 / 人口 * 100,000
-    - `modern_entertainment_per_100k` = 現代エンタメ施設数 / 人口 * 100,000
-    - `culture_venues_per_million_station_users` = 文化施設数 / 駅利用者数 * 1,000,000
-  - 意味: 絶対数だけではなく、都市規模に対して施設がどれだけ充実しているかを見る
-
-- `temp_score`
-  - 出典: Open-Meteo
-  - 信頼度: high
-  - 算出: 気温を0.0〜18.0点に変換
-  - 意味: 気温が活動しやすいほど今日のブーストが上がる
-
-- `precip_penalty` / `wind_penalty`
-  - 出典: Open-Meteo
-  - 信頼度: high
-  - 意味: 降水・強風は屋外活動を下げる可能性があるため減点
-
-## UI上の説明
-
-画面では、総合スコアだけでなく以下を表示する。
-
-- 順位
-- `scale_power`（絶対量の規模パワー）
-- `accessibility_power`（人口・人流あたりの充実度）
-- `weather_boost`（今日のブースト）
-- 強み（例: 主要駅利用者数が4都市中1位）
-- 弱み（例: 人口あたり文化施設数が4都市中最少）
-
-これにより、点数差から「なぜ高いのか」「なぜ低いのか」に加えて、「大都市だから強いだけなのか」「人口あたりではどうなのか」という問いを自然に確認できるようにする。
-
-加えて、現代エンタメ施設についてはカテゴリ別内訳を表示する。合計値だけでは「何をエンタメとして数えたのか」が見えないため、映画館・博物館・スタジアム・テーマパークなどの内訳を見せることで、教授や非エンジニアがスコア根拠を追跡しやすくする。
-
-## 都市内ドリルダウン / 駅別ビュー
-
-都市単位の比較は卒論上の主スコアとして維持する。ただし、東京・大阪のような大都市を一括りにすると、新宿、渋谷、東京駅、梅田、難波のような都市内部の違いが見えにくい。
-
-そこで次の拡張として、都市詳細の中に「注目駅」ビューを追加する。これは本体の `heat_score` 式を変更するものではなく、都市スコアを説明した後に、その都市の内部を駅単位で掘るためのプロトタイプ枠である。
-
-駅別ビューでは以下を表示する。
-
-- 乗降客数
-- 周辺OSM現代エンタメ施設数のプロトタイプ推定
-- 文化/エンタメ密度（駅利用100万人あたりの施設数）
-- 仮の駅別熱狂度
-- 「人流型」「カルチャー型」「総合熱狂型」「バランス型」の分類
-
-分類基準は次の通り。
-
-- `人流型`
-  - 駅利用者数が都市内1位、かつエンタメ密度順位が3位以下。
-  - 人の流れそのものが駅別熱狂度を押し上げるタイプ。
-
-- `カルチャー型`
-  - エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。
-  - 規模よりも、駅利用者あたりの文化・エンタメ施設の濃さが強いタイプ。
-
-- `総合熱狂型`
-  - 駅利用者数順位が2位以内、かつエンタメ密度順位も2位以内。
-  - 人流と施設密度の両方が強いタイプ。
-
-- `バランス型`
-  - 上記3タイプに当てはまらない駅。
-  - 特定の軸に偏りすぎず、複数要素で平均的に支えるタイプ。
-
-現時点の駅周辺OSM現代エンタメ施設数は、都市OSM合計を駅利用者比で按分した試算である。これは「都市→駅へ掘れるUI構造」を検証するためのものであり、厳密な駅勢圏分析ではない。今後は駅中心半径500m〜1kmでOSMを直接取得し、駅勢圏人口や昼間人口を使って検証精度を高める。
-
-## 公的統計とOSMの信頼度の違い
-
-公的統計（国土数値情報、文科省社会教育調査、総務省人口推計）は、調査方法や基準年が明示されており、卒論で根拠として説明しやすい。一方で、都道府県単位である、調査年が少し古い、開催数ではなく施設数であるといった限界がある。
-
-OpenStreetMapは、映画館・テーマパーク・クラブなど現代エンタメに近い施設種別を柔軟に取得できる利点がある。しかし、登録状況が地域ごとの編集密度に依存し、タグ表記にも揺れがある。また、同じ施設が `node`、`way`、`relation` の複数形式で登録されている場合や、複数タグを持つ場合には重複カウントの可能性がある。そのため、本研究ではOSMを高信頼の公的統計と同列には扱わず、`modern_entertainment_bonus` として低信頼の補助指標に位置づける。
-
-この設計により、「信頼できる公的統計で土台を作り、OSMで現代エンタメの不足部分を補う」という役割分担を明確にする。
-
-## 廃止したもの
-
-- 固定 `event_bonus=12.0`（仮説値）→ 廃止
-- `event_bonus` 合成フィールド → 廃止（底力と気象を分離）
-- `venue_bonus` という曖昧な名称 → `culture_venue_bonus` に再定義
-
-## 将来拡張
-
-- Overpass APIの検索範囲を行政区域ポリゴンへ変更し、半径検索の粗さを改善する
-- OSMタグの重複・タグ揺れを監査し、施設種別ごとの内訳を表示する
-- 駅中心半径500m〜1kmでOSM施設数を直接取得し、駅別ビューを本実装に近づける
-- 駅勢圏人口・昼間人口を使い、駅別の人口/人流あたり充実度を検証する
-- 施設数だけでなく、イベント開催数・口コミ・検索トレンドを追加する
-- 時系列データ化による「昨日との差」「週末との差」の可視化
-</pre>
-        </section>
-      </div>
+      <h2>今後の改善</h2>
+      <ul>
+        <li>イベント開催数・人流の実データ連携（固定・按分値の置き換え）。</li>
+        <li>Overpass の検索範囲を行政区域ポリゴン化し、駅中心半径での本実装ドリルダウン。</li>
+        <li>地図表示・時系列（昨日との差・週末との差）の追加。</li>
+        <li>対象都市の拡大、スコア式 v0.8 以降の検証とデータ品質 KPI の定義。</li>
+        <li>β版 UI と同意確認・出典追跡の強化、研究評価実験の実施。</li>
+      </ul>
     </section>
 
     <section class="panel">
-      <h2>部門設定（agents.yaml）</h2>
-      <div class="cards">
-            <section class="card">
-              <h3>企画部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>planner_mgmt</code></p>
-              <p><span class="label">部門:</span> 企画部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> 企画方針を管理し、反復改善サイクルごとの優先順位を決定する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>企画部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>planner_exec</code></p>
-              <p><span class="label">部門:</span> 企画部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 都市熱狂度アプリ案を具体化し、監査・データ・開発のフィードバックで継続改善する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>planning_round1_task</code></li><li><code>planning_round2_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>監査部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>audit_mgmt</code></p>
-              <p><span class="label">部門:</span> 監査部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> 評価基準を維持し、データの真偽・倫理・提出品質を最終判定する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>management_gate_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>監査部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>audit_exec</code></p>
-              <p><span class="label">部門:</span> 監査部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 企画・データ・開発成果物を検証し、特にデータに虚偽や不整合がないかを監査する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>audit_round1_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>データ部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>data_mgmt</code></p>
-              <p><span class="label">部門:</span> データ部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> データ取得計画、更新頻度、規約順守を管理し、安定運用方針を決める。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>データ部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>data_exec</code></p>
-              <p><span class="label">部門:</span> データ部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 実データを収集・整形し、欠損補完ルールを適用してプロトタイプ投入データを作る。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>data_round1_task</code></li><li><code>data_round2_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>開発部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>dev_mgmt</code></p>
-              <p><span class="label">部門:</span> 開発部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> α版・β版の開発計画を管理し、スコープと品質のバランスを取る。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>開発部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>dev_exec</code></p>
-              <p><span class="label">部門:</span> 開発部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> α版とβ版の実装計画を具体化し、改善サイクルに沿って機能品質を高める。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>dev_alpha_task</code></li><li><code>dev_beta_task</code></li><li><code>redevelopment_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>PMOマネージャー</h3>
-              <p><span class="label">キー:</span> <code>pmo_mgmt</code></p>
-              <p><span class="label">部門:</span> PMO部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> 各部門の縦連携・横連携を調整し、反復改善サイクル全体を統括する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>coordination_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>PMO実行担当（秘書）</h3>
-              <p><span class="label">キー:</span> <code>pmo_exec</code></p>
-              <p><span class="label">部門:</span> PMO部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 各部門の成果と進捗を可視化し、非エンジニア向けに分かりやすく報告する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>cross_function_review_task</code></li><li><code>todo_iteration_task</code></li><li><code>secretary_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>統括戦略室マネージャー</h3>
-              <p><span class="label">キー:</span> <code>strategy_mgmt</code></p>
-              <p><span class="label">部門:</span> 統括戦略室</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> 卒業制作全体の上位方針、評価基準、到達目標を管理する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>program_alignment_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>統括戦略室実行担当</h3>
-              <p><span class="label">キー:</span> <code>strategy_exec</code></p>
-              <p><span class="label">部門:</span> 統括戦略室</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 部門横断の論点を整理し、スプリントごとの意思決定メモを作成する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>改善解決案部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>solution_mgmt</code></p>
-              <p><span class="label">部門:</span> 改善解決案部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> 監査・フィードバックで挙がった改善点に対し、実装可能な解決方針を決定する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>改善解決案部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>solution_exec</code></p>
-              <p><span class="label">部門:</span> 改善解決案部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> 未達Todoやフィードバックを分解し、企画・データ・開発へ渡せる修正案に変換する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>solution_alpha_task</code></li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>フィードバック部門マネージャー</h3>
-              <p><span class="label">キー:</span> <code>feedback_mgmt</code></p>
-              <p><span class="label">部門:</span> フィードバック部門</p>
-              <p><span class="label">階層:</span> management</p>
-              <p><span class="label">Goal:</span> α版・β版の評価観点を管理し、改善サイクルへ戻すべき論点を決定する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li>（未割り当て）</li></ul>
-            </section>
-            
-            <section class="card">
-              <h3>フィードバック部門実行担当</h3>
-              <p><span class="label">キー:</span> <code>feedback_exec</code></p>
-              <p><span class="label">部門:</span> フィードバック部門</p>
-              <p><span class="label">階層:</span> execution</p>
-              <p><span class="label">Goal:</span> α版・β版に対するフィードバックを収集し、未達Todoと改善要望を分類する。</p>
-              <p class="label">担当タスク:</p>
-              <ul><li><code>alpha_feedback_task</code></li><li><code>beta_feedback_task</code></li></ul>
-            </section>
-            </div>
-    </section>
-
-    <section class="panel">
-      <h2>進捗サマリー（progress.md）</h2>
-      <pre># 進捗報告書
-
-## 1. 現在の採用案（Round2）
-- 現在の採用計画は、都市熱狂度アプリのα版を経て、β版に向けた変更を加えたものです。フィードバックを反映し、ユーザーインターフェースの改善、データの信頼性向上、プライバシーに配慮した同意確認機能を追加しました。
-- 次のスプリントでは、さらなる機能改善とユーザビリティのテストを行います。
-
-## 2. データ真偽監査の結果
-- データソースの照合が実施され、信頼できるデータ提供者リストが作成されました。
-- 異常値検知アルゴリズムを導入し、収集したデータに対する品質管理を強化しました。
-- 定期的なコミュニケーションを通じて、データの出典に関する透明性を確保しました。
-
-## 3. α版の開発方針
-- α版からのフィードバックを反映し、データ出典の追跡機能と同意確認機能を強化しました。ユーザーインターフェースの改善によって、情報の可視化とアクセスを向上させる予定です。
-
-## 4. α版フィードバックと解決案
-- フィードバックをもとに、ユーザーインターフェースの何点かを改善しました。特にフィードバック投稿機能の視認性を向上させるための改修が必要とされています。
-- データの信頼性についての懸念も解消すべく、データ収集方法の再検討を行いました。
-
-## 5. β版の改善方針
-- β版では、ある程度の安定性と信頼性を持つようにデータ収集体制を確立することが求められます。また、ユーザビリティテストやフィードバックの収集を通じて、改修点を見極めます。
-
-## 6. β版フィードバックと再開発方針
-- 今後のユーザビリティテストによって、UIに対する反応を収集し、その結果を基に再開発を進める方針です。また、多言語対応など追加機能の開発も検討します。
-
-## 7. Todo達成状況と次Todo
-- 達成済み:
-  - データ出典追跡機能の実装
-  - エラーハンドリングの充実
-  - ユーザーインターフェース改善
-- 次のTodo:
-  - 同意確認インターフェースの改善
-  - ユーザビリティテストの実施
-  - データ品質KPIのモニタリングシステム整備
-
-## 8. 縦連携（管理↔実行）の状況
-- 各部門間でのコミュニケーションは良好です。データ部門と開発部門が連携し、データ収集及び出典の整合性を確保しており、企画部門との情報共有も円滑に進んでいます。
-
-## 9. 横連携（部門間）の状況
-- 複数の部門間でのミーティングを定期的に行い、進捗状況の把握と問題点の洗い出しが進んでいます。特にデータ部門と開発部門の協力が求められています。
-
-## 10. 現在の完了ステータス
-- α版の主要機能が開発完了し、β版に向けた改善プロセスが進行中です。全体的に良好ですが、今後のフィードバックに基づいたさらに改良が求められます。
-
-## 11. 次のステップ（ToDo）
-- 同意確認機能をユーザーフレンドリーにするための再設計を行う。
-- 定義した受け入れテスト項目に基づいてユーザビリティテストを実施し、フィードバックを収集する。
-- データ品質KPIをリアルタイムで監視するためのシステムを整備する。</pre>
+      <h2>聞きたいフィードバック</h2>
+      <ul>
+        <li>「大都市だから強い」という印象を、今の二軸スコア（絶対＋人口/人流あたり）で十分に払拭できているか。</li>
+        <li>非専門家向けに、画面のどこを見れば「なぜこの都市が高い/低いか」が伝わるか。</li>
+        <li>次に優先すべきデータは、イベント・人流・SNS のどれか（ほかにあれば教えてください）。</li>
+        <li>CrewAI マルチエージェント構成を卒論の方法論として据える妥当性と、見せ方の改善点。</li>
+        <li>発表・卒論で「研究の新規性」として強調すべきポイントは何か。</li>
+      </ul>
     </section>
   </div>
 </body>

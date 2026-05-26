@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>都市熱狂度分析 — 発表スライド</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" integrity="sha384-GqjoTJyry/5NlbGYef5IucLF5tVFdMvmebwi7bn+ErY=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" integrity="sha384-nLxQgnl9k48O54Ayh5ChMa49e8XAnBdud5J8F08p5go=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" integrity="sha384-WqOk5DDwjhWKLU+Yp/xxhPXvNlWUK7U7qGhj/JNqLPA=" crossorigin="anonymous" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --line: #e5e7eb;
+      --text: #1f2937;
+      --sub: #64748b;
+      --red: #e60012;
+      --orange: #f39800;
+      --yellow: #fff100;
+      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
+      --shadow: 0 12px 30px rgba(15, 23, 42, .1);
+    }
+    .reveal {
+      font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+      color: var(--text);
+    }
+    .reveal .slides {
+      text-align: left;
+    }
+    .reveal .slides section {
+      height: 100%;
+    }
+    .slide-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      height: 100%;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--brand-gradient);
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--text);
+      font-weight: 800;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .reveal h1 { font-size: 1.85em; line-height: 1.2; margin-bottom: 0.35em; }
+    .reveal h2 { font-size: 1.45em; margin-bottom: 0.5em; }
+    .reveal h3 { font-size: 1.1em; color: var(--sub); font-weight: 600; }
+    .reveal p, .reveal li {
+      font-size: 0.92em;
+      line-height: 1.55;
+    }
+    .reveal .muted { color: var(--sub); font-size: 0.82em; }
+    .reveal .compact { margin: 0.4em 0 0; padding-left: 1.2em; }
+    .reveal .compact li { margin-bottom: 0.35em; }
+    .reveal .title-slide { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .reveal .title-slide .slide-card { text-align: center; }
+    .reveal .title-slide h1 { font-size: 2em; }
+    .reveal .title-slide .sub { font-size: 1.05em; color: var(--sub); margin: 0.5em 0 1.2em; }
+    .reveal .title-slide .meta { font-size: 0.95em; color: var(--sub); }
+    .reveal code {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #7c2d12;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+    .reveal .formula {
+      font-size: 0.95em;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 12px 0;
+    }
+    .reveal .hint {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.82em;
+      color: #9a3412;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .demo-iframe {
+      width: 100%;
+      height: 520px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      background: #fff;
+      margin-top: 8px;
+    }
+    .demo-iframe.tall { height: 560px; }
+    .demo-iframe.org { height: 500px; }
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 0.78em;
+    }
+    .source-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #fafafa;
+    }
+    .source-card strong { display: block; margin-bottom: 4px; font-size: 1.05em; }
+    .trust-high { border-left: 4px solid #059669; }
+    .trust-medium { border-left: 4px solid var(--orange); }
+    .trust-low { border-left: 4px solid var(--red); }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+      font-size: 0.78em;
+    }
+    .cat-chip {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .station-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+      font-size: 0.72em;
+    }
+    .station-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+    .type-tag {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.85em;
+      font-weight: 700;
+      background: #f1f5f9;
+    }
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.72em;
+    }
+    .dept-mini {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      background: #fffdf8;
+    }
+    .dept-mini b { color: var(--red); display: block; margin-bottom: 4px; }
+    .limit-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.82em;
+      color: #991b1b;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .reveal .progress { color: var(--red); }
+    .reveal .slide-number { font-size: 14px; color: var(--sub); }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1. タイトル -->
+      <section class="title-slide">
+        <div class="slide-card">
+          <h1>都市熱狂度分析<br />マルチエージェントシステム</h1>
+          <p class="sub">CrewAI を用いた都市活動データの可視化と検証</p>
+          <p class="meta">[氏名] ／ [所属] ／ [発表日]</p>
+        </div>
+        <aside class="notes">
+          自己紹介と研究テーマの提示。CITY SONAR 型の説明可能な都市ダッシュボードがゴールであることを一言で伝える。
+        </aside>
+      </section>
+
+      <!-- 2. ビジョン -->
+      <section>
+        <div class="slide-card">
+          <h2>ビジョン</h2>
+          <ul class="compact">
+            <li>都市の「にぎわい」「熱狂度」を<strong>感覚ではなくデータ</strong>で説明したい</li>
+            <li><strong>CITY SONAR 型</strong>：非専門家にも追える Web ダッシュボード</li>
+            <li>スコアの<strong>根拠・信頼度・内訳</strong>まで説明可能な研究用プロトタイプ</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          派手なエンタメアプリではなく、説明可能性と検証可能性を重視する研究姿勢を強調する。
+        </aside>
+      </section>
+
+      <!-- 3. 現状の問題 -->
+      <section>
+        <div class="slide-card">
+          <h2>現状の問題</h2>
+          <ul class="compact">
+            <li>施設数の<strong>絶対量だけ</strong>だと大都市（東京）が有利になりやすい</li>
+            <li>イベント・SNS など「その日の熱量」データは<strong>未接続</strong></li>
+            <li>OSM は公的統計より<strong>信頼度が低い</strong></li>
+            <li>駅別ビューは<strong>試算段階</strong>（厳密な駅勢圏分析ではない）</li>
+            <li><code>progress.md</code> と実装の<strong>ズレ</strong>に注意</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          教授指摘の「東京バイアス」への対応として、絶対量と相対量を分けた設計に至った経緯につなげる。
+        </aside>
+      </section>
+
+      <!-- 4. 制作物の概要 -->
+      <section>
+        <div class="slide-card">
+          <h2>制作物の概要</h2>
+          <ul class="compact">
+            <li>対象都市：<strong>東京・大阪・名古屋・福岡</strong></li>
+            <li>統合データ：気象 / 人流 / 文化施設 / 現代エンタメ(OSM) / 人口補正</li>
+          </ul>
+          <p class="formula"><code>heat_score = scale_power + accessibility_power + weather_boost</code></p>
+          <ul class="compact">
+            <li>CrewAI <strong>8 部門・16 エージェント</strong>の改善ループで開発</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          スコア式の3要素を口頭で補足。scale=絶対規模、accessibility=人口・人流あたり、weather=当日気象。
+        </aside>
+      </section>
+
+      <!-- 5. デモ1 -->
+      <section data-prevent-swipe>
+        <div class="slide-card">
+          <h2>デモ 1：都市別スコア</h2>
+          <p class="muted">総合スコア・順位 / scale_power / accessibility_power / weather_boost / 強み・弱み</p>
+          <p class="hint">← 埋め込み内で都市カードをクリックして切り替え</p>
+          <iframe class="demo-iframe tall" src="prototype_app.html" title="都市熱狂度プロトタイプ" data-prevent-swipe></iframe>
+        </div>
+        <aside class="notes">
+          ライブ操作：左の都市カードを1つクリックし、右の詳細パネルで内訳と強み弱みを見せる。順位バーと3軸スコアを指差しながら説明。
+        </aside>
+      </section>
+
+      <!-- 6. デモ2 データ出所 -->
+      <section>
+        <div class="slide-card">
+          <h2>デモ 2：データの出所と信頼性</h2>
+          <p class="muted"><strong>公的統計と補助指標を分けて表示</strong>している</p>
+          <div class="source-grid">
+            <div class="source-card trust-high">
+              <strong>Open-Meteo</strong>
+              <span class="muted">信頼度 high</span><br />→ <code>weather_boost</code>
+            </div>
+            <div class="source-card trust-medium">
+              <strong>国土数値情報 駅別乗降客数</strong>
+              <span class="muted">medium</span><br />→ <code>flow_bonus</code>
+            </div>
+            <div class="source-card trust-medium">
+              <strong>文科省 社会教育調査</strong>
+              <span class="muted">medium</span><br />→ <code>culture_venue_bonus</code>
+            </div>
+            <div class="source-card trust-medium">
+              <strong>総務省 人口推計</strong>
+              <span class="muted">medium</span><br />→ <code>accessibility_power</code>
+            </div>
+            <div class="source-card trust-low" style="grid-column: span 2;">
+              <strong>OSM / Overpass API</strong>
+              <span class="muted">信頼度 low（補助指標）</span><br />→ <code>modern_entertainment_bonus</code>
+            </div>
+          </div>
+          <p class="hint">プロトタイプ画面の「データ出典」「信頼度」ラベルでも同じ区分を表示</p>
+        </div>
+        <aside class="notes">
+          卒論で説明しやすい公的統計を土台に、OSMは現代エンタメの補完として低信頼で併記している点を強調。
+        </aside>
+      </section>
+
+      <!-- 7. デモ3 エンタメ内訳 -->
+      <section>
+        <div class="slide-card">
+          <h2>デモ 3：現代エンタメ施設の内訳</h2>
+          <p class="muted">「何を数えたか」を監査可能にする</p>
+          <div class="cat-grid">
+            <div class="cat-chip">映画館</div>
+            <div class="cat-chip">博物館・美術館</div>
+            <div class="cat-chip">スタジアム</div>
+            <div class="cat-chip">テーマパーク</div>
+            <div class="cat-chip">クラブ</div>
+            <div class="cat-chip">アートセンター</div>
+          </div>
+          <p class="hint">操作：東京を選択 → 詳細パネルをスクロール →「現代エンタメ内訳」バー chart</p>
+        </div>
+        <aside class="notes">
+          合計値だけでなくカテゴリ別件数を見せる意図を説明。デモ5のスライドで実際に東京を開いて見せてもよい。
+        </aside>
+      </section>
+
+      <!-- 8. デモ4 駅別 -->
+      <section>
+        <div class="slide-card">
+          <h2>デモ 4：都市内ドリルダウン（駅別）</h2>
+          <p class="muted">東京の主要駅プロトタイプ</p>
+          <div class="station-grid">
+            <div class="station-card">新宿<span class="type-tag">人流型</span></div>
+            <div class="station-card">渋谷<span class="type-tag">総合熱狂型</span></div>
+            <div class="station-card">池袋<span class="type-tag">バランス型</span></div>
+            <div class="station-card">東京<span class="type-tag">カルチャー型</span></div>
+            <div class="station-card">品川<span class="type-tag">バランス型</span></div>
+          </div>
+          <p class="hint">操作：東京選択 → 詳細パネル最下部「注目駅」テーブル</p>
+          <p class="limit-box">現時点は都市合計 OSM の按分試算。駅半径での直接取得ではない（研究上の限界）</p>
+        </div>
+        <aside class="notes">
+          4タイプ分類の意味を簡潔に。按分試算である限界を隠さず、今後の駅半径取得改善につなげる。
+        </aside>
+      </section>
+
+      <!-- 9. CrewAI 組織図 -->
+      <section data-prevent-swipe>
+        <div class="slide-card">
+          <h2>CrewAI 組織図</h2>
+          <p class="muted">単なるアプリ開発ではなく、<strong>改善ループ付き制作体制</strong></p>
+          <div class="dept-grid">
+            <div class="dept-mini"><b>統括・PMO</b>方針と進捗</div>
+            <div class="dept-mini"><b>企画</b>価値と見せ方</div>
+            <div class="dept-mini"><b>データ</b>収集・整形</div>
+            <div class="dept-mini"><b>監査</b>出典・信頼性</div>
+            <div class="dept-mini"><b>開発</b>実装</div>
+            <div class="dept-mini"><b>フィードバック</b>αβ評価</div>
+            <div class="dept-mini"><b>改善解決案</b>再開発へ</div>
+            <div class="dept-mini"><b>8部門連携</b>縦横ループ</div>
+          </div>
+          <iframe class="demo-iframe org" src="team_dashboard.html" title="CrewAI組織図" data-prevent-swipe></iframe>
+        </div>
+        <aside class="notes">
+          iframe内でピラミッド型組織図の部門カードを1つ開いて見せる。α→フィードバック→解決案→再開発のループに言及。
+        </aside>
+      </section>
+
+      <!-- 10. できたこと -->
+      <section>
+        <div class="slide-card">
+          <h2>現時点でできたこと</h2>
+          <ul class="compact">
+            <li>GitHub Pages <strong>固定 URL</strong> 公開</li>
+            <li>スコア内訳・順位・<strong>強み/弱み</strong>表示</li>
+            <li>データ<strong>信頼度ラベル</strong></li>
+            <li>人口/人流あたり補正（<code>accessibility_power</code>）</li>
+            <li>OSM 現代エンタメ<strong>内訳</strong>・駅別 UI プロトタイプ</li>
+            <li>白ベース UI + 組織図ピラミッド表示</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          研究の到達点を箇条書きでまとめる。完成アプリではなく初期実証であることは次のスライドで補足。
+        </aside>
+      </section>
+
+      <!-- 11. 課題 -->
+      <section>
+        <div class="slide-card">
+          <h2>課題</h2>
+          <ul class="compact">
+            <li>駅別 OSM は<strong>按分試算</strong>（駅半径直接取得ではない）</li>
+            <li>OSM のタグ揺れ・地域編集密度の偏り</li>
+            <li>人口は<strong>都道府県単位</strong>（都市圏・駅勢圏ではない）</li>
+            <li>イベント・SNS <strong>未接続</strong></li>
+            <li>スコア妥当性の<strong>定量検証</strong>がこれから</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          限界を正直に示すことで研究の誠実さをアピール。卒論では「何が分かり、何がまだ分からないか」を明確に書く。
+        </aside>
+      </section>
+
+      <!-- 12. 今後の改善 -->
+      <section>
+        <div class="slide-card">
+          <h2>今後の改善</h2>
+          <ul class="compact">
+            <li>駅中心半径 <strong>500m〜1km</strong> で OSM 直接取得</li>
+            <li>駅勢圏人口・<strong>昼間人口</strong>の導入</li>
+            <li>イベント開催数 / SNS・検索トレンド</li>
+            <li>地図・時系列（昨日比・週末比）</li>
+            <li>対象都市拡大、スコア <strong>v0.8</strong> 以降の検証</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          優先度の高い改善から順に。教授フィードバックで優先データが変わる可能性にも触れる。
+        </aside>
+      </section>
+
+      <!-- 13. フィードバック -->
+      <section>
+        <div class="slide-card">
+          <h2>聞きたいフィードバック</h2>
+          <ul class="compact">
+            <li>「大都市だから強い」印象を<strong>二軸スコア</strong>で十分払拭できているか</li>
+            <li>非専門家に「なぜ高い/低いか」が伝わる <strong>UI</strong> か</li>
+            <li>次に優先すべきデータ（<strong>イベント / 人流 / SNS</strong>）</li>
+            <li>CrewAI 構成を卒論<strong>方法論</strong>として据える妥当性</li>
+            <li>研究の<strong>新規性</strong>として強調すべきポイント</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          質疑を促す。ご清聴ありがとうございましたで締める。スピーカーノートは S キーで別画面表示（Reveal Notes）。
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js" integrity="sha384-lza/PYkY45HowHyFxTdzgA1ABNwl+UiRbjGco3HKiBo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js" integrity="sha384-KI/nyyf/aWo+HBN7IrDNEXOVqE26KnA+K/wxNuZWEqg=" crossorigin="anonymous"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: "c/t",
+      transition: "slide",
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      plugins: [RevealNotes],
+    });
+  </script>
+</body>
+</html>
