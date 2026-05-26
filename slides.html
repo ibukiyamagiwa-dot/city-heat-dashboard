@@ -24,12 +24,8 @@
       font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
       color: var(--text);
     }
-    .reveal .slides {
-      text-align: left;
-    }
-    .reveal .slides section {
-      height: 100%;
-    }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { height: 100%; }
     .slide-card {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -39,16 +35,25 @@
       height: 100%;
       box-sizing: border-box;
       position: relative;
-      overflow: hidden;
+      overflow: auto;
     }
     .slide-card::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 5px;
       background: var(--brand-gradient);
+    }
+    .part-label {
+      display: inline-block;
+      font-size: 0.72em;
+      font-weight: 800;
+      color: #9a3412;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 10px;
     }
     .reveal h1, .reveal h2, .reveal h3 {
       color: var(--text);
@@ -57,19 +62,16 @@
       letter-spacing: 0;
     }
     .reveal h1 { font-size: 1.85em; line-height: 1.2; margin-bottom: 0.35em; }
-    .reveal h2 { font-size: 1.45em; margin-bottom: 0.5em; }
-    .reveal h3 { font-size: 1.1em; color: var(--sub); font-weight: 600; }
-    .reveal p, .reveal li {
-      font-size: 0.92em;
-      line-height: 1.55;
-    }
+    .reveal h2 { font-size: 1.45em; margin-bottom: 0.45em; }
+    .reveal h3 { font-size: 1.05em; color: var(--sub); font-weight: 700; margin: 0.6em 0 0.3em; }
+    .reveal p, .reveal li { font-size: 0.92em; line-height: 1.55; }
     .reveal .muted { color: var(--sub); font-size: 0.82em; }
-    .reveal .compact { margin: 0.4em 0 0; padding-left: 1.2em; }
-    .reveal .compact li { margin-bottom: 0.35em; }
+    .reveal .compact { margin: 0.35em 0 0; padding-left: 1.2em; }
+    .reveal .compact li { margin-bottom: 0.32em; }
     .reveal .title-slide { text-align: center; display: flex; flex-direction: column; justify-content: center; }
-    .reveal .title-slide .slide-card { text-align: center; }
-    .reveal .title-slide h1 { font-size: 2em; }
-    .reveal .title-slide .sub { font-size: 1.05em; color: var(--sub); margin: 0.5em 0 1.2em; }
+    .reveal .title-slide .slide-card { text-align: center; overflow: hidden; }
+    .reveal .title-slide h1 { font-size: 1.95em; }
+    .reveal .title-slide .sub { font-size: 1.02em; color: var(--sub); margin: 0.5em 0 1.2em; max-width: 28em; margin-left: auto; margin-right: auto; }
     .reveal .title-slide .meta { font-size: 0.95em; color: var(--sub); }
     .reveal code {
       background: #fffbeb;
@@ -85,7 +87,7 @@
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 12px 16px;
-      margin: 12px 0;
+      margin: 10px 0;
     }
     .reveal .hint {
       background: #fff7ed;
@@ -97,23 +99,61 @@
       font-weight: 700;
       margin-top: 10px;
     }
+    .reveal .bridge {
+      background: linear-gradient(135deg, #fff7ed, #ffffff);
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      font-size: 0.95em;
+      font-weight: 700;
+      color: #9a3412;
+    }
+    .deliverable-split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      margin-top: 8px;
+      font-size: 0.88em;
+    }
+    .deliverable-main {
+      border: 2px solid var(--orange);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #fffdf8;
+    }
+    .deliverable-main b { color: var(--red); font-size: 1.1em; }
+    .deliverable-sub {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #f8fafc;
+    }
+    .talk-points {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px dashed var(--line);
+      font-size: 0.8em;
+    }
+    .talk-points b { color: var(--red); }
     .demo-iframe {
       width: 100%;
-      height: 520px;
+      height: 480px;
       border: 1px solid var(--line);
       border-radius: 12px;
       box-shadow: var(--shadow);
       background: #fff;
-      margin-top: 8px;
+      margin-top: 6px;
     }
-    .demo-iframe.tall { height: 560px; }
-    .demo-iframe.org { height: 500px; }
+    .demo-iframe.tall { height: 520px; }
     .source-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      margin-top: 10px;
-      font-size: 0.78em;
+      margin-top: 8px;
+      font-size: 0.76em;
     }
     .source-card {
       border: 1px solid var(--line);
@@ -121,7 +161,7 @@
       padding: 10px 12px;
       background: #fafafa;
     }
-    .source-card strong { display: block; margin-bottom: 4px; font-size: 1.05em; }
+    .source-card strong { display: block; margin-bottom: 4px; }
     .trust-high { border-left: 4px solid #059669; }
     .trust-medium { border-left: 4px solid var(--orange); }
     .trust-low { border-left: 4px solid var(--red); }
@@ -129,7 +169,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin: 10px 0;
+      margin: 8px 0;
       font-size: 0.78em;
     }
     .cat-chip {
@@ -143,7 +183,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 8px;
-      margin: 10px 0;
+      margin: 8px 0;
       font-size: 0.72em;
     }
     .station-card {
@@ -166,7 +206,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       margin-top: 10px;
-      font-size: 0.72em;
+      font-size: 0.78em;
     }
     .dept-mini {
       border: 1px solid var(--line);
@@ -175,6 +215,14 @@
       background: #fffdf8;
     }
     .dept-mini b { color: var(--red); display: block; margin-bottom: 4px; }
+    .loop-mini {
+      font-size: 0.78em;
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
     .limit-box {
       background: #fef2f2;
       border: 1px solid #fecaca;
@@ -185,6 +233,7 @@
       font-weight: 700;
       margin-top: 10px;
     }
+    .reveal a { color: var(--red); font-weight: 700; }
     .reveal .progress { color: var(--red); }
     .reveal .slide-number { font-size: 14px; color: var(--sub); }
   </style>
@@ -196,117 +245,192 @@
       <!-- 1. タイトル -->
       <section class="title-slide">
         <div class="slide-card">
-          <h1>都市熱狂度分析<br />マルチエージェントシステム</h1>
-          <p class="sub">CrewAI を用いた都市活動データの可視化と検証</p>
+          <h1>都市熱狂度分析</h1>
+          <p class="sub">CrewAI による開発プロセスと<br />都市熱狂度ダッシュボード</p>
           <p class="meta">山際惟吹 ／ 2026年5月28日</p>
         </div>
         <aside class="notes">
-          自己紹介と研究テーマの提示。CITY SONAR 型の説明可能な都市ダッシュボードがゴールであることを一言で伝える。
+          自己紹介。今日の中心はダッシュボードのデモ。CrewAIは開発のしかたとして前半で短く触れる。
         </aside>
       </section>
 
-      <!-- 2. ビジョン -->
+      <!-- 2. 制作物の中心 -->
       <section>
         <div class="slide-card">
+          <span class="part-label">前半 — 制作物とは</span>
+          <h2>制作物の中心はダッシュボード</h2>
+          <div class="deliverable-split">
+            <div class="deliverable-main">
+              <b>メイン成果物</b>
+              <ul class="compact">
+                <li>都市熱狂度 <strong>Web ダッシュボード</strong></li>
+                <li>東京・大阪・名古屋・福岡の比較</li>
+                <li>スコア・内訳・信頼度・強み/弱み</li>
+              </ul>
+            </div>
+            <div class="deliverable-sub">
+              <b>開発のしかた</b>
+              <ul class="compact">
+                <li>CrewAI 8部門・16エージェント</li>
+                <li>設計の YAML 化・組織図</li>
+                <li>α→フィードバック→改善ループ</li>
+              </ul>
+            </div>
+          </div>
+          <p class="muted">制作物＝ダッシュボード。CrewAI はその設計・改善プロセス。</p>
+        </div>
+        <aside class="notes">
+          最初に「何を見せる発表か」を固定する。アプリ単体ではなく、プロセス付きの卒論制作だが、本編は画面。
+        </aside>
+      </section>
+
+      <!-- 3. CrewAI 概要 -->
+      <section>
+        <div class="slide-card">
+          <span class="part-label">前半 — CrewAI</span>
+          <h2>CrewAI でやったこと</h2>
+          <ul class="compact">
+            <li>役割分担 … 企画・データ・監査・開発など<strong>8部門</strong>にタスクを分解</li>
+            <li>改善ループ … α版 → フィードバック → 解決案 → <strong>再開発</strong></li>
+            <li>設計の可視化 … <code>agents.yaml</code> / <code>tasks.yaml</code> / 組織図</li>
+          </ul>
+          <div class="loop-mini">
+            開発 → フィードバック → 改善解決案 → 企画・データ → 再開発（<code>main.py</code> で実行）
+          </div>
+          <p class="muted">数値・API・画面は自分が実装。CrewAI は方針整理と改善案の構造化。</p>
+        </div>
+        <aside class="notes">
+          30秒〜1分で止める。ChatGPT一回聞きではなく、役割付きチームとして回した点だけ。
+        </aside>
+      </section>
+
+      <!-- 4. 橋渡し -->
+      <section>
+        <div class="slide-card">
+          <span class="part-label">前半 → 本編</span>
+          <h2>CrewAI から得られた成果</h2>
+          <ul class="compact">
+            <li>データ<strong>出典と信頼度</strong>を最初から画面に分離</li>
+            <li>教授指摘（東京バイアス）→ <code>scale_power</code> と <code>accessibility_power</code> の<strong>二軸</strong></li>
+            <li>「なぜ高い/低いか」を<strong>強み・弱み</strong>として自動表示</li>
+          </ul>
+          <p class="bridge">では本編 — 都市熱狂度ダッシュボードを見ていきます →</p>
+        </div>
+        <aside class="notes">
+          橋渡しの一言を読み上げる。「私の制作物の中心はこのダッシュボードです」。
+        </aside>
+      </section>
+
+      <!-- 5. ビジョン -->
+      <section>
+        <div class="slide-card">
+          <span class="part-label">本編 — ダッシュボード</span>
           <h2>ビジョン</h2>
           <ul class="compact">
-            <li>都市の「にぎわい」「熱狂度」を<strong>感覚ではなくデータ</strong>で説明したい</li>
-            <li><strong>CITY SONAR 型</strong>：非専門家にも追える Web ダッシュボード</li>
-            <li>スコアの<strong>根拠・信頼度・内訳</strong>まで説明可能な研究用プロトタイプ</li>
+            <li>都市の「にぎわい」「熱狂度」を<strong>感覚ではなくデータ</strong>で説明</li>
+            <li><strong>CITY SONAR 型</strong>：非専門家にも追える Web UI</li>
+            <li>スコアの<strong>根拠・信頼度・内訳</strong>まで見せる</li>
           </ul>
         </div>
         <aside class="notes">
-          派手なエンタメアプリではなく、説明可能性と検証可能性を重視する研究姿勢を強調する。
+          派手なエンタメアプリではない。説明可能性が研究の軸。
         </aside>
       </section>
 
-      <!-- 3. 現状の問題 -->
+      <!-- 6. 現状の問題 -->
       <section>
         <div class="slide-card">
-          <h2>現状の問題</h2>
+          <h2>解きたい問題</h2>
           <ul class="compact">
             <li>施設数の<strong>絶対量だけ</strong>だと大都市（東京）が有利になりやすい</li>
-            <li>イベント・SNS など「その日の熱量」データは<strong>未接続</strong></li>
-            <li>OSM は公的統計より<strong>信頼度が低い</strong></li>
-            <li>駅別ビューは<strong>試算段階</strong>（厳密な駅勢圏分析ではない）</li>
-            <li><code>progress.md</code> と実装の<strong>ズレ</strong>に注意</li>
+            <li>イベント・SNS など「その日の熱量」は<strong>未接続</strong></li>
+            <li>OSM は公的統計より<strong>信頼度が低い</strong>（補助指標として扱う）</li>
           </ul>
+          <p class="muted">→ スコア設計と UI で「見える化して検証する」</p>
         </div>
         <aside class="notes">
-          教授指摘の「東京バイアス」への対応として、絶対量と相対量を分けた設計に至った経緯につなげる。
+          問題は3つに絞って話す。駅別・progress.mdは口頭または課題スライドへ。
         </aside>
       </section>
 
-      <!-- 4. 制作物の概要 -->
+      <!-- 7. スコア -->
       <section>
         <div class="slide-card">
-          <h2>制作物の概要</h2>
+          <h2>スコアの考え方</h2>
           <ul class="compact">
-            <li>対象都市：<strong>東京・大阪・名古屋・福岡</strong></li>
-            <li>統合データ：気象 / 人流 / 文化施設 / 現代エンタメ(OSM) / 人口補正</li>
+            <li>対象：<strong>東京・大阪・名古屋・福岡</strong></li>
+            <li>統合：気象 / 人流 / 文化施設 / 現代エンタメ(OSM) / 人口補正</li>
           </ul>
           <p class="formula"><code>heat_score = scale_power + accessibility_power + weather_boost</code></p>
           <ul class="compact">
-            <li>CrewAI <strong>8 部門・16 エージェント</strong>の改善ループで開発</li>
+            <li><code>scale_power</code> … 絶対規模（人流・施設の底力）</li>
+            <li><code>accessibility_power</code> … 人口・人流<strong>あたり</strong>の充実度</li>
+            <li><code>weather_boost</code> … 当日の気象</li>
           </ul>
         </div>
         <aside class="notes">
-          スコア式の3要素を口頭で補足。scale=絶対規模、accessibility=人口・人流あたり、weather=当日気象。
+          二軸の意味を30秒で。大都市バイアスを相対量で見える化したのが研究の核。
         </aside>
       </section>
 
-      <!-- 5. デモ1 -->
+      <!-- 8. デモ1 -->
       <section data-prevent-swipe>
         <div class="slide-card">
           <h2>デモ 1：都市別スコア</h2>
-          <p class="muted">総合スコア・順位 / scale_power / accessibility_power / weather_boost / 強み・弱み</p>
-          <p class="hint">← 埋め込み内で都市カードをクリックして切り替え</p>
+          <p class="hint">← 都市カードをクリックして切り替え</p>
           <iframe class="demo-iframe tall" src="prototype_app.html" title="都市熱狂度プロトタイプ" data-prevent-swipe></iframe>
+          <div class="talk-points">
+            <b>話すポイント：</b>
+            ① 総合スコアと順位 ② <code>scale_power</code> vs <code>accessibility_power</code> の差
+            ③ <code>weather_boost</code> ④ 強み/弱みの自動文言 — 2都市比較すると説明しやすい
+          </div>
         </div>
         <aside class="notes">
-          ライブ操作：左の都市カードを1つクリックし、右の詳細パネルで内訳と強み弱みを見せる。順位バーと3軸スコアを指差しながら説明。
+          ライブ：東京→大阪など2都市。右パネルの3軸と強み弱みを指差す。ここが発表の山場（3〜4分）。
         </aside>
       </section>
 
-      <!-- 6. デモ2 データ出所 -->
-      <section>
+      <!-- 9. デモ2 -->
+      <section data-prevent-swipe>
         <div class="slide-card">
           <h2>デモ 2：データの出所と信頼性</h2>
-          <p class="muted"><strong>公的統計と補助指標を分けて表示</strong>している</p>
           <div class="source-grid">
             <div class="source-card trust-high">
               <strong>Open-Meteo</strong>
-              <span class="muted">信頼度 high</span><br />→ <code>weather_boost</code>
+              <span class="muted">high</span> → <code>weather_boost</code>
             </div>
             <div class="source-card trust-medium">
-              <strong>国土数値情報 駅別乗降客数</strong>
-              <span class="muted">medium</span><br />→ <code>flow_bonus</code>
+              <strong>国土数値情報 駅乗降客</strong>
+              <span class="muted">medium</span> → <code>flow_bonus</code>
             </div>
             <div class="source-card trust-medium">
-              <strong>文科省 社会教育調査</strong>
-              <span class="muted">medium</span><br />→ <code>culture_venue_bonus</code>
+              <strong>文科省 劇場・音楽堂</strong>
+              <span class="muted">medium</span> → <code>culture_venue_bonus</code>
             </div>
             <div class="source-card trust-medium">
               <strong>総務省 人口推計</strong>
-              <span class="muted">medium</span><br />→ <code>accessibility_power</code>
+              <span class="muted">medium</span> → <code>accessibility_power</code>
             </div>
             <div class="source-card trust-low" style="grid-column: span 2;">
-              <strong>OSM / Overpass API</strong>
-              <span class="muted">信頼度 low（補助指標）</span><br />→ <code>modern_entertainment_bonus</code>
+              <strong>OSM / Overpass</strong>
+              <span class="muted">low・補助</span> → <code>modern_entertainment_bonus</code>
             </div>
           </div>
-          <p class="hint">プロトタイプ画面の「データ出典」「信頼度」ラベルでも同じ区分を表示</p>
+          <div class="talk-points">
+            <b>話すポイント：</b>
+            公的統計と OSM を<strong>混ぜない</strong>設計。画面の信頼度ラベル・データ出典欄を実際に指す（デモ1に戻っても可）
+          </div>
         </div>
         <aside class="notes">
-          卒論で説明しやすい公的統計を土台に、OSMは現代エンタメの補完として低信頼で併記している点を強調。
+          表で説明後、必要ならデモ1に戻して出典表示を見せる。監査部門の観点が画面に落ちていると言う。
         </aside>
       </section>
 
-      <!-- 7. デモ3 エンタメ内訳 -->
+      <!-- 10. デモ3 -->
       <section>
         <div class="slide-card">
           <h2>デモ 3：現代エンタメ施設の内訳</h2>
-          <p class="muted">「何を数えたか」を監査可能にする</p>
+          <p class="muted">合計だけでなく「何を数えたか」を監査可能に</p>
           <div class="cat-grid">
             <div class="cat-chip">映画館</div>
             <div class="cat-chip">博物館・美術館</div>
@@ -315,18 +439,21 @@
             <div class="cat-chip">クラブ</div>
             <div class="cat-chip">アートセンター</div>
           </div>
-          <p class="hint">操作：東京を選択 → 詳細パネルをスクロール →「現代エンタメ内訳」バー chart</p>
+          <p class="hint">操作：東京選択 → 詳細パネル →「現代エンタメ内訳」バー chart</p>
+          <div class="talk-points">
+            <b>話すポイント：</b>
+            OSM は low 信頼だが、カテゴリ別件数で<strong>根拠の追跡</strong>ができる。教授への「何をエンタメと数えたか」への回答
+          </div>
         </div>
         <aside class="notes">
-          合計値だけでなくカテゴリ別件数を見せる意図を説明。デモ5のスライドで実際に東京を開いて見せてもよい。
+          時間があればデモ1で東京を開いて内訳を見せる。なければこのスライドのカテゴリだけで説明。
         </aside>
       </section>
 
-      <!-- 8. デモ4 駅別 -->
+      <!-- 11. デモ4 駅別 -->
       <section>
         <div class="slide-card">
           <h2>デモ 4：都市内ドリルダウン（駅別）</h2>
-          <p class="muted">東京の主要駅プロトタイプ</p>
           <div class="station-grid">
             <div class="station-card">新宿<span class="type-tag">人流型</span></div>
             <div class="station-card">渋谷<span class="type-tag">総合熱狂型</span></div>
@@ -334,102 +461,100 @@
             <div class="station-card">東京<span class="type-tag">カルチャー型</span></div>
             <div class="station-card">品川<span class="type-tag">バランス型</span></div>
           </div>
-          <p class="hint">操作：東京選択 → 詳細パネル最下部「注目駅」テーブル</p>
-          <p class="limit-box">現時点は都市合計 OSM の按分試算。駅半径での直接取得ではない（研究上の限界）</p>
+          <p class="hint">操作：東京 → 詳細最下部「注目駅」</p>
+          <p class="limit-box">都市合計 OSM の按分試算（駅半径直接取得ではない）</p>
         </div>
         <aside class="notes">
-          4タイプ分類の意味を簡潔に。按分試算である限界を隠さず、今後の駅半径取得改善につなげる。
+          時間がなければスキップ可。4タイプは一言ずつ。限界は正直に。
         </aside>
       </section>
 
-      <!-- 9. CrewAI 組織図 -->
-      <section data-prevent-swipe>
+      <!-- 12. CrewAI 要約（質疑用・短縮） -->
+      <section>
         <div class="slide-card">
-          <h2>CrewAI 組織図</h2>
-          <p class="muted">単なるアプリ開発ではなく、<strong>改善ループ付き制作体制</strong></p>
+          <span class="part-label">参考 — 開発体制</span>
+          <h2>CrewAI 組織（要約）</h2>
           <div class="dept-grid">
-            <div class="dept-mini"><b>統括・PMO</b>方針と進捗</div>
-            <div class="dept-mini"><b>企画</b>価値と見せ方</div>
-            <div class="dept-mini"><b>データ</b>収集・整形</div>
-            <div class="dept-mini"><b>監査</b>出典・信頼性</div>
+            <div class="dept-mini"><b>統括・PMO</b>方針・進捗</div>
+            <div class="dept-mini"><b>企画</b>価値・UI</div>
+            <div class="dept-mini"><b>データ</b>収集</div>
+            <div class="dept-mini"><b>監査</b>出典</div>
             <div class="dept-mini"><b>開発</b>実装</div>
-            <div class="dept-mini"><b>フィードバック</b>αβ評価</div>
-            <div class="dept-mini"><b>改善解決案</b>再開発へ</div>
-            <div class="dept-mini"><b>8部門連携</b>縦横ループ</div>
+            <div class="dept-mini"><b>フィードバック</b>αβ</div>
+            <div class="dept-mini"><b>改善解決案</b>再開発</div>
+            <div class="dept-mini"><b>連携</b>縦横ループ</div>
           </div>
-          <iframe class="demo-iframe org" src="team_dashboard.html" title="CrewAI組織図" data-prevent-swipe></iframe>
+          <p class="muted">詳細：<a href="team_dashboard.html" target="_blank">team_dashboard.html</a>（質疑・補足用）</p>
         </div>
         <aside class="notes">
-          iframe内でピラミッド型組織図の部門カードを1つ開いて見せる。α→フィードバック→解決案→再開発のループに言及。
+          本編では深く触れない。聞かれたらこのスライドか team_dashboard を開く。iframeは使わず時間節約。
         </aside>
       </section>
 
-      <!-- 10. できたこと -->
+      <!-- 13. できたこと -->
       <section>
         <div class="slide-card">
           <h2>現時点でできたこと</h2>
           <ul class="compact">
-            <li>GitHub Pages <strong>固定 URL</strong> 公開</li>
-            <li>スコア内訳・順位・<strong>強み/弱み</strong>表示</li>
-            <li>データ<strong>信頼度ラベル</strong></li>
+            <li>4都市の<strong>スコア比較</strong>・順位・内訳表示</li>
+            <li><strong>強み/弱み</strong>・データ信頼度ラベル</li>
             <li>人口/人流あたり補正（<code>accessibility_power</code>）</li>
-            <li>OSM 現代エンタメ<strong>内訳</strong>・駅別 UI プロトタイプ</li>
-            <li>白ベース UI + 組織図ピラミッド表示</li>
+            <li>現代エンタメ<strong>カテゴリ内訳</strong>・駅別 UI</li>
+            <li>GitHub Pages 固定 URL 公開</li>
           </ul>
+          <p class="muted">CrewAI … 進捗・改善案の整理に利用（<code>progress.md</code>）</p>
         </div>
         <aside class="notes">
-          研究の到達点を箇条書きでまとめる。完成アプリではなく初期実証であることは次のスライドで補足。
+          ダッシュボード成果を先に。CrewAIは1行。完成アプリではなく初期実証。
         </aside>
       </section>
 
-      <!-- 11. 課題 -->
+      <!-- 14. 課題 -->
       <section>
         <div class="slide-card">
           <h2>課題</h2>
           <ul class="compact">
-            <li>駅別 OSM は<strong>按分試算</strong>（駅半径直接取得ではない）</li>
-            <li>OSM のタグ揺れ・地域編集密度の偏り</li>
-            <li>人口は<strong>都道府県単位</strong>（都市圏・駅勢圏ではない）</li>
+            <li>駅別 OSM は<strong>按分試算</strong></li>
+            <li>人口は<strong>都道府県単位</strong></li>
             <li>イベント・SNS <strong>未接続</strong></li>
             <li>スコア妥当性の<strong>定量検証</strong>がこれから</li>
           </ul>
         </div>
         <aside class="notes">
-          限界を正直に示すことで研究の誠実さをアピール。卒論では「何が分かり、何がまだ分からないか」を明確に書く。
+          4点に絞る。研究の誠実さ。
         </aside>
       </section>
 
-      <!-- 12. 今後の改善 -->
+      <!-- 15. 今後 -->
       <section>
         <div class="slide-card">
           <h2>今後の改善</h2>
           <ul class="compact">
-            <li>駅中心半径 <strong>500m〜1km</strong> で OSM 直接取得</li>
-            <li>駅勢圏人口・<strong>昼間人口</strong>の導入</li>
-            <li>イベント開催数 / SNS・検索トレンド</li>
+            <li>駅中心半径 500m〜1km で OSM 直接取得</li>
+            <li>イベント / SNS・検索トレンド</li>
             <li>地図・時系列（昨日比・週末比）</li>
-            <li>対象都市拡大、スコア <strong>v0.8</strong> 以降の検証</li>
+            <li>都市拡大・スコア v0.8 検証</li>
           </ul>
         </div>
         <aside class="notes">
-          優先度の高い改善から順に。教授フィードバックで優先データが変わる可能性にも触れる。
+          ダッシュボード拡張が中心。CrewAIは引き続き改善ループに使う程度。
         </aside>
       </section>
 
-      <!-- 13. フィードバック -->
+      <!-- 16. フィードバック -->
       <section>
         <div class="slide-card">
           <h2>聞きたいフィードバック</h2>
           <ul class="compact">
-            <li>「大都市だから強い」印象を<strong>二軸スコア</strong>で十分払拭できているか</li>
-            <li>非専門家に「なぜ高い/低いか」が伝わる <strong>UI</strong> か</li>
+            <li>二軸スコアで「大都市だから強い」印象は<strong>払拭</strong>できているか</li>
+            <li>非専門者に「なぜ高い/低いか」が伝わる <strong>UI</strong> か</li>
             <li>次に優先すべきデータ（<strong>イベント / 人流 / SNS</strong>）</li>
-            <li>CrewAI 構成を卒論<strong>方法論</strong>として据える妥当性</li>
-            <li>研究の<strong>新規性</strong>として強調すべきポイント</li>
+            <li>研究の<strong>新規性</strong>として強調すべき点</li>
           </ul>
+          <p class="muted">（CrewAI 方法論については質疑でお願いします）</p>
         </div>
         <aside class="notes">
-          質疑を促す。ご清聴ありがとうございましたで締める。スピーカーノートは S キーで別画面表示（Reveal Notes）。
+          ご清聴ありがとうございました。質疑で組織図・CrewAI詳細に入ってもよい。
         </aside>
       </section>
 
