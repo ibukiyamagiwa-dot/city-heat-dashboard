@@ -296,6 +296,30 @@
       font-size: 13px;
     }
     .station-explain p { margin: 6px 0 0; }
+    details.collapse-panel > summary,
+    details.collapse-inline > summary {
+      cursor: pointer;
+      list-style: none;
+      font-weight: 800;
+      color: #9a3412;
+    }
+    details.collapse-panel > summary::-webkit-details-marker,
+    details.collapse-inline > summary::-webkit-details-marker { display: none; }
+    details.collapse-panel > summary {
+      font-size: 1.15rem;
+      margin: 0;
+      color: var(--text);
+    }
+    details.collapse-panel[open] > summary { margin-bottom: 12px; }
+    details.collapse-inline {
+      margin-top: 16px;
+      border: 1px solid #fed7aa;
+      background: #fffdf8;
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    details.collapse-inline > summary { font-size: 1rem; }
+    details.collapse-inline[open] > summary { margin-bottom: 8px; }
     details.dev-panel summary { cursor: pointer; color: var(--muted); font-size: 14px; }
     .ok { color: var(--high); }
     .warn { color: var(--medium); }
@@ -332,8 +356,8 @@
       </div>
     </section>
 
-    <section class="panel">
-      <h2>データの出所と信頼性</h2>
+    <details class="panel collapse-panel">
+      <summary>データの出所と信頼性（クリックで開く）</summary>
       <p class="muted">監査観点：どのデータを、いつ時点のものを、スコアのどこに使ったか。</p>
       <table>
         <thead>
@@ -349,7 +373,7 @@
         </thead>
         <tbody id="sourceBody"></tbody>
       </table>
-    </section>
+    </details>
 
     <section class="panel">
       <h2>都市別スコア（比較）</h2>
@@ -380,8 +404,9 @@
       <div id="cityDetail"></div>
     </section>
 
-    <section class="panel">
-      <h2>数値一覧</h2>
+    <details class="panel collapse-panel">
+      <summary>数値一覧（クリックで開く）</summary>
+      <p class="muted">4都市の指標を表形式で確認できます（都市カード・詳細パネルと同じ数値です）。</p>
       <table>
         <thead>
           <tr>
@@ -401,7 +426,7 @@
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
-    </section>
+    </details>
 
     <details class="panel dev-panel">
       <summary>開発者向け：改善サイクル / Todo</summary>
@@ -735,9 +760,11 @@
             <p class="muted" style="margin-top:10px;">監査: ${r.audit_status}</p>
           </div>
         </div>
-        <h3 style="margin-top:16px;">現代エンタメ施設の内訳（OSM）</h3>
-        <p class="muted">合計値だけでなく、どの施設種別を現代エンタメとして数えたかを表示します。</p>
-        ${renderEntertainmentBreakdown(r)}
+        <details class="collapse-inline">
+          <summary>現代エンタメ施設の内訳（OSM）</summary>
+          <p class="muted">合計値だけでなく、どの施設種別を現代エンタメとして数えたかを表示します。</p>
+          ${renderEntertainmentBreakdown(r)}
+        </details>
         <h3 style="margin-top:16px;">${r.city_label || r.city}の中の注目駅</h3>
         <p class="muted">都市単位の完成版スコアは維持しつつ、次の拡張として駅別熱狂度のプロトタイプ枠を表示します。</p>
         ${renderStationFocus(r)}

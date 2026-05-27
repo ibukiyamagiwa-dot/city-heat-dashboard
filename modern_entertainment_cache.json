@@ -1,6 +1,6 @@
 {
   "TOKYO": {
-    "count": 1373,
+    "count": 1372,
     "breakdown": [
       {
         "id": "cinema",
@@ -14,7 +14,7 @@
         "id": "museum",
         "label": "博物館・美術館",
         "tag": "tourism=museum",
-        "count": 419,
+        "count": 418,
         "trust_level": "low",
         "source": "OpenStreetMap Overpass API"
       },
@@ -70,11 +70,11 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T01:35:55+09:00",
+    "fetched_at": "2026-05-28T00:23:51+09:00",
     "radius_m": 15000
   },
   "OSAKA": {
-    "count": 644,
+    "count": 645,
     "breakdown": [
       {
         "id": "cinema",
@@ -136,7 +136,7 @@
         "id": "sports_centre",
         "label": "スポーツセンター",
         "tag": "leisure=sports_centre",
-        "count": 254,
+        "count": 255,
         "trust_level": "low",
         "source": "OpenStreetMap Overpass API"
       }
@@ -144,7 +144,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T01:36:05+09:00",
+    "fetched_at": "2026-05-28T00:24:00+09:00",
     "radius_m": 15000
   },
   "NAGOYA": {
@@ -292,7 +292,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T01:36:19+09:00",
+    "fetched_at": "2026-05-28T00:24:23+09:00",
     "radius_m": 15000
   }
 }
