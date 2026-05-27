@@ -318,7 +318,7 @@ def format_score_equation(record: dict) -> str:
     sign = "+" if weather_boost >= 0 else "-"
     return (
         f"規模パワー {scale_power:.1f} + 充実度 {accessibility_power:.1f} {sign} "
-        f"今日のブースト {abs(weather_boost):.1f} = {record['heat_score']}"
+        f"今日のブースト {abs(weather_boost):.1f} = {record['mania_score']}"
     )
 
 
@@ -351,7 +351,7 @@ def format_score_narrative(record: dict) -> str:
         else ""
     )
     return (
-        f"{area}の熱狂度は {record['heat_score']} 点です。"
+        f"{area}の熱狂度は {record['mania_score']} 点です。"
         f"規模パワーは {record.get('scale_power', 0)} 点で、"
         f"主要駅利用者数（{user_text}）、文化施設（{venue_text}）、"
         f"現代エンタメ施設（{modern_text}）{modern_detail}が主な根拠です。"
@@ -375,7 +375,7 @@ def attach_rank_and_insights(records: list[dict]) -> None:
 
     total = len(records)
     ranks = {
-        "heat_score": rank_records(records, "heat_score"),
+        "mania_score": rank_records(records, "mania_score"),
         "city_power_score": rank_records(records, "city_power_score"),
         "scale_power": rank_records(records, "scale_power"),
         "accessibility_power": rank_records(records, "accessibility_power"),
@@ -396,7 +396,7 @@ def attach_rank_and_insights(records: list[dict]) -> None:
 
     for record in records:
         city = record["city"]
-        record["rank"] = ranks["heat_score"][city]
+        record["rank"] = ranks["mania_score"][city]
         record["city_power_rank"] = ranks["city_power_score"][city]
         record["weather_rank"] = ranks["weather_boost"][city]
         record["scale_rank"] = ranks["scale_power"][city]
@@ -684,12 +684,12 @@ def build_station_focus(city: str, urban: dict, weather_boost: float) -> list[di
             24.0,
         )
         station_weather = clamp(weather_boost * 0.3, -6.0, 6.0)
-        station_heat = clamp(35.0 + flow_bonus + density_bonus + station_weather, 0.0, 100.0)
+        station_mania = clamp(35.0 + flow_bonus + density_bonus + station_weather, 0.0, 100.0)
         flow_rank = user_ranks[row["name"]]
         density_rank = density_ranks[row["name"]]
         row["flow_rank"] = flow_rank
         row["density_rank"] = density_rank
-        row["station_heat_score"] = round(station_heat, 1)
+        row["station_mania_score"] = round(station_mania, 1)
         row["profile_type"] = station_profile_label(flow_rank, density_rank)
         row["profile_summary"] = STATION_PROFILE_DEFINITIONS[row["profile_type"]]["summary"]
         row["profile_criteria"] = STATION_PROFILE_DEFINITIONS[row["profile_type"]]["criteria"]
@@ -701,7 +701,7 @@ def build_station_focus(city: str, urban: dict, weather_boost: float) -> list[di
             "乗降客数と都市OSM現代エンタメ合計の按分値から算出しています。"
         )
 
-    return sorted(station_rows, key=lambda row: row["station_heat_score"], reverse=True)
+    return sorted(station_rows, key=lambda row: row["station_mania_score"], reverse=True)
 
 
 def fetch_modern_entertainment_count(city: str, lat: float, lon: float, cache: dict[str, dict]) -> dict:
@@ -951,7 +951,7 @@ def fetch_city_weather(
         source = "Open-Meteo (weather) only"
         source_mode = "weather_only"
 
-    heat_score = clamp(city_power_score + weather_boost, 0, 100)
+    mania_score = clamp(city_power_score + weather_boost, 0, 100)
 
     components = {
         "scale_base": {
@@ -1026,7 +1026,7 @@ def fetch_city_weather(
         "flow_bonus": flow_bonus,
         "culture_venue_bonus": culture_venue_bonus,
         "modern_entertainment_bonus": modern_entertainment_bonus,
-        "heat_score": round(heat_score, 1),
+        "mania_score": round(mania_score, 1),
         "urban_source": urban_source,
         "source": source,
         "source_mode": source_mode,
@@ -1060,7 +1060,7 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
         scale_power = urban["scale_power"] if urban else SCALE_BASE
         accessibility_power = urban["accessibility_power"] if urban else 0.0
         city_power_score = urban["city_power_score"] if urban else SCALE_BASE
-        heat_score = clamp(city_power_score + weather_boost, 0, 100)
+        mania_score = clamp(city_power_score + weather_boost, 0, 100)
         weather_components = build_weather_component_entries(
             temp_score, heat_penalty, precip_penalty, wind_penalty
         )
@@ -1109,7 +1109,7 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 "flow_bonus": flow_bonus,
                 "culture_venue_bonus": culture_venue_bonus,
                 "modern_entertainment_bonus": modern_entertainment_bonus,
-                "heat_score": round(heat_score, 1),
+                "mania_score": round(mania_score, 1),
                 "urban_source": urban["source"] if urban else "未接続",
                 "source": "fallback sample",
                 "source_mode": "fallback",
@@ -1176,7 +1176,7 @@ def build_dataset() -> dict:
         "iteration": ITERATION_STATE,
         "data_sources": DATA_SOURCE_CATALOG,
         "score_policy": {
-            "formula": "heat_score = scale_power + accessibility_power + weather_boost",
+            "formula": "mania_score = scale_power + accessibility_power + weather_boost",
             "city_power_formula": "city_power_score = scale_power + accessibility_power",
             "scale_formula": "scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus",
             "accessibility_formula": "accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus",

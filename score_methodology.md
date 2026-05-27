@@ -5,7 +5,7 @@
 都市熱狂度は、都市の絶対的な規模、人口・人流あたりの施設充実度、その日の気象による一時的な追い風・向かい風を分けて評価する。
 
 ```text
-heat_score = scale_power + accessibility_power + weather_boost
+mania_score = scale_power + accessibility_power + weather_boost
 ```
 
 ```text
@@ -107,7 +107,7 @@ weather_boost = temp_score - heat_penalty - precip_penalty - wind_penalty
 
 都市単位の比較は卒論上の主スコアとして維持する。ただし、東京・大阪のような大都市を一括りにすると、新宿、渋谷、東京駅、梅田、難波のような都市内部の違いが見えにくい。
 
-そこで次の拡張として、都市詳細の中に「注目駅」ビューを追加する。これは本体の `heat_score` 式を変更するものではなく、都市スコアを説明した後に、その都市の内部を駅単位で掘るためのプロトタイプ枠である。
+そこで次の拡張として、都市詳細の中に「注目駅」ビューを追加する。これは本体の `mania_score` 式を変更するものではなく、都市スコアを説明した後に、その都市の内部を駅単位で掘るためのプロトタイプ枠である。
 
 駅別ビューでは以下を表示する。
 

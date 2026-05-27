@@ -478,7 +478,7 @@
       return `
         <div class="map-popup">
           <strong>${r.rank}位 ${r.city_label || r.city}</strong><br>
-          総合スコア: <strong>${r.heat_score}</strong><br>
+          総合スコア: <strong>${r.mania_score}</strong><br>
           規模パワー: ${r.scale_power}<br>
           充実度: ${r.accessibility_power}<br>
           今日のブースト: ${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}<br>
@@ -519,13 +519,13 @@
         div.onclick = () => { selectedCity = r.city; renderAll(); };
         div.innerHTML = `
           <div><span class="rank">${r.rank}位</span><strong>${r.city_label || r.city}</strong> <span class="muted">${r.prefecture || ""}</span></div>
-          <div class="score">${r.heat_score}</div>
+          <div class="score">${r.mania_score}</div>
           <div class="metric-row">
             <div class="metric-box"><div class="label">規模パワー</div><div class="value">${r.scale_power}</div></div>
             <div class="metric-box"><div class="label">充実度</div><div class="value">${r.accessibility_power}</div></div>
             <div class="metric-box"><div class="label">今日のブースト</div><div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</div></div>
           </div>
-          <div class="compare-bar"><div class="compare-fill" style="width:${r.heat_score}%"></div></div>
+          <div class="compare-bar"><div class="compare-fill" style="width:${r.mania_score}%"></div></div>
           <div class="insight strong">${r.strength_text}</div>
           <div class="insight weak">${r.weakness_text}</div>
         `;
@@ -557,10 +557,10 @@
 
       dataset.records.forEach((r) => {
         const marker = L.circleMarker([r.lat, r.lon], {
-          radius: markerRadius(r.heat_score),
+          radius: markerRadius(r.mania_score),
           color: "#ffffff",
           weight: 2,
-          fillColor: scoreColor(r.heat_score),
+          fillColor: scoreColor(r.mania_score),
           fillOpacity: 0.85,
         })
           .addTo(cityMap)
@@ -581,7 +581,7 @@
       const info = document.getElementById("mapInfo");
       info.innerHTML = `
         <h3><span class="rank">${r.rank}位</span>${r.city_label || r.city}</h3>
-        <div class="score-big" style="font-size:2rem;">${r.heat_score} 点</div>
+        <div class="score-big" style="font-size:2rem;">${r.mania_score} 点</div>
         <div class="metric-row">
           <div class="metric-box"><div class="label">規模パワー</div><div class="value">${r.scale_power}</div></div>
           <div class="metric-box"><div class="label">充実度</div><div class="value">${r.accessibility_power}</div></div>
@@ -598,9 +598,9 @@
 
       Object.entries(cityMarkers).forEach(([city, marker]) => {
         const record = dataset.records.find((x) => x.city === city);
-        marker.setRadius(markerRadius(record.heat_score));
+        marker.setRadius(markerRadius(record.mania_score));
         marker.setStyle({
-          fillColor: scoreColor(record.heat_score),
+          fillColor: scoreColor(record.mania_score),
           weight: city === selectedCity ? 4 : 2,
         });
       });
@@ -612,7 +612,7 @@
       dataset.records.forEach((r) => {
         const btn = document.createElement("button");
         btn.className = "city-tab" + (r.city === selectedCity ? " active" : "");
-        btn.textContent = `${r.city_label || r.city} (${r.heat_score}点)`;
+        btn.textContent = `${r.city_label || r.city} (${r.mania_score}点)`;
         btn.onclick = () => { selectedCity = r.city; renderAll(); };
         tabs.appendChild(btn);
       });
@@ -663,7 +663,7 @@
                 <strong>${idx + 1}. ${station.name}</strong>
                 <span class="station-type">${station.profile_type}</span>
               </div>
-              <div class="station-score">${station.station_heat_score} 点</div>
+              <div class="station-score">${station.station_mania_score} 点</div>
               <div class="metric-row">
                 <div class="metric-box">
                   <div class="label">乗降客数</div>
@@ -714,7 +714,7 @@
         <div class="detail-grid">
           <div>
             <h3><span class="rank">${r.rank}位</span>${r.city_label || r.city}（${r.prefecture || ""}）の熱狂度</h3>
-            <div class="score-big">${r.heat_score} 点</div>
+            <div class="score-big">${r.mania_score} 点</div>
             <div class="metric-row">
               <div class="metric-box">
                 <div class="label">規模パワー（絶対量）</div>
@@ -771,7 +771,7 @@
         ${renderStationFocus(r)}
         <h3 style="margin-top:16px;">内訳一覧</h3>
         <ul class="breakdown-list">${items}
-          <li><div>合計（熱狂度）</div><div></div><div><strong>${r.heat_score}</strong></div></li>
+          <li><div>合計（熱狂度）</div><div></div><div><strong>${r.mania_score}</strong></div></li>
         </ul>
       `;
     }
@@ -783,7 +783,7 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${r.city_label || r.city}</strong></td>
-          <td><strong>${r.heat_score}</strong></td>
+          <td><strong>${r.mania_score}</strong></td>
           <td>${r.scale_power}</td>
           <td>${r.accessibility_power}</td>
           <td>${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost}</td>
