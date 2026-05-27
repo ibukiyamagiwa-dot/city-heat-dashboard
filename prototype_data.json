@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T00:53:20+09:00",
+  "generated_at": "2026-05-28T01:00:34+09:00",
   "records": [
     {
       "city": "TOKYO",
@@ -7,7 +7,7 @@
       "prefecture": "東京都",
       "lat": 35.6762,
       "lon": 139.6503,
-      "temperature_c": 20.4,
+      "temperature_c": 20.3,
       "precipitation_mm": 0.0,
       "wind_speed_mps": 4.0,
       "population": 14086000,
@@ -211,7 +211,7 @@
           "trust_level": "low",
           "flow_rank": 2,
           "density_rank": 5,
-          "station_mania_score": 59.8,
+          "station_mania_score": 59.7,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -225,11 +225,11 @@
       "scale_power": 68.0,
       "accessibility_power": 9.7,
       "city_power_score": 77.7,
-      "weather_boost": 8.1,
+      "weather_boost": 8.0,
       "flow_bonus": 18.0,
       "culture_venue_bonus": 7.0,
       "modern_entertainment_bonus": 8.0,
-      "mania_score": 85.8,
+      "mania_score": 85.7,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -243,7 +243,7 @@
           "layer": "規模パワー"
         },
         "temp_score": {
-          "value": 12.5,
+          "value": 12.4,
           "trust_level": "high",
           "label": "気温補正（暖かさの追い風）",
           "layer": "今日のブースト"
@@ -305,8 +305,8 @@
       "culture_per_flow_rank": 4,
       "strength_text": "強み: 主要駅利用者数が4都市中1位、文化施設数が4都市中1位、現代エンタメ施設数が4都市中1位、人口あたり現代エンタメ施設数が4都市中1位",
       "weakness_text": "弱み: 今日の気象条件が4都市中3位",
-      "score_equation": "規模パワー 68.0 + 充実度 9.7 + 今日のブースト 8.1 = 85.8",
-      "score_narrative": "東京（東京都）の熱狂度は 85.8 点です。規模パワーは 68.0 点で、主要駅利用者数（約4,250,258人/日）、文化施設（132施設）、現代エンタメ施設（1372施設）（スポーツセンター 457件、博物館・美術館 418件が中心）が主な根拠です。充実度は 9.7 点で、人口（約14,086,000人）や人流あたりの施設数を反映しています。今日のブーストは 8.1 点で、気温 20.4℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "score_equation": "規模パワー 68.0 + 充実度 9.7 + 今日のブースト 8.0 = 85.7",
+      "score_narrative": "東京（東京都）の熱狂度は 85.7 点です。規模パワーは 68.0 点で、主要駅利用者数（約4,250,258人/日）、文化施設（132施設）、現代エンタメ施設（1372施設）（スポーツセンター 457件、博物館・美術館 418件が中心）が主な根拠です。充実度は 9.7 点で、人口（約14,086,000人）や人流あたりの施設数を反映しています。今日のブーストは 8.0 点で、気温 20.3℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "OSAKA",
@@ -314,9 +314,9 @@
       "prefecture": "大阪府",
       "lat": 34.6937,
       "lon": 135.5023,
-      "temperature_c": 20.7,
+      "temperature_c": 20.8,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 7.9,
+      "wind_speed_mps": 8.2,
       "population": 8763000,
       "station_users": 2028399,
       "event_venues": 69,
@@ -467,7 +467,7 @@
           "trust_level": "low",
           "flow_rank": 3,
           "density_rank": 2,
-          "station_mania_score": 69.0,
+          "station_mania_score": 68.9,
           "profile_type": "カルチャー型",
           "profile_summary": "利用者数の規模より、駅利用者あたりのエンタメ密度が強いタイプ。",
           "profile_criteria": "エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。",
@@ -501,7 +501,7 @@
           "trust_level": "low",
           "flow_rank": 4,
           "density_rank": 3,
-          "station_mania_score": 56.1,
+          "station_mania_score": 56.0,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -532,11 +532,11 @@
       "scale_power": 45.2,
       "accessibility_power": 5.6,
       "city_power_score": 50.8,
-      "weather_boost": 4.1,
+      "weather_boost": 3.9,
       "flow_bonus": 6.8,
       "culture_venue_bonus": 0.0,
       "modern_entertainment_bonus": 3.3,
-      "mania_score": 54.9,
+      "mania_score": 54.7,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -550,7 +550,7 @@
           "layer": "規模パワー"
         },
         "temp_score": {
-          "value": 12.8,
+          "value": 13.0,
           "trust_level": "high",
           "label": "気温補正（暖かさの追い風）",
           "layer": "今日のブースト"
@@ -568,7 +568,7 @@
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -8.7,
+          "value": -9.0,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -612,8 +612,8 @@
       "culture_per_flow_rank": 3,
       "strength_text": "強み: 絶対量の規模パワーが4都市中2位",
       "weakness_text": "弱み: 文化施設数が4都市中最少、人口あたり文化施設数が4都市中最少、今日の気象条件が最も向かい風",
-      "score_equation": "規模パワー 45.2 + 充実度 5.6 + 今日のブースト 4.1 = 54.9",
-      "score_narrative": "大阪（大阪府）の熱狂度は 54.9 点です。規模パワーは 45.2 点で、主要駅利用者数（約2,028,399人/日）、文化施設（69施設）、現代エンタメ施設（645施設）（スポーツセンター 255件、劇場 160件が中心）が主な根拠です。充実度は 5.6 点で、人口（約8,763,000人）や人流あたりの施設数を反映しています。今日のブーストは 4.1 点で、気温 20.7℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "score_equation": "規模パワー 45.2 + 充実度 5.6 + 今日のブースト 3.9 = 54.7",
+      "score_narrative": "大阪（大阪府）の熱狂度は 54.7 点です。規模パワーは 45.2 点で、主要駅利用者数（約2,028,399人/日）、文化施設（69施設）、現代エンタメ施設（645施設）（スポーツセンター 255件、劇場 160件が中心）が主な根拠です。充実度は 5.6 点で、人口（約8,763,000人）や人流あたりの施設数を反映しています。今日のブーストは 3.9 点で、気温 20.8℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "NAGOYA",
@@ -623,7 +623,7 @@
       "lon": 136.9066,
       "temperature_c": 20.1,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 2.4,
+      "wind_speed_mps": 2.1,
       "population": 7477000,
       "station_users": 1280292,
       "event_venues": 81,
@@ -757,7 +757,7 @@
           "trust_level": "low",
           "flow_rank": 1,
           "density_rank": 3,
-          "station_mania_score": 74.3,
+          "station_mania_score": 74.4,
           "profile_type": "人流型",
           "profile_summary": "駅利用者数が特に多く、施設密度よりも人の流れが熱狂度を押し上げるタイプ。",
           "profile_criteria": "駅利用者数が都市内1位、かつエンタメ密度順位が3位以下。",
@@ -774,7 +774,7 @@
           "trust_level": "low",
           "flow_rank": 2,
           "density_rank": 4,
-          "station_mania_score": 70.3,
+          "station_mania_score": 70.4,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -791,7 +791,7 @@
           "trust_level": "low",
           "flow_rank": 3,
           "density_rank": 2,
-          "station_mania_score": 68.8,
+          "station_mania_score": 68.9,
           "profile_type": "カルチャー型",
           "profile_summary": "利用者数の規模より、駅利用者あたりのエンタメ密度が強いタイプ。",
           "profile_criteria": "エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。",
@@ -808,7 +808,7 @@
           "trust_level": "low",
           "flow_rank": 5,
           "density_rank": 1,
-          "station_mania_score": 61.8,
+          "station_mania_score": 61.9,
           "profile_type": "カルチャー型",
           "profile_summary": "利用者数の規模より、駅利用者あたりのエンタメ密度が強いタイプ。",
           "profile_criteria": "エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。",
@@ -825,7 +825,7 @@
           "trust_level": "low",
           "flow_rank": 4,
           "density_rank": 5,
-          "station_mania_score": 43.3,
+          "station_mania_score": 43.4,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -839,11 +839,11 @@
       "scale_power": 40.6,
       "accessibility_power": 7.6,
       "city_power_score": 48.2,
-      "weather_boost": 9.5,
+      "weather_boost": 9.8,
       "flow_bonus": 3.1,
       "culture_venue_bonus": 1.3,
       "modern_entertainment_bonus": 1.2,
-      "mania_score": 57.7,
+      "mania_score": 58.0,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
@@ -875,7 +875,7 @@
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -2.6,
+          "value": -2.3,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -919,8 +919,8 @@
       "culture_per_flow_rank": 2,
       "strength_text": "強み: 今日の気象条件が最も追い風",
       "weakness_text": "弱み: 人口/人流あたり充実度が4都市中3位",
-      "score_equation": "規模パワー 40.6 + 充実度 7.6 + 今日のブースト 9.5 = 57.7",
-      "score_narrative": "名古屋（愛知県）の熱狂度は 57.7 点です。規模パワーは 40.6 点で、主要駅利用者数（約1,280,292人/日）、文化施設（81施設）、現代エンタメ施設（314施設）（博物館・美術館 138件、スポーツセンター 96件が中心）が主な根拠です。充実度は 7.6 点で、人口（約7,477,000人）や人流あたりの施設数を反映しています。今日のブーストは 9.5 点で、気温 20.1℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "score_equation": "規模パワー 40.6 + 充実度 7.6 + 今日のブースト 9.8 = 58.0",
+      "score_narrative": "名古屋（愛知県）の熱狂度は 58.0 点です。規模パワーは 40.6 点で、主要駅利用者数（約1,280,292人/日）、文化施設（81施設）、現代エンタメ施設（314施設）（博物館・美術館 138件、スポーツセンター 96件が中心）が主な根拠です。充実度は 7.6 点で、人口（約7,477,000人）や人流あたりの施設数を反映しています。今日のブーストは 9.8 点で、気温 20.1℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     },
     {
       "city": "FUKUOKA",
@@ -930,7 +930,7 @@
       "lon": 130.4017,
       "temperature_c": 21.9,
       "precipitation_mm": 0.0,
-      "wind_speed_mps": 5.2,
+      "wind_speed_mps": 4.7,
       "population": 5103000,
       "station_users": 664842,
       "event_venues": 76,
@@ -1051,7 +1051,7 @@
           "tag": "leisure=sports_centre"
         }
       ],
-      "modern_entertainment_source_mode": "live",
+      "modern_entertainment_source_mode": "cache",
       "modern_entertainment_radius_m": 15000,
       "station_focus": [
         {
@@ -1064,7 +1064,7 @@
           "trust_level": "low",
           "flow_rank": 1,
           "density_rank": 2,
-          "station_mania_score": 93.3,
+          "station_mania_score": 93.5,
           "profile_type": "総合熱狂型",
           "profile_summary": "人流もエンタメ密度も上位で、規模と濃さの両方があるタイプ。",
           "profile_criteria": "駅利用者数順位が2位以内、かつエンタメ密度順位も2位以内。",
@@ -1081,7 +1081,7 @@
           "trust_level": "low",
           "flow_rank": 3,
           "density_rank": 1,
-          "station_mania_score": 70.9,
+          "station_mania_score": 71.0,
           "profile_type": "カルチャー型",
           "profile_summary": "利用者数の規模より、駅利用者あたりのエンタメ密度が強いタイプ。",
           "profile_criteria": "エンタメ密度順位が都市内2位以内、かつ駅利用者数順位が3位以下。",
@@ -1098,7 +1098,7 @@
           "trust_level": "low",
           "flow_rank": 2,
           "density_rank": 4,
-          "station_mania_score": 54.4,
+          "station_mania_score": 54.5,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -1115,7 +1115,7 @@
           "trust_level": "low",
           "flow_rank": 4,
           "density_rank": 3,
-          "station_mania_score": 50.8,
+          "station_mania_score": 50.9,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -1132,7 +1132,7 @@
           "trust_level": "low",
           "flow_rank": 5,
           "density_rank": 5,
-          "station_mania_score": 37.6,
+          "station_mania_score": 37.7,
           "profile_type": "バランス型",
           "profile_summary": "人流とエンタメ密度のどちらか一方に偏らず、平均的に支えるタイプ。",
           "profile_criteria": "上記3タイプに当てはまらない駅。",
@@ -1146,16 +1146,16 @@
       "scale_power": 35.8,
       "accessibility_power": 14.0,
       "city_power_score": 49.8,
-      "weather_boost": 8.6,
+      "weather_boost": 9.1,
       "flow_bonus": 0.0,
       "culture_venue_bonus": 0.8,
       "modern_entertainment_bonus": 0.0,
-      "mania_score": 58.4,
+      "mania_score": 58.9,
       "urban_source": "国土数値情報 駅別乗降客数 2023年度 + 社会教育調査 2021年度(劇場・音楽堂) + 総務省人口推計2023",
       "source": "Open-Meteo (weather) + urban_indicators.csv (urban indicators)",
       "source_mode": "mixed",
       "trust_level": "high",
-      "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:live)",
+      "audit_status": "CSV接続済み: 人流(国交省) + 文化施設(文科省) + 人口(総務省) / 現代エンタメ(OSM:cache)",
       "components": {
         "scale_base": {
           "value": 35.0,
@@ -1182,7 +1182,7 @@
           "layer": "今日のブースト"
         },
         "wind_penalty": {
-          "value": -5.7,
+          "value": -5.2,
           "trust_level": "high",
           "label": "風速ペナルティ（実データ）",
           "layer": "今日のブースト"
@@ -1226,8 +1226,8 @@
       "culture_per_flow_rank": 1,
       "strength_text": "強み: 人口あたり文化施設数が4都市中1位",
       "weakness_text": "弱み: 主要駅利用者数が4都市中最少、現代エンタメ施設数が4都市中最少、人口あたり現代エンタメ施設数が4都市中最少",
-      "score_equation": "規模パワー 35.8 + 充実度 14.0 + 今日のブースト 8.6 = 58.4",
-      "score_narrative": "福岡（福岡県）の熱狂度は 58.4 点です。規模パワーは 35.8 点で、主要駅利用者数（約664,842人/日）、文化施設（76施設）、現代エンタメ施設（128施設）（博物館・美術館 45件、スポーツセンター 33件が中心）が主な根拠です。充実度は 14.0 点で、人口（約5,103,000人）や人流あたりの施設数を反映しています。今日のブーストは 8.6 点で、気温 21.9℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
+      "score_equation": "規模パワー 35.8 + 充実度 14.0 + 今日のブースト 9.1 = 58.9",
+      "score_narrative": "福岡（福岡県）の熱狂度は 58.9 点です。規模パワーは 35.8 点で、主要駅利用者数（約664,842人/日）、文化施設（76施設）、現代エンタメ施設（128施設）（博物館・美術館 45件、スポーツセンター 33件が中心）が主な根拠です。充実度は 14.0 点で、人口（約5,103,000人）や人流あたりの施設数を反映しています。今日のブーストは 9.1 点で、気温 21.9℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。スコアは「真実」ではなく、公開データに基づく推定指標です。"
     }
   ],
   "note": "prototype dataset for alpha demo",
