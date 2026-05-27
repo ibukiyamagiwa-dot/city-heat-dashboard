@@ -9,8 +9,8 @@ weather:
   category: "気象"
   acquisition: "公式API"
   trust_level: "high"
-  current_usage: "気温・降水量・風速を取得し、都市活動のしやすさの補助指標として使用"
-  audit_rule: "取得時刻・出典・API取得失敗時のフォールバック有無を記録する"
+  current_usage: "気温・降水量・風速を取得し、都市活動のしやすさの補助指標として使用（気温は temp_score と heat_penalty に分離）"
+  audit_rule: "取得時刻・出典・API失敗時のフォールバック有無を記録。28℃超は heat_penalty で猛暑減点し、temp_score だけが満点にならないこと"
 
 culture_venue:
   name: "劇場・音楽堂（社会教育調査）"

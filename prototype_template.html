@@ -729,7 +729,7 @@
               <div class="metric-box">
                 <div class="label">今日のブースト（気象）</div>
                 <div class="value">${r.weather_boost >= 0 ? "+" : ""}${r.weather_boost} 点</div>
-                <div class="muted">気温・降水・風速</div>
+                <div class="muted">暖かさ・暑さ・降水・風速</div>
               </div>
             </div>
             <p class="muted">総合信頼度: ${trustPill(r.trust_level)}</p>
@@ -739,6 +739,7 @@
             <p class="muted">規模式: ${dataset.score_policy.scale_formula}</p>
             <p class="muted">充実度式: ${dataset.score_policy.accessibility_formula}</p>
             <p class="muted">ブースト式: ${dataset.score_policy.weather_formula}</p>
+            <p class="muted">${dataset.score_policy.weather_note || ""}</p>
           </div>
           <div>
             <h3>平易な説明</h3>

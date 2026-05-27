@@ -11,7 +11,7 @@ heat_score = scale_power + accessibility_power + weather_boost
 ```text
 scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus
 accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus
-weather_boost = temp_score - precip_penalty - wind_penalty
+weather_boost = temp_score - heat_penalty - precip_penalty - wind_penalty
 ```
 
 ## モデル拡張の理由
@@ -74,8 +74,14 @@ weather_boost = temp_score - precip_penalty - wind_penalty
 - `temp_score`
   - 出典: Open-Meteo
   - 信頼度: high
-  - 算出: 気温を0.0〜18.0点に変換
-  - 意味: 気温が活動しやすいほど今日のブーストが上がる
+  - 算出: `(気温 - 10) × 1.2` を 0.0〜18.0点にクリップ（10℃未満は0点）
+  - 意味: 寒すぎより暖かい方が活動しやすい、という**緩い追い風**（春〜初夏のイメージ）。単調に「暑いほど良い」とはしない
+
+- `heat_penalty`
+  - 出典: Open-Meteo（同一の気温）
+  - 信頼度: high
+  - 算出: `max(0, 気温 - 28) × 1.5` を 0.0〜12.0点にクリップ（28℃以下は0点）
+  - 意味: 猛暑日は屋外回避・移動負荷で活動が落ちうるため、**暑さだけを別枠で減点**。35℃で約10.5点、40℃付近で上限12点
 
 - `precip_penalty` / `wind_penalty`
   - 出典: Open-Meteo

@@ -144,7 +144,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-28T00:24:00+09:00",
+    "fetched_at": "2026-05-28T00:36:40+09:00",
     "radius_m": 15000
   },
   "NAGOYA": {
@@ -218,7 +218,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-26T01:36:16+09:00",
+    "fetched_at": "2026-05-28T00:36:54+09:00",
     "radius_m": 15000
   },
   "FUKUOKA": {
@@ -292,7 +292,7 @@
     "source": "OpenStreetMap Overpass API",
     "source_mode": "live",
     "trust_level": "low",
-    "fetched_at": "2026-05-28T00:24:23+09:00",
+    "fetched_at": "2026-05-28T00:37:03+09:00",
     "radius_m": 15000
   }
 }

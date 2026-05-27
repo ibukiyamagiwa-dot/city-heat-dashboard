@@ -208,6 +208,18 @@ CULTURE_VENUE_BONUS_RANGE = (0.0, 7.0)
 MODERN_ENTERTAINMENT_BONUS_RANGE = (0.0, 8.0)
 ACCESSIBILITY_BONUS_RANGE = (0.0, 22.0)
 WEATHER_BOOST_RANGE = (-20.0, 20.0)
+# 気温: 暖かさの追い風（春〜初夏）— 10℃未満は0点、上限18点
+TEMP_SCORE_BASE_C = 10.0
+TEMP_SCORE_SLOPE = 1.2
+TEMP_SCORE_MAX = 18.0
+# 暑さ: 28℃超で減点（猛暑日でも temp_score だけが満点にならないよう別枠化）
+HEAT_PENALTY_THRESHOLD_C = 28.0
+HEAT_PENALTY_SLOPE = 1.5
+HEAT_PENALTY_MAX = 12.0
+PRECIP_PENALTY_SLOPE = 5.0
+PRECIP_PENALTY_MAX = 18.0
+WIND_PENALTY_SLOPE = 1.1
+WIND_PENALTY_MAX = 18.0
 
 STATION_PROFILE_DEFINITIONS = {
     "人流型": {
@@ -346,7 +358,7 @@ def format_score_narrative(record: dict) -> str:
         f"充実度は {record.get('accessibility_power', 0)} 点で、"
         f"人口（{population_text}）や人流あたりの施設数を反映しています。"
         f"今日のブーストは {record.get('weather_boost', 0)} 点で、"
-        f"気温 {temp}℃、降水、風速の影響を反映しています。"
+        f"気温 {temp}℃（暖かさの追い風・暑さの逆風）、降水、風速の影響を反映しています。"
         f"スコアは「真実」ではなく、公開データに基づく推定指標です。"
     )
 
@@ -460,6 +472,63 @@ def attach_display_metadata(records: list[dict]) -> None:
 
 def clamp(value: float, lo: float, hi: float) -> float:
     return max(lo, min(value, hi))
+
+
+def calc_weather_components(
+    temp: float, precip: float, wind: float
+) -> tuple[float, float, float, float, float]:
+    """気温・降水・風から今日のブースト用の各要素を算出する。"""
+    temp_score = clamp(
+        (temp - TEMP_SCORE_BASE_C) * TEMP_SCORE_SLOPE, 0.0, TEMP_SCORE_MAX
+    )
+    heat_penalty = clamp(
+        max(0.0, temp - HEAT_PENALTY_THRESHOLD_C) * HEAT_PENALTY_SLOPE,
+        0.0,
+        HEAT_PENALTY_MAX,
+    )
+    precip_penalty = clamp(precip * PRECIP_PENALTY_SLOPE, 0.0, PRECIP_PENALTY_MAX)
+    wind_penalty = clamp(wind * WIND_PENALTY_SLOPE, 0.0, WIND_PENALTY_MAX)
+    weather_boost = clamp(
+        temp_score - heat_penalty - precip_penalty - wind_penalty,
+        WEATHER_BOOST_RANGE[0],
+        WEATHER_BOOST_RANGE[1],
+    )
+    return temp_score, heat_penalty, precip_penalty, wind_penalty, weather_boost
+
+
+def build_weather_component_entries(
+    temp_score: float,
+    heat_penalty: float,
+    precip_penalty: float,
+    wind_penalty: float,
+) -> dict:
+    """UIの components 用に気象要素を辞書化する。"""
+    return {
+        "temp_score": {
+            "value": round(temp_score, 1),
+            "trust_level": "high",
+            "label": "気温補正（暖かさの追い風）",
+            "layer": "今日のブースト",
+        },
+        "heat_penalty": {
+            "value": round(-heat_penalty, 1),
+            "trust_level": "high",
+            "label": "暑さペナルティ（実データ）",
+            "layer": "今日のブースト",
+        },
+        "precip_penalty": {
+            "value": round(-precip_penalty, 1),
+            "trust_level": "high",
+            "label": "降水ペナルティ（実データ）",
+            "layer": "今日のブースト",
+        },
+        "wind_penalty": {
+            "value": round(-wind_penalty, 1),
+            "trust_level": "high",
+            "label": "風速ペナルティ（実データ）",
+            "layer": "今日のブースト",
+        },
+    }
 
 
 def normalize_to_range(
@@ -841,10 +910,10 @@ def fetch_city_weather(
 
     # 2層スコア:
     # - 都市の底力は人流・劇場数など固定データで決める
-    # - 今日のブーストは気象で上下させる
-    temp_score = clamp((temp - 10.0) * 1.2, 0.0, 18.0)
-    precip_penalty = clamp(precip * 5.0, 0.0, 18.0)
-    wind_penalty = clamp(wind * 1.1, 0.0, 18.0)
+    # - 今日のブーストは気象で上下させる（暑さは heat_penalty で別減点）
+    temp_score, heat_penalty, precip_penalty, wind_penalty, weather_boost = (
+        calc_weather_components(temp, precip, wind)
+    )
 
     if urban:
         flow_bonus = urban["flow_bonus"]
@@ -882,11 +951,6 @@ def fetch_city_weather(
         source = "Open-Meteo (weather) only"
         source_mode = "weather_only"
 
-    weather_boost = clamp(
-        temp_score - precip_penalty - wind_penalty,
-        WEATHER_BOOST_RANGE[0],
-        WEATHER_BOOST_RANGE[1],
-    )
     heat_score = clamp(city_power_score + weather_boost, 0, 100)
 
     components = {
@@ -896,12 +960,9 @@ def fetch_city_weather(
             "label": "規模パワーの基準点",
             "layer": "規模パワー",
         },
-        "temp_score": {
-            "value": round(temp_score, 1),
-            "trust_level": "high",
-            "label": "気温補正（実データ）",
-            "layer": "今日のブースト",
-        },
+        **build_weather_component_entries(
+            temp_score, heat_penalty, precip_penalty, wind_penalty
+        ),
         "flow_bonus": {
             "value": flow_bonus,
             "trust_level": "medium",
@@ -925,18 +986,6 @@ def fetch_city_weather(
             "trust_level": "medium",
             "label": "人口/人流あたり充実度",
             "layer": "充実度",
-        },
-        "precip_penalty": {
-            "value": round(-precip_penalty, 1),
-            "trust_level": "high",
-            "label": "降水ペナルティ（実データ）",
-            "layer": "今日のブースト",
-        },
-        "wind_penalty": {
-            "value": round(-wind_penalty, 1),
-            "trust_level": "high",
-            "label": "風速ペナルティ（実データ）",
-            "layer": "今日のブースト",
         },
     }
     return {
@@ -1000,9 +1049,9 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
 
     for city, lat, lon, temp, precip, wind in samples:
         urban = urban_bonuses.get(city)
-        temp_score = clamp((temp - 10.0) * 1.2, 0.0, 18.0)
-        precip_penalty = clamp(precip * 5.0, 0.0, 18.0)
-        wind_penalty = clamp(wind * 1.1, 0.0, 18.0)
+        temp_score, heat_penalty, precip_penalty, wind_penalty, weather_boost = (
+            calc_weather_components(temp, precip, wind)
+        )
         flow_bonus = urban["flow_bonus"] if urban else 0.0
         culture_venue_bonus = urban["culture_venue_bonus"] if urban else 0.0
         modern_entertainment_bonus = (
@@ -1011,12 +1060,10 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
         scale_power = urban["scale_power"] if urban else SCALE_BASE
         accessibility_power = urban["accessibility_power"] if urban else 0.0
         city_power_score = urban["city_power_score"] if urban else SCALE_BASE
-        weather_boost = clamp(
-            temp_score - precip_penalty - wind_penalty,
-            WEATHER_BOOST_RANGE[0],
-            WEATHER_BOOST_RANGE[1],
-        )
         heat_score = clamp(city_power_score + weather_boost, 0, 100)
+        weather_components = build_weather_component_entries(
+            temp_score, heat_penalty, precip_penalty, wind_penalty
+        )
         records.append(
             {
                 "city": city,
@@ -1068,7 +1115,15 @@ def fallback_city_data(urban_bonuses: dict[str, dict] | None = None) -> list[dic
                 "source_mode": "fallback",
                 "trust_level": "low",
                 "audit_status": "要注意: API取得失敗時のサンプル値",
-                "components": {},
+                "components": {
+                    "scale_base": {
+                        "value": SCALE_BASE,
+                        "trust_level": "medium",
+                        "label": "規模パワーの基準点",
+                        "layer": "規模パワー",
+                    },
+                    **weather_components,
+                },
             }
         )
     return records
@@ -1125,7 +1180,13 @@ def build_dataset() -> dict:
             "city_power_formula": "city_power_score = scale_power + accessibility_power",
             "scale_formula": "scale_power = 35.0 + flow_bonus + culture_venue_bonus + modern_entertainment_bonus",
             "accessibility_formula": "accessibility_power = culture_per_population_bonus + modern_per_population_bonus + culture_per_flow_bonus",
-            "weather_formula": "weather_boost = temp_score - precip_penalty - wind_penalty",
+            "weather_formula": (
+                "weather_boost = temp_score - heat_penalty - precip_penalty - wind_penalty"
+            ),
+            "weather_note": (
+                "気温は暖かさの追い風（temp_score）と暑さの逆風（heat_penalty）に分け、"
+                f"{HEAT_PENALTY_THRESHOLD_C:.0f}℃超で猛暑減点します。"
+            ),
             "summary": "熱狂度は、絶対量の規模パワー、人口/人流あたりの充実度、今日のブーストを分けて評価するモデル検証版です。",
             "warning": "固定の仮説値は使用していません。公的統計とOSM補助指標は信頼度を分けて表示し、施設数は開催数ではない点に注意してください。",
             "station_view_note": "駅別ビューは都市スコア式を変更しないプロトタイプ枠です。駅周辺OSM数は現時点では都市OSM合計を駅利用者比で按分した試算として表示します。",
