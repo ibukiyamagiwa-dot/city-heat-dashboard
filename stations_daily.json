@@ -1,5 +1,6 @@
 {
   "generated_at": "2026-06-11",
+  "weather_mode": "open-meteo",
   "td_definition": "TD = 駅別の監査済みクエリによるSNS言及件数の前日比（%）。本ファイルはダミー値。",
   "type_thresholds": {
     "high": "TD > +30.0%",
@@ -12,13 +13,14 @@
     {
       "date": "2026-06-09",
       "weather": {
-        "summary": "晴れ",
-        "icon": "☀️",
-        "temperature_c": 22.0,
-        "precipitation_mm": 0.0,
-        "is_rain": false,
-        "source": "ダミー値（Phase B で Open-Meteo に置き換え）",
-        "trust_level": "low"
+        "summary": "雨",
+        "icon": "🌧️",
+        "temperature_c": 19.9,
+        "temperature_max_c": 21.0,
+        "precipitation_mm": 17.3,
+        "source": "Open-Meteo（日別・東京駅周辺）",
+        "trust_level": "high",
+        "is_rain": true
       },
       "stations": [
         {
@@ -435,11 +437,12 @@
       "weather": {
         "summary": "雨",
         "icon": "🌧️",
-        "temperature_c": 18.0,
-        "precipitation_mm": 4.2,
-        "is_rain": true,
-        "source": "ダミー値（Phase B で Open-Meteo に置き換え）",
-        "trust_level": "low"
+        "temperature_c": 19.9,
+        "temperature_max_c": 21.7,
+        "precipitation_mm": 0.2,
+        "source": "Open-Meteo（日別・東京駅周辺）",
+        "trust_level": "high",
+        "is_rain": false
       },
       "stations": [
         {
@@ -856,11 +859,12 @@
       "weather": {
         "summary": "くもり",
         "icon": "☁️",
-        "temperature_c": 20.0,
+        "temperature_c": 21.6,
+        "temperature_max_c": 26.1,
         "precipitation_mm": 0.0,
-        "is_rain": false,
-        "source": "ダミー値（Phase B で Open-Meteo に置き換え）",
-        "trust_level": "low"
+        "source": "Open-Meteo（日別・東京駅周辺）",
+        "trust_level": "high",
+        "is_rain": false
       },
       "stations": [
         {

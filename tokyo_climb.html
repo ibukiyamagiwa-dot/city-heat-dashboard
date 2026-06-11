@@ -193,7 +193,7 @@
       <strong>データについて（プロトタイプ）</strong>
       <ul>
         <li>TD（Topic Delta）は「駅ごとの監査済みクエリによる SNS 言及件数の前日比%」という<strong>代理指標</strong>の定義です。現在は<strong>ダミー値</strong>（SNS API 未接続・信頼度 low）。</li>
-        <li>天気はダミー値（Open-Meteo 連携は次フェーズ）。天気は TD・ノードの色には混ぜず、道中の「消耗」演出にのみ使用します。</li>
+        <li>天気は <a href="https://open-meteo.com/">Open-Meteo</a> の日別データ（東京駅周辺・信頼度 high。取得失敗時はダミーにフォールバック）。天気は TD・ノードの色には混ぜず、道中の「消耗」演出にのみ使用します。</li>
         <li>駅座標・路線エッジは手動定義の近似値（国土数値情報 駅・鉄道データへの置き換え予定）。一部エッジは乗換を簡略化しています。</li>
         <li>背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>。本画面は旧・都市熱狂度スコア（mania_score）を使用しません。</li>
       </ul>
