@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TOKYO CLIMB — 今日の東京を登る</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel2: #fff7ed;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted: #64748b;
+      --high: #e60012;
+      --mid: #f39800;
+      --low: #059669;
+      --mystery: #94a3b8;
+      --accent: #f39800;
+      --accent-strong: #e60012;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
+    h1 { font-size: 1.5rem; margin: 0; letter-spacing: .04em; }
+    h2 { font-size: 1.05rem; margin: 0 0 10px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: "";
+      display: block;
+      height: 4px;
+      margin: -14px -16px 12px;
+      background: var(--brand-gradient);
+    }
+    .muted { color: var(--muted); font-size: 13px; }
+    .header-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .header-row .spacer { flex: 1; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 999px;
+      background: #fff7ed; border: 1px solid #fed7aa;
+      font-size: 13px; color: #9a3412; font-weight: 700;
+    }
+    .day-tab {
+      background: #fff; border: 1px solid var(--border); border-radius: 999px;
+      padding: 6px 14px; font-size: 13px; font-weight: 700; color: var(--text);
+      cursor: pointer;
+    }
+    .day-tab.active { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+    .btn {
+      background: var(--accent-strong); color: #fff; border: none; border-radius: 10px;
+      padding: 9px 16px; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .btn.secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn:disabled { opacity: .45; cursor: default; }
+    .layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-items: start; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+    #map { width: 100%; height: 380px; border-radius: 10px; border: 1px solid var(--border); }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+    .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+    #dagPanel { display: none; }
+    #dagScroll { overflow-x: auto; }
+    #dagSvg { display: block; margin: 0 auto; }
+    .dag-node { cursor: default; }
+    .dag-node.clickable { cursor: pointer; }
+    .dag-node.clickable circle { stroke: #1f2937; stroke-width: 3; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: .25; } }
+    .status-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+    .stat {
+      background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
+      padding: 8px 12px; font-size: 13px; font-weight: 700;
+    }
+    .trail { font-size: 20px; letter-spacing: 2px; margin: 6px 0; word-break: break-all; }
+    .choice-btn {
+      display: block; width: 100%; text-align: left;
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 14px; margin-bottom: 8px; cursor: pointer; font-size: 14px;
+    }
+    .choice-btn:hover { border-color: var(--accent); background: #fffbeb; }
+    .choice-btn .c-title { font-weight: 700; font-size: 15px; }
+    .choice-btn .c-sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+    #log { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
+    #log li { border-bottom: 1px dashed var(--border); padding: 7px 2px; }
+    #log li:last-child { border-bottom: none; }
+    #sharePanel { display: none; }
+    #shareText {
+      width: 100%; font-family: inherit; font-size: 13px;
+      border: 1px solid var(--border); border-radius: 10px; padding: 10px; resize: vertical;
+      background: #fffbeb;
+    }
+    .boss-banner {
+      background: linear-gradient(90deg, #fff7ed, #fffbeb);
+      border: 1px solid #fed7aa; border-radius: 12px; padding: 10px 14px;
+      font-weight: 700; margin-bottom: 10px; display: none;
+    }
+    footer.panel { font-size: 12.5px; color: var(--muted); }
+    footer.panel ul { margin: 6px 0 0; padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <section class="panel">
+      <div class="header-row">
+        <h1>🗼 TOKYO CLIMB</h1>
+        <span class="muted">今日の東京を、駅から駅へ「登る」1日1ラン</span>
+        <span class="spacer"></span>
+        <span class="badge" id="weatherBadge">--</span>
+        <span id="dayTabs"></span>
+        <button class="btn secondary" id="resetBtn">最初から</button>
+      </div>
+      <p class="muted" style="margin:8px 0 0;">
+        各駅の色は <strong>TD（話題変化率：SNS言及の前日比%）</strong> のみで決まります。総合スコアは使いません。
+        スタート駅を地図で選ぶと、今日のボス駅が自動決定され、分岐マップが生成されます。
+      </p>
+    </section>
+
+    <div class="layout">
+      <div>
+        <section class="panel">
+          <h2 id="mapTitle">1. スタート駅を選ぶ（地図の駅をクリック）</h2>
+          <div id="map"></div>
+          <div class="legend">
+            <span><span class="dot" style="background:var(--high)"></span>急上昇（TD &gt; +30%）</span>
+            <span><span class="dot" style="background:var(--mid)"></span>上昇（+10〜30%）</span>
+            <span><span class="dot" style="background:var(--low)"></span>静か（&lt; -10%）</span>
+            <span><span class="dot" style="background:var(--mystery)"></span>❓ 未知（±10% or データ薄）</span>
+          </div>
+        </section>
+
+        <section class="panel" id="dagPanel">
+          <h2>3. 分岐マップを登る（光るノードをクリック）</h2>
+          <div id="dagScroll"><svg id="dagSvg"></svg></div>
+        </section>
+      </div>
+
+      <div>
+        <section class="panel">
+          <h2>今日のラン</h2>
+          <div class="boss-banner" id="bossBanner"></div>
+          <div id="phaseHint" class="muted">地図でスタート駅をクリックしてください。どの駅からでも登れます。</div>
+          <div class="status-badges">
+            <span class="stat">⚡ ボルテージ <b id="voltage">0</b></span>
+            <span class="stat">💧 消耗 <b id="strain">0</b></span>
+            <span class="stat">🚉 <b id="progress">-</b></span>
+          </div>
+          <div class="trail" id="trail"></div>
+          <div id="choices"></div>
+        </section>
+
+        <section class="panel">
+          <h2>4. 道中の記録</h2>
+          <ul id="log"><li class="muted">まだ記録はありません。</li></ul>
+        </section>
+
+        <section class="panel" id="sharePanel">
+          <h2>5. 今日のランをシェア</h2>
+          <textarea id="shareText" rows="6" readonly></textarea>
+          <div style="margin-top:8px; display:flex; gap:8px;">
+            <button class="btn" id="copyBtn">コピーしてシェア</button>
+            <span class="muted" id="copyDone" style="align-self:center;"></span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="panel">
+      <strong>データについて（プロトタイプ）</strong>
+      <ul>
+        <li>TD（Topic Delta）は「駅ごとの監査済みクエリによる SNS 言及件数の前日比%」という<strong>代理指標</strong>の定義です。現在は<strong>ダミー値</strong>（SNS API 未接続・信頼度 low）。</li>
+        <li>天気はダミー値（Open-Meteo 連携は次フェーズ）。天気は TD・ノードの色には混ぜず、道中の「消耗」演出にのみ使用します。</li>
+        <li>駅座標・路線エッジは手動定義の近似値（国土数値情報 駅・鉄道データへの置き換え予定）。一部エッジは乗換を簡略化しています。</li>
+        <li>背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>。本画面は旧・都市熱狂度スコア（mania_score）を使用しません。</li>
+      </ul>
+    </footer>
+  </div>
+
+  <script src="tokyo_climb_data.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script>
+    "use strict";
+    const DATA = window.TOKYO_CLIMB_DATA;
+    const GRAPH = DATA.graph;
+    const DAYS = DATA.daily.days;
+
+    const TYPE_COLOR = { high: "#e60012", mid: "#f39800", low: "#059669", mystery: "#94a3b8" };
+    const TYPE_EMOJI = { high: "🔴", mid: "🟠", low: "🟢", mystery: "❓" };
+    const TYPE_LABEL = { high: "急上昇", mid: "上昇", low: "静か", mystery: "未知" };
+
+    // ---------- グラフ準備 ----------
+    const nodeById = {};
+    GRAPH.nodes.forEach((n) => { nodeById[n.id] = n; });
+    const adj = {};
+    GRAPH.nodes.forEach((n) => { adj[n.id] = []; });
+    GRAPH.edges.forEach((e) => { adj[e.from].push(e.to); adj[e.to].push(e.from); });
+
+    function bfs(src) {
+      const dist = { [src]: 0 };
+      const queue = [src];
+      while (queue.length) {
+        const u = queue.shift();
+        for (const v of adj[u]) {
+          if (!(v in dist)) { dist[v] = dist[u] + 1; queue.push(v); }
+        }
+      }
+      return dist;
+    }
+
+    // ---------- 乱数（日付＋スタートでシード固定 = デイリーシード） ----------
+    function hashStr(s) {
+      let h = 1779033703 ^ s.length;
+      for (let i = 0; i < s.length; i++) {
+        h = Math.imul(h ^ s.charCodeAt(i), 3432918353);
+        h = (h << 13) | (h >>> 19);
+      }
+      return h >>> 0;
+    }
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6d2b79f5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    // ---------- ゲーム状態 ----------
+    let dayIdx = DAYS.length - 1;
+    let stationsToday = {};
+    let phase = "pick";        // pick | climb | done
+    let startId = null, bossId = null;
+    let dag = null;            // { layers: [[ids]], edges: Set("u>v") }
+    let curLayer = 0, curNode = null;
+    let voltage = 0, strain = 0;
+    let trail = [], visited = [], takenEdges = new Set();
+    let map, markers = {}, routeLine = null;
+
+    function dayData() { return DAYS[dayIdx]; }
+    function st(id) { return stationsToday[id]; }
+
+    // ---------- ボス決定 ----------
+    function pickBoss(start) {
+      const dist = bfs(start);
+      const bands = [[6, 10], [5, 12], [4, 99]];
+      for (const [lo, hi] of bands) {
+        const cands = GRAPH.nodes
+          .map((n) => n.id)
+          .filter((id) => id !== start && dist[id] >= lo && dist[id] <= hi);
+        if (cands.length) {
+          cands.sort((a, b) => {
+            const d = st(b).td - st(a).td;
+            if (d !== 0) return d;
+            return hashStr(dayData().date + a) - hashStr(dayData().date + b);
+          });
+          return cands[0];
+        }
+      }
+      return null;
+    }
+
+    // ---------- StS型DAG生成 ----------
+    // 最短路だけだと一直線になりやすいので、最短+2ホップまでの単純路を列挙し、
+    // 同じ長さの経路群を束ねて「各層2〜3択」のDAGを作る。
+    // それでも分岐が足りなければ探索範囲を +4, +6 と広げて再試行する。
+    function buildDag(S, B) {
+      for (const extra of [2, 4, 6]) {
+        const dag = buildDagWithSlack(S, B, extra);
+        if (dag) {
+          const branchLayers = dag.layers.filter((l) => l.length >= 2).length;
+          if (branchLayers >= 2 || extra === 6) return dag;
+        }
+      }
+      return null;
+    }
+
+    function buildDagWithSlack(S, B, extra) {
+      const dB = bfs(B);
+      const L = bfs(S)[B];
+      const MAXLEN = L + extra;
+
+      const rng = mulberry32(hashStr(dayData().date + "|" + S + "|" + B));
+      const paths = [];
+      const LIMIT_PATHS = 60, LIMIT_STEPS = 20000;
+      let steps = 0;
+      const inPath = new Set([S]);
+      (function dfs(u, path) {
+        if (paths.length >= LIMIT_PATHS || steps++ > LIMIT_STEPS) return;
+        if (u === B) { paths.push(path.slice()); return; }
+        const nexts = adj[u].filter((v) => !inPath.has(v) && path.length + dB[v] <= MAXLEN);
+        for (let i = nexts.length - 1; i > 0; i--) {
+          const j = Math.floor(rng() * (i + 1));
+          [nexts[i], nexts[j]] = [nexts[j], nexts[i]];
+        }
+        for (const v of nexts) {
+          inPath.add(v); path.push(v);
+          dfs(v, path);
+          path.pop(); inPath.delete(v);
+        }
+      })(S, [S]);
+      if (!paths.length) return null;
+
+      // 経路を長さでグループ化し、「本数が多く、層数が8に近い」グループを採用
+      const groups = new Map();
+      for (const p of paths) {
+        const len = p.length - 1;
+        if (!groups.has(len)) groups.set(len, []);
+        groups.get(len).push(p);
+      }
+      let best = null;
+      for (const [len, ps] of groups) {
+        const score = [Math.min(ps.length, 8), -Math.abs(len - 8)];
+        if (!best || score[0] > best.score[0] ||
+            (score[0] === best.score[0] && score[1] > best.score[1])) {
+          best = { len, ps, score };
+        }
+      }
+      const T = best.len;
+
+      // 各層 ≤3 ノードを守れる範囲で経路を貪欲採用
+      const CAP = 3;
+      const layers = Array.from({ length: T + 1 }, () => new Set());
+      let chosenCount = 0;
+      for (const p of best.ps) {
+        const ok = p.every((id, k) => layers[k].has(id) || layers[k].size < CAP);
+        if (ok) { chosenCount++; p.forEach((id, k) => layers[k].add(id)); }
+        if (chosenCount >= 10) break;
+      }
+      if (!chosenCount) best.ps[0].forEach((id, k) => layers[k].add(id));
+
+      // 層間エッジ（採用ノード同士が隣接していれば横断も許可 = 分岐が増える）
+      const edges = new Set();
+      for (let k = 0; k < T; k++) {
+        for (const u of layers[k]) {
+          for (const v of layers[k + 1]) {
+            if (adj[u].includes(v)) edges.add(u + ">" + v);
+          }
+        }
+      }
+      return { L: T, layers: layers.map((s) => [...s]), edges };
+    }
+
+    // ---------- 1駅ぶんのリゾルブ ----------
+    function resolveArrival(id, isBoss) {
+      const s = st(id);
+      const w = dayData().weather;
+      const lines = [];
+      let emoji = TYPE_EMOJI[s.type];
+
+      if (s.type === "mystery") {
+        if (s.mention_count < 60) {
+          lines.push(`❓ ${s.name}：言及が少なくデータ薄。静かな時間を過ごした。`);
+        } else {
+          lines.push(`❓ ${s.name}：開けてみると TD ${s.td > 0 ? "+" : ""}${s.td}%。ほぼ横ばいだった。`);
+        }
+      } else if (s.type === "high") {
+        voltage += 2;
+        lines.push(`🔴 ${s.name}：話題が急上昇中（TD +${s.td}%）。熱に乗った！ ⚡+2`);
+      } else if (s.type === "mid") {
+        voltage += 1;
+        lines.push(`🟠 ${s.name}：ほどよく動いている（TD +${s.td}%）。⚡+1`);
+      } else {
+        if (strain > 0) { strain -= 1; lines.push(`🟢 ${s.name}：昨日より静か（TD ${s.td}%）。ひと息ついて消耗回復 💧-1`); }
+        else lines.push(`🟢 ${s.name}：昨日より静か（TD ${s.td}%）。落ち着いて歩けた。`);
+      }
+      if (w.is_rain && s.outdoor) {
+        strain += 1;
+        lines.push(`　└ ${w.icon} 屋外メインの${s.name}は雨で消耗 💧+1`);
+      }
+      if (isBoss) {
+        emoji = "👑";
+        lines.push(`👑 登頂！ 今日のボス ${s.name}（TD ${s.td > 0 ? "+" : ""}${s.td}%）に到達。`);
+      }
+      trail.push(emoji);
+      return lines;
+    }
+
+    // ---------- UI: 地図 ----------
+    function initMap() {
+      map = L.map("map", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
+      L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>',
+      }).addTo(map);
+      GRAPH.edges.forEach((e) => {
+        const a = nodeById[e.from], b = nodeById[e.to];
+        L.polyline([[a.lat, a.lon], [b.lat, b.lon]], { color: "#cbd5e1", weight: 2, opacity: .8 }).addTo(map);
+      });
+      GRAPH.nodes.forEach((n) => {
+        const m = L.circleMarker([n.lat, n.lon], { radius: 7, color: "#fff", weight: 2, fillOpacity: .95 })
+          .addTo(map)
+          .bindTooltip(n.name, { direction: "top", offset: [0, -6] });
+        m.on("click", () => { if (phase === "pick") chooseStart(n.id); });
+        markers[n.id] = m;
+      });
+    }
+
+    function paintMarkers() {
+      GRAPH.nodes.forEach((n) => {
+        const s = st(n.id);
+        const isBoss = n.id === bossId, isStart = n.id === startId;
+        markers[n.id].setStyle({
+          fillColor: TYPE_COLOR[s.type],
+          radius: isBoss ? 11 : isStart ? 9 : 7,
+          color: isBoss ? "#1f2937" : "#fff",
+          weight: isBoss || isStart ? 3 : 2,
+        });
+        markers[n.id].unbindTooltip();
+        const tag = isBoss ? "👑 " : isStart ? "▶ " : "";
+        const tdTxt = s.type === "mystery" ? "❓" : `TD ${s.td > 0 ? "+" : ""}${s.td}%`;
+        markers[n.id].bindTooltip(`${tag}${n.name}（${tdTxt}）`, { direction: "top", offset: [0, -6] });
+      });
+    }
+
+    function drawRoute() {
+      if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+      if (visited.length < 2) return;
+      routeLine = L.polyline(
+        visited.map((id) => [nodeById[id].lat, nodeById[id].lon]),
+        { color: "#e60012", weight: 4, opacity: .9 }
+      ).addTo(map);
+    }
+
+    // ---------- UI: 抽象分岐マップ（SVG） ----------
+    function renderDag() {
+      const svg = document.getElementById("dagSvg");
+      const COL_W = 120, ROW_H = 78, PAD = 46;
+      const maxCols = Math.max(...dag.layers.map((l) => l.length));
+      const width = Math.max(maxCols * COL_W + PAD * 2, 380);
+      const height = (dag.L + 1) * ROW_H + PAD;
+      svg.setAttribute("width", width);
+      svg.setAttribute("height", height);
+
+      const pos = {};
+      dag.layers.forEach((layer, k) => {
+        const y = height - PAD - k * ROW_H;
+        layer.forEach((id, i) => {
+          const x = width / 2 + (i - (layer.length - 1) / 2) * COL_W;
+          pos[id] = { x, y };
+        });
+      });
+
+      let html = "";
+      dag.edges.forEach((key) => {
+        const [u, v] = key.split(">");
+        const a = pos[u], b = pos[v];
+        const onPath = takenEdges.has(key);
+        html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"
+          stroke="${onPath ? "#e60012" : "#cbd5e1"}" stroke-width="${onPath ? 4 : 2}" />`;
+      });
+
+      const nextSet = clickableNexts();
+      dag.layers.forEach((layer, k) => {
+        layer.forEach((id) => {
+          const s = st(id);
+          const p = pos[id];
+          const isBoss = id === bossId, isCur = id === curNode, isVisited = visited.includes(id);
+          const clickable = nextSet.has(id);
+          const fill = TYPE_COLOR[s.type];
+          const r = isBoss ? 20 : 15;
+          html += `<g class="dag-node${clickable ? " clickable" : ""}" data-id="${id}">
+            <circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}"
+              stroke="${isCur ? "#1f2937" : "#ffffff"}" stroke-width="${isCur ? 4 : 2}"
+              opacity="${isVisited || clickable || isBoss ? 1 : .45}"/>
+            <text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">${
+              isBoss ? "👑" : s.type === "mystery" ? "?" : k === 0 ? "▶" : ""
+            }</text>
+            <text x="${p.x}" y="${p.y + r + 14}" text-anchor="middle" font-size="11" fill="#334155">${s.name}</text>
+          </g>`;
+        });
+      });
+      svg.innerHTML = html;
+      svg.querySelectorAll(".dag-node.clickable").forEach((g) => {
+        g.addEventListener("click", () => moveTo(g.dataset.id));
+      });
+    }
+
+    function clickableNexts() {
+      const set = new Set();
+      if (phase !== "climb") return set;
+      const nextLayer = dag.layers[curLayer + 1] || [];
+      nextLayer.forEach((v) => { if (dag.edges.has(curNode + ">" + v)) set.add(v); });
+      return set;
+    }
+
+    // ---------- UI: 右パネル ----------
+    function dilemmaText(id) {
+      const s = st(id);
+      const w = dayData().weather;
+      const parts = [];
+      if (s.type === "high") parts.push("話題の中心。⚡を大きく稼げる");
+      if (s.type === "mid") parts.push("ほどよい賑わい。手堅く⚡");
+      if (s.type === "low") parts.push("静かで安定。💧消耗を回復できる");
+      if (s.type === "mystery") parts.push("行くまで分からない（データ未開示）");
+      if (w.is_rain && s.outdoor) parts.push("⚠ 屋外メインの駅。雨で消耗リスク");
+      return parts.join("／");
+    }
+
+    function renderChoices() {
+      const box = document.getElementById("choices");
+      box.innerHTML = "";
+      if (phase !== "climb") return;
+      const nexts = [...clickableNexts()];
+      if (!nexts.length) return;
+      const head = document.createElement("p");
+      head.className = "muted";
+      head.textContent = `分岐 ${curLayer + 1} / ${dag.L}：次の駅を選ぶ`;
+      box.appendChild(head);
+      nexts.forEach((id) => {
+        const s = st(id);
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        const tdTxt = s.type === "mystery" ? "❓ TD非公開" : `TD ${s.td > 0 ? "+" : ""}${s.td}%`;
+        btn.innerHTML = `<div class="c-title">${TYPE_EMOJI[s.type]} ${s.name} <span class="muted">（${tdTxt}）</span></div>
+          <div class="c-sub">${dilemmaText(id)}</div>`;
+        btn.onclick = () => moveTo(id);
+        box.appendChild(btn);
+      });
+    }
+
+    function renderStatus() {
+      document.getElementById("voltage").textContent = voltage;
+      document.getElementById("strain").textContent = strain;
+      document.getElementById("progress").textContent =
+        phase === "pick" ? "-" : `${Math.max(visited.length - 1, 0)} / ${dag ? dag.L : "-"} ホップ`;
+      document.getElementById("trail").textContent = trail.join("→");
+      const w = dayData().weather;
+      document.getElementById("weatherBadge").textContent =
+        `${dayData().date} ${w.icon} ${w.summary} ${w.temperature_c}°C`;
+    }
+
+    function pushLog(lines) {
+      const ul = document.getElementById("log");
+      if (ul.firstElementChild && ul.firstElementChild.classList.contains("muted")) ul.innerHTML = "";
+      lines.forEach((t) => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+      ul.parentElement.scrollTop = ul.parentElement.scrollHeight;
+    }
+
+    // ---------- 進行 ----------
+    function chooseStart(id) {
+      startId = id;
+      bossId = pickBoss(id);
+      if (!bossId) return;
+      dag = buildDag(startId, bossId);
+      phase = "climb";
+      curLayer = 0;
+      curNode = startId;
+      voltage = 0; strain = 0; trail = []; visited = [startId]; takenEdges = new Set();
+
+      const sStart = st(startId), sBoss = st(bossId);
+      document.getElementById("bossBanner").style.display = "block";
+      document.getElementById("bossBanner").innerHTML =
+        `▶ ${sStart.name} START　→　👑 今日のボス: <span style="color:var(--accent-strong)">${sBoss.name}</span>
+         （TD ${sBoss.td > 0 ? "+" : ""}${sBoss.td}% ／ ${dag.L} ホップ先）`;
+      document.getElementById("phaseHint").textContent =
+        "分岐マップ（左）か下の候補ボタンで、1駅ずつ選んで進んでください。";
+      document.getElementById("mapTitle").textContent = "2. 今日のルート（実地図）";
+      document.getElementById("dagPanel").style.display = "block";
+      document.getElementById("log").innerHTML = "";
+      trail.push("▶");
+      pushLog([`▶ ${sStart.name} からスタート。ボスは ${sBoss.name}。`]);
+      paintMarkers(); drawRoute(); renderDag(); renderChoices(); renderStatus();
+      document.getElementById("dagPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function moveTo(id) {
+      if (phase !== "climb" || !clickableNexts().has(id)) return;
+      takenEdges.add(curNode + ">" + id);
+      curLayer += 1;
+      curNode = id;
+      visited.push(id);
+      const isBoss = id === bossId;
+      pushLog(resolveArrival(id, isBoss));
+      if (isBoss) finishRun();
+      paintMarkers(); drawRoute(); renderDag(); renderChoices(); renderStatus();
+    }
+
+    function finishRun() {
+      phase = "done";
+      document.getElementById("phaseHint").textContent = "登頂完了！ 結果をシェアできます。";
+      const names = visited.map((id) => st(id).name);
+      const d = dayData().date.replaceAll("-", "/");
+      const text =
+        `TOKYO CLIMB ${d} 🗼\n` +
+        `${names[0]} → ${names.slice(1, -1).join(" → ")}${names.length > 2 ? " → " : ""}👑${names[names.length - 1]}\n` +
+        `${trail.join("→")}\n` +
+        `⚡ボルテージ${voltage}・💧消耗${strain}\n` +
+        `#TOKYOCLIMB`;
+      document.getElementById("shareText").value = text;
+      document.getElementById("sharePanel").style.display = "block";
+      document.getElementById("sharePanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function resetRun() {
+      phase = "pick";
+      startId = null; bossId = null; dag = null; curNode = null; curLayer = 0;
+      voltage = 0; strain = 0; trail = []; visited = []; takenEdges = new Set();
+      document.getElementById("bossBanner").style.display = "none";
+      document.getElementById("dagPanel").style.display = "none";
+      document.getElementById("sharePanel").style.display = "none";
+      document.getElementById("choices").innerHTML = "";
+      document.getElementById("log").innerHTML = '<li class="muted">まだ記録はありません。</li>';
+      document.getElementById("phaseHint").textContent =
+        "地図でスタート駅をクリックしてください。どの駅からでも登れます。";
+      document.getElementById("mapTitle").textContent = "1. スタート駅を選ぶ（地図の駅をクリック）";
+      if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+      paintMarkers(); renderStatus();
+    }
+
+    function setDay(i) {
+      dayIdx = i;
+      stationsToday = {};
+      dayData().stations.forEach((s) => { stationsToday[s.id] = s; });
+      document.querySelectorAll(".day-tab").forEach((b, k) => b.classList.toggle("active", k === i));
+      resetRun();
+    }
+
+    // ---------- 初期化 ----------
+    (function init() {
+      const tabs = document.getElementById("dayTabs");
+      DAYS.forEach((d, i) => {
+        const b = document.createElement("button");
+        b.className = "day-tab";
+        b.textContent = i === DAYS.length - 1 ? `今日（${d.date.slice(5)}）` : d.date.slice(5);
+        b.onclick = () => setDay(i);
+        tabs.appendChild(b);
+      });
+      initMap();
+      setDay(DAYS.length - 1);
+      document.getElementById("resetBtn").onclick = resetRun;
+      document.getElementById("copyBtn").onclick = async () => {
+        const txt = document.getElementById("shareText").value;
+        try {
+          await navigator.clipboard.writeText(txt);
+          document.getElementById("copyDone").textContent = "コピーしました！";
+        } catch {
+          document.getElementById("shareText").select();
+          document.execCommand("copy");
+          document.getElementById("copyDone").textContent = "コピーしました！";
+        }
+        setTimeout(() => { document.getElementById("copyDone").textContent = ""; }, 2500);
+      };
+    })();
+  </script>
+</body>
+</html>

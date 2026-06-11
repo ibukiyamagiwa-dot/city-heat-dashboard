@@ -513,7 +513,20 @@ def create_presentation_html(
         <span class="badge">更新: <b>{html.escape(updated_at)}</b></span>
       </div>
       <p class="footer-nav" style="margin-top:14px;">
-        発表スライド（全画面推奨）: <a href="slides.html">slides.html</a>
+        発表スライド（全画面推奨）: <a href="slides.html">slides.html</a> ／
+        新プロトタイプ: <a href="tokyo_climb.html">TOKYO CLIMB（東京・分岐マップ型）</a>
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>新プロトタイプ: TOKYO CLIMB（Phase 2）</h2>
+      <p>
+        山手線30駅＋接続駅の鉄道グラフ上で、スタート駅を選ぶと「今日のボス駅」が自動決定され、
+        Slay the Spire 型の分岐マップを1駅ずつ選んで登る、1日1ランのプロトタイプです。
+        駅の色は単一指標 <code>TD</code>（話題変化率: SNS言及の前日比%）のみで決まり、総合スコアは使いません（現在はダミーTD）。
+      </p>
+      <p class="footer-nav">
+        遊んでみる: <a href="tokyo_climb.html">tokyo_climb.html</a>
       </p>
     </section>
 
