@@ -148,6 +148,10 @@
     [data-theme="roguelite"] .layout.climb-active #dagPanel { order: 1; }
     [data-theme="roguelite"] .layout.climb-active #map { height: var(--map-h); }
     #map { width: 100%; height: var(--map-h); border-radius: 10px; border: 1px solid var(--border); transition: height .25s; }
+    #mapPanel { overflow: visible; }
+    #map .leaflet-marker-pane { z-index: 650 !important; }
+    #map .leaflet-overlay-pane { z-index: 500; }
+    #map .leaflet-interactive { cursor: pointer; }
     .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
     .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
     #dagScroll { overflow-x: auto; }
@@ -591,7 +595,7 @@
         map.removeLayer(tileLayer);
         tileLayer = createTileLayer().addTo(map);
       }
-      if (map && Object.keys(markers).length) {
+      if (map && Object.keys(markers).length && Object.keys(stationsToday).length) {
         paintMarkers();
         drawRoute();
       }
@@ -935,6 +939,11 @@
       });
     }
 
+    function markerStroke(active) {
+      if (active) return currentTheme === "roguelite" ? "#00e5ff" : "#153d6f";
+      return currentTheme === "roguelite" ? "#cfd8dc" : "#1f2d37";
+    }
+
     function initMap() {
       map = L.map("map", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
       tileLayer = createTileLayer().addTo(map);
@@ -946,13 +955,23 @@
           weight: isTransfer ? 2 : 3,
           opacity: isTransfer ? 0.45 : 0.85,
           dashArray: isTransfer ? "6 4" : null,
+          interactive: false,
         }).addTo(map);
       });
       GRAPH.nodes.forEach((n) => {
-        const m = L.circleMarker([n.lat, n.lon], { radius: 7, color: "#fff", weight: 2, fillOpacity: .95 })
+        const m = L.circleMarker([n.lat, n.lon], {
+          radius: 10,
+          color: markerStroke(true),
+          weight: 3,
+          fillColor: typeColor().mystery,
+          fillOpacity: 0.95,
+        })
           .addTo(map)
-          .bindTooltip(n.name, { direction: "top", offset: [0, -6] });
-        m.on("click", () => onMarkerClick(n.id));
+          .bindTooltip(n.name, { direction: "top", offset: [0, -8], sticky: true });
+        m.on("click", (ev) => {
+          L.DomEvent.stopPropagation(ev);
+          onMarkerClick(n.id);
+        });
         markers[n.id] = m;
       });
     }
@@ -963,24 +982,28 @@
     }
 
     function paintMarkers() {
+      if (!Object.keys(stationsToday).length) return;
       const nextSet = phase === "climb" ? clickableNexts() : new Set();
+      const inPick = phase === "pick";
       GRAPH.nodes.forEach((n) => {
-        const s = st(n.id);
+        const s = st(n.id) || { type: "mystery", td: null, name: n.name };
         const isBoss = n.id === bossId, isStart = n.id === startId;
         const isVisited = visited.includes(n.id);
-        const clickable = nextSet.has(n.id);
+        const clickable = inPick || nextSet.has(n.id);
         const dim = phase === "climb" && !clickable && !isVisited && !isBoss && !isStart;
+        const active = clickable || isBoss || isStart;
         markers[n.id].setStyle({
-          fillColor: typeColor()[s.type],
-          radius: clickable ? 12 : isBoss ? 11 : isStart ? 9 : 7,
-          color: clickable ? (currentTheme === "roguelite" ? "#00e5ff" : "#153d6f") : isBoss ? (currentTheme === "roguelite" ? "#00e5ff" : "#153d6f") : "#fff",
-          weight: clickable || isBoss || isStart ? 3 : 2,
-          fillOpacity: dim ? 0.35 : 0.95,
+          fillColor: typeColor()[s.type] || typeColor().mystery,
+          radius: inPick ? 10 : clickable ? 13 : isBoss ? 12 : isStart ? 10 : 8,
+          color: markerStroke(active),
+          weight: active ? 3 : 2,
+          fillOpacity: dim ? 0.4 : 1,
         });
+        markers[n.id].bringToFront();
         markers[n.id].unbindTooltip();
-        const tag = isBoss ? "👑 " : isStart ? "▶ " : "";
+        const tag = isBoss ? "👑 " : isStart ? "▶ " : inPick ? "タップで開始 " : "";
         const tdTxt = s.type === "mystery" ? "❓" : fmtTd(s);
-        markers[n.id].bindTooltip(`${tag}${n.name}（${tdTxt}）`, { direction: "top", offset: [0, -6] });
+        markers[n.id].bindTooltip(`${tag}${n.name}（${tdTxt}）`, { direction: "top", offset: [0, -8], sticky: true });
       });
     }
 
@@ -989,7 +1012,7 @@
       if (visited.length < 2) return;
       routeLine = L.polyline(
         visited.map((id) => [nodeById[id].lat, nodeById[id].lon]),
-        { color: getComputedStyle(document.body).getPropertyValue("--path-color").trim() || "#153d6f", weight: 4, opacity: .9 }
+        { color: getComputedStyle(document.body).getPropertyValue("--path-color").trim() || "#153d6f", weight: 4, opacity: .9, interactive: false }
       ).addTo(map);
     }
 
@@ -1144,8 +1167,20 @@
     function chooseStart(id) {
       startId = id;
       bossId = pickBoss(id);
-      if (!bossId) return;
+      if (!bossId) {
+        document.getElementById("phaseHint").textContent =
+          `${st(id).name} からは開始できません。別の駅を選んでください。`;
+        startId = null;
+        return;
+      }
       dag = buildDag(startId, bossId);
+      if (!dag) {
+        document.getElementById("phaseHint").textContent =
+          `${st(id).name} から分岐ルートを作れませんでした。別の駅を選んでください。`;
+        startId = null;
+        bossId = null;
+        return;
+      }
       phase = "climb";
       curLayer = 0;
       curNode = startId;
