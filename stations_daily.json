@@ -1,24 +1,25 @@
 {
   "generated_at": "2026-06-11",
-  "weather_mode": "open-meteo",
-  "td_definition": "TD = 駅別の監査済みクエリによるSNS言及件数の前日比（%）。本ファイルはダミー値。",
+  "weather_mode": "cache",
+  "td_definition": "TD = 駅別の監査済みクエリ（td_queries.yaml）によるSNS言及件数の前日比（%）。td_mode=manual の日は td_counts.csv の手動観測値、dummy の日はシード生成のダミー値。",
   "type_thresholds": {
     "high": "TD > +30.0%",
     "mid": "+10.0% < TD <= +30.0%",
-    "mystery": "-10.0% <= TD <= +10.0% または言及 60 件未満",
+    "mystery": "-10.0% <= TD <= +10.0% または言及不足（manual: 5件未満 / dummy: 60件未満）またはデータなし",
     "low": "TD < -10.0%"
   },
   "trust_level": "low",
   "days": [
     {
       "date": "2026-06-09",
+      "td_mode": "dummy",
       "weather": {
         "summary": "雨",
         "icon": "🌧️",
         "temperature_c": 19.9,
         "temperature_max_c": 21.0,
         "precipitation_mm": 17.3,
-        "source": "Open-Meteo（日別・東京駅周辺）",
+        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
         "trust_level": "high",
         "is_rain": true
       },
@@ -32,6 +33,7 @@
           "outdoor": false,
           "td": 22.5,
           "mention_count": 180,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -43,6 +45,7 @@
           "outdoor": false,
           "td": 17.4,
           "mention_count": 279,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -54,6 +57,7 @@
           "outdoor": false,
           "td": -7.1,
           "mention_count": 181,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -65,6 +69,7 @@
           "outdoor": false,
           "td": 21.1,
           "mention_count": 225,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -76,6 +81,7 @@
           "outdoor": true,
           "td": 24.9,
           "mention_count": 203,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -87,6 +93,7 @@
           "outdoor": false,
           "td": 11.4,
           "mention_count": 135,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -98,6 +105,7 @@
           "outdoor": true,
           "td": -15.9,
           "mention_count": 121,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -109,6 +117,7 @@
           "outdoor": false,
           "td": -1.7,
           "mention_count": 211,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -120,6 +129,7 @@
           "outdoor": false,
           "td": 23.2,
           "mention_count": 151,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -131,6 +141,7 @@
           "outdoor": true,
           "td": 31.3,
           "mention_count": 124,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -142,6 +153,7 @@
           "outdoor": false,
           "td": -1.2,
           "mention_count": 245,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -153,6 +165,7 @@
           "outdoor": false,
           "td": 27.1,
           "mention_count": 222,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -164,6 +177,7 @@
           "outdoor": false,
           "td": -2.4,
           "mention_count": 260,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -175,6 +189,7 @@
           "outdoor": false,
           "td": 11.7,
           "mention_count": 143,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -186,6 +201,7 @@
           "outdoor": false,
           "td": -8.3,
           "mention_count": 239,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -197,6 +213,7 @@
           "outdoor": false,
           "td": 28.1,
           "mention_count": 276,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -208,6 +225,7 @@
           "outdoor": false,
           "td": -2.3,
           "mention_count": 177,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -219,6 +237,7 @@
           "outdoor": true,
           "td": 23.3,
           "mention_count": 244,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -230,6 +249,7 @@
           "outdoor": true,
           "td": 11.5,
           "mention_count": 154,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -241,6 +261,7 @@
           "outdoor": false,
           "td": 17.5,
           "mention_count": 229,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -252,6 +273,7 @@
           "outdoor": false,
           "td": -6.0,
           "mention_count": 281,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -263,6 +285,7 @@
           "outdoor": false,
           "td": 12.0,
           "mention_count": 136,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -274,6 +297,7 @@
           "outdoor": false,
           "td": -17.7,
           "mention_count": 178,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -285,6 +309,7 @@
           "outdoor": false,
           "td": 13.4,
           "mention_count": 249,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -296,6 +321,7 @@
           "outdoor": false,
           "td": 19.2,
           "mention_count": 169,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -307,6 +333,7 @@
           "outdoor": false,
           "td": 10.3,
           "mention_count": 203,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -318,6 +345,7 @@
           "outdoor": false,
           "td": 18.6,
           "mention_count": 258,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -329,6 +357,7 @@
           "outdoor": true,
           "td": 4.4,
           "mention_count": 258,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -340,6 +369,7 @@
           "outdoor": false,
           "td": 13.2,
           "mention_count": 321,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -351,6 +381,7 @@
           "outdoor": false,
           "td": 20.1,
           "mention_count": 356,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -362,6 +393,7 @@
           "outdoor": false,
           "td": -12.4,
           "mention_count": 281,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -373,6 +405,7 @@
           "outdoor": true,
           "td": 9.2,
           "mention_count": 249,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -384,6 +417,7 @@
           "outdoor": false,
           "td": -3.9,
           "mention_count": 277,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -395,6 +429,7 @@
           "outdoor": true,
           "td": 17.6,
           "mention_count": 200,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -406,6 +441,7 @@
           "outdoor": false,
           "td": -17.2,
           "mention_count": 270,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -417,6 +453,7 @@
           "outdoor": false,
           "td": 24.9,
           "mention_count": 414,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -428,19 +465,21 @@
           "outdoor": true,
           "td": -6.6,
           "mention_count": 185,
+          "td_source": "dummy",
           "type": "mystery"
         }
       ]
     },
     {
       "date": "2026-06-10",
+      "td_mode": "dummy",
       "weather": {
         "summary": "雨",
         "icon": "🌧️",
         "temperature_c": 19.9,
         "temperature_max_c": 21.7,
         "precipitation_mm": 0.2,
-        "source": "Open-Meteo（日別・東京駅周辺）",
+        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
         "trust_level": "high",
         "is_rain": false
       },
@@ -454,6 +493,7 @@
           "outdoor": false,
           "td": -15.9,
           "mention_count": 149,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -465,6 +505,7 @@
           "outdoor": false,
           "td": 10.0,
           "mention_count": 297,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -476,6 +517,7 @@
           "outdoor": false,
           "td": 26.3,
           "mention_count": 166,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -487,6 +529,7 @@
           "outdoor": false,
           "td": 0.1,
           "mention_count": 180,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -498,6 +541,7 @@
           "outdoor": true,
           "td": 23.5,
           "mention_count": 258,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -509,6 +553,7 @@
           "outdoor": false,
           "td": -14.7,
           "mention_count": 206,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -520,6 +565,7 @@
           "outdoor": true,
           "td": -23.3,
           "mention_count": 225,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -531,6 +577,7 @@
           "outdoor": false,
           "td": 37.3,
           "mention_count": 124,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -542,6 +589,7 @@
           "outdoor": false,
           "td": 32.6,
           "mention_count": 233,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -553,6 +601,7 @@
           "outdoor": true,
           "td": 7.0,
           "mention_count": 137,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -564,6 +613,7 @@
           "outdoor": false,
           "td": 24.1,
           "mention_count": 209,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -575,6 +625,7 @@
           "outdoor": false,
           "td": 32.8,
           "mention_count": 222,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -586,6 +637,7 @@
           "outdoor": false,
           "td": 47.6,
           "mention_count": 316,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -597,6 +649,7 @@
           "outdoor": false,
           "td": 18.2,
           "mention_count": 127,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -608,6 +661,7 @@
           "outdoor": false,
           "td": -14.6,
           "mention_count": 272,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -619,6 +673,7 @@
           "outdoor": false,
           "td": 36.4,
           "mention_count": 164,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -630,6 +685,7 @@
           "outdoor": false,
           "td": 37.8,
           "mention_count": 227,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -641,6 +697,7 @@
           "outdoor": true,
           "td": 29.2,
           "mention_count": 177,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -652,6 +709,7 @@
           "outdoor": true,
           "td": -24.8,
           "mention_count": 154,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -663,6 +721,7 @@
           "outdoor": false,
           "td": 6.7,
           "mention_count": 279,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -674,6 +733,7 @@
           "outdoor": false,
           "td": -17.8,
           "mention_count": 317,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -685,6 +745,7 @@
           "outdoor": false,
           "td": 29.7,
           "mention_count": 252,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -696,6 +757,7 @@
           "outdoor": false,
           "td": 29.4,
           "mention_count": 256,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -707,6 +769,7 @@
           "outdoor": false,
           "td": 6.8,
           "mention_count": 279,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -718,6 +781,7 @@
           "outdoor": false,
           "td": -5.1,
           "mention_count": 159,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -729,6 +793,7 @@
           "outdoor": false,
           "td": 1.1,
           "mention_count": 129,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -740,6 +805,7 @@
           "outdoor": false,
           "td": 15.1,
           "mention_count": 164,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -751,6 +817,7 @@
           "outdoor": true,
           "td": -15.8,
           "mention_count": 186,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -762,6 +829,7 @@
           "outdoor": false,
           "td": 16.6,
           "mention_count": 184,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -773,6 +841,7 @@
           "outdoor": false,
           "td": 1.2,
           "mention_count": 351,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -784,6 +853,7 @@
           "outdoor": false,
           "td": -4.9,
           "mention_count": 271,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -795,6 +865,7 @@
           "outdoor": true,
           "td": 38.2,
           "mention_count": 254,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -806,6 +877,7 @@
           "outdoor": false,
           "td": 20.3,
           "mention_count": 291,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -817,6 +889,7 @@
           "outdoor": true,
           "td": 24.0,
           "mention_count": 270,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -828,6 +901,7 @@
           "outdoor": false,
           "td": 18.7,
           "mention_count": 210,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -839,6 +913,7 @@
           "outdoor": false,
           "td": 5.1,
           "mention_count": 339,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -850,19 +925,21 @@
           "outdoor": true,
           "td": -19.6,
           "mention_count": 171,
+          "td_source": "dummy",
           "type": "low"
         }
       ]
     },
     {
       "date": "2026-06-11",
+      "td_mode": "dummy",
       "weather": {
         "summary": "くもり",
         "icon": "☁️",
         "temperature_c": 21.6,
         "temperature_max_c": 26.1,
         "precipitation_mm": 0.0,
-        "source": "Open-Meteo（日別・東京駅周辺）",
+        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
         "trust_level": "high",
         "is_rain": false
       },
@@ -876,6 +953,7 @@
           "outdoor": false,
           "td": -11.9,
           "mention_count": 239,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -887,6 +965,7 @@
           "outdoor": false,
           "td": 1.8,
           "mention_count": 182,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -898,6 +977,7 @@
           "outdoor": false,
           "td": 25.1,
           "mention_count": 231,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -909,6 +989,7 @@
           "outdoor": false,
           "td": 9.8,
           "mention_count": 120,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -920,6 +1001,7 @@
           "outdoor": true,
           "td": 29.6,
           "mention_count": 297,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -931,6 +1013,7 @@
           "outdoor": false,
           "td": 2.4,
           "mention_count": 256,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -942,6 +1025,7 @@
           "outdoor": true,
           "td": 6.9,
           "mention_count": 257,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -953,6 +1037,7 @@
           "outdoor": false,
           "td": 23.9,
           "mention_count": 172,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -964,6 +1049,7 @@
           "outdoor": false,
           "td": 15.0,
           "mention_count": 130,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -975,6 +1061,7 @@
           "outdoor": true,
           "td": 13.2,
           "mention_count": 241,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -986,6 +1073,7 @@
           "outdoor": false,
           "td": 21.5,
           "mention_count": 172,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -997,6 +1085,7 @@
           "outdoor": false,
           "td": -4.0,
           "mention_count": 175,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1008,6 +1097,7 @@
           "outdoor": false,
           "td": -4.5,
           "mention_count": 173,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1019,6 +1109,7 @@
           "outdoor": false,
           "td": 9.0,
           "mention_count": 273,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1030,6 +1121,7 @@
           "outdoor": false,
           "td": 17.8,
           "mention_count": 134,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -1041,6 +1133,7 @@
           "outdoor": false,
           "td": 4.8,
           "mention_count": 226,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1052,6 +1145,7 @@
           "outdoor": false,
           "td": 29.4,
           "mention_count": 300,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -1063,6 +1157,7 @@
           "outdoor": true,
           "td": 44.1,
           "mention_count": 246,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -1074,6 +1169,7 @@
           "outdoor": true,
           "td": 23.6,
           "mention_count": 185,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -1085,6 +1181,7 @@
           "outdoor": false,
           "td": 2.3,
           "mention_count": 336,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1096,6 +1193,7 @@
           "outdoor": false,
           "td": -18.4,
           "mention_count": 363,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1107,6 +1205,7 @@
           "outdoor": false,
           "td": 5.9,
           "mention_count": 254,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1118,6 +1217,7 @@
           "outdoor": false,
           "td": -7.9,
           "mention_count": 233,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1129,6 +1229,7 @@
           "outdoor": false,
           "td": -20.4,
           "mention_count": 265,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1140,6 +1241,7 @@
           "outdoor": false,
           "td": -1.4,
           "mention_count": 274,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1151,6 +1253,7 @@
           "outdoor": false,
           "td": -2.7,
           "mention_count": 179,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1162,6 +1265,7 @@
           "outdoor": false,
           "td": -20.6,
           "mention_count": 136,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1173,6 +1277,7 @@
           "outdoor": true,
           "td": -5.7,
           "mention_count": 277,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1184,6 +1289,7 @@
           "outdoor": false,
           "td": -23.5,
           "mention_count": 283,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1195,6 +1301,7 @@
           "outdoor": false,
           "td": -16.9,
           "mention_count": 264,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1206,6 +1313,7 @@
           "outdoor": false,
           "td": 13.8,
           "mention_count": 240,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -1217,6 +1325,7 @@
           "outdoor": true,
           "td": 56.7,
           "mention_count": 168,
+          "td_source": "dummy",
           "type": "high"
         },
         {
@@ -1228,6 +1337,7 @@
           "outdoor": false,
           "td": 18.4,
           "mention_count": 362,
+          "td_source": "dummy",
           "type": "mid"
         },
         {
@@ -1239,6 +1349,7 @@
           "outdoor": true,
           "td": -24.7,
           "mention_count": 247,
+          "td_source": "dummy",
           "type": "low"
         },
         {
@@ -1250,6 +1361,7 @@
           "outdoor": false,
           "td": -8.1,
           "mention_count": 343,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1261,6 +1373,7 @@
           "outdoor": false,
           "td": -2.5,
           "mention_count": 390,
+          "td_source": "dummy",
           "type": "mystery"
         },
         {
@@ -1272,6 +1385,7 @@
           "outdoor": true,
           "td": 12.5,
           "mention_count": 125,
+          "td_source": "dummy",
           "type": "mid"
         }
       ]

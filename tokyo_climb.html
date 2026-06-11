@@ -131,6 +131,7 @@
         <span class="muted">今日の東京を、駅から駅へ「登る」1日1ラン</span>
         <span class="spacer"></span>
         <span class="badge" id="weatherBadge">--</span>
+        <span class="badge" id="tdBadge">--</span>
         <span id="dayTabs"></span>
         <button class="btn secondary" id="resetBtn">最初から</button>
       </div>
@@ -192,7 +193,7 @@
     <footer class="panel">
       <strong>データについて（プロトタイプ）</strong>
       <ul>
-        <li>TD（Topic Delta）は「駅ごとの監査済みクエリによる SNS 言及件数の前日比%」という<strong>代理指標</strong>の定義です。現在は<strong>ダミー値</strong>（SNS API 未接続・信頼度 low）。</li>
+        <li>TD（Topic Delta）は「駅ごとの監査済みクエリ（<code>td_queries.yaml</code>）による SNS 言及件数の前日比%」という<strong>代理指標</strong>です（信頼度 low）。ヘッダーのバッジが「手動観測」の日は <code>td_counts.csv</code> の実測値、「ダミー」の日はシード生成値。手動観測の未入力駅は ❓（未知）として扱います。</li>
         <li>天気は <a href="https://open-meteo.com/">Open-Meteo</a> の日別データ（東京駅周辺・信頼度 high。取得失敗時はダミーにフォールバック）。天気は TD・ノードの色には混ぜず、道中の「消耗」演出にのみ使用します。</li>
         <li>駅座標・路線エッジは手動定義の近似値（国土数値情報 駅・鉄道データへの置き換え予定）。一部エッジは乗換を簡略化しています。</li>
         <li>背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>。本画面は旧・都市熱狂度スコア（mania_score）を使用しません。</li>
@@ -215,6 +216,13 @@
     const TYPE_COLOR = { high: "#e60012", mid: "#f39800", low: "#059669", mystery: "#94a3b8" };
     const TYPE_EMOJI = { high: "🔴", mid: "🟠", low: "🟢", mystery: "❓" };
     const TYPE_LABEL = { high: "急上昇", mid: "上昇", low: "静か", mystery: "未知" };
+
+    // td は手動モードの未入力駅などで null になりうる
+    function fmtTd(s) {
+      if (s.td == null) return "TD 不明";
+      return `TD ${s.td > 0 ? "+" : ""}${s.td}%`;
+    }
+    function tdVal(s) { return s.td == null ? -999 : s.td; }
 
     // ---------- グラフ準備 ----------
     const nodeById = {};
@@ -277,7 +285,7 @@
           .filter((id) => id !== start && dist[id] >= lo && dist[id] <= hi);
         if (cands.length) {
           cands.sort((a, b) => {
-            const d = st(b).td - st(a).td;
+            const d = tdVal(st(b)) - tdVal(st(a));
             if (d !== 0) return d;
             return hashStr(dayData().date + a) - hashStr(dayData().date + b);
           });
@@ -376,10 +384,10 @@
       let emoji = TYPE_EMOJI[s.type];
 
       if (s.type === "mystery") {
-        if (s.mention_count < 60) {
-          lines.push(`❓ ${s.name}：言及が少なくデータ薄。静かな時間を過ごした。`);
+        if (s.td == null) {
+          lines.push(`❓ ${s.name}：観測データなし。静かな時間を過ごした。`);
         } else {
-          lines.push(`❓ ${s.name}：開けてみると TD ${s.td > 0 ? "+" : ""}${s.td}%。ほぼ横ばいだった。`);
+          lines.push(`❓ ${s.name}：開けてみると ${fmtTd(s)}。ほぼ横ばいだった。`);
         }
       } else if (s.type === "high") {
         voltage += 2;
@@ -435,7 +443,7 @@
         });
         markers[n.id].unbindTooltip();
         const tag = isBoss ? "👑 " : isStart ? "▶ " : "";
-        const tdTxt = s.type === "mystery" ? "❓" : `TD ${s.td > 0 ? "+" : ""}${s.td}%`;
+        const tdTxt = s.type === "mystery" ? "❓" : fmtTd(s);
         markers[n.id].bindTooltip(`${tag}${n.name}（${tdTxt}）`, { direction: "top", offset: [0, -6] });
       });
     }
@@ -538,7 +546,7 @@
         const s = st(id);
         const btn = document.createElement("button");
         btn.className = "choice-btn";
-        const tdTxt = s.type === "mystery" ? "❓ TD非公開" : `TD ${s.td > 0 ? "+" : ""}${s.td}%`;
+        const tdTxt = s.type === "mystery" ? "❓ TD非公開" : fmtTd(s);
         btn.innerHTML = `<div class="c-title">${TYPE_EMOJI[s.type]} ${s.name} <span class="muted">（${tdTxt}）</span></div>
           <div class="c-sub">${dilemmaText(id)}</div>`;
         btn.onclick = () => moveTo(id);
@@ -555,6 +563,8 @@
       const w = dayData().weather;
       document.getElementById("weatherBadge").textContent =
         `${dayData().date} ${w.icon} ${w.summary} ${w.temperature_c}°C`;
+      document.getElementById("tdBadge").textContent =
+        dayData().td_mode === "manual" ? "TD: 手動観測（実データ）" : "TD: ダミー";
     }
 
     function pushLog(lines) {
@@ -583,7 +593,7 @@
       document.getElementById("bossBanner").style.display = "block";
       document.getElementById("bossBanner").innerHTML =
         `▶ ${sStart.name} START　→　👑 今日のボス: <span style="color:var(--accent-strong)">${sBoss.name}</span>
-         （TD ${sBoss.td > 0 ? "+" : ""}${sBoss.td}% ／ ${dag.L} ホップ先）`;
+         （${fmtTd(sBoss)} ／ ${dag.L} ホップ先）`;
       document.getElementById("phaseHint").textContent =
         "分岐マップ（左）か下の候補ボタンで、1駅ずつ選んで進んでください。";
       document.getElementById("mapTitle").textContent = "2. 今日のルート（実地図）";

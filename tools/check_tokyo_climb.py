@@ -23,7 +23,8 @@ for e in graph["edges"]:
     adj[e["to"]].append(e["from"])
 
 day = daily["days"][-1]
-td = {s["id"]: s["td"] for s in day["stations"]}
+# 手動モードの未入力駅は td が None になるため、ボス候補から実質除外する
+td = {s["id"]: (s["td"] if s["td"] is not None else -999) for s in day["stations"]}
 
 
 def bfs(src):

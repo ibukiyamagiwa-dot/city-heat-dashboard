@@ -1,0 +1,64 @@
+# TOKYO CLIMB — TD（Topic Delta）のクエリ集合定義
+#
+# TD の操作定義（卒論の方法論セクションに対応）:
+#   TD(駅, d) = ( M(駅, d) - M(駅, d-1) ) / max( M(駅, d-1), 1 ) × 100 [%]
+#   M(駅, d)  = 日 d の固定観測窓に、下記クエリ集合 Q(駅) のいずれかに
+#               一致した公開投稿の件数（集計のみ・個人は特定しない）
+#
+# 観測手順（手動運用時）は TD_DATA_GUIDE.md を参照。
+# クエリを変更した場合は必ず changelog に追記すること（監査可能性の担保）。
+#
+# tier:
+#   A = 毎日入力する優先駅（15駅）
+#   B = 余力があれば入力する駅（未入力の日は「未知（❓）」ノードになる）
+
+policy:
+  count_unit: "固定観測窓内の投稿件数（上限50。50件を超えたら50と記録）"
+  privacy: "件数のみを記録する。投稿本文・アカウント名は記録しない"
+  trust_level: "low（SNS言及はあくまで話題性の代理指標）"
+
+changelog:
+  - date: "2026-06-11"
+    note: "初版。全37駅に基本クエリ「<駅名>駅」を定義。tier A 15駅を選定"
+
+stations:
+  # ---- tier A（毎日入力する15駅） ----
+  shinjuku:      { tier: A, queries: ["新宿駅"] }
+  shibuya:       { tier: A, queries: ["渋谷駅"] }
+  ikebukuro:     { tier: A, queries: ["池袋駅"] }
+  tokyo:         { tier: A, queries: ["東京駅"], note: "「東京」単独は地名として広すぎるため駅名のみ" }
+  ueno:          { tier: A, queries: ["上野駅"] }
+  akihabara:     { tier: A, queries: ["秋葉原駅"] }
+  shinagawa:     { tier: A, queries: ["品川駅"] }
+  harajuku:      { tier: A, queries: ["原宿駅"] }
+  ebisu:         { tier: A, queries: ["恵比寿駅"], note: "ビール銘柄と同名のため「駅」付きで観測" }
+  meguro:        { tier: A, queries: ["目黒駅"] }
+  ginza:         { tier: A, queries: ["銀座駅"] }
+  roppongi:      { tier: A, queries: ["六本木駅"] }
+  omotesando:    { tier: A, queries: ["表参道駅"] }
+  nakameguro:    { tier: A, queries: ["中目黒駅"] }
+  yurakucho:     { tier: A, queries: ["有楽町駅"] }
+
+  # ---- tier B（任意） ----
+  kanda:           { tier: B, queries: ["神田駅"], note: "地名・人名と紛れやすい" }
+  okachimachi:     { tier: B, queries: ["御徒町駅"] }
+  uguisudani:      { tier: B, queries: ["鶯谷駅"] }
+  nippori:         { tier: B, queries: ["日暮里駅"] }
+  nishinippori:    { tier: B, queries: ["西日暮里駅"] }
+  tabata:          { tier: B, queries: ["田端駅"] }
+  komagome:        { tier: B, queries: ["駒込駅"] }
+  sugamo:          { tier: B, queries: ["巣鴨駅"] }
+  otsuka:          { tier: B, queries: ["大塚駅"], note: "人名と紛れやすい" }
+  mejiro:          { tier: B, queries: ["目白駅"] }
+  takadanobaba:    { tier: B, queries: ["高田馬場駅"] }
+  shinokubo:       { tier: B, queries: ["新大久保駅"] }
+  yoyogi:          { tier: B, queries: ["代々木駅"] }
+  gotanda:         { tier: B, queries: ["五反田駅"] }
+  osaki:           { tier: B, queries: ["大崎駅"] }
+  takanawagateway: { tier: B, queries: ["高輪ゲートウェイ駅"] }
+  tamachi:         { tier: B, queries: ["田町駅"] }
+  hamamatsucho:    { tier: B, queries: ["浜松町駅"] }
+  shimbashi:       { tier: B, queries: ["新橋駅"] }
+  ochanomizu:      { tier: B, queries: ["御茶ノ水駅"] }
+  yotsuya:         { tier: B, queries: ["四ツ谷駅"] }
+  iidabashi:       { tier: B, queries: ["飯田橋駅"] }
