@@ -94,6 +94,38 @@
       font-size: 15px; font-weight: 700; cursor: pointer;
     }
     .btn:disabled { opacity: .4; cursor: default; }
+    .btn-secondary {
+      display: block; width: 100%; margin-top: 10px;
+      background: #fff; color: var(--accent);
+      border: 2px solid var(--border); border-radius: 12px;
+      padding: 12px; font: inherit; font-size: 14px; font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--accent-light); }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .context-box {
+      margin-bottom: 14px; padding: 12px 14px; border-radius: 12px;
+      background: #f0f4f2; border: 1px solid var(--border); font-size: 14px;
+    }
+    .context-box strong { color: var(--accent); }
+    .time-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    }
+    .time-btn {
+      font: inherit; font-size: 20px; font-weight: 700;
+      border: 2px solid var(--border); border-radius: 14px;
+      background: #fff; padding: 22px 12px; cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .time-btn span {
+      display: block; font-size: 12px; font-weight: 400;
+      color: var(--muted); margin-top: 4px;
+    }
+    .time-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .time-btn.selected {
+      border-color: var(--accent); background: var(--accent-light); color: var(--accent);
+    }
     .meta { font-size: 12px; color: var(--muted); margin-top: 12px; }
     footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
     footer a { color: var(--accent); }
@@ -111,23 +143,45 @@
       </nav>
     </header>
 
-    <section class="panel" id="step1Panel">
-      <label for="search">どこから出る？</label>
-      <div class="search-wrap">
-        <input id="search" type="search" placeholder="駅名・エリアで検索" autocomplete="off" />
-        <ul id="suggestions" role="listbox"></ul>
-      </div>
+    <div id="step1Screen" class="screen active">
+      <section class="panel">
+        <label for="search">どこから出る？</label>
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="駅名・エリアで検索" autocomplete="off" />
+          <ul id="suggestions" role="listbox"></ul>
+        </div>
 
-      <p class="meta" style="margin-top:14px;margin-bottom:0;">よく使うエリア</p>
-      <div class="shortcut-grid" id="shortcuts"></div>
+        <p class="meta" style="margin-top:14px;margin-bottom:0;">よく使うエリア</p>
+        <div class="shortcut-grid" id="shortcuts"></div>
 
-      <div class="selected-box" id="selectedBox">
-        出発: <strong id="selectedName">—</strong>
-      </div>
+        <div class="selected-box" id="selectedBox">
+          出発: <strong id="selectedName">—</strong>
+        </div>
 
-      <button class="btn" id="nextBtn" type="button" disabled>時間を選ぶ（準備中）</button>
-      <p class="meta">Step 2・3 は次の実装予定です。</p>
-    </section>
+        <button class="btn" id="toStep2Btn" type="button" disabled>時間を選ぶ</button>
+        <p class="meta" id="step1Meta">出発駅を選ぶと次へ進めます。</p>
+      </section>
+    </div>
+
+    <div id="step2Screen" class="screen">
+      <section class="panel">
+        <div class="context-box" id="step2Context">
+          <strong id="step2FromName">—</strong> から出発
+        </div>
+
+        <label>どのくらい寄れる？</label>
+        <p class="meta" style="margin-top:0;margin-bottom:12px;">移動に使えるだいたいの時間</p>
+        <div class="time-grid" id="timeGrid"></div>
+
+        <div class="selected-box" id="timeSelectedBox">
+          使える時間: <strong id="selectedTimeLabel">—</strong>
+        </div>
+
+        <button class="btn" id="toStep3Btn" type="button" disabled>寄り町を選ぶ（準備中）</button>
+        <button class="btn-secondary" id="backToStep1Btn" type="button">出発地を変える</button>
+        <p class="meta">Step 3 は次の実装予定です。</p>
+      </section>
+    </div>
 
     <footer>
       <p>鉄道データ: 国土数値情報 N02（<code>rail_graph.json</code>）</p>
@@ -143,18 +197,78 @@
     const DATA = window.YORIMACHI_DATA;
     const stations = DATA.stations;
     const shortcuts = DATA.departure_shortcuts;
+    const TIME_OPTIONS = [
+      { minutes: 15, hint: "ちょい寄り" },
+      { minutes: 30, hint: "ふらっと" },
+      { minutes: 45, hint: "ゆったり" },
+      { minutes: 60, hint: "のんびり" },
+    ];
 
     let selectedId = null;
+    let selectedMinutes = null;
 
+    const step1Screen = document.getElementById("step1Screen");
+    const step2Screen = document.getElementById("step2Screen");
+    const step1Label = document.getElementById("step1Label");
+    const step2Label = document.getElementById("step2Label");
+    const step3Label = document.getElementById("step3Label");
     const searchEl = document.getElementById("search");
     const suggestEl = document.getElementById("suggestions");
     const shortcutsEl = document.getElementById("shortcuts");
     const selectedBox = document.getElementById("selectedBox");
     const selectedName = document.getElementById("selectedName");
-    const nextBtn = document.getElementById("nextBtn");
+    const toStep2Btn = document.getElementById("toStep2Btn");
+    const step2FromName = document.getElementById("step2FromName");
+    const timeGrid = document.getElementById("timeGrid");
+    const timeSelectedBox = document.getElementById("timeSelectedBox");
+    const selectedTimeLabel = document.getElementById("selectedTimeLabel");
+    const toStep3Btn = document.getElementById("toStep3Btn");
+    const backToStep1Btn = document.getElementById("backToStep1Btn");
 
     const byId = {};
     stations.forEach((s) => { byId[s.id] = s; });
+
+    function setStepLabels(activeStep) {
+      const labels = [step1Label, step2Label, step3Label];
+      labels.forEach((el, i) => {
+        const step = i + 1;
+        el.classList.remove("active", "done");
+        if (step < activeStep) el.classList.add("done");
+        else if (step === activeStep) el.classList.add("active");
+      });
+    }
+
+    function showScreen(screen) {
+      step1Screen.classList.toggle("active", screen === 1);
+      step2Screen.classList.toggle("active", screen === 2);
+      setStepLabels(screen);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (screen === 2) {
+        step2FromName.textContent = byId[selectedId].name;
+        updateTimeSelection();
+      }
+    }
+
+    function selectMinutes(minutes) {
+      selectedMinutes = minutes;
+      selectedTimeLabel.textContent = `${minutes} 分`;
+      timeSelectedBox.classList.add("show");
+      document.querySelectorAll(".time-btn").forEach((btn) => {
+        btn.classList.toggle("selected", Number(btn.dataset.minutes) === minutes);
+      });
+      toStep3Btn.disabled = false;
+    }
+
+    function updateTimeSelection() {
+      if (selectedMinutes) {
+        selectMinutes(selectedMinutes);
+      } else {
+        timeSelectedBox.classList.remove("show");
+        selectedTimeLabel.textContent = "—";
+        document.querySelectorAll(".time-btn").forEach((btn) => btn.classList.remove("selected"));
+        toStep3Btn.disabled = true;
+      }
+    }
 
     function normalize(q) {
       return (q || "").trim().toLowerCase();
@@ -180,7 +294,7 @@
       document.querySelectorAll(".shortcut-btn").forEach((btn) => {
         btn.classList.toggle("selected", btn.dataset.id === id);
       });
-      nextBtn.disabled = false;
+      toStep2Btn.disabled = false;
     }
 
     function renderSuggestions(list) {
@@ -225,14 +339,36 @@
       shortcutsEl.appendChild(btn);
     });
 
-    nextBtn.addEventListener("click", () => {
+    toStep2Btn.addEventListener("click", () => {
       if (!selectedId) return;
-      alert(`Step 2（時間選択）は準備中です。\n出発: ${byId[selectedId].name}`);
+      showScreen(2);
+    });
+
+    backToStep1Btn.addEventListener("click", () => {
+      showScreen(1);
+    });
+
+    toStep3Btn.addEventListener("click", () => {
+      if (!selectedId || !selectedMinutes) return;
+      alert(
+        `Step 3（寄り町候補）は準備中です。\n` +
+        `出発: ${byId[selectedId].name}\n使える時間: ${selectedMinutes} 分`
+      );
+    });
+
+    TIME_OPTIONS.forEach((opt) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "time-btn";
+      btn.dataset.minutes = String(opt.minutes);
+      btn.innerHTML = `${opt.minutes}分<span>${opt.hint}</span>`;
+      btn.addEventListener("click", () => selectMinutes(opt.minutes));
+      timeGrid.appendChild(btn);
     });
 
     const stats = DATA.graph_meta && DATA.graph_meta.stats;
     if (stats) {
-      document.querySelector(".meta:last-of-type").textContent +=
+      document.getElementById("step1Meta").textContent +=
         ` ／ 駅ノード ${stats.nodes}・路線エッジ ${stats.edges}`;
     }
   </script>

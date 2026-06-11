@@ -65,7 +65,7 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 | 1 | N02 → `rail_graph.json` | ✅（213 nodes / MVP路線） |
 | 2 | `data/towns.json`（28町） | ✅ |
 | 3 | `yorimachi.html` Step 1 | ✅ |
-| 4 | Step 2 時間選択 | 未 |
+| 4 | Step 2 時間選択 | ✅ |
 | 5 | Step 3 寄り町候補 | 未 |
 
 ## 関連 URL
