@@ -83,31 +83,16 @@
     #map { width: 100%; height: 380px; border-radius: 10px; border: 1px solid var(--border); }
     .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
     .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
-    #dagPanel { display: none; }
     #dagScroll { overflow-x: auto; }
     #dagSvg { display: block; margin: 0 auto; }
     .dag-node { cursor: default; }
     .dag-node.clickable { cursor: pointer; }
     .dag-node.clickable circle { stroke: #1f2937; stroke-width: 3; animation: pulse 1.2s infinite; }
     @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: .25; } }
-    .status-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-    .stat {
-      background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
-      padding: 8px 12px; font-size: 13px; font-weight: 700;
-    }
     .trail { font-size: 20px; letter-spacing: 2px; margin: 6px 0; word-break: break-all; }
-    .choice-btn {
-      display: block; width: 100%; text-align: left;
-      background: #fff; border: 1px solid var(--border); border-radius: 12px;
-      padding: 10px 14px; margin-bottom: 8px; cursor: pointer; font-size: 14px;
-    }
-    .choice-btn:hover { border-color: var(--accent); background: #fffbeb; }
-    .choice-btn .c-title { font-weight: 700; font-size: 15px; }
-    .choice-btn .c-sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
     #log { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
     #log li { border-bottom: 1px dashed var(--border); padding: 7px 2px; }
     #log li:last-child { border-bottom: none; }
-    #sharePanel { display: none; }
     #shareText {
       width: 100%; font-family: inherit; font-size: 13px;
       border: 1px solid var(--border); border-radius: 10px; padding: 10px; resize: vertical;
@@ -118,72 +103,214 @@
       border: 1px solid #fed7aa; border-radius: 12px; padding: 10px 14px;
       font-weight: 700; margin-bottom: 10px; display: none;
     }
+    .boss-banner.boss-enter { animation: bossSlide .55s ease-out; }
+    @keyframes bossSlide {
+      from { opacity: 0; transform: translateY(-8px) scale(.98); }
+      to { opacity: 1; transform: none; }
+    }
+    .boss-flash {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+      background: radial-gradient(circle, rgba(255,241,0,.35), transparent 55%);
+      opacity: 0; transition: opacity .35s ease;
+    }
+    .boss-flash.show { opacity: 1; }
+    .phase-bar {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin: 12px 0 0; padding: 10px 12px;
+      background: #f1f5f9; border-radius: 12px; border: 1px solid var(--border);
+    }
+    .phase-step {
+      padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;
+      color: var(--muted); background: transparent; transition: .2s;
+    }
+    .phase-step.active {
+      background: var(--accent-strong); color: #fff;
+      box-shadow: 0 4px 12px rgba(230,0,18,.25);
+    }
+    .phase-step.done { color: var(--text); }
+    .phase-arrow { color: #cbd5e1; font-size: 12px; user-select: none; }
+    .phase-hint {
+      font-size: 1.15rem; font-weight: 800; color: var(--text);
+      margin: 10px 0 8px; line-height: 1.4; letter-spacing: .02em;
+    }
+    .phase-hint.done-hint { color: var(--accent-strong); }
+    .gauge-row { display: flex; flex-direction: column; gap: 10px; margin: 8px 0; }
+    .gauge {
+      display: grid; grid-template-columns: 72px 1fr 28px; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700;
+    }
+    .gauge-label { color: var(--muted); white-space: nowrap; }
+    .gauge-track {
+      height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .gauge-fill {
+      height: 100%; border-radius: 999px; width: 0%; transition: width .35s ease;
+    }
+    .gauge-fill.voltage { background: linear-gradient(90deg, #f39800, #e60012); }
+    .gauge-fill.strain { background: linear-gradient(90deg, #38bdf8, #6366f1); }
+    .gauge-val { text-align: right; font-size: 15px; }
+    .gauge.pop .gauge-track { animation: gaugePop .45s ease; }
+    .gauge.strain-warn .gauge-track { box-shadow: 0 0 0 2px rgba(230,0,18,.35); }
+    @keyframes gaugePop {
+      0% { transform: scaleY(1); }
+      40% { transform: scaleY(1.35); }
+      100% { transform: scaleY(1); }
+    }
+    .progress-stat {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      margin-top: 4px;
+    }
+    .panel-hidden { display: none !important; }
+    .panel-dim { opacity: .45; pointer-events: none; }
+    .choice-grid { display: grid; gap: 8px; margin-top: 8px; }
+    .choice-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 520px) { .choice-grid.cols-2 { grid-template-columns: 1fr; } }
+    .choice-btn {
+      display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto;
+      gap: 2px 8px; align-items: center;
+      background: #fff; border: 2px solid var(--border); border-radius: 12px;
+      padding: 10px 12px; cursor: pointer; font-size: 14px; text-align: left;
+      transition: border-color .15s, transform .1s, box-shadow .15s;
+    }
+    .choice-btn:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(243,152,0,.15); }
+    .choice-btn:active { transform: scale(.98); }
+    .choice-btn .c-dot {
+      width: 14px; height: 14px; border-radius: 50%; grid-row: 1 / 3;
+      border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border);
+    }
+    .choice-btn .c-name { font-weight: 800; font-size: 15px; }
+    .choice-btn .c-td { font-size: 12px; font-weight: 700; color: var(--muted); justify-self: end; }
+    .choice-btn .c-warn { grid-column: 3; grid-row: 1; font-size: 14px; }
+    .choice-btn .c-sub {
+      grid-column: 2 / 4; color: var(--muted); font-size: 11.5px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .legend-wrap { margin-top: 10px; }
+    .legend-toggle {
+      background: none; border: 1px dashed var(--border); border-radius: 8px;
+      padding: 4px 10px; font-size: 12px; color: var(--muted); cursor: pointer;
+    }
+    .legend { display: none; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+    .legend.open { display: flex; }
+    .icon-btn {
+      background: #fff; border: 1px solid var(--border); border-radius: 999px;
+      width: 32px; height: 32px; font-size: 15px; font-weight: 700; cursor: pointer;
+      color: var(--muted); line-height: 1;
+    }
+    .tutorial-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(15,23,42,.55); display: flex; align-items: center; justify-content: center;
+      padding: 20px; backdrop-filter: blur(4px);
+    }
+    .tutorial-overlay.hidden { display: none; }
+    .tutorial-card {
+      background: #fff; border-radius: 16px; padding: 24px 22px; max-width: 360px;
+      box-shadow: 0 24px 60px rgba(15,23,42,.2); text-align: center;
+    }
+    .tutorial-card h2 { margin: 0 0 12px; font-size: 1.35rem; }
+    .tutorial-card p { margin: 0 0 10px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .tutorial-card .btn { width: 100%; margin-top: 8px; }
+    .tutorial-card .btn.secondary { margin-top: 6px; }
     footer.panel { font-size: 12.5px; color: var(--muted); }
     footer.panel ul { margin: 6px 0 0; padding-left: 1.2rem; }
+    .footer-toggle {
+      background: none; border: none; padding: 0; font: inherit; font-weight: 700;
+      color: var(--text); cursor: pointer; text-align: left;
+    }
+    #footerDetails { margin-top: 8px; }
+    #footerDetails[hidden] { display: none; }
+    .footer-link { margin: 8px 0 0; font-size: 12px; }
   </style>
 </head>
 <body>
+  <div id="bossFlash" class="boss-flash" aria-hidden="true"></div>
+
+  <div id="tutorialOverlay" class="tutorial-overlay hidden">
+    <div class="tutorial-card">
+      <h2>🗼 今日の東京を登る</h2>
+      <p>駅の<strong>色</strong>は話題の変化（TD）だけで決まります。</p>
+      <p>地図で<strong>スタート</strong> → 分岐を選んで<strong>ボス駅</strong>へ。</p>
+      <button class="btn" id="tutorialStart" type="button">始める</button>
+      <button class="btn secondary" id="tutorialHelp" type="button">データの説明</button>
+    </div>
+  </div>
+
   <div class="wrap">
 
     <section class="panel">
       <div class="header-row">
         <h1>🗼 TOKYO CLIMB</h1>
-        <span class="muted">今日の東京を、駅から駅へ「登る」1日1ラン</span>
         <span class="spacer"></span>
+        <button class="icon-btn" id="helpBtn" type="button" title="凡例・データ説明">?</button>
         <span class="badge" id="weatherBadge">--</span>
         <span class="badge" id="tdBadge">--</span>
         <span id="dayTabs"></span>
-        <button class="btn secondary" id="resetBtn">最初から</button>
+        <button class="btn secondary" id="resetBtn" type="button">最初から</button>
       </div>
-      <p class="muted" style="margin:8px 0 0;">
-        各駅の色は <strong>TD（話題変化率：SNS言及の前日比%）</strong> のみで決まります。総合スコアは使いません。
-        スタート駅を地図で選ぶと、今日のボス駅が自動決定され、分岐マップが生成されます。
-      </p>
+      <nav class="phase-bar" id="phaseBar" aria-label="進行フェーズ">
+        <span class="phase-step active" data-phase="pick">選ぶ</span>
+        <span class="phase-arrow" aria-hidden="true">→</span>
+        <span class="phase-step" data-phase="climb">登る</span>
+        <span class="phase-arrow" aria-hidden="true">→</span>
+        <span class="phase-step" data-phase="done">結果</span>
+      </nav>
     </section>
 
     <div class="layout">
       <div>
-        <section class="panel">
-          <h2 id="mapTitle">1. スタート駅を選ぶ（地図の駅をクリック）</h2>
+        <section class="panel" id="mapPanel">
+          <h2 id="mapTitle">スタート駅を選ぶ</h2>
           <div id="map"></div>
-          <div class="legend">
-            <span><span class="dot" style="background:var(--high)"></span>急上昇（TD &gt; +30%）</span>
-            <span><span class="dot" style="background:var(--mid)"></span>上昇（+10〜30%）</span>
-            <span><span class="dot" style="background:var(--low)"></span>静か（&lt; -10%）</span>
-            <span><span class="dot" style="background:var(--mystery)"></span>❓ 未知（±10% or データ薄）</span>
+          <div class="legend-wrap">
+            <button type="button" class="legend-toggle" id="legendToggle">凡例を見る</button>
+            <div class="legend" id="legend">
+              <span><span class="dot" style="background:var(--high)"></span>急上昇</span>
+              <span><span class="dot" style="background:var(--mid)"></span>上昇</span>
+              <span><span class="dot" style="background:var(--low)"></span>静か</span>
+              <span><span class="dot" style="background:var(--mystery)"></span>❓ 未知</span>
+            </div>
           </div>
         </section>
 
-        <section class="panel" id="dagPanel">
-          <h2>3. 分岐マップを登る（光るノードをクリック）</h2>
+        <section class="panel panel-hidden" id="dagPanel">
+          <h2>分岐マップ</h2>
           <div id="dagScroll"><svg id="dagSvg"></svg></div>
         </section>
       </div>
 
       <div>
-        <section class="panel">
+        <section class="panel" id="runPanel">
           <h2>今日のラン</h2>
           <div class="boss-banner" id="bossBanner"></div>
-          <div id="phaseHint" class="muted">地図でスタート駅をクリックしてください。どの駅からでも登れます。</div>
-          <div class="status-badges">
-            <span class="stat">⚡ ボルテージ <b id="voltage">0</b></span>
-            <span class="stat">💧 消耗 <b id="strain">0</b></span>
-            <span class="stat">🚉 <b id="progress">-</b></span>
+          <div id="phaseHint" class="phase-hint">地図の駅をタップ</div>
+          <div class="gauge-row">
+            <div class="gauge" id="voltageGauge">
+              <span class="gauge-label">⚡ ボルテージ</span>
+              <div class="gauge-track"><div class="gauge-fill voltage" id="voltageGaugeFill"></div></div>
+              <span class="gauge-val" id="voltage">0</span>
+            </div>
+            <div class="gauge" id="strainGauge">
+              <span class="gauge-label">💧 消耗</span>
+              <div class="gauge-track"><div class="gauge-fill strain" id="strainGaugeFill"></div></div>
+              <span class="gauge-val" id="strain">0</span>
+            </div>
           </div>
+          <div class="progress-stat">🚉 <span id="progress">-</span></div>
           <div class="trail" id="trail"></div>
           <div id="choices"></div>
         </section>
 
-        <section class="panel">
-          <h2>4. 道中の記録</h2>
+        <section class="panel panel-hidden" id="logPanel">
+          <h2>道中の記録</h2>
           <ul id="log"><li class="muted">まだ記録はありません。</li></ul>
         </section>
 
-        <section class="panel" id="sharePanel">
-          <h2>5. 今日のランをシェア</h2>
+        <section class="panel panel-hidden" id="sharePanel">
+          <h2>今日のランをシェア</h2>
           <textarea id="shareText" rows="6" readonly></textarea>
           <div style="margin-top:8px; display:flex; gap:8px;">
-            <button class="btn" id="copyBtn">コピーしてシェア</button>
+            <button class="btn" id="copyBtn" type="button">コピーしてシェア</button>
             <span class="muted" id="copyDone" style="align-self:center;"></span>
           </div>
         </section>
@@ -191,13 +318,15 @@
     </div>
 
     <footer class="panel">
-      <strong>データについて（プロトタイプ）</strong>
-      <ul>
-        <li>TD（Topic Delta）は「駅ごとの監査済みクエリ（<code>td_queries.yaml</code>）による SNS 言及件数の前日比%」という<strong>代理指標</strong>です（信頼度 low）。ヘッダーのバッジが「手動観測」の日は <code>td_counts.csv</code> の実測値、「ダミー」の日はシード生成値。手動観測の未入力駅は ❓（未知）として扱います。</li>
-        <li>天気は <a href="https://open-meteo.com/">Open-Meteo</a> の日別データ（東京駅周辺・信頼度 high。取得失敗時はダミーにフォールバック）。天気は TD・ノードの色には混ぜず、道中の「消耗」演出にのみ使用します。</li>
-        <li>駅座標・路線エッジは手動定義の近似値（国土数値情報 駅・鉄道データへの置き換え予定）。一部エッジは乗換を簡略化しています。</li>
-        <li>背景地図: <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>。本画面は旧・都市熱狂度スコア（mania_score）を使用しません。</li>
-      </ul>
+      <button type="button" class="footer-toggle" id="footerToggle" aria-expanded="false">データについて ▾</button>
+      <div id="footerDetails" hidden>
+        <ul>
+          <li>TD = Google Trends 日次関心の前日比%（tier A 15駅・信頼度 low）。詳細は <code>TD_DATA_GUIDE.md</code></li>
+          <li>天気 = Open-Meteo（消耗演出のみ・TDには混ぜない）</li>
+          <li>地図 = 地理院タイル。駅座標はプロトタイプ用近似値。</li>
+        </ul>
+      </div>
+      <p class="footer-link muted">研究概要: <a href="index.html">index.html</a></p>
     </footer>
   </div>
 
@@ -269,11 +398,66 @@
     let dag = null;            // { layers: [[ids]], edges: Set("u>v") }
     let curLayer = 0, curNode = null;
     let voltage = 0, strain = 0;
+    let prevVoltage = 0, prevStrain = 0;
     let trail = [], visited = [], takenEdges = new Set();
     let map, markers = {}, routeLine = null;
 
+    const PHASE_ORDER = ["pick", "climb", "done"];
+    const TUTORIAL_KEY = "tokyo_climb_tutorial_done";
+
     function dayData() { return DAYS[dayIdx]; }
     function st(id) { return stationsToday[id]; }
+
+    function updatePhaseUI() {
+      const idx = PHASE_ORDER.indexOf(phase);
+      document.querySelectorAll(".phase-step").forEach((el) => {
+        const p = el.dataset.phase;
+        const pi = PHASE_ORDER.indexOf(p);
+        el.classList.toggle("active", p === phase);
+        el.classList.toggle("done", pi >= 0 && pi < idx);
+      });
+
+      const hint = document.getElementById("phaseHint");
+      hint.className = "phase-hint" + (phase === "done" ? " done-hint" : "");
+      if (phase === "pick") {
+        hint.textContent = "地図の駅をタップ";
+      } else if (phase === "climb" && dag) {
+        const remaining = dag.L - curLayer;
+        hint.textContent = `光っている駅を選ぶ（あと ${remaining} ホップ）`;
+      } else if (phase === "done") {
+        hint.textContent = "登頂！ シェアして今日のランを残す";
+      }
+
+      document.getElementById("dagPanel").classList.toggle("panel-hidden", phase === "pick");
+      document.getElementById("logPanel").classList.toggle("panel-hidden", phase === "pick");
+      document.getElementById("sharePanel").classList.toggle("panel-hidden", phase !== "done");
+      document.getElementById("mapTitle").textContent =
+        phase === "pick" ? "スタート駅を選ぶ" : "今日のルート";
+    }
+
+    function showBossEntrance() {
+      const flash = document.getElementById("bossFlash");
+      flash.classList.add("show");
+      setTimeout(() => flash.classList.remove("show"), 550);
+      const banner = document.getElementById("bossBanner");
+      banner.classList.remove("boss-enter");
+      void banner.offsetWidth;
+      banner.classList.add("boss-enter");
+      const bossNode = nodeById[bossId];
+      map.flyTo([bossNode.lat, bossNode.lon], 13, { duration: 0.75 });
+      if (navigator.vibrate) navigator.vibrate(40);
+    }
+
+    function shortDilemma(id) {
+      const s = st(id);
+      const w = dayData().weather;
+      if (w.is_rain && s.outdoor) return "雨で消耗リスク";
+      if (s.type === "high") return "⚡ 大きく稼げる";
+      if (s.type === "mid") return "手堅く ⚡";
+      if (s.type === "low") return "💧 回復";
+      if (s.type === "mystery") return "不明";
+      return "";
+    }
 
     // ---------- ボス決定 ----------
     function pickBoss(start) {
@@ -405,7 +589,7 @@
       }
       if (isBoss) {
         emoji = "👑";
-        lines.push(`👑 登頂！ 今日のボス ${s.name}（TD ${s.td > 0 ? "+" : ""}${s.td}%）に到達。`);
+        lines.push(`👑 登頂！ 今日のボス ${s.name}（${fmtTd(s)}）に到達。`);
       }
       trail.push(emoji);
       return lines;
@@ -426,20 +610,30 @@
         const m = L.circleMarker([n.lat, n.lon], { radius: 7, color: "#fff", weight: 2, fillOpacity: .95 })
           .addTo(map)
           .bindTooltip(n.name, { direction: "top", offset: [0, -6] });
-        m.on("click", () => { if (phase === "pick") chooseStart(n.id); });
+        m.on("click", () => onMarkerClick(n.id));
         markers[n.id] = m;
       });
     }
 
+    function onMarkerClick(id) {
+      if (phase === "pick") chooseStart(id);
+      else if (phase === "climb" && clickableNexts().has(id)) moveTo(id);
+    }
+
     function paintMarkers() {
+      const nextSet = phase === "climb" ? clickableNexts() : new Set();
       GRAPH.nodes.forEach((n) => {
         const s = st(n.id);
         const isBoss = n.id === bossId, isStart = n.id === startId;
+        const isVisited = visited.includes(n.id);
+        const clickable = nextSet.has(n.id);
+        const dim = phase === "climb" && !clickable && !isVisited && !isBoss && !isStart;
         markers[n.id].setStyle({
           fillColor: TYPE_COLOR[s.type],
-          radius: isBoss ? 11 : isStart ? 9 : 7,
-          color: isBoss ? "#1f2937" : "#fff",
-          weight: isBoss || isStart ? 3 : 2,
+          radius: clickable ? 12 : isBoss ? 11 : isStart ? 9 : 7,
+          color: clickable ? "#1f2937" : isBoss ? "#1f2937" : "#fff",
+          weight: clickable || isBoss || isStart ? 3 : 2,
+          fillOpacity: dim ? 0.35 : 0.95,
         });
         markers[n.id].unbindTooltip();
         const tag = isBoss ? "👑 " : isStart ? "▶ " : "";
@@ -520,51 +714,69 @@
     }
 
     // ---------- UI: 右パネル ----------
-    function dilemmaText(id) {
-      const s = st(id);
-      const w = dayData().weather;
-      const parts = [];
-      if (s.type === "high") parts.push("話題の中心。⚡を大きく稼げる");
-      if (s.type === "mid") parts.push("ほどよい賑わい。手堅く⚡");
-      if (s.type === "low") parts.push("静かで安定。💧消耗を回復できる");
-      if (s.type === "mystery") parts.push("行くまで分からない（データ未開示）");
-      if (w.is_rain && s.outdoor) parts.push("⚠ 屋外メインの駅。雨で消耗リスク");
-      return parts.join("／");
-    }
-
     function renderChoices() {
       const box = document.getElementById("choices");
       box.innerHTML = "";
       if (phase !== "climb") return;
       const nexts = [...clickableNexts()];
       if (!nexts.length) return;
-      const head = document.createElement("p");
-      head.className = "muted";
-      head.textContent = `分岐 ${curLayer + 1} / ${dag.L}：次の駅を選ぶ`;
-      box.appendChild(head);
+      const grid = document.createElement("div");
+      grid.className = "choice-grid" + (nexts.length === 2 ? " cols-2" : "");
       nexts.forEach((id) => {
         const s = st(id);
+        const w = dayData().weather;
         const btn = document.createElement("button");
+        btn.type = "button";
         btn.className = "choice-btn";
-        const tdTxt = s.type === "mystery" ? "❓ TD非公開" : fmtTd(s);
-        btn.innerHTML = `<div class="c-title">${TYPE_EMOJI[s.type]} ${s.name} <span class="muted">（${tdTxt}）</span></div>
-          <div class="c-sub">${dilemmaText(id)}</div>`;
+        const tdTxt = s.type === "mystery" ? "不明" : fmtTd(s);
+        const warn = w.is_rain && s.outdoor ? '<span class="c-warn">⚠</span>' : "";
+        btn.innerHTML =
+          `<span class="c-dot" style="background:${TYPE_COLOR[s.type]}"></span>` +
+          `<span class="c-name">${s.name}</span>` +
+          `<span class="c-td">${tdTxt}</span>` +
+          warn +
+          `<span class="c-sub">${shortDilemma(id)}</span>`;
         btn.onclick = () => moveTo(id);
-        box.appendChild(btn);
+        grid.appendChild(btn);
       });
+      box.appendChild(grid);
     }
 
     function renderStatus() {
+      const vGauge = document.getElementById("voltageGauge");
+      const sGauge = document.getElementById("strainGauge");
+      if (voltage !== prevVoltage) {
+        vGauge.classList.add("pop");
+        setTimeout(() => vGauge.classList.remove("pop"), 450);
+      }
+      if (strain !== prevStrain) {
+        sGauge.classList.add("pop");
+        sGauge.classList.toggle("strain-warn", strain > prevStrain);
+        setTimeout(() => sGauge.classList.remove("pop"), 450);
+      }
+      prevVoltage = voltage;
+      prevStrain = strain;
+
       document.getElementById("voltage").textContent = voltage;
       document.getElementById("strain").textContent = strain;
+      document.getElementById("voltageGaugeFill").style.width =
+        `${Math.min(voltage / 10 * 100, 100)}%`;
+      document.getElementById("strainGaugeFill").style.width =
+        `${Math.min(strain / 5 * 100, 100)}%`;
       document.getElementById("progress").textContent =
-        phase === "pick" ? "-" : `${Math.max(visited.length - 1, 0)} / ${dag ? dag.L : "-"} ホップ`;
+        phase === "pick" ? "スタート前" : `${Math.max(visited.length - 1, 0)} / ${dag ? dag.L : "-"} ホップ`;
       document.getElementById("trail").textContent = trail.join("→");
       const w = dayData().weather;
       document.getElementById("weatherBadge").textContent =
         `${dayData().date} ${w.icon} ${w.summary} ${w.temperature_c}°C`;
-      document.getElementById("tdBadge").textContent =
-        dayData().td_mode === "manual" ? "TD: 手動観測（実データ）" : "TD: ダミー";
+      const tdMode = dayData().td_mode;
+      const tdLabels = {
+        manual: "TD: 手動",
+        trends: "TD: Trends",
+        dummy: "TD: ダミー",
+      };
+      document.getElementById("tdBadge").textContent = tdLabels[tdMode] || "TD: --";
+      updatePhaseUI();
     }
 
     function pushLog(lines) {
@@ -587,20 +799,19 @@
       phase = "climb";
       curLayer = 0;
       curNode = startId;
-      voltage = 0; strain = 0; trail = []; visited = [startId]; takenEdges = new Set();
+      voltage = 0; strain = 0; prevVoltage = 0; prevStrain = 0;
+      trail = []; visited = [startId]; takenEdges = new Set();
 
       const sStart = st(startId), sBoss = st(bossId);
-      document.getElementById("bossBanner").style.display = "block";
-      document.getElementById("bossBanner").innerHTML =
-        `▶ ${sStart.name} START　→　👑 今日のボス: <span style="color:var(--accent-strong)">${sBoss.name}</span>
-         （${fmtTd(sBoss)} ／ ${dag.L} ホップ先）`;
-      document.getElementById("phaseHint").textContent =
-        "分岐マップ（左）か下の候補ボタンで、1駅ずつ選んで進んでください。";
-      document.getElementById("mapTitle").textContent = "2. 今日のルート（実地図）";
-      document.getElementById("dagPanel").style.display = "block";
+      const banner = document.getElementById("bossBanner");
+      banner.style.display = "block";
+      banner.innerHTML =
+        `▶ ${sStart.name} → 👑 ボス <span style="color:var(--accent-strong)">${sBoss.name}</span>
+         <span class="muted" style="font-weight:600">（${dag.L} ホップ）</span>`;
       document.getElementById("log").innerHTML = "";
       trail.push("▶");
       pushLog([`▶ ${sStart.name} からスタート。ボスは ${sBoss.name}。`]);
+      showBossEntrance();
       paintMarkers(); drawRoute(); renderDag(); renderChoices(); renderStatus();
       document.getElementById("dagPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
@@ -619,7 +830,6 @@
 
     function finishRun() {
       phase = "done";
-      document.getElementById("phaseHint").textContent = "登頂完了！ 結果をシェアできます。";
       const names = visited.map((id) => st(id).name);
       const d = dayData().date.replaceAll("-", "/");
       const text =
@@ -629,23 +839,21 @@
         `⚡ボルテージ${voltage}・💧消耗${strain}\n` +
         `#TOKYOCLIMB`;
       document.getElementById("shareText").value = text;
-      document.getElementById("sharePanel").style.display = "block";
+      renderStatus();
       document.getElementById("sharePanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
 
     function resetRun() {
       phase = "pick";
       startId = null; bossId = null; dag = null; curNode = null; curLayer = 0;
-      voltage = 0; strain = 0; trail = []; visited = []; takenEdges = new Set();
+      voltage = 0; strain = 0; prevVoltage = 0; prevStrain = 0;
+      trail = []; visited = []; takenEdges = new Set();
       document.getElementById("bossBanner").style.display = "none";
-      document.getElementById("dagPanel").style.display = "none";
-      document.getElementById("sharePanel").style.display = "none";
+      document.getElementById("bossBanner").classList.remove("boss-enter");
       document.getElementById("choices").innerHTML = "";
       document.getElementById("log").innerHTML = '<li class="muted">まだ記録はありません。</li>';
-      document.getElementById("phaseHint").textContent =
-        "地図でスタート駅をクリックしてください。どの駅からでも登れます。";
-      document.getElementById("mapTitle").textContent = "1. スタート駅を選ぶ（地図の駅をクリック）";
       if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+      map.setView([35.685, 139.74], 12);
       paintMarkers(); renderStatus();
     }
 
@@ -662,6 +870,7 @@
       const tabs = document.getElementById("dayTabs");
       DAYS.forEach((d, i) => {
         const b = document.createElement("button");
+        b.type = "button";
         b.className = "day-tab";
         b.textContent = i === DAYS.length - 1 ? `今日（${d.date.slice(5)}）` : d.date.slice(5);
         b.onclick = () => setDay(i);
@@ -670,6 +879,41 @@
       initMap();
       setDay(DAYS.length - 1);
       document.getElementById("resetBtn").onclick = resetRun;
+
+      const overlay = document.getElementById("tutorialOverlay");
+      if (!localStorage.getItem(TUTORIAL_KEY)) overlay.classList.remove("hidden");
+      document.getElementById("tutorialStart").onclick = () => {
+        localStorage.setItem(TUTORIAL_KEY, "1");
+        overlay.classList.add("hidden");
+      };
+      document.getElementById("tutorialHelp").onclick = () => {
+        localStorage.setItem(TUTORIAL_KEY, "1");
+        overlay.classList.add("hidden");
+        document.getElementById("footerDetails").hidden = false;
+        document.getElementById("footerToggle").setAttribute("aria-expanded", "true");
+        document.getElementById("footerToggle").textContent = "データについて ▴";
+        document.querySelector("footer.panel").scrollIntoView({ behavior: "smooth" });
+      };
+
+      const legend = document.getElementById("legend");
+      const legendToggle = document.getElementById("legendToggle");
+      function toggleLegend(forceOpen) {
+        const open = forceOpen != null ? forceOpen : !legend.classList.contains("open");
+        legend.classList.toggle("open", open);
+        legendToggle.textContent = open ? "凡例を閉じる" : "凡例を見る";
+      }
+      legendToggle.onclick = () => toggleLegend();
+      document.getElementById("helpBtn").onclick = () => toggleLegend(true);
+
+      const footerToggle = document.getElementById("footerToggle");
+      footerToggle.onclick = () => {
+        const details = document.getElementById("footerDetails");
+        const open = details.hidden;
+        details.hidden = !open;
+        footerToggle.setAttribute("aria-expanded", String(open));
+        footerToggle.textContent = open ? "データについて ▴" : "データについて ▾";
+      };
+
       document.getElementById("copyBtn").onclick = async () => {
         const txt = document.getElementById("shareText").value;
         try {

@@ -4,17 +4,16 @@
 rail_graph.json を読み込み、直近3日分のデータを生成する。
   - 天気: Open-Meteo の日別データ（過去2日＋今日）。取得失敗時はダミーにフォールバック
   - TD（Topic Delta: 話題の前日比%）: 日付ごとに自動でモードを切り替える
-      manual … td_counts.csv にその日の行がある（手動観測の実データ。手順は TD_DATA_GUIDE.md）
-                入力済み駅は実TD、未入力駅は ❓（td なし）
-      dummy  … その日の行がない（日付＋駅IDシードのダミー値）
+      trends … Google Trends 日次関心（tier A 15駅を trendspy で自動取得。既定）
+      manual … td_counts.csv にその日の行がある（手動観測。TD_DATA_GUIDE.md）
+      dummy  … trends 取得失敗かつキャッシュなし（日付＋駅IDシードのダミー値）
 
 出力:
   - stations_daily.json  … パイプライン記録用（最新日＋過去日）
   - tokyo_climb_data.js  … tokyo_climb.html が <script src> で読む
-                            （file:// で開いても動くよう JS 変数として埋め込む）
+  - td_trends_cache.json … Trends 取得キャッシュ（再取得失敗時のフォールバック）
 
-将来 (Phase C):
-  - TD を SNS API / 検索トレンドの自動集計に置き換える
+依存: trendspy, pyyaml（.venv に pip install trendspy pyyaml）
 """
 
 from __future__ import annotations
@@ -23,18 +22,28 @@ import argparse
 import csv
 import hashlib
 import json
+import time
 from datetime import date, timedelta
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import urlopen
+
+import yaml
+from requests.exceptions import HTTPError
+from trendspy import Trends
 
 BASE_DIR = Path(__file__).resolve().parent
 GRAPH_PATH = BASE_DIR / "rail_graph.json"
 DAILY_JSON_PATH = BASE_DIR / "stations_daily.json"
 DATA_JS_PATH = BASE_DIR / "tokyo_climb_data.js"
 TD_CSV_PATH = BASE_DIR / "td_counts.csv"
+QUERIES_PATH = BASE_DIR / "td_queries.yaml"
+TRENDS_CACHE_PATH = BASE_DIR / "td_trends_cache.json"
 
 DAYS = 3  # 生成する日数（今日を含む直近3日）
+TRENDS_REQUEST_DELAY = 15.0  # Google Trends レート制限対策（秒。15駅で約4分）
+TRENDS_TIMEFRAME = "today 1-m"
+TRENDS_GEO = "JP"
 
 # ノードタイプ閾値（卒論で固定する定義。tokyo_climb.html 側と一致させること）
 TD_HIGH = 30.0       # TD > +30%        → high
@@ -42,6 +51,7 @@ TD_MID = 10.0        # +10% < TD ≤ +30% → mid
 TD_LOW = -10.0       # TD < -10%        → low / その間 → mystery
 MENTION_MIN_DUMMY = 60   # ダミーTD: 言及がこの件数未満の駅は mystery 固定
 MENTION_MIN_MANUAL = 5   # 手動TD: 観測窓1時間・上限50件のスケールに合わせた下限
+MENTION_MIN_TRENDS = 1   # Trends: 関心値0はデータ薄として mystery
 
 # 天気の取得地点（東京駅周辺。山手線圏の代表値として1地点で足りる）
 TOKYO_LAT, TOKYO_LON = 35.685, 139.74
@@ -183,6 +193,118 @@ def load_td_counts(path: Path) -> dict[tuple[str, str], int]:
     return counts
 
 
+def load_td_queries() -> tuple[dict[str, str], list[str]]:
+    """td_queries.yaml から tier A 駅 {id: keyword} と tier A id 一覧を返す。"""
+    if not QUERIES_PATH.exists():
+        return {}, []
+    cfg = yaml.safe_load(QUERIES_PATH.read_text(encoding="utf-8"))
+    tier_a: dict[str, str] = {}
+    for sid, meta in (cfg.get("stations") or {}).items():
+        if str(meta.get("tier", "")).upper() != "A":
+            continue
+        queries = meta.get("queries") or []
+        if queries:
+            tier_a[sid] = str(queries[0])
+    return tier_a, list(tier_a.keys())
+
+
+def load_trends_cache(path: Path = TRENDS_CACHE_PATH) -> dict[str, dict[str, int]]:
+    """キャッシュを {station_id: {date: interest}} で返す。"""
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, dict[str, int]] = {}
+    for sid, days in (payload.get("stations") or {}).items():
+        out[sid] = {str(d): int(v) for d, v in days.items()}
+    return out
+
+
+def save_trends_cache(
+    stations: dict[str, dict[str, int]],
+    path: Path = TRENDS_CACHE_PATH,
+    *,
+    fetch_status: str,
+) -> None:
+    payload = {
+        "updated_at": date.today().isoformat(),
+        "source": f"Google Trends（trendspy・geo={TRENDS_GEO}・日次関心0-100）",
+        "fetch_status": fetch_status,
+        "stations": stations,
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def fetch_trends_interest(
+    tier_a: dict[str, str],
+    *,
+    delay: float = TRENDS_REQUEST_DELAY,
+    skip_fetch: bool = False,
+) -> tuple[dict[str, dict[str, int]], str]:
+    """tier A 各駅の Google Trends 日次関心を取得しキャッシュにマージする。
+
+    戻り値: (stations_data, status)
+      status … live | partial | cache | empty
+    """
+    cached = load_trends_cache()
+    if skip_fetch:
+        return cached, "cache" if cached else "empty"
+
+    if not tier_a:
+        return cached, "cache" if cached else "empty"
+
+    merged = {sid: dict(days) for sid, days in cached.items()}
+    client = Trends(request_delay=delay)
+    fetched, failed = 0, []
+
+    for sid, keyword in tier_a.items():
+        ok = False
+        for attempt in range(3):
+            try:
+                df = client.interest_over_time(
+                    [keyword], timeframe=TRENDS_TIMEFRAME, geo=TRENDS_GEO
+                )
+                col = next(c for c in df.columns if c != "isPartial")
+                station_days = merged.setdefault(sid, {})
+                for idx, row in df.iterrows():
+                    station_days[idx.strftime("%Y-%m-%d")] = int(row[col])
+                fetched += 1
+                ok = True
+                print(f"  Trends OK: {sid} ({keyword})")
+                break
+            except HTTPError as exc:
+                code = exc.response.status_code if exc.response is not None else None
+                if code == 429 and attempt < 2:
+                    wait = 30 * (attempt + 1)
+                    print(f"  WARN: 429 {keyword} → {wait}s 待機して再試行")
+                    time.sleep(wait)
+                else:
+                    print(f"  WARN: Trends 失敗 {sid} ({keyword}): {exc}")
+                    break
+            except Exception as exc:
+                print(f"  WARN: Trends 失敗 {sid} ({keyword}): {exc}")
+                break
+        if not ok:
+            failed.append(sid)
+
+    if fetched:
+        status = "live" if not failed else "partial"
+        save_trends_cache(merged, fetch_status=status)
+        return merged, status
+    if merged:
+        print("  WARN: 今回の Trends 取得は全滅。キャッシュを使用します。")
+        return merged, "cache"
+    return {}, "empty"
+
+
+def day_has_trends(
+    trends: dict[str, dict[str, int]], day_str: str, tier_a_ids: list[str]
+) -> bool:
+    return any(trends.get(sid, {}).get(day_str) is not None for sid in tier_a_ids)
+
+
 def dummy_td(day_str: str, sid: str, degree: int) -> tuple[float, int]:
     """日付＋駅IDシードで決定論的なダミー (td, mentions) を返す。"""
     base = seeded_unit(day_str, sid, "mentions")
@@ -196,12 +318,26 @@ def dummy_td(day_str: str, sid: str, degree: int) -> tuple[float, int]:
     return td, mentions
 
 
-def build_day(graph: dict, day: date, weather: dict, counts: dict) -> dict:
-    """1日分の駅別TDを生成する。CSVにその日の行があれば手動モード。"""
+def build_day(
+    graph: dict,
+    day: date,
+    weather: dict,
+    counts: dict,
+    trends: dict[str, dict[str, int]] | None,
+    tier_a_ids: list[str],
+) -> dict:
+    """1日分の駅別TDを生成する。優先: manual > trends > dummy。"""
     day_str = day.isoformat()
     prev_str = (day - timedelta(days=1)).isoformat()
     deg = node_degree(graph)
     manual = any(key[0] == day_str for key in counts)
+    use_trends = (
+        not manual
+        and trends is not None
+        and day_has_trends(trends, day_str, tier_a_ids)
+    )
+    td_mode = "manual" if manual else ("trends" if use_trends else "dummy")
+    tier_a_set = set(tier_a_ids)
 
     stations = []
     for node in graph["nodes"]:
@@ -212,11 +348,25 @@ def build_day(graph: dict, day: date, weather: dict, counts: dict) -> dict:
             if c is None:
                 td, mentions, source = None, 0, "none"
             elif prev is None:
-                td, mentions, source = None, c, "manual"  # 前日比の基準がない
+                td, mentions, source = None, c, "manual"
             else:
                 td = round((c - prev) / max(prev, 1) * 100.0, 1)
                 mentions, source = c, "manual"
             node_type = classify(td, mentions, MENTION_MIN_MANUAL)
+        elif use_trends and sid in tier_a_set:
+            cur = trends.get(sid, {}).get(day_str) if trends else None
+            prev_val = trends.get(sid, {}).get(prev_str) if trends else None
+            if cur is None:
+                td, mentions, source = None, 0, "none"
+            elif prev_val is None:
+                td, mentions, source = None, cur, "trends"
+            else:
+                td = round((cur - prev_val) / max(prev_val, 1) * 100.0, 1)
+                mentions, source = cur, "trends"
+            node_type = classify(td, mentions, MENTION_MIN_TRENDS)
+        elif use_trends:
+            td, mentions, source = None, 0, "none"
+            node_type = "mystery"
         else:
             td, mentions = dummy_td(day_str, sid, deg[sid])
             source = "dummy"
@@ -237,7 +387,7 @@ def build_day(graph: dict, day: date, weather: dict, counts: dict) -> dict:
         )
     return {
         "date": day_str,
-        "td_mode": "manual" if manual else "dummy",
+        "td_mode": td_mode,
         "weather": {
             **weather,
             "is_rain": weather["precipitation_mm"] >= 1.0,
@@ -252,11 +402,34 @@ def main() -> None:
         "--td-csv", type=Path, default=TD_CSV_PATH,
         help="手動TD入力CSVのパス（既定: td_counts.csv）",
     )
+    parser.add_argument(
+        "--td-mode",
+        choices=("auto", "trends", "manual", "dummy"),
+        default="auto",
+        help="TD生成モード（既定: auto = manual行があればmanual、なければtrends）",
+    )
+    parser.add_argument(
+        "--skip-trends-fetch",
+        action="store_true",
+        help="Google Trends の再取得をスキップしキャッシュのみ使う",
+    )
     args = parser.parse_args()
 
     graph = json.loads(GRAPH_PATH.read_text(encoding="utf-8"))
     counts = load_td_counts(args.td_csv)
+    tier_a, tier_a_ids = load_td_queries()
     today = date.today()
+
+    trends_data: dict[str, dict[str, int]] | None = None
+    trends_fetch_status = "skipped"
+    if args.td_mode in ("auto", "trends"):
+        print(f"Trends: tier A {len(tier_a)} 駅を取得します（delay={TRENDS_REQUEST_DELAY}s）…")
+        trends_data, trends_fetch_status = fetch_trends_interest(
+            tier_a, skip_fetch=args.skip_trends_fetch
+        )
+        print(f"  Trends 状態: {trends_fetch_status}")
+    elif args.td_mode == "dummy":
+        trends_data = None
 
     try:
         weather_by_date = fetch_weather_days(DAYS)
@@ -276,22 +449,25 @@ def main() -> None:
                 "source": "ダミー値（Open-Meteo 取得失敗時のフォールバック）",
                 "trust_level": "low",
             }
-        days.append(build_day(graph, d, weather, counts))
+        days.append(build_day(graph, d, weather, counts, trends_data, tier_a_ids))
 
     daily_payload = {
         "generated_at": today.isoformat(),
         "weather_mode": weather_mode,
+        "td_fetch_status": trends_fetch_status,
         "td_definition": (
-            "TD = 駅別の監査済みクエリ（td_queries.yaml）によるSNS言及件数の前日比（%）。"
-            "td_mode=manual の日は td_counts.csv の手動観測値、dummy の日はシード生成のダミー値。"
+            "TD = 駅別クエリ（td_queries.yaml）の日次関心 M の前日比（%）。"
+            "trends: M=Google Trends 日次関心（0-100・geo=JP）。"
+            "manual: M=X検索件数（td_counts.csv）。"
+            "dummy: シード生成のダミー値。"
         ),
         "type_thresholds": {
             "high": f"TD > +{TD_HIGH}%",
             "mid": f"+{TD_MID}% < TD <= +{TD_HIGH}%",
             "mystery": (
                 f"-{abs(TD_LOW)}% <= TD <= +{TD_MID}% "
-                f"または言及不足（manual: {MENTION_MIN_MANUAL}件未満 / dummy: {MENTION_MIN_DUMMY}件未満）"
-                "またはデータなし"
+                f"またはデータ薄（trends: 関心0 / manual: {MENTION_MIN_MANUAL}件未満 / "
+                f"dummy: {MENTION_MIN_DUMMY}件未満）またはデータなし"
             ),
             "low": f"TD < {TD_LOW}%",
         },
@@ -316,8 +492,14 @@ def main() -> None:
     print(f"  天気: {weather_mode}")
     for d in days:
         w = d["weather"]
+        n_trends = sum(1 for s in d["stations"] if s["td_source"] == "trends")
         n_manual = sum(1 for s in d["stations"] if s["td_source"] == "manual")
-        td_info = f"manual（入力 {n_manual} 駅）" if d["td_mode"] == "manual" else "dummy"
+        if d["td_mode"] == "manual":
+            td_info = f"manual（入力 {n_manual} 駅）"
+        elif d["td_mode"] == "trends":
+            td_info = f"trends（{n_trends} 駅・{trends_fetch_status}）"
+        else:
+            td_info = "dummy"
         print(
             f"    {d['date']}: {w['summary']} {w['temperature_c']}°C / "
             f"降水 {w['precipitation_mm']}mm / TD: {td_info}"

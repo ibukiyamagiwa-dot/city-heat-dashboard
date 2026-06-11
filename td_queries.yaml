@@ -2,10 +2,10 @@
 #
 # TD の操作定義（卒論の方法論セクションに対応）:
 #   TD(駅, d) = ( M(駅, d) - M(駅, d-1) ) / max( M(駅, d-1), 1 ) × 100 [%]
-#   M(駅, d)  = 日 d の固定観測窓に、下記クエリ集合 Q(駅) のいずれかに
-#               一致した公開投稿の件数（集計のみ・個人は特定しない）
+#   M(駅, d)  = 日 d の話題性代理指標（B-2a 以降は Google Trends 日次関心 0-100）
+#               手動運用時は X 検索件数（TD_DATA_GUIDE.md 参照）
 #
-# 観測手順（手動運用時）は TD_DATA_GUIDE.md を参照。
+# 自動取得: build_tokyo_climb.py が trendspy で tier A を毎ビルド時に取得
 # クエリを変更した場合は必ず changelog に追記すること（監査可能性の担保）。
 #
 # tier:
@@ -13,11 +13,15 @@
 #   B = 余力があれば入力する駅（未入力の日は「未知（❓）」ノードになる）
 
 policy:
-  count_unit: "固定観測窓内の投稿件数（上限50。50件を超えたら50と記録）"
-  privacy: "件数のみを記録する。投稿本文・アカウント名は記録しない"
-  trust_level: "low（SNS言及はあくまで話題性の代理指標）"
+  auto_source: "Google Trends（trendspy・geo=JP・timeframe=today 1-m）"
+  count_unit: "日次関心値 0-100（駅ごとに個別取得。絶対値は駅間で直接比較しない）"
+  privacy: "件数・関心値のみ。投稿本文・アカウント名は記録しない"
+  trust_level: "low（検索関心は話題性の代理指標。SNS言及の真値ではない）"
+  manual_fallback: "td_counts.csv にその日の行があると手動モードが優先される"
 
 changelog:
+  - date: "2026-06-11"
+    note: "B-2a: M の定義を Google Trends 日次関心に移行（tier A 自動取得）。手動は上書き用に残す"
   - date: "2026-06-11"
     note: "初版。全37駅に基本クエリ「<駅名>駅」を定義。tier A 15駅を選定"
 
