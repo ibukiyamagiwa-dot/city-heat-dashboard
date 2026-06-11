@@ -85,6 +85,44 @@ def enrich_town_trends(town: dict, stations: dict, day_str: str, prev_str: str) 
     return out
 
 
+def make_station_town(station: dict) -> dict:
+    name = station["name"]
+    sid = station["id"].replace("g_", "")
+    return {
+        "id": f"st_{sid}",
+        "name": name,
+        "tagline": f"{name}駅周辺を散歩",
+        "flavors": ["街歩き"],
+        "hub_node_id": station["id"],
+        "lat": station["lat"],
+        "lon": station["lon"],
+        "in_graph": True,
+        "tier": "station",
+        "trends_key": None,
+        "trends_query": name,
+        "today_hints": {
+            "default": f"{name}周辺をぶらつく",
+            "high_td": "話題の店を1軒チェック",
+            "low_td": "静かな路地を散歩",
+        },
+    }
+
+
+def merge_station_towns(curated: list[dict], index: list[dict]) -> list[dict]:
+    """手選り町の hub でカバーされていない駅を tier=station として追加。"""
+    hubs = {
+        t["hub_node_id"]
+        for t in curated
+        if t.get("in_graph") and t.get("hub_node_id") and t.get("tier") != "station"
+    }
+    extra: list[dict] = []
+    for st in index:
+        if st["id"] in hubs:
+            continue
+        extra.append(make_station_town(st))
+    return curated + extra
+
+
 def main() -> None:
     graph = json.loads(GRAPH_PATH.read_text(encoding="utf-8"))
     towns = json.loads(TOWNS_PATH.read_text(encoding="utf-8"))
@@ -94,10 +132,14 @@ def main() -> None:
     day_str = latest_trends_date(trends_stations) or date.today().isoformat()
     prev_str = (date.fromisoformat(day_str) - timedelta(days=1)).isoformat()
 
+    curated = towns["towns"]
+    merged = merge_station_towns(curated, index)
     enriched_towns = [
         enrich_town_trends(t, trends_stations, day_str, prev_str)
-        for t in towns["towns"]
+        for t in merged
     ]
+    curated_n = sum(1 for t in enriched_towns if t.get("tier") != "station")
+    station_n = len(enriched_towns) - curated_n
 
     graph_edges = [
         {
@@ -138,6 +180,11 @@ def main() -> None:
         "graph_edges": graph_edges,
         "departure_shortcuts": towns["departure_shortcuts"],
         "stations": index,
+        "towns_meta": {
+            "curated": curated_n,
+            "station": station_n,
+            "total": len(enriched_towns),
+        },
         "towns": enriched_towns,
     }
 
@@ -148,7 +195,7 @@ def main() -> None:
     OUT_PATH.write_text(js, encoding="utf-8")
     print(
         f"Wrote {OUT_PATH} - stations={len(index)} towns={len(enriched_towns)} "
-        f"trends_td={with_trends} date={day_str}"
+        f"(curated={curated_n} station={station_n}) trends_td={with_trends} date={day_str}"
     )
 
 

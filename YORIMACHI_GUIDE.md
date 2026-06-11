@@ -55,6 +55,9 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 
 # 寄り町 UI 用 JS 生成
 .\.venv\Scripts\python.exe .\build_yorimachi.py
+
+# 手選り町の追加（stations_index から hub を付与）
+.\.venv\Scripts\python.exe .\tools\expand_towns_curated.py
 ```
 
 ## 実装状況
@@ -63,7 +66,7 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 |------|------|------|
 | 0 | 本ガイド・名称 | ✅ |
 | 1 | N02 → `rail_graph.json` | ✅（344 nodes / MVP+私鉄拡張） |
-| 2 | `data/towns.json`（28町） | ✅ |
+| 2 | `data/towns.json`（手選り95町＋駅周辺自動） | ✅ |
 | 3 | `yorimachi.html` Step 1 | ✅ |
 | 4 | Step 2 時間選択 | ✅ |
 | 5 | Step 3 寄り町候補 | ✅ |
@@ -71,6 +74,7 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 | 7 | おすすめの時間帯フィルタ（選んだ時間 ±5 分） | ✅ |
 | 8 | 結果画面マップ（ルート・町中心） | ✅ |
 | 9 | Trends Phase1（いま話題・今日の1町・today_hints） | ✅ |
+| 10 | 町拡張（95手選り＋駅周辺 tier）・候補12件＋もっと見る・シャッフル | ✅ |
 
 ### カテゴリ（Step 3）
 
@@ -80,6 +84,15 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 | いま話題 | Google Trends 前日比（TD）が高い順（`trends_key` がある町のみ） |
 | すぐ行ける | 出発地からの移動が短い順（「近場」ではなく移動時間の短さ） |
 | のんびり | 風味タグに「のんびり」を含む町 |
+
+### 町マスタ（tier）
+
+| tier | 意味 |
+|------|------|
+| `curated` | `towns.json` の手選り町（tagline・風味あり） |
+| `station` | `build_yorimachi.py` が未カバー駅から自動付与（駅周辺） |
+
+Step 3 は初回 **12 件**表示、「もっと見る」で追加、「候補をシャッフル」で並び替え。手選り町を優先して表示。
 
 ### Google Trends（Phase 1）
 

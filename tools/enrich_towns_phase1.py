@@ -267,8 +267,20 @@ towns["note"] = (
     "today_hints は Google Trends 前日比で切り替え。"
 )
 for town in towns["towns"]:
-    extra = META[town["id"]]
-    town.update(extra)
+    extra = META.get(town["id"])
+    if extra:
+        town.update(extra)
+    elif not town.get("today_hints"):
+        name = town.get("name", "このエリア")
+        tagline = town.get("tagline", "")
+        town.setdefault(
+            "today_hints",
+            {
+                "default": tagline or f"{name}を散歩",
+                "high_td": "話題のスポットをチェック",
+                "low_td": "路地をのんびり歩く",
+            },
+        )
 
 TOWNS_PATH.write_text(json.dumps(towns, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(f"Updated {len(towns['towns'])} towns")

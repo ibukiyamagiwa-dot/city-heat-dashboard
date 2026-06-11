@@ -170,7 +170,16 @@
       transition: border-color .15s, background .15s;
     }
     .town-card:hover { border-color: var(--accent); background: var(--accent-light); }
+    .town-card.station { border-style: dashed; background: #fafcfb; }
+    .town-card.station .town-tagline { font-size: 12px; }
     .town-name { font-size: 17px; font-weight: 700; }
+    .btn-more-towns {
+      width: 100%; margin-top: 4px; padding: 12px;
+      border: 2px dashed var(--border); border-radius: 14px;
+      background: #fff; color: var(--accent); font-weight: 700;
+      font-size: 14px; cursor: pointer;
+    }
+    .btn-more-towns:hover { border-color: var(--accent); background: var(--accent-light); }
     .town-tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
     .town-meta { font-size: 12px; color: var(--accent); margin-top: 6px; font-weight: 700; }
     .empty-msg {
@@ -284,6 +293,9 @@
           <button class="btn" id="pickRandomBtn" type="button">今日の1町（ふらっと）</button>
           <button class="btn" id="pickHotBtn" type="button" style="background:#40916c;">今日の1町（話題）</button>
         </div>
+        <div class="pick-row">
+          <button class="btn-secondary" id="shuffleListBtn" type="button">候補をシャッフル</button>
+        </div>
 
         <div class="category-row wrap" id="categoryRow"></div>
         <div class="town-list" id="townList"></div>
@@ -365,11 +377,14 @@
       { id: "quick", label: "すぐ行ける" },
       { id: "relaxed", label: "のんびり" },
     ];
+    const LIST_INITIAL = 12;
+    const LIST_EXPAND_STEP = 24;
 
     let selectedId = null;
     let selectedMinutes = null;
     let selectedCategory = "recommend";
     let reachableTowns = [];
+    let listDisplayLimit = LIST_INITIAL;
     const adj = buildAdj(DATA.graph_edges || []);
 
     const step1Screen = document.getElementById("step1Screen");
@@ -408,6 +423,7 @@
     const resultModelNote = document.getElementById("resultModelNote");
     const pickRandomBtn = document.getElementById("pickRandomBtn");
     const pickHotBtn = document.getElementById("pickHotBtn");
+    const shuffleListBtn = document.getElementById("shuffleListBtn");
     const resultTrendBadge = document.getElementById("resultTrendBadge");
     const resultTodayHint = document.getElementById("resultTodayHint");
     const resultTodayHintText = document.getElementById("resultTodayHintText");
@@ -515,29 +531,58 @@
       return results;
     }
 
+    function tierRank(town) {
+      return town.tier === "station" ? 1 : 0;
+    }
+
+    function diversifySort(items, categoryId, selected) {
+      const keyed = items.map((item) => ({
+        item,
+        jitter: Math.random(),
+      }));
+      if (categoryId === "recommend") {
+        keyed.sort((a, b) => {
+          const da = Math.abs(a.item.minutes - selected);
+          const db = Math.abs(b.item.minutes - selected);
+          if (da !== db) return da - db;
+          const tr = tierRank(a.item.town) - tierRank(b.item.town);
+          if (tr !== 0) return tr;
+          return a.jitter - b.jitter;
+        });
+      } else if (categoryId === "quick" || categoryId === "relaxed") {
+        keyed.sort((a, b) => {
+          if (a.item.minutes !== b.item.minutes) return a.item.minutes - b.item.minutes;
+          const tr = tierRank(a.item.town) - tierRank(b.item.town);
+          if (tr !== 0) return tr;
+          return a.jitter - b.jitter;
+        });
+      } else if (categoryId === "hot") {
+        keyed.sort((a, b) => {
+          const ta = a.item.town.trends?.td ?? -999;
+          const tb = b.item.town.trends?.td ?? -999;
+          if (ta !== tb) return tb - ta;
+          return a.jitter - b.jitter;
+        });
+      }
+      return keyed.map((k) => k.item);
+    }
+
     function pickCategory(list, categoryId, selected) {
       if (!list.length) return [];
       const [fitLo, fitHi] = timeFitRange(selected);
+      let filtered = list;
       if (categoryId === "recommend") {
-        const fitted = list.filter((item) => item.minutes >= fitLo && item.minutes <= fitHi);
-        return [...fitted]
-          .sort((a, b) => Math.abs(a.minutes - selected) - Math.abs(b.minutes - selected))
-          .slice(0, 8);
+        filtered = list.filter((item) => item.minutes >= fitLo && item.minutes <= fitHi);
+      } else if (categoryId === "quick") {
+        filtered = list.filter((item) => item.minutes <= selected);
+      } else if (categoryId === "hot") {
+        filtered = list.filter((item) => item.town.trends && item.town.trends.td != null);
+      } else if (categoryId === "relaxed") {
+        filtered = list
+          .filter((item) => item.minutes <= selected)
+          .filter((item) => (item.town.flavors || []).includes("のんびり"));
       }
-      if (categoryId === "quick") {
-        const within = list.filter((item) => item.minutes <= selected);
-        return [...within].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
-      }
-      if (categoryId === "hot") {
-        const withTd = list.filter((item) => item.town.trends && item.town.trends.td != null);
-        return [...withTd].sort((a, b) => b.town.trends.td - a.town.trends.td).slice(0, 8);
-      }
-      if (categoryId === "relaxed") {
-        const within = list.filter((item) => item.minutes <= selected);
-        const filtered = within.filter((item) => (item.town.flavors || []).includes("のんびり"));
-        return [...filtered].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
-      }
-      return [];
+      return diversifySort(filtered, categoryId, selected);
     }
 
     function trendBadgeHtml(trends) {
@@ -568,6 +613,7 @@
     function pickRandomTown(mode) {
       const pool = recommendPool(reachableTowns, selectedMinutes);
       if (!pool.length) return null;
+      const curated = pool.filter((item) => item.town.tier !== "station");
       if (mode === "hot") {
         const weighted = pool.filter((item) => item.town.trends && item.town.trends.td != null);
         const source = weighted.length ? weighted : pool;
@@ -585,7 +631,8 @@
         }
         return source[source.length - 1];
       }
-      return pool[Math.floor(Math.random() * pool.length)];
+      const source = curated.length && Math.random() < 0.75 ? curated : pool;
+      return source[Math.floor(Math.random() * source.length)];
     }
 
     function formatRoute(path) {
@@ -713,16 +760,18 @@
       if (screen === 3) {
         step3FromName.textContent = byId[selectedId].name;
         step3Minutes.textContent = `${selectedMinutes} 分`;
+        listDisplayLimit = LIST_INITIAL;
         reachableTowns = computeReachable(selectedId, selectedMinutes);
         renderTownList();
       }
     }
 
     function renderTownList() {
-      const items = pickCategory(reachableTowns, selectedCategory, selectedMinutes);
+      const allItems = pickCategory(reachableTowns, selectedCategory, selectedMinutes);
+      const items = allItems.slice(0, listDisplayLimit);
       const [fitLo, fitHi] = timeFitRange(selectedMinutes);
       townList.innerHTML = "";
-      if (!items.length) {
+      if (!allItems.length) {
         let hint = "この条件では寄れる町がありません。";
         if (selectedCategory === "recommend") {
           hint = `おすすめは移動 ${fitLo}〜${fitHi} 分程度の町を表示します。`;
@@ -735,21 +784,37 @@
         items.forEach((item) => {
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = "town-card";
+          const isStation = item.town.tier === "station";
+          btn.className = isStation ? "town-card station" : "town-card";
           const flavors = (item.town.flavors || []).slice(0, 3).join("・");
           const transferHint = item.transfers > 0 ? ` · 乗換${item.transfers}` : "";
+          const tierHint = isStation ? " · 駅周辺" : "";
           btn.innerHTML =
             `<div class="town-name">${item.town.name}</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
-            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${flavors ? ` · ${flavors}` : ""}</div>` +
+            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${tierHint}${flavors ? ` · ${flavors}` : ""}</div>` +
             trendBadgeHtml(item.town.trends);
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
+        if (allItems.length > listDisplayLimit) {
+          const moreBtn = document.createElement("button");
+          moreBtn.type = "button";
+          moreBtn.className = "btn-more-towns";
+          const remain = allItems.length - listDisplayLimit;
+          moreBtn.textContent = `もっと見る（あと ${remain} 件）`;
+          moreBtn.addEventListener("click", () => {
+            listDisplayLimit = Math.min(allItems.length, listDisplayLimit + LIST_EXPAND_STEP);
+            renderTownList();
+          });
+          townList.appendChild(moreBtn);
+        }
       }
       const cat = CATEGORIES.find((c) => c.id === selectedCategory);
+      const townsMeta = DATA.towns_meta || {};
+      const curatedN = townsMeta.curated || "—";
       step3Meta.textContent =
-        `表示 ${items.length} 件 · ${cat.label} · おすすめは ${fitLo}〜${fitHi} 分 · 全 ${reachableTowns.length} 町が到達可能`;
+        `表示 ${items.length}/${allItems.length} 件 · ${cat.label} · おすすめ ${fitLo}〜${fitHi} 分 · 到達 ${reachableTowns.length} 件（手選り ${curatedN} ＋駅周辺）`;
     }
 
     function showResult(item) {
@@ -788,6 +853,7 @@
 
     function selectCategory(id) {
       selectedCategory = id;
+      listDisplayLimit = LIST_INITIAL;
       document.querySelectorAll(".category-btn").forEach((btn) => {
         btn.classList.toggle("selected", btn.dataset.id === id);
       });
@@ -921,6 +987,10 @@
     pickHotBtn.addEventListener("click", () => {
       const pick = pickRandomTown("hot");
       if (pick) showResult(pick);
+    });
+    shuffleListBtn.addEventListener("click", () => {
+      listDisplayLimit = LIST_INITIAL;
+      renderTownList();
     });
 
     CATEGORIES.forEach((cat) => {
