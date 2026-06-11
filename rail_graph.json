@@ -1,6 +1,6 @@
 {
   "version": "0.1",
-  "note": "TOKYO CLIMB 用の鉄道グラフ。JR山手線30駅を骨格に、分岐用の接続駅7駅と乗換1回以内の簡略エッジを追加した複線グラフ。座標は駅中心の近似値（手動定義）。乗降客数などの統計値は本ファイルでは扱わない。",
+  "note": "TOKYO CLIMB 用の鉄道グラフ。JR山手線30駅を骨格に、分岐用7駅＋東西線・副都心線・半蔵門線（簡略11駅）を追加した複線グラフ。座標は駅中心の近似値（手動定義）。乗降客数などの統計値は本ファイルでは扱わない。",
   "source_note": "駅位置は国土数値情報（駅データ）相当の近似座標を手動転記したプロトタイプ用マスタ。本実装では国土数値情報 鉄道データ（N02系）からの自動生成に置き換える。",
   "nodes": [
     { "id": "tokyo",           "name": "東京",       "lat": 35.6812, "lon": 139.7671, "line": "山手線", "outdoor": false },
@@ -40,7 +40,21 @@
     { "id": "omotesando",      "name": "表参道",     "lat": 35.6652, "lon": 139.7126, "line": "銀座線", "outdoor": true },
     { "id": "roppongi",        "name": "六本木",     "lat": 35.6627, "lon": 139.7314, "line": "日比谷線", "outdoor": false },
     { "id": "ginza",           "name": "銀座",       "lat": 35.6717, "lon": 139.7636, "line": "銀座線", "outdoor": false },
-    { "id": "nakameguro",      "name": "中目黒",     "lat": 35.6443, "lon": 139.6991, "line": "東急東横線", "outdoor": true }
+    { "id": "nakameguro",      "name": "中目黒",     "lat": 35.6443, "lon": 139.6991, "line": "東急東横線", "outdoor": true },
+
+    { "id": "waseda",          "name": "早稲田",     "lat": 35.7058, "lon": 139.7217, "line": "東西線", "outdoor": false },
+    { "id": "kudanshita",      "name": "九段下",     "lat": 35.6956, "lon": 139.7514, "line": "東西線", "outdoor": false },
+    { "id": "nihombashi",      "name": "日本橋",     "lat": 35.6819, "lon": 139.7742, "line": "東西線", "outdoor": false },
+    { "id": "kayabacho",       "name": "茅場町",     "lat": 35.6799, "lon": 139.7858, "line": "東西線", "outdoor": false },
+    { "id": "monzen_nakacho",  "name": "門前仲町",   "lat": 35.6728, "lon": 139.7965, "line": "東西線", "outdoor": true },
+    { "id": "toyosu",          "name": "豊洲",       "lat": 35.6534, "lon": 139.7967, "line": "東西線", "outdoor": false },
+
+    { "id": "shinjuku_sanchome", "name": "新宿三丁目", "lat": 35.6906, "lon": 139.7047, "line": "副都心線", "outdoor": false },
+    { "id": "nagatacho",       "name": "永田町",     "lat": 35.6787, "lon": 139.7404, "line": "副都心線", "outdoor": false },
+
+    { "id": "aoyama_itchome",  "name": "青山一丁目", "lat": 35.6726, "lon": 139.7239, "line": "半蔵門線", "outdoor": true },
+    { "id": "kinshicho",       "name": "錦糸町",     "lat": 35.6964, "lon": 139.8149, "line": "半蔵門線", "outdoor": false },
+    { "id": "oshiage",         "name": "押上",       "lat": 35.7103, "lon": 139.8107, "line": "半蔵門線", "outdoor": true }
   ],
   "edges": [
     { "from": "tokyo",           "to": "kanda",           "line": "山手線" },
@@ -92,6 +106,28 @@
     { "from": "roppongi",   "to": "ginza",      "line": "日比谷線（簡略）" },
     { "from": "roppongi",   "to": "yoyogi",     "line": "大江戸線（簡略）" },
     { "from": "roppongi",   "to": "hamamatsucho", "line": "大江戸線（簡略）" },
-    { "from": "shibuya",    "to": "nakameguro", "line": "東急東横線" }
+    { "from": "shibuya",    "to": "nakameguro", "line": "東急東横線" },
+
+    { "from": "takadanobaba",   "to": "waseda",         "line": "東西線" },
+    { "from": "waseda",         "to": "iidabashi",      "line": "東西線" },
+    { "from": "iidabashi",      "to": "kudanshita",     "line": "東西線" },
+    { "from": "kudanshita",     "to": "nihombashi",     "line": "東西線" },
+    { "from": "nihombashi",     "to": "kayabacho",      "line": "東西線" },
+    { "from": "kayabacho",      "to": "monzen_nakacho", "line": "東西線" },
+    { "from": "monzen_nakacho", "to": "toyosu",         "line": "東西線" },
+    { "from": "nihombashi",     "to": "ginza",          "line": "東西線（乗換・簡略）" },
+    { "from": "kudanshita",     "to": "ochanomizu",     "line": "東西線（乗換・簡略）" },
+
+    { "from": "ikebukuro",         "to": "shinjuku_sanchome", "line": "副都心線" },
+    { "from": "shinjuku_sanchome", "to": "shinjuku",          "line": "副都心線" },
+    { "from": "yotsuya",           "to": "nagatacho",         "line": "副都心線" },
+    { "from": "nagatacho",         "to": "shibuya",           "line": "副都心線" },
+
+    { "from": "omotesando",     "to": "aoyama_itchome", "line": "半蔵門線" },
+    { "from": "aoyama_itchome", "to": "nagatacho",      "line": "半蔵門線" },
+    { "from": "nagatacho",      "to": "kudanshita",     "line": "半蔵門線" },
+    { "from": "kudanshita",     "to": "kinshicho",      "line": "半蔵門線（簡略）" },
+    { "from": "kinshicho",      "to": "oshiage",        "line": "半蔵門線" },
+    { "from": "monzen_nakacho", "to": "kinshicho",      "line": "東西・半蔵門（乗換・簡略）" }
   ]
 }

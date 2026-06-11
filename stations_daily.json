@@ -1,26 +1,33 @@
 {
   "generated_at": "2026-06-11",
-  "weather_mode": "cache",
-  "td_fetch_status": "live",
+  "weather_mode": "open-meteo",
+  "td_fetch_status": "cache",
   "td_definition": "TD = 駅別クエリ（td_queries.yaml）の日次関心 M の前日比（%）。trends: M=Google Trends 日次関心（0-100・geo=JP）。manual: M=X検索件数（td_counts.csv）。dummy: シード生成のダミー値。",
   "type_thresholds": {
-    "high": "TD > +30.0%",
-    "mid": "+10.0% < TD <= +30.0%",
-    "mystery": "-10.0% <= TD <= +10.0% またはデータ薄（trends: 関心0 / manual: 5件未満 / dummy: 60件未満）またはデータなし",
-    "low": "TD < -10.0%"
+    "high": "TD > +8.0%",
+    "mid": "+3.0% < TD <= +8.0%",
+    "mystery": "-3.0% <= TD <= +3.0% またはデータなし（tier B 等）",
+    "low": "TD < -3.0%"
   },
+  "type_thresholds_note": "各日の td_mode に応じた閾値は days[].type_thresholds を参照",
   "trust_level": "low",
   "days": [
     {
       "date": "2026-06-09",
       "td_mode": "trends",
+      "type_thresholds": {
+        "high": "TD > +8.0%",
+        "mid": "+3.0% < TD <= +8.0%",
+        "mystery": "-3.0% <= TD <= +3.0% またはデータなし（tier B 等）",
+        "low": "TD < -3.0%"
+      },
       "weather": {
         "summary": "雨",
         "icon": "🌧️",
         "temperature_c": 19.9,
         "temperature_max_c": 21.0,
         "precipitation_mm": 17.3,
-        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
+        "source": "Open-Meteo（日別・東京駅周辺）",
         "trust_level": "high",
         "is_rain": true
       },
@@ -83,7 +90,7 @@
           "td": 4.8,
           "mention_count": 66,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "uguisudani",
@@ -179,7 +186,7 @@
           "td": -4.6,
           "mention_count": 62,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "mejiro",
@@ -227,7 +234,7 @@
           "td": 6.2,
           "mention_count": 69,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "yoyogi",
@@ -251,7 +258,7 @@
           "td": -4.0,
           "mention_count": 48,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "shibuya",
@@ -263,7 +270,7 @@
           "td": 5.1,
           "mention_count": 62,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "ebisu",
@@ -275,7 +282,7 @@
           "td": 6.1,
           "mention_count": 70,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "meguro",
@@ -383,7 +390,7 @@
           "td": 8.2,
           "mention_count": 66,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "high"
         },
         {
           "id": "ochanomizu",
@@ -431,7 +438,7 @@
           "td": 7.0,
           "mention_count": 61,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "roppongi",
@@ -443,7 +450,7 @@
           "td": 3.3,
           "mention_count": 63,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "ginza",
@@ -455,7 +462,7 @@
           "td": 14.7,
           "mention_count": 78,
           "td_source": "trends",
-          "type": "mid"
+          "type": "high"
         },
         {
           "id": "nakameguro",
@@ -468,19 +475,157 @@
           "mention_count": 59,
           "td_source": "trends",
           "type": "mystery"
+        },
+        {
+          "id": "waseda",
+          "name": "早稲田",
+          "lat": 35.7058,
+          "lon": 139.7217,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kudanshita",
+          "name": "九段下",
+          "lat": 35.6956,
+          "lon": 139.7514,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nihombashi",
+          "name": "日本橋",
+          "lat": 35.6819,
+          "lon": 139.7742,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kayabacho",
+          "name": "茅場町",
+          "lat": 35.6799,
+          "lon": 139.7858,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "monzen_nakacho",
+          "name": "門前仲町",
+          "lat": 35.6728,
+          "lon": 139.7965,
+          "line": "東西線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "toyosu",
+          "name": "豊洲",
+          "lat": 35.6534,
+          "lon": 139.7967,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "shinjuku_sanchome",
+          "name": "新宿三丁目",
+          "lat": 35.6906,
+          "lon": 139.7047,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nagatacho",
+          "name": "永田町",
+          "lat": 35.6787,
+          "lon": 139.7404,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "aoyama_itchome",
+          "name": "青山一丁目",
+          "lat": 35.6726,
+          "lon": 139.7239,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kinshicho",
+          "name": "錦糸町",
+          "lat": 35.6964,
+          "lon": 139.8149,
+          "line": "半蔵門線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "oshiage",
+          "name": "押上",
+          "lat": 35.7103,
+          "lon": 139.8107,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
         }
       ]
     },
     {
       "date": "2026-06-10",
       "td_mode": "trends",
+      "type_thresholds": {
+        "high": "TD > +8.0%",
+        "mid": "+3.0% < TD <= +8.0%",
+        "mystery": "-3.0% <= TD <= +3.0% またはデータなし（tier B 等）",
+        "low": "TD < -3.0%"
+      },
       "weather": {
         "summary": "雨",
         "icon": "🌧️",
         "temperature_c": 19.9,
         "temperature_max_c": 21.7,
         "precipitation_mm": 0.2,
-        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
+        "source": "Open-Meteo（日別・東京駅周辺）",
         "trust_level": "high",
         "is_rain": false
       },
@@ -543,7 +688,7 @@
           "td": 4.5,
           "mention_count": 69,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "uguisudani",
@@ -687,7 +832,7 @@
           "td": -8.7,
           "mention_count": 63,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "yoyogi",
@@ -723,7 +868,7 @@
           "td": -4.8,
           "mention_count": 59,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "ebisu",
@@ -735,7 +880,7 @@
           "td": -10.0,
           "mention_count": 63,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "meguro",
@@ -747,7 +892,7 @@
           "td": -4.0,
           "mention_count": 72,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "gotanda",
@@ -891,7 +1036,7 @@
           "td": -3.3,
           "mention_count": 59,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "roppongi",
@@ -903,7 +1048,7 @@
           "td": -3.2,
           "mention_count": 61,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "ginza",
@@ -915,7 +1060,7 @@
           "td": -7.7,
           "mention_count": 72,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "nakameguro",
@@ -927,6 +1072,138 @@
           "td": -6.8,
           "mention_count": 55,
           "td_source": "trends",
+          "type": "low"
+        },
+        {
+          "id": "waseda",
+          "name": "早稲田",
+          "lat": 35.7058,
+          "lon": 139.7217,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kudanshita",
+          "name": "九段下",
+          "lat": 35.6956,
+          "lon": 139.7514,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nihombashi",
+          "name": "日本橋",
+          "lat": 35.6819,
+          "lon": 139.7742,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kayabacho",
+          "name": "茅場町",
+          "lat": 35.6799,
+          "lon": 139.7858,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "monzen_nakacho",
+          "name": "門前仲町",
+          "lat": 35.6728,
+          "lon": 139.7965,
+          "line": "東西線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "toyosu",
+          "name": "豊洲",
+          "lat": 35.6534,
+          "lon": 139.7967,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "shinjuku_sanchome",
+          "name": "新宿三丁目",
+          "lat": 35.6906,
+          "lon": 139.7047,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nagatacho",
+          "name": "永田町",
+          "lat": 35.6787,
+          "lon": 139.7404,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "aoyama_itchome",
+          "name": "青山一丁目",
+          "lat": 35.6726,
+          "lon": 139.7239,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kinshicho",
+          "name": "錦糸町",
+          "lat": 35.6964,
+          "lon": 139.8149,
+          "line": "半蔵門線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "oshiage",
+          "name": "押上",
+          "lat": 35.7103,
+          "lon": 139.8107,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
           "type": "mystery"
         }
       ]
@@ -934,13 +1211,19 @@
     {
       "date": "2026-06-11",
       "td_mode": "trends",
+      "type_thresholds": {
+        "high": "TD > +8.0%",
+        "mid": "+3.0% < TD <= +8.0%",
+        "mystery": "-3.0% <= TD <= +3.0% またはデータなし（tier B 等）",
+        "low": "TD < -3.0%"
+      },
       "weather": {
         "summary": "くもり",
         "icon": "☁️",
         "temperature_c": 21.6,
         "temperature_max_c": 26.1,
         "precipitation_mm": 0.0,
-        "source": "Open-Meteo（日別・東京駅周辺）（前回取得キャッシュ）",
+        "source": "Open-Meteo（日別・東京駅周辺）",
         "trust_level": "high",
         "is_rain": false
       },
@@ -979,7 +1262,7 @@
           "td": -4.8,
           "mention_count": 60,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "okachimachi",
@@ -1003,7 +1286,7 @@
           "td": -7.2,
           "mention_count": 64,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "uguisudani",
@@ -1171,7 +1454,7 @@
           "td": 4.1,
           "mention_count": 51,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "shibuya",
@@ -1183,7 +1466,7 @@
           "td": 3.4,
           "mention_count": 61,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "ebisu",
@@ -1195,7 +1478,7 @@
           "td": 6.3,
           "mention_count": 67,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "meguro",
@@ -1243,7 +1526,7 @@
           "td": -6.4,
           "mention_count": 73,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "low"
         },
         {
           "id": "takanawagateway",
@@ -1351,7 +1634,7 @@
           "td": 11.9,
           "mention_count": 66,
           "td_source": "trends",
-          "type": "mid"
+          "type": "high"
         },
         {
           "id": "roppongi",
@@ -1363,7 +1646,7 @@
           "td": 4.9,
           "mention_count": 64,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "mid"
         },
         {
           "id": "ginza",
@@ -1375,7 +1658,7 @@
           "td": 8.3,
           "mention_count": 78,
           "td_source": "trends",
-          "type": "mystery"
+          "type": "high"
         },
         {
           "id": "nakameguro",
@@ -1387,6 +1670,138 @@
           "td": 9.1,
           "mention_count": 60,
           "td_source": "trends",
+          "type": "high"
+        },
+        {
+          "id": "waseda",
+          "name": "早稲田",
+          "lat": 35.7058,
+          "lon": 139.7217,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kudanshita",
+          "name": "九段下",
+          "lat": 35.6956,
+          "lon": 139.7514,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nihombashi",
+          "name": "日本橋",
+          "lat": 35.6819,
+          "lon": 139.7742,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kayabacho",
+          "name": "茅場町",
+          "lat": 35.6799,
+          "lon": 139.7858,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "monzen_nakacho",
+          "name": "門前仲町",
+          "lat": 35.6728,
+          "lon": 139.7965,
+          "line": "東西線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "toyosu",
+          "name": "豊洲",
+          "lat": 35.6534,
+          "lon": 139.7967,
+          "line": "東西線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "shinjuku_sanchome",
+          "name": "新宿三丁目",
+          "lat": 35.6906,
+          "lon": 139.7047,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "nagatacho",
+          "name": "永田町",
+          "lat": 35.6787,
+          "lon": 139.7404,
+          "line": "副都心線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "aoyama_itchome",
+          "name": "青山一丁目",
+          "lat": 35.6726,
+          "lon": 139.7239,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "kinshicho",
+          "name": "錦糸町",
+          "lat": 35.6964,
+          "lon": 139.8149,
+          "line": "半蔵門線",
+          "outdoor": false,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
+          "type": "mystery"
+        },
+        {
+          "id": "oshiage",
+          "name": "押上",
+          "lat": 35.7103,
+          "lon": 139.8107,
+          "line": "半蔵門線",
+          "outdoor": true,
+          "td": null,
+          "mention_count": 0,
+          "td_source": "none",
           "type": "mystery"
         }
       ]

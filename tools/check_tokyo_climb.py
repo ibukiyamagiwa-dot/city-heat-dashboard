@@ -22,6 +22,8 @@ for e in graph["edges"]:
     adj[e["from"]].append(e["to"])
     adj[e["to"]].append(e["from"])
 
+RUN_HOPS = 12
+
 day = daily["days"][-1]
 # 手動モードの未入力駅は td が None になるため、ボス候補から実質除外する
 td = {s["id"]: (s["td"] if s["td"] is not None else -999) for s in day["stations"]}
@@ -41,7 +43,13 @@ def bfs(src):
 
 def pick_boss(start):
     dist = bfs(start)
-    for lo, hi in [(6, 10), (5, 12), (4, 99)]:
+    for lo, hi in [
+        (RUN_HOPS, RUN_HOPS),
+        (RUN_HOPS - 1, RUN_HOPS + 1),
+        (RUN_HOPS - 2, RUN_HOPS + 2),
+        (RUN_HOPS - 3, RUN_HOPS + 3),
+        (6, 99),
+    ]:
         cands = [i for i in adj if i != start and lo <= dist.get(i, 999) <= hi]
         if cands:
             return max(cands, key=lambda i: td[i]), dist
@@ -49,11 +57,11 @@ def pick_boss(start):
 
 
 def build_dag(S, B):
-    for extra in (2, 4, 6):
+    for extra in (2, 4, 6, 8):
         dag = build_dag_with_slack(S, B, extra)
         if dag:
             n_branch = sum(1 for l in dag["layers"] if len(l) >= 2)
-            if n_branch >= 2 or extra == 6:
+            if n_branch >= 2 or extra == 8:
                 return dag
     return None
 
@@ -90,7 +98,7 @@ def build_dag_with_slack(S, B, extra):
     groups: dict[int, list] = {}
     for p in paths:
         groups.setdefault(len(p) - 1, []).append(p)
-    best_len = max(groups, key=lambda ln: (min(len(groups[ln]), 8), -abs(ln - 8)))
+    best_len = max(groups, key=lambda ln: (min(len(groups[ln]), 8), -abs(ln - RUN_HOPS)))
     ps = groups[best_len]
     T = best_len
 

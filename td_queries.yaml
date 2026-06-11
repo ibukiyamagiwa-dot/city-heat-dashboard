@@ -24,6 +24,8 @@ changelog:
     note: "B-2a: M の定義を Google Trends 日次関心に移行（tier A 自動取得）。手動は上書き用に残す"
   - date: "2026-06-11"
     note: "初版。全37駅に基本クエリ「<駅名>駅」を定義。tier A 15駅を選定"
+  - date: "2026-06-11"
+    note: "東西線・副都心線・半蔵門線 簡略11駅を追加（tier B）。グラフ計48駅"
 
 stations:
   # ---- tier A（毎日入力する15駅） ----
@@ -66,3 +68,16 @@ stations:
   ochanomizu:      { tier: B, queries: ["御茶ノ水駅"] }
   yotsuya:         { tier: B, queries: ["四ツ谷駅"] }
   iidabashi:       { tier: B, queries: ["飯田橋駅"] }
+
+  # ---- 東西線・副都心線・半蔵門線（簡略追加） ----
+  waseda:            { tier: B, queries: ["早稲田駅"] }
+  kudanshita:        { tier: B, queries: ["九段下駅"] }
+  nihombashi:        { tier: B, queries: ["日本橋駅"] }
+  kayabacho:         { tier: B, queries: ["茅場町駅"] }
+  monzen_nakacho:    { tier: B, queries: ["門前仲町駅"] }
+  toyosu:            { tier: B, queries: ["豊洲駅"] }
+  shinjuku_sanchome: { tier: B, queries: ["新宿三丁目駅"] }
+  nagatacho:         { tier: B, queries: ["永田町駅"], note: "官庁街・地名ノイズに注意" }
+  aoyama_itchome:    { tier: B, queries: ["青山一丁目駅"] }
+  kinshicho:         { tier: B, queries: ["錦糸町駅"] }
+  oshiage:           { tier: B, queries: ["押上駅"], note: "スカイツリーと同名エリア" }

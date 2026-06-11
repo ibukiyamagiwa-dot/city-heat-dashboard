@@ -46,9 +46,13 @@ TRENDS_TIMEFRAME = "today 1-m"
 TRENDS_GEO = "JP"
 
 # ノードタイプ閾値（卒論で固定する定義。tokyo_climb.html 側と一致させること）
-TD_HIGH = 30.0       # TD > +30%        → high
+TD_HIGH = 30.0       # dummy/manual: TD > +30%        → high
 TD_MID = 10.0        # +10% < TD ≤ +30% → mid
 TD_LOW = -10.0       # TD < -10%        → low / その間 → mystery
+# Google Trends 日次前日比は変動が小さいため、別閾値を使う（B-2a）
+TRENDS_TD_HIGH = 8.0
+TRENDS_TD_MID = 3.0
+TRENDS_TD_LOW = -3.0
 MENTION_MIN_DUMMY = 60   # ダミーTD: 言及がこの件数未満の駅は mystery 固定
 MENTION_MIN_MANUAL = 5   # 手動TD: 観測窓1時間・上限50件のスケールに合わせた下限
 MENTION_MIN_TRENDS = 1   # Trends: 関心値0はデータ薄として mystery
@@ -165,16 +169,47 @@ def node_degree(graph: dict) -> dict[str, int]:
     return deg
 
 
-def classify(td: float | None, mentions: int, mention_min: int) -> str:
+def classify(
+    td: float | None,
+    mentions: int,
+    mention_min: int,
+    *,
+    high: float = TD_HIGH,
+    mid: float = TD_MID,
+    low: float = TD_LOW,
+) -> str:
     if td is None or mentions < mention_min:
         return "mystery"
-    if td > TD_HIGH:
+    if td > high:
         return "high"
-    if td > TD_MID:
+    if td > mid:
         return "mid"
-    if td < TD_LOW:
+    if td < low:
         return "low"
     return "mystery"
+
+
+def type_thresholds_for_mode(mode: str) -> dict[str, str]:
+    if mode == "trends":
+        return {
+            "high": f"TD > +{TRENDS_TD_HIGH}%",
+            "mid": f"+{TRENDS_TD_MID}% < TD <= +{TRENDS_TD_HIGH}%",
+            "mystery": (
+                f"-{abs(TRENDS_TD_LOW)}% <= TD <= +{TRENDS_TD_MID}% "
+                "またはデータなし（tier B 等）"
+            ),
+            "low": f"TD < {TRENDS_TD_LOW}%",
+        }
+    return {
+        "high": f"TD > +{TD_HIGH}%",
+        "mid": f"+{TD_MID}% < TD <= +{TD_HIGH}%",
+        "mystery": (
+            f"-{abs(TD_LOW)}% <= TD <= +{TD_MID}% "
+            f"またはデータ薄（manual: {MENTION_MIN_MANUAL}件未満 / "
+            f"dummy: {MENTION_MIN_DUMMY}件未満）またはデータなし"
+        ),
+        "low": f"TD < {TD_LOW}%",
+    }
 
 
 def load_td_counts(path: Path) -> dict[tuple[str, str], int]:
@@ -363,7 +398,10 @@ def build_day(
             else:
                 td = round((cur - prev_val) / max(prev_val, 1) * 100.0, 1)
                 mentions, source = cur, "trends"
-            node_type = classify(td, mentions, MENTION_MIN_TRENDS)
+            node_type = classify(
+                td, mentions, MENTION_MIN_TRENDS,
+                high=TRENDS_TD_HIGH, mid=TRENDS_TD_MID, low=TRENDS_TD_LOW,
+            )
         elif use_trends:
             td, mentions, source = None, 0, "none"
             node_type = "mystery"
@@ -388,6 +426,7 @@ def build_day(
     return {
         "date": day_str,
         "td_mode": td_mode,
+        "type_thresholds": type_thresholds_for_mode(td_mode),
         "weather": {
             **weather,
             "is_rain": weather["precipitation_mm"] >= 1.0,
@@ -461,16 +500,8 @@ def main() -> None:
             "manual: M=X検索件数（td_counts.csv）。"
             "dummy: シード生成のダミー値。"
         ),
-        "type_thresholds": {
-            "high": f"TD > +{TD_HIGH}%",
-            "mid": f"+{TD_MID}% < TD <= +{TD_HIGH}%",
-            "mystery": (
-                f"-{abs(TD_LOW)}% <= TD <= +{TD_MID}% "
-                f"またはデータ薄（trends: 関心0 / manual: {MENTION_MIN_MANUAL}件未満 / "
-                f"dummy: {MENTION_MIN_DUMMY}件未満）またはデータなし"
-            ),
-            "low": f"TD < {TD_LOW}%",
-        },
+        "type_thresholds": type_thresholds_for_mode(days[-1]["td_mode"]),
+        "type_thresholds_note": "各日の td_mode に応じた閾値は days[].type_thresholds を参照",
         "trust_level": "low",
         "days": days,
     }

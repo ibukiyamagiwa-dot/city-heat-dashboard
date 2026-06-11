@@ -204,6 +204,20 @@
       text-decoration: underline; text-underline-offset: 3px;
     }
     .text-btn:hover { color: var(--text); }
+    .tutorial-steps {
+      text-align: left; margin: 12px 0 4px; padding: 0; list-style: none;
+    }
+    .tutorial-steps li {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-bottom: 10px; font-size: 14px; color: var(--text); line-height: 1.5;
+    }
+    .tutorial-steps .step-num {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 999px;
+      background: var(--accent-strong); color: #fff; font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tutorial-actions { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+    .tutorial-actions .btn { width: 100%; margin-top: 0; }
     .tutorial-overlay {
       position: fixed; inset: 0; z-index: 10000;
       background: rgba(15,23,42,.55); display: flex; align-items: center; justify-content: center;
@@ -232,13 +246,20 @@
 <body>
   <div id="bossFlash" class="boss-flash" aria-hidden="true"></div>
 
-  <div id="tutorialOverlay" class="tutorial-overlay hidden">
-    <div class="tutorial-card">
-      <h2>🗼 今日の東京を登る</h2>
-      <p>駅の<strong>色</strong>は話題の変化（TD）だけで決まります。</p>
-      <p>地図で<strong>スタート</strong> → 分岐を選んで<strong>ボス駅</strong>へ。</p>
-      <button class="btn" id="tutorialStart" type="button">始める</button>
-      <button class="btn secondary" id="tutorialHelp" type="button">データの説明</button>
+  <div id="tutorialOverlay" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+    <div class="tutorial-card" id="tutorialCard">
+      <h2 id="tutorialTitle">🗼 遊び方</h2>
+      <ol class="tutorial-steps">
+        <li><span class="step-num">1</span><span>地図で<strong>スタート駅</strong>をタップ（色＝話題の変化 TD）</span></li>
+        <li><span class="step-num">2</span><span>今日の<strong>ボス駅</strong>が決まる。分岐マップか下の候補から<strong>次の駅</strong>を選ぶ</span></li>
+        <li><span class="step-num">3</span><span>ボスに到達したら<strong>シェア</strong>。⚡ボルテージ／💧消耗は道中の結果</span></li>
+      </ol>
+      <p class="muted" style="font-size:12px;margin:8px 0 0;">灰色❓＝データなし（tier B 駅など）</p>
+      <div class="tutorial-actions">
+        <button class="btn" id="tutorialStart" type="button">始める</button>
+        <button class="btn secondary" id="tutorialClose" type="button">閉じる</button>
+        <button class="btn secondary" id="tutorialHelp" type="button">データの説明</button>
+      </div>
     </div>
   </div>
 
@@ -248,8 +269,8 @@
       <div class="header-row">
         <h1>🗼 TOKYO CLIMB</h1>
         <span class="spacer"></span>
-        <button type="button" class="text-btn" id="tutorialBtn">チュートリアル</button>
-        <button class="icon-btn" id="helpBtn" type="button" title="チュートリアル">?</button>
+        <button type="button" class="btn secondary" id="tutorialBtn" style="padding:6px 12px;font-size:13px;">📖 チュートリアル</button>
+        <button class="icon-btn" id="helpBtn" type="button" title="チュートリアルを見る">?</button>
         <span class="badge" id="weatherBadge">--</span>
         <span class="badge" id="tdBadge">--</span>
         <span id="dayTabs"></span>
@@ -272,10 +293,10 @@
           <div class="legend-wrap">
             <button type="button" class="legend-toggle" id="legendToggle">凡例を見る</button>
             <div class="legend" id="legend">
-              <span><span class="dot" style="background:var(--high)"></span>急上昇</span>
-              <span><span class="dot" style="background:var(--mid)"></span>上昇</span>
-              <span><span class="dot" style="background:var(--low)"></span>静か</span>
-              <span><span class="dot" style="background:var(--mystery)"></span>❓ 未知</span>
+              <span id="legendHigh"><span class="dot" style="background:var(--high)"></span>急上昇</span>
+              <span id="legendMid"><span class="dot" style="background:var(--mid)"></span>上昇</span>
+              <span id="legendLow"><span class="dot" style="background:var(--low)"></span>静か</span>
+              <span id="legendMystery"><span class="dot" style="background:var(--mystery)"></span>❓ 未知</span>
             </div>
           </div>
         </section>
@@ -360,6 +381,9 @@
     }
     function tdVal(s) { return s.td == null ? -999 : s.td; }
 
+    /** 1ランの目標ホップ数（スタート→ボスまでの層数） */
+    const RUN_HOPS = 12;
+
     // ---------- グラフ準備 ----------
     const nodeById = {};
     GRAPH.nodes.forEach((n) => { nodeById[n.id] = n; });
@@ -423,6 +447,19 @@
       document.getElementById("tutorialOverlay").classList.add("hidden");
     }
 
+    function updateLegendLabels() {
+      const th = dayData().type_thresholds || DATA.daily.type_thresholds || {};
+      const fmt = (id, short, key) => {
+        const el = document.getElementById(id);
+        if (!el || !th[key]) return;
+        el.childNodes[1].textContent = ` ${short}（${th[key]}）`;
+      };
+      fmt("legendHigh", "急上昇", "high");
+      fmt("legendMid", "上昇", "mid");
+      fmt("legendLow", "静か", "low");
+      fmt("legendMystery", "❓ 横ばい/未知", "mystery");
+    }
+
     function updatePhaseUI() {
       const idx = PHASE_ORDER.indexOf(phase);
       document.querySelectorAll(".phase-step").forEach((el) => {
@@ -477,7 +514,13 @@
     // ---------- ボス決定 ----------
     function pickBoss(start) {
       const dist = bfs(start);
-      const bands = [[6, 10], [5, 12], [4, 99]];
+      const bands = [
+        [RUN_HOPS, RUN_HOPS],
+        [RUN_HOPS - 1, RUN_HOPS + 1],
+        [RUN_HOPS - 2, RUN_HOPS + 2],
+        [RUN_HOPS - 3, RUN_HOPS + 3],
+        [6, 99],
+      ];
       for (const [lo, hi] of bands) {
         const cands = GRAPH.nodes
           .map((n) => n.id)
@@ -499,11 +542,11 @@
     // 同じ長さの経路群を束ねて「各層2〜3択」のDAGを作る。
     // それでも分岐が足りなければ探索範囲を +4, +6 と広げて再試行する。
     function buildDag(S, B) {
-      for (const extra of [2, 4, 6]) {
+      for (const extra of [2, 4, 6, 8]) {
         const dag = buildDagWithSlack(S, B, extra);
         if (dag) {
           const branchLayers = dag.layers.filter((l) => l.length >= 2).length;
-          if (branchLayers >= 2 || extra === 6) return dag;
+          if (branchLayers >= 2 || extra === 8) return dag;
         }
       }
       return null;
@@ -535,7 +578,7 @@
       })(S, [S]);
       if (!paths.length) return null;
 
-      // 経路を長さでグループ化し、「本数が多く、層数が8に近い」グループを採用
+      // 経路を長さでグループ化し、「本数が多く、層数が RUN_HOPS に近い」グループを採用
       const groups = new Map();
       for (const p of paths) {
         const len = p.length - 1;
@@ -544,7 +587,7 @@
       }
       let best = null;
       for (const [len, ps] of groups) {
-        const score = [Math.min(ps.length, 8), -Math.abs(len - 8)];
+        const score = [Math.min(ps.length, 8), -Math.abs(len - RUN_HOPS)];
         if (!best || score[0] > best.score[0] ||
             (score[0] === best.score[0] && score[1] > best.score[1])) {
           best = { len, ps, score };
@@ -791,6 +834,7 @@
         dummy: "TD: ダミー",
       };
       document.getElementById("tdBadge").textContent = tdLabels[tdMode] || "TD: --";
+      updateLegendLabels();
       updatePhaseUI();
     }
 
@@ -896,17 +940,20 @@
       document.getElementById("resetBtn").onclick = resetRun;
 
       const overlay = document.getElementById("tutorialOverlay");
+      const card = document.getElementById("tutorialCard");
       if (!localStorage.getItem(TUTORIAL_KEY)) openTutorial();
       document.getElementById("tutorialStart").onclick = () => closeTutorial(true);
+      document.getElementById("tutorialClose").onclick = () => closeTutorial(false);
       document.getElementById("tutorialHelp").onclick = () => {
-        closeTutorial(true);
+        closeTutorial(false);
         document.getElementById("footerDetails").hidden = false;
         document.getElementById("footerToggle").setAttribute("aria-expanded", "true");
         document.getElementById("footerToggle").textContent = "データについて ▴";
         document.querySelector("footer.panel").scrollIntoView({ behavior: "smooth" });
       };
+      card.addEventListener("click", (e) => e.stopPropagation());
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) closeTutorial(true);
+        if (e.target === overlay) closeTutorial(false);
       });
       document.getElementById("tutorialBtn").onclick = openTutorial;
       document.getElementById("helpBtn").onclick = openTutorial;
