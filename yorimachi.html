@@ -4,6 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>寄り町 YORIMACHI — 空いた時間に、寄れる町を。</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
   <style>
     :root {
       --bg: #f4f7f5;
@@ -175,6 +181,22 @@
       border-radius: 999px; background: var(--accent-light);
       color: var(--accent); border: 1px solid #b7e4c7;
     }
+    #resultMap {
+      width: 100%; height: 220px; margin-bottom: 14px;
+      border-radius: 12px; border: 1px solid var(--border);
+      background: #eef2ef;
+    }
+    .map-legend {
+      display: flex; flex-wrap: wrap; gap: 10px 14px;
+      font-size: 11px; color: var(--muted); margin-bottom: 10px;
+    }
+    .map-legend span::before {
+      content: ""; display: inline-block; width: 10px; height: 10px;
+      border-radius: 50%; margin-right: 5px; vertical-align: -1px;
+    }
+    .map-legend .lg-start::before { background: var(--accent); }
+    .map-legend .lg-hub::before { background: #40916c; }
+    .map-legend .lg-town::before { background: #b7e4c7; border: 1px solid var(--accent); }
     .meta { font-size: 12px; color: var(--muted); margin-top: 12px; }
     footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
     footer a { color: var(--accent); }
@@ -257,6 +279,13 @@
           <p id="resultTownTagline">—</p>
         </div>
 
+        <div class="map-legend">
+          <span class="lg-start">出発駅</span>
+          <span class="lg-hub">代表駅</span>
+          <span class="lg-town">町の中心</span>
+        </div>
+        <div id="resultMap" aria-label="ルート地図"></div>
+
         <div class="route-box">
           <span class="route-label">だいたいのルート</span>
           <span id="resultRoute">—</span>
@@ -264,6 +293,7 @@
         </div>
 
         <div class="flavor-tags" id="resultFlavors"></div>
+        <p class="meta" id="resultModelNote"></p>
 
         <button class="btn-secondary" id="backToStep3Btn" type="button">別の町を見る</button>
         <button class="btn-secondary" id="restartBtn" type="button">最初からやり直す</button>
@@ -279,6 +309,11 @@
   </div>
 
   <script src="yorimachi_data.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
   <script>
     "use strict";
     const DATA = window.YORIMACHI_DATA;
@@ -339,6 +374,10 @@
     const resultFlavors = document.getElementById("resultFlavors");
     const backToStep3Btn = document.getElementById("backToStep3Btn");
     const restartBtn = document.getElementById("restartBtn");
+    const resultModelNote = document.getElementById("resultModelNote");
+
+    let resultMap = null;
+    let resultMapLayers = [];
 
     const byId = {};
     stations.forEach((s) => { byId[s.id] = s; });
@@ -465,6 +504,97 @@
       return path.map((id) => byId[id]?.name || id).join(" → ");
     }
 
+    function initResultMap() {
+      if (resultMap) return;
+      resultMap = L.map("resultMap", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
+      L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル</a>',
+      }).addTo(resultMap);
+    }
+
+    function clearResultMapLayers() {
+      if (!resultMap) return;
+      resultMapLayers.forEach((layer) => resultMap.removeLayer(layer));
+      resultMapLayers = [];
+    }
+
+    function updateResultMap(item) {
+      initResultMap();
+      clearResultMapLayers();
+
+      const path = item.path || [];
+      const latlngs = path
+        .map((id) => byId[id])
+        .filter(Boolean)
+        .map((s) => [s.lat, s.lon]);
+
+      if (latlngs.length >= 2) {
+        const routeLine = L.polyline(latlngs, {
+          color: "#2d6a4f",
+          weight: 4,
+          opacity: 0.9,
+        }).addTo(resultMap);
+        resultMapLayers.push(routeLine);
+      }
+
+      const start = byId[selectedId];
+      if (start) {
+        const startM = L.circleMarker([start.lat, start.lon], {
+          radius: 8,
+          color: "#fff",
+          weight: 2,
+          fillColor: "#2d6a4f",
+          fillOpacity: 1,
+        })
+          .bindTooltip(`出発: ${start.name}`, { direction: "top" })
+          .addTo(resultMap);
+        resultMapLayers.push(startM);
+      }
+
+      const hub = byId[item.town.hub_node_id];
+      if (hub && hub.id !== selectedId) {
+        const hubM = L.circleMarker([hub.lat, hub.lon], {
+          radius: 7,
+          color: "#fff",
+          weight: 2,
+          fillColor: "#40916c",
+          fillOpacity: 1,
+        })
+          .bindTooltip(`代表駅: ${hub.name}`, { direction: "top" })
+          .addTo(resultMap);
+        resultMapLayers.push(hubM);
+      }
+
+      const townLat = item.town.lat;
+      const townLon = item.town.lon;
+      if (townLat && townLon) {
+        if (hub) {
+          const walkLine = L.polyline(
+            [[hub.lat, hub.lon], [townLat, townLon]],
+            { color: "#95d5b2", weight: 2, dashArray: "6 6", opacity: 0.85 },
+          ).addTo(resultMap);
+          resultMapLayers.push(walkLine);
+        }
+        const townM = L.circleMarker([townLat, townLon], {
+          radius: 10,
+          color: "#2d6a4f",
+          weight: 3,
+          fillColor: "#d8f3dc",
+          fillOpacity: 1,
+        })
+          .bindTooltip(`${item.town.name}（町）`, { direction: "top" })
+          .addTo(resultMap);
+        resultMapLayers.push(townM);
+      }
+
+      const bounds = L.latLngBounds(latlngs.length ? latlngs : [[35.685, 139.74]]);
+      if (townLat && townLon) bounds.extend([townLat, townLon]);
+      resultMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 14 });
+
+      setTimeout(() => resultMap.invalidateSize(), 150);
+    }
+
     function setStepLabels(activeStep) {
       const labels = [step1Label, step2Label, step3Label];
       labels.forEach((el, i) => {
@@ -547,7 +677,11 @@
         span.textContent = f;
         resultFlavors.appendChild(span);
       });
+      resultModelNote.textContent =
+        "地図の破線は代表駅から町中心への目安。所要時間は距離ベースの簡略モデル（乗換 +"
+        + `${TRANSFER_PENALTY} 分/回）で、実際の運行・混雑とは異なる場合があります。`;
       showScreen(4);
+      updateResultMap(item);
     }
 
     function selectCategory(id) {
