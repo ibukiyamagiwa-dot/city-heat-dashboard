@@ -33,7 +33,7 @@ from requests.exceptions import HTTPError
 from trendspy import Trends
 
 BASE_DIR = Path(__file__).resolve().parent
-GRAPH_PATH = BASE_DIR / "rail_graph.json"
+GRAPH_PATH = BASE_DIR / "rail_graph_v01.json"
 DAILY_JSON_PATH = BASE_DIR / "stations_daily.json"
 DATA_JS_PATH = BASE_DIR / "tokyo_climb_data.js"
 TD_CSV_PATH = BASE_DIR / "td_counts.csv"

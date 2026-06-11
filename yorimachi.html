@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>寄り町 YORIMACHI — 空いた時間に、寄れる町を。</title>
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --panel: #ffffff;
+      --border: #d5ddd8;
+      --text: #1f2d28;
+      --muted: #5f6f66;
+      --accent: #2d6a4f;
+      --accent-light: #d8f3dc;
+      --shadow: 0 10px 28px rgba(45, 106, 79, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(216, 243, 220, .7), transparent 35%),
+        linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.75rem; margin: 0; letter-spacing: .06em; }
+    .sub { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 16px;
+      margin-top: 16px;
+      box-shadow: var(--shadow);
+    }
+    .steps {
+      display: flex; gap: 6px; margin-top: 18px;
+    }
+    .step {
+      flex: 1; text-align: center; font-size: 11px; font-weight: 700;
+      padding: 8px 4px; border-radius: 999px; color: var(--muted);
+      background: #eef2ef; border: 1px solid var(--border);
+    }
+    .step.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .step.done { background: var(--accent-light); color: var(--accent); }
+    label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .search-wrap { position: relative; }
+    #search {
+      width: 100%; font: inherit; font-size: 16px;
+      border: 2px solid var(--border); border-radius: 12px;
+      padding: 12px 14px; background: #fff;
+    }
+    #search:focus { outline: none; border-color: var(--accent); }
+    #suggestions {
+      list-style: none; margin: 6px 0 0; padding: 0;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: #fff; max-height: 220px; overflow-y: auto;
+      display: none;
+    }
+    #suggestions.open { display: block; }
+    #suggestions li {
+      padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    #suggestions li:last-child { border-bottom: none; }
+    #suggestions li:hover, #suggestions li.active { background: var(--accent-light); }
+    #suggestions .lines { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .shortcut-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;
+    }
+    .shortcut-btn {
+      font: inherit; font-size: 15px; font-weight: 700;
+      border: 2px solid var(--border); border-radius: 12px;
+      background: #fff; padding: 14px 12px; cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .shortcut-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .shortcut-btn.selected {
+      border-color: var(--accent); background: var(--accent-light); color: var(--accent);
+    }
+    .selected-box {
+      margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+      background: var(--accent-light); border: 1px solid #b7e4c7;
+      font-size: 14px; display: none;
+    }
+    .selected-box.show { display: block; }
+    .btn {
+      display: block; width: 100%; margin-top: 16px;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 12px; padding: 14px; font: inherit;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+    }
+    .btn:disabled { opacity: .4; cursor: default; }
+    .meta { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>寄り町</h1>
+      <p class="sub">空いた時間に、寄れる町を。</p>
+      <nav class="steps" aria-label="進行ステップ">
+        <span class="step active" id="step1Label">1. 出発</span>
+        <span class="step" id="step2Label">2. 時間</span>
+        <span class="step" id="step3Label">3. 寄り町</span>
+      </nav>
+    </header>
+
+    <section class="panel" id="step1Panel">
+      <label for="search">どこから出る？</label>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="駅名・エリアで検索" autocomplete="off" />
+        <ul id="suggestions" role="listbox"></ul>
+      </div>
+
+      <p class="meta" style="margin-top:14px;margin-bottom:0;">よく使うエリア</p>
+      <div class="shortcut-grid" id="shortcuts"></div>
+
+      <div class="selected-box" id="selectedBox">
+        出発: <strong id="selectedName">—</strong>
+      </div>
+
+      <button class="btn" id="nextBtn" type="button" disabled>時間を選ぶ（準備中）</button>
+      <p class="meta">Step 2・3 は次の実装予定です。</p>
+    </section>
+
+    <footer>
+      <p>鉄道データ: 国土数値情報 N02（<code>rail_graph.json</code>）</p>
+      <p><a href="YORIMACHI_GUIDE.md">YORIMACHI_GUIDE.md</a> ／
+         <a href="index.html">研究概要</a> ／
+         <a href="tokyo_climb.html">TOKYO CLIMB（試作）</a></p>
+    </footer>
+  </div>
+
+  <script src="yorimachi_data.js"></script>
+  <script>
+    "use strict";
+    const DATA = window.YORIMACHI_DATA;
+    const stations = DATA.stations;
+    const shortcuts = DATA.departure_shortcuts;
+
+    let selectedId = null;
+
+    const searchEl = document.getElementById("search");
+    const suggestEl = document.getElementById("suggestions");
+    const shortcutsEl = document.getElementById("shortcuts");
+    const selectedBox = document.getElementById("selectedBox");
+    const selectedName = document.getElementById("selectedName");
+    const nextBtn = document.getElementById("nextBtn");
+
+    const byId = {};
+    stations.forEach((s) => { byId[s.id] = s; });
+
+    function normalize(q) {
+      return (q || "").trim().toLowerCase();
+    }
+
+    function filterStations(q) {
+      const n = normalize(q);
+      if (!n) return [];
+      return stations
+        .filter((s) => s.name.includes(q) || s.slug.includes(n) || (s.lines || []).some((l) => l.includes(q)))
+        .slice(0, 12);
+    }
+
+    function selectStation(id) {
+      const s = byId[id];
+      if (!s) return;
+      selectedId = id;
+      selectedName.textContent = s.name;
+      selectedBox.classList.add("show");
+      searchEl.value = s.name;
+      suggestEl.classList.remove("open");
+      suggestEl.innerHTML = "";
+      document.querySelectorAll(".shortcut-btn").forEach((btn) => {
+        btn.classList.toggle("selected", btn.dataset.id === id);
+      });
+      nextBtn.disabled = false;
+    }
+
+    function renderSuggestions(list) {
+      suggestEl.innerHTML = "";
+      if (!list.length) {
+        suggestEl.classList.remove("open");
+        return;
+      }
+      list.forEach((s, i) => {
+        const li = document.createElement("li");
+        li.role = "option";
+        li.dataset.id = s.id;
+        if (i === 0) li.classList.add("active");
+        const lineHint = (s.lines || []).slice(0, 2).join("・");
+        li.innerHTML = `${s.name}<div class="lines">${lineHint || "—"}</div>`;
+        li.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          selectStation(s.id);
+        });
+        suggestEl.appendChild(li);
+      });
+      suggestEl.classList.add("open");
+    }
+
+    searchEl.addEventListener("input", () => {
+      renderSuggestions(filterStations(searchEl.value));
+    });
+    searchEl.addEventListener("focus", () => {
+      if (searchEl.value) renderSuggestions(filterStations(searchEl.value));
+    });
+    searchEl.addEventListener("blur", () => {
+      setTimeout(() => suggestEl.classList.remove("open"), 150);
+    });
+
+    shortcuts.forEach((sc) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "shortcut-btn";
+      btn.dataset.id = sc.node_id;
+      btn.textContent = sc.label;
+      btn.addEventListener("click", () => selectStation(sc.node_id));
+      shortcutsEl.appendChild(btn);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!selectedId) return;
+      alert(`Step 2（時間選択）は準備中です。\n出発: ${byId[selectedId].name}`);
+    });
+
+    const stats = DATA.graph_meta && DATA.graph_meta.stats;
+    if (stats) {
+      document.querySelector(".meta:last-of-type").textContent +=
+        ` ／ 駅ノード ${stats.nodes}・路線エッジ ${stats.edges}`;
+    }
+  </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ from collections import deque
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
-graph = json.loads((BASE / "rail_graph.json").read_text(encoding="utf-8"))
+graph = json.loads((BASE / "rail_graph_v01.json").read_text(encoding="utf-8"))
 daily = json.loads((BASE / "stations_daily.json").read_text(encoding="utf-8"))
 
 adj: dict[str, list[str]] = {n["id"]: [] for n in graph["nodes"]}

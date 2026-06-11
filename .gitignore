@@ -11,3 +11,7 @@ __pycache__/
 
 # Cursor local metadata
 .cursor/
+
+# N02 raw downloads (large; regenerate with build_rail_graph.py --fetch)
+data/raw/n02/*.zip
+data/raw/n02/N02-*/
