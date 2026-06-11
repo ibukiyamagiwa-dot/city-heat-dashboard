@@ -349,7 +349,7 @@
       <button type="button" class="footer-toggle" id="footerToggle" aria-expanded="false">データについて ▾</button>
       <div id="footerDetails" hidden>
         <ul>
-          <li>TD = Google Trends 日次関心の前日比%（tier A 15駅・信頼度 low）。詳細は <code>TD_DATA_GUIDE.md</code></li>
+          <li>TD = Google Trends 日次関心の前日比%（tier A 37駅＝山手30＋分岐7・信頼度 low）。詳細は <code>TD_DATA_GUIDE.md</code></li>
           <li>天気 = Open-Meteo（消耗演出のみ・TDには混ぜない）</li>
           <li>地図 = 地理院タイル。駅座標はプロトタイプ用近似値。</li>
         </ul>
@@ -654,6 +654,22 @@
     }
 
     // ---------- UI: 地図 ----------
+    function lineColor(line) {
+      const lbl = line || "";
+      if (lbl.includes("山手")) return "#e60012";
+      if (lbl.includes("東西")) return "#00a7db";
+      if (lbl.includes("副都心")) return "#9b7cb6";
+      if (lbl.includes("半蔵門")) return "#8f76d6";
+      if (lbl.includes("銀座")) return "#f39700";
+      if (lbl.includes("日比谷")) return "#b5b5ac";
+      if (lbl.includes("中央")) return "#f15a22";
+      if (lbl.includes("有楽町")) return "#c1a470";
+      if (lbl.includes("東横")) return "#da0442";
+      if (lbl.includes("大江戸")) return "#b6007a";
+      if (lbl.includes("徒歩")) return "#94a3b8";
+      return "#cbd5e1";
+    }
+
     function initMap() {
       map = L.map("map", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
       L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
@@ -662,7 +678,13 @@
       }).addTo(map);
       GRAPH.edges.forEach((e) => {
         const a = nodeById[e.from], b = nodeById[e.to];
-        L.polyline([[a.lat, a.lon], [b.lat, b.lon]], { color: "#cbd5e1", weight: 2, opacity: .8 }).addTo(map);
+        const isTransfer = e.line.includes("簡略") || e.line.includes("乗換") || e.line.includes("徒歩");
+        L.polyline([[a.lat, a.lon], [b.lat, b.lon]], {
+          color: lineColor(e.line),
+          weight: isTransfer ? 2 : 3,
+          opacity: isTransfer ? 0.45 : 0.85,
+          dashArray: isTransfer ? "6 4" : null,
+        }).addTo(map);
       });
       GRAPH.nodes.forEach((n) => {
         const m = L.circleMarker([n.lat, n.lon], { radius: 7, color: "#fff", weight: 2, fillOpacity: .95 })

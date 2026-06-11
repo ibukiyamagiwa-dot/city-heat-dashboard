@@ -4,7 +4,7 @@
 rail_graph.json を読み込み、直近3日分のデータを生成する。
   - 天気: Open-Meteo の日別データ（過去2日＋今日）。取得失敗時はダミーにフォールバック
   - TD（Topic Delta: 話題の前日比%）: 日付ごとに自動でモードを切り替える
-      trends … Google Trends 日次関心（tier A 15駅を trendspy で自動取得。既定）
+      trends … Google Trends 日次関心（tier A 駅を trendspy で自動取得。既定）
       manual … td_counts.csv にその日の行がある（手動観測。TD_DATA_GUIDE.md）
       dummy  … trends 取得失敗かつキャッシュなし（日付＋駅IDシードのダミー値）
 

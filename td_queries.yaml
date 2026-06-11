@@ -9,7 +9,7 @@
 # クエリを変更した場合は必ず changelog に追記すること（監査可能性の担保）。
 #
 # tier:
-#   A = 毎日入力する優先駅（15駅）
+#   A = 毎日 Trends 自動取得（山手線30駅 + 主要分岐7駅 = 37駅）
 #   B = 余力があれば入力する駅（未入力の日は「未知（❓）」ノードになる）
 
 policy:
@@ -26,58 +26,64 @@ changelog:
     note: "初版。全37駅に基本クエリ「<駅名>駅」を定義。tier A 15駅を選定"
   - date: "2026-06-11"
     note: "東西線・副都心線・半蔵門線 簡略11駅を追加（tier B）。グラフ計48駅"
+  - date: "2026-06-11"
+    note: "豊洲・押上・錦糸町を tier A に昇格（18駅）。東側新路線の TD 色付き対象"
+  - date: "2026-06-11"
+    note: "山手線30駅すべてを tier A に昇格（計37駅 = 山手30 + 銀座・六本木・表参道・中目黒・豊洲・錦糸町・押上）"
 
 stations:
-  # ---- tier A（毎日入力する15駅） ----
-  shinjuku:      { tier: A, queries: ["新宿駅"] }
-  shibuya:       { tier: A, queries: ["渋谷駅"] }
-  ikebukuro:     { tier: A, queries: ["池袋駅"] }
-  tokyo:         { tier: A, queries: ["東京駅"], note: "「東京」単独は地名として広すぎるため駅名のみ" }
-  ueno:          { tier: A, queries: ["上野駅"] }
-  akihabara:     { tier: A, queries: ["秋葉原駅"] }
-  shinagawa:     { tier: A, queries: ["品川駅"] }
-  harajuku:      { tier: A, queries: ["原宿駅"] }
-  ebisu:         { tier: A, queries: ["恵比寿駅"], note: "ビール銘柄と同名のため「駅」付きで観測" }
-  meguro:        { tier: A, queries: ["目黒駅"] }
+  # ---- tier A: 山手線30駅（環状・上野→東京方向） ----
+  ueno:            { tier: A, queries: ["上野駅"] }
+  uguisudani:      { tier: A, queries: ["鶯谷駅"] }
+  nippori:         { tier: A, queries: ["日暮里駅"] }
+  nishinippori:    { tier: A, queries: ["西日暮里駅"] }
+  tabata:          { tier: A, queries: ["田端駅"] }
+  komagome:        { tier: A, queries: ["駒込駅"] }
+  sugamo:          { tier: A, queries: ["巣鴨駅"] }
+  otsuka:          { tier: A, queries: ["大塚駅"], note: "人名と紛れやすい" }
+  ikebukuro:       { tier: A, queries: ["池袋駅"] }
+  mejiro:          { tier: A, queries: ["目白駅"] }
+  takadanobaba:    { tier: A, queries: ["高田馬場駅"] }
+  shinokubo:       { tier: A, queries: ["新大久保駅"] }
+  shinjuku:        { tier: A, queries: ["新宿駅"] }
+  yoyogi:          { tier: A, queries: ["代々木駅"] }
+  harajuku:        { tier: A, queries: ["原宿駅"] }
+  shibuya:         { tier: A, queries: ["渋谷駅"] }
+  ebisu:           { tier: A, queries: ["恵比寿駅"], note: "ビール銘柄と同名のため「駅」付きで観測" }
+  meguro:          { tier: A, queries: ["目黒駅"] }
+  gotanda:         { tier: A, queries: ["五反田駅"] }
+  osaki:           { tier: A, queries: ["大崎駅"] }
+  shinagawa:       { tier: A, queries: ["品川駅"] }
+  takanawagateway: { tier: A, queries: ["高輪ゲートウェイ駅"] }
+  tamachi:         { tier: A, queries: ["田町駅"] }
+  hamamatsucho:    { tier: A, queries: ["浜松町駅"] }
+  shimbashi:       { tier: A, queries: ["新橋駅"] }
+  yurakucho:       { tier: A, queries: ["有楽町駅"] }
+  tokyo:           { tier: A, queries: ["東京駅"], note: "「東京」単独は地名として広すぎるため駅名のみ" }
+  kanda:           { tier: A, queries: ["神田駅"], note: "地名・人名と紛れやすい" }
+  akihabara:       { tier: A, queries: ["秋葉原駅"] }
+  okachimachi:     { tier: A, queries: ["御徒町駅"] }
+
+  # ---- tier A: 主要分岐7駅（山手線以外） ----
   ginza:         { tier: A, queries: ["銀座駅"] }
   roppongi:      { tier: A, queries: ["六本木駅"] }
   omotesando:    { tier: A, queries: ["表参道駅"] }
   nakameguro:    { tier: A, queries: ["中目黒駅"] }
-  yurakucho:     { tier: A, queries: ["有楽町駅"] }
+  toyosu:        { tier: A, queries: ["豊洲駅"] }
+  kinshicho:     { tier: A, queries: ["錦糸町駅"] }
+  oshiage:       { tier: A, queries: ["押上駅"], note: "スカイツリーと同名エリア" }
 
   # ---- tier B（任意） ----
-  kanda:           { tier: B, queries: ["神田駅"], note: "地名・人名と紛れやすい" }
-  okachimachi:     { tier: B, queries: ["御徒町駅"] }
-  uguisudani:      { tier: B, queries: ["鶯谷駅"] }
-  nippori:         { tier: B, queries: ["日暮里駅"] }
-  nishinippori:    { tier: B, queries: ["西日暮里駅"] }
-  tabata:          { tier: B, queries: ["田端駅"] }
-  komagome:        { tier: B, queries: ["駒込駅"] }
-  sugamo:          { tier: B, queries: ["巣鴨駅"] }
-  otsuka:          { tier: B, queries: ["大塚駅"], note: "人名と紛れやすい" }
-  mejiro:          { tier: B, queries: ["目白駅"] }
-  takadanobaba:    { tier: B, queries: ["高田馬場駅"] }
-  shinokubo:       { tier: B, queries: ["新大久保駅"] }
-  yoyogi:          { tier: B, queries: ["代々木駅"] }
-  gotanda:         { tier: B, queries: ["五反田駅"] }
-  osaki:           { tier: B, queries: ["大崎駅"] }
-  takanawagateway: { tier: B, queries: ["高輪ゲートウェイ駅"] }
-  tamachi:         { tier: B, queries: ["田町駅"] }
-  hamamatsucho:    { tier: B, queries: ["浜松町駅"] }
-  shimbashi:       { tier: B, queries: ["新橋駅"] }
   ochanomizu:      { tier: B, queries: ["御茶ノ水駅"] }
   yotsuya:         { tier: B, queries: ["四ツ谷駅"] }
   iidabashi:       { tier: B, queries: ["飯田橋駅"] }
 
-  # ---- 東西線・副都心線・半蔵門線（簡略追加） ----
+  # ---- 東西線・副都心線・半蔵門線（簡略・tier B） ----
   waseda:            { tier: B, queries: ["早稲田駅"] }
   kudanshita:        { tier: B, queries: ["九段下駅"] }
   nihombashi:        { tier: B, queries: ["日本橋駅"] }
   kayabacho:         { tier: B, queries: ["茅場町駅"] }
   monzen_nakacho:    { tier: B, queries: ["門前仲町駅"] }
-  toyosu:            { tier: B, queries: ["豊洲駅"] }
   shinjuku_sanchome: { tier: B, queries: ["新宿三丁目駅"] }
   nagatacho:         { tier: B, queries: ["永田町駅"], note: "官庁街・地名ノイズに注意" }
   aoyama_itchome:    { tier: B, queries: ["青山一丁目駅"] }
-  kinshicho:         { tier: B, queries: ["錦糸町駅"] }
-  oshiage:           { tier: B, queries: ["押上駅"], note: "スカイツリーと同名エリア" }

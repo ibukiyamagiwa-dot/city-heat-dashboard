@@ -46,7 +46,7 @@
     { "id": "kudanshita",      "name": "九段下",     "lat": 35.6956, "lon": 139.7514, "line": "東西線", "outdoor": false },
     { "id": "nihombashi",      "name": "日本橋",     "lat": 35.6819, "lon": 139.7742, "line": "東西線", "outdoor": false },
     { "id": "kayabacho",       "name": "茅場町",     "lat": 35.6799, "lon": 139.7858, "line": "東西線", "outdoor": false },
-    { "id": "monzen_nakacho",  "name": "門前仲町",   "lat": 35.6728, "lon": 139.7965, "line": "東西線", "outdoor": true },
+    { "id": "monzen_nakacho",  "name": "門前仲町",   "lat": 35.6728, "lon": 139.7965, "line": "東西線", "outdoor": false },
     { "id": "toyosu",          "name": "豊洲",       "lat": 35.6534, "lon": 139.7967, "line": "東西線", "outdoor": false },
 
     { "id": "shinjuku_sanchome", "name": "新宿三丁目", "lat": 35.6906, "lon": 139.7047, "line": "副都心線", "outdoor": false },
