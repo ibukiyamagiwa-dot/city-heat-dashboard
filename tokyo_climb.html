@@ -198,6 +198,12 @@
       width: 32px; height: 32px; font-size: 15px; font-weight: 700; cursor: pointer;
       color: var(--muted); line-height: 1;
     }
+    .text-btn {
+      background: none; border: none; padding: 0 4px; font: inherit;
+      font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer;
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .text-btn:hover { color: var(--text); }
     .tutorial-overlay {
       position: fixed; inset: 0; z-index: 10000;
       background: rgba(15,23,42,.55); display: flex; align-items: center; justify-content: center;
@@ -242,7 +248,8 @@
       <div class="header-row">
         <h1>🗼 TOKYO CLIMB</h1>
         <span class="spacer"></span>
-        <button class="icon-btn" id="helpBtn" type="button" title="凡例・データ説明">?</button>
+        <button type="button" class="text-btn" id="tutorialBtn">チュートリアル</button>
+        <button class="icon-btn" id="helpBtn" type="button" title="チュートリアル">?</button>
         <span class="badge" id="weatherBadge">--</span>
         <span class="badge" id="tdBadge">--</span>
         <span id="dayTabs"></span>
@@ -407,6 +414,14 @@
 
     function dayData() { return DAYS[dayIdx]; }
     function st(id) { return stationsToday[id]; }
+
+    function openTutorial() {
+      document.getElementById("tutorialOverlay").classList.remove("hidden");
+    }
+    function closeTutorial(markSeen) {
+      if (markSeen) localStorage.setItem(TUTORIAL_KEY, "1");
+      document.getElementById("tutorialOverlay").classList.add("hidden");
+    }
 
     function updatePhaseUI() {
       const idx = PHASE_ORDER.indexOf(phase);
@@ -881,19 +896,20 @@
       document.getElementById("resetBtn").onclick = resetRun;
 
       const overlay = document.getElementById("tutorialOverlay");
-      if (!localStorage.getItem(TUTORIAL_KEY)) overlay.classList.remove("hidden");
-      document.getElementById("tutorialStart").onclick = () => {
-        localStorage.setItem(TUTORIAL_KEY, "1");
-        overlay.classList.add("hidden");
-      };
+      if (!localStorage.getItem(TUTORIAL_KEY)) openTutorial();
+      document.getElementById("tutorialStart").onclick = () => closeTutorial(true);
       document.getElementById("tutorialHelp").onclick = () => {
-        localStorage.setItem(TUTORIAL_KEY, "1");
-        overlay.classList.add("hidden");
+        closeTutorial(true);
         document.getElementById("footerDetails").hidden = false;
         document.getElementById("footerToggle").setAttribute("aria-expanded", "true");
         document.getElementById("footerToggle").textContent = "データについて ▴";
         document.querySelector("footer.panel").scrollIntoView({ behavior: "smooth" });
       };
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeTutorial(true);
+      });
+      document.getElementById("tutorialBtn").onclick = openTutorial;
+      document.getElementById("helpBtn").onclick = openTutorial;
 
       const legend = document.getElementById("legend");
       const legendToggle = document.getElementById("legendToggle");
@@ -903,7 +919,6 @@
         legendToggle.textContent = open ? "凡例を閉じる" : "凡例を見る";
       }
       legendToggle.onclick = () => toggleLegend();
-      document.getElementById("helpBtn").onclick = () => toggleLegend(true);
 
       const footerToggle = document.getElementById("footerToggle");
       footerToggle.onclick = () => {
