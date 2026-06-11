@@ -70,14 +70,23 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 | 6 | 路線拡張・距離ベース所要時間・乗換ペナルティ | ✅ |
 | 7 | おすすめの時間帯フィルタ（選んだ時間 ±5 分） | ✅ |
 | 8 | 結果画面マップ（ルート・町中心） | ✅ |
+| 9 | Trends Phase1（いま話題・今日の1町・today_hints） | ✅ |
 
 ### カテゴリ（Step 3）
 
 | 表示名 | 意味 |
 |--------|------|
 | おすすめ | 選んだ移動時間の前後 ±5 分に収まる町（例: 30 分 → 25〜35 分） |
+| いま話題 | Google Trends 前日比（TD）が高い順（`trends_key` がある町のみ） |
 | すぐ行ける | 出発地からの移動が短い順（「近場」ではなく移動時間の短さ） |
 | のんびり | 風味タグに「のんびり」を含む町 |
+
+### Google Trends（Phase 1）
+
+- `towns.json`: `trends_query`, `trends_key`, `today_hints`
+- `build_yorimachi.py`: `td_trends_cache.json` から TD を付与
+- UI: 「今日の1町（ふらっと／話題）」、結果の「今日やること」
+- 信頼度 low・`trends_key` は駅・近傍の代理指標
 
 ## 関連 URL
 

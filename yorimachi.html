@@ -144,6 +144,24 @@
     .category-btn.selected {
       border-color: var(--accent); background: var(--accent); color: #fff;
     }
+    .category-row.wrap { flex-wrap: wrap; }
+    .category-row.wrap .category-btn { flex: 1 1 calc(33% - 6px); min-width: 88px; }
+    .pick-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .pick-row .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 12px 8px; }
+    .trend-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 999px; margin-top: 6px;
+    }
+    .trend-badge.hot { background: #ffe5d9; color: #9a3412; border: 1px solid #fdba74; }
+    .trend-badge.up { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .trend-badge.calm { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .trend-badge.neutral { background: #f0f4f2; color: var(--muted); border: 1px solid var(--border); }
+    .trend-badge.unknown { background: #f8fafc; color: #94a3b8; border: 1px dashed #cbd5e1; }
+    .today-hint {
+      margin-top: 12px; padding: 12px 14px; border-radius: 12px;
+      background: #fffbeb; border: 1px solid #fde68a; font-size: 14px;
+    }
+    .today-hint strong { color: #92400e; }
     .town-list { display: flex; flex-direction: column; gap: 8px; }
     .town-card {
       width: 100%; text-align: left; font: inherit;
@@ -262,7 +280,12 @@
         <label>今日の寄り町</label>
         <p class="meta" style="margin-top:0;margin-bottom:12px;">ふらっと寄れる町から選ぶ</p>
 
-        <div class="category-row" id="categoryRow"></div>
+        <div class="pick-row">
+          <button class="btn" id="pickRandomBtn" type="button">今日の1町（ふらっと）</button>
+          <button class="btn" id="pickHotBtn" type="button" style="background:#40916c;">今日の1町（話題）</button>
+        </div>
+
+        <div class="category-row wrap" id="categoryRow"></div>
         <div class="town-list" id="townList"></div>
         <p class="meta" id="step3Meta"></p>
 
@@ -277,6 +300,11 @@
         <div class="result-town">
           <h2 id="resultTownName">—</h2>
           <p id="resultTownTagline">—</p>
+          <span class="trend-badge unknown" id="resultTrendBadge" style="display:none;"></span>
+        </div>
+
+        <div class="today-hint" id="resultTodayHint" style="display:none;">
+          今日やること: <strong id="resultTodayHintText">—</strong>
         </div>
 
         <div class="map-legend">
@@ -329,8 +357,11 @@
     const ROUTING = DATA.routing || {};
     const TRANSFER_PENALTY = ROUTING.transfer_penalty_minutes ?? 5;
     const FIT_MARGIN = ROUTING.time_fit_margin_minutes ?? 5;
+    const TRENDS_META = DATA.trends_meta || {};
+    const TREND_THRESH = TRENDS_META.thresholds || { hot: 8, up: 3, calm: -3 };
     const CATEGORIES = [
       { id: "recommend", label: "おすすめ" },
+      { id: "hot", label: "いま話題" },
       { id: "quick", label: "すぐ行ける" },
       { id: "relaxed", label: "のんびり" },
     ];
@@ -375,6 +406,11 @@
     const backToStep3Btn = document.getElementById("backToStep3Btn");
     const restartBtn = document.getElementById("restartBtn");
     const resultModelNote = document.getElementById("resultModelNote");
+    const pickRandomBtn = document.getElementById("pickRandomBtn");
+    const pickHotBtn = document.getElementById("pickHotBtn");
+    const resultTrendBadge = document.getElementById("resultTrendBadge");
+    const resultTodayHint = document.getElementById("resultTodayHint");
+    const resultTodayHintText = document.getElementById("resultTodayHintText");
 
     let resultMap = null;
     let resultMapLayers = [];
@@ -492,12 +528,64 @@
         const within = list.filter((item) => item.minutes <= selected);
         return [...within].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
       }
+      if (categoryId === "hot") {
+        const withTd = list.filter((item) => item.town.trends && item.town.trends.td != null);
+        return [...withTd].sort((a, b) => b.town.trends.td - a.town.trends.td).slice(0, 8);
+      }
       if (categoryId === "relaxed") {
         const within = list.filter((item) => item.minutes <= selected);
         const filtered = within.filter((item) => (item.town.flavors || []).includes("のんびり"));
         return [...filtered].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
       }
       return [];
+    }
+
+    function trendBadgeHtml(trends) {
+      if (!trends || trends.td == null) {
+        return `<span class="trend-badge unknown">検索データなし</span>`;
+      }
+      const td = trends.td;
+      const sign = td > 0 ? "+" : "";
+      const mood = trends.mood || "neutral";
+      const labels = { hot: "いま話題", up: "やや上昇", calm: "静かめ", neutral: "横ばい" };
+      return `<span class="trend-badge ${mood}">検索 ${sign}${td}% · ${labels[mood] || mood}</span>`;
+    }
+
+    function todayHintForTown(town) {
+      const hints = town.today_hints || {};
+      const t = town.trends;
+      if (!t || t.td == null) return hints.default || town.tagline;
+      if (t.mood === "hot" || t.mood === "up") return hints.high_td || hints.default || town.tagline;
+      if (t.mood === "calm") return hints.low_td || hints.default || town.tagline;
+      return hints.default || town.tagline;
+    }
+
+    function recommendPool(list, selected) {
+      const [fitLo, fitHi] = timeFitRange(selected);
+      return list.filter((item) => item.minutes >= fitLo && item.minutes <= fitHi);
+    }
+
+    function pickRandomTown(mode) {
+      const pool = recommendPool(reachableTowns, selectedMinutes);
+      if (!pool.length) return null;
+      if (mode === "hot") {
+        const weighted = pool.filter((item) => item.town.trends && item.town.trends.td != null);
+        const source = weighted.length ? weighted : pool;
+        let total = 0;
+        const weights = source.map((item) => {
+          const td = item.town.trends?.td ?? 0;
+          const w = Math.max(1, td + 10);
+          total += w;
+          return w;
+        });
+        let roll = Math.random() * total;
+        for (let i = 0; i < source.length; i++) {
+          roll -= weights[i];
+          if (roll <= 0) return source[i];
+        }
+        return source[source.length - 1];
+      }
+      return pool[Math.floor(Math.random() * pool.length)];
     }
 
     function formatRoute(path) {
@@ -635,10 +723,12 @@
       const [fitLo, fitHi] = timeFitRange(selectedMinutes);
       townList.innerHTML = "";
       if (!items.length) {
-        const hint =
-          selectedCategory === "recommend"
-            ? `おすすめは移動 ${fitLo}〜${fitHi} 分程度の町を表示します。`
-            : "この条件では寄れる町がありません。";
+        let hint = "この条件では寄れる町がありません。";
+        if (selectedCategory === "recommend") {
+          hint = `おすすめは移動 ${fitLo}〜${fitHi} 分程度の町を表示します。`;
+        } else if (selectedCategory === "hot") {
+          hint = "いま話題は Google Trends の前日比が高い町を表示します（データがある町のみ）。";
+        }
         townList.innerHTML =
           `<div class="empty-msg">${hint}<br>時間を変えるか、出発地を変えてください。</div>`;
       } else {
@@ -651,7 +741,8 @@
           btn.innerHTML =
             `<div class="town-name">${item.town.name}</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
-            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${flavors ? ` · ${flavors}` : ""}</div>`;
+            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${flavors ? ` · ${flavors}` : ""}</div>` +
+            trendBadgeHtml(item.town.trends);
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
@@ -667,6 +758,17 @@
         `今日の寄り町：${fromName} → ${item.town.name}（だいたい ${item.minutes} 分）`;
       resultTownName.textContent = item.town.name;
       resultTownTagline.textContent = item.town.tagline;
+      if (item.town.trends && item.town.trends.td != null) {
+        resultTrendBadge.style.display = "inline-block";
+        resultTrendBadge.className = `trend-badge ${item.town.trends.mood || "neutral"}`;
+        const sign = item.town.trends.td > 0 ? "+" : "";
+        resultTrendBadge.textContent = `Google検索 ${sign}${item.town.trends.td}%（${TRENDS_META.date || ""}）`;
+      } else {
+        resultTrendBadge.style.display = "none";
+      }
+      const hint = todayHintForTown(item.town);
+      resultTodayHint.style.display = "block";
+      resultTodayHintText.textContent = hint;
       resultRoute.textContent = formatRoute(item.path);
       resultTransfers.textContent =
         `乗換 ${item.transfers} 回（乗換は目安 +${TRANSFER_PENALTY} 分/回を加算）`;
@@ -810,6 +912,15 @@
       document.querySelectorAll(".shortcut-btn").forEach((btn) => btn.classList.remove("selected"));
       document.querySelectorAll(".time-btn").forEach((btn) => btn.classList.remove("selected"));
       showScreen(1);
+    });
+
+    pickRandomBtn.addEventListener("click", () => {
+      const pick = pickRandomTown("random");
+      if (pick) showResult(pick);
+    });
+    pickHotBtn.addEventListener("click", () => {
+      const pick = pickRandomTown("hot");
+      if (pick) showResult(pick);
     });
 
     CATEGORIES.forEach((cat) => {
