@@ -1,4 +1,4 @@
-# N02 取り込み路線（MVP: 山手 + 東京メトロ9 + 都営4）
+# N02 取り込み路線（MVP: 山手 + 東京メトロ9 + 都営4 + 私鉄・JR拡張）
 # N02_003（路線名）に以下の文字列が含まれる stop / section を採用
 
 include_line_contains:
@@ -16,10 +16,21 @@ include_line_contains:
   - "6号線三田線"
   - "10号線新宿線"
   - "12号線大江戸線"
+  # 私鉄・JR（寄り町6町対応）
+  - "小田原線"
+  - "京王線"
+  - "井の頭線"
+  - "中央線"
+  - "田園都市線"
+  - "東横線"
+  - "大井町線"
+  - "東京臨海新交通臨海線"
+  - "臨海副都心線"
+  - "京葉線"
 
 # 東京23区おおまか bbox（世界測地系・度）
 bbox:
-  lon_min: 139.65
+  lon_min: 139.55
   lon_max: 139.95
   lat_min: 35.51
   lat_max: 35.83
@@ -27,3 +38,10 @@ bbox:
 # 環状線（ソートを角度順にする）
 ring_lines:
   - "山手線"
+
+# ルート計算（build_rail_graph / yorimachi UI 共通の目安）
+routing:
+  speed_kmh: 35
+  min_ride_minutes: 2
+  transfer_penalty_minutes: 5
+  time_fit_margin_minutes: 5

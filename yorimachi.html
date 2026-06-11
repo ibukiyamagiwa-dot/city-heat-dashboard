@@ -260,6 +260,7 @@
         <div class="route-box">
           <span class="route-label">だいたいのルート</span>
           <span id="resultRoute">—</span>
+          <span class="route-label" id="resultTransfers" style="margin-top:10px;"></span>
         </div>
 
         <div class="flavor-tags" id="resultFlavors"></div>
@@ -290,9 +291,12 @@
       { minutes: 45, hint: "ゆったり" },
       { minutes: 60, hint: "のんびり" },
     ];
+    const ROUTING = DATA.routing || {};
+    const TRANSFER_PENALTY = ROUTING.transfer_penalty_minutes ?? 5;
+    const FIT_MARGIN = ROUTING.time_fit_margin_minutes ?? 5;
     const CATEGORIES = [
       { id: "recommend", label: "おすすめ" },
-      { id: "near", label: "近場" },
+      { id: "quick", label: "すぐ行ける" },
       { id: "relaxed", label: "のんびり" },
     ];
 
@@ -331,6 +335,7 @@
     const resultTownName = document.getElementById("resultTownName");
     const resultTownTagline = document.getElementById("resultTownTagline");
     const resultRoute = document.getElementById("resultRoute");
+    const resultTransfers = document.getElementById("resultTransfers");
     const resultFlavors = document.getElementById("resultFlavors");
     const backToStep3Btn = document.getElementById("backToStep3Btn");
     const restartBtn = document.getElementById("restartBtn");
@@ -347,65 +352,113 @@
       return graph;
     }
 
+    function stateKey(node, line) {
+      return `${node}|${line || ""}`;
+    }
+
     function shortestPath(fromId, toId) {
-      if (fromId === toId) return { minutes: 0, path: [fromId] };
-      const dist = { [fromId]: 0 };
-      const prev = {};
-      const heap = [fromId];
-      const visited = new Set();
+      if (fromId === toId) {
+        return { minutes: 0, path: [fromId], transfers: 0 };
+      }
+
+      const dist = new Map();
+      const prev = new Map();
+      const heap = [];
+
+      const startKey = stateKey(fromId, null);
+      dist.set(startKey, 0);
+      prev.set(startKey, null);
+      heap.push({ node: fromId, line: null, cost: 0, key: startKey });
 
       while (heap.length) {
-        heap.sort((a, b) => (dist[a] ?? Infinity) - (dist[b] ?? Infinity));
-        const u = heap.shift();
-        if (visited.has(u)) continue;
-        visited.add(u);
-        if (u === toId) break;
-        (adj[u] || []).forEach((edge) => {
-          const alt = dist[u] + edge.minutes;
-          if (alt < (dist[edge.to] ?? Infinity)) {
-            dist[edge.to] = alt;
-            prev[edge.to] = u;
-            heap.push(edge.to);
+        heap.sort((a, b) => a.cost - b.cost);
+        const state = heap.shift();
+        if (state.cost > (dist.get(state.key) ?? Infinity)) continue;
+
+        (adj[state.node] || []).forEach((edge) => {
+          const transfer = state.line && edge.line !== state.line ? TRANSFER_PENALTY : 0;
+          const newCost = state.cost + edge.minutes + transfer;
+          const newKey = stateKey(edge.to, edge.line);
+          if (newCost < (dist.get(newKey) ?? Infinity)) {
+            dist.set(newKey, newCost);
+            prev.set(newKey, { prevKey: state.key, edge });
+            heap.push({ node: edge.to, line: edge.line, cost: newCost, key: newKey });
           }
         });
       }
 
-      if (dist[toId] === undefined) return null;
+      let bestKey = null;
+      let bestCost = Infinity;
+      dist.forEach((cost, key) => {
+        if (!key.startsWith(`${toId}|`) || cost >= bestCost) return;
+        bestCost = cost;
+        bestKey = key;
+      });
+      if (!bestKey) return null;
 
-      const path = [];
-      let cur = toId;
-      while (cur) {
-        path.unshift(cur);
-        cur = prev[cur];
+      const edgesUsed = [];
+      let key = bestKey;
+      while (prev.get(key)) {
+        const step = prev.get(key);
+        if (step.edge) edgesUsed.unshift(step.edge);
+        key = step.prevKey;
       }
-      return { minutes: dist[toId], path };
+
+      const path = [fromId];
+      edgesUsed.forEach((edge) => {
+        if (path[path.length - 1] !== edge.from) path.push(edge.from);
+        path.push(edge.to);
+      });
+
+      let transfers = 0;
+      for (let i = 1; i < edgesUsed.length; i++) {
+        if (edgesUsed[i].line !== edgesUsed[i - 1].line) transfers += 1;
+      }
+
+      return { minutes: bestCost, path, transfers, edges: edgesUsed };
     }
 
-    function computeReachable(fromId, maxMinutes) {
+    function timeFitRange(selected) {
+      return [selected - FIT_MARGIN, selected + FIT_MARGIN];
+    }
+
+    function computeReachable(fromId, selected) {
+      const limit = selected + FIT_MARGIN;
       const results = [];
       towns.forEach((town) => {
         if (!town.in_graph || !town.hub_node_id) return;
         if (town.hub_node_id === fromId) return;
         const route = shortestPath(fromId, town.hub_node_id);
-        if (!route || route.minutes > maxMinutes) return;
-        results.push({ town, minutes: route.minutes, path: route.path });
+        if (!route || route.minutes > limit) return;
+        results.push({
+          town,
+          minutes: route.minutes,
+          path: route.path,
+          transfers: route.transfers,
+        });
       });
       return results;
     }
 
-    function pickCategory(list, categoryId, maxMinutes) {
+    function pickCategory(list, categoryId, selected) {
       if (!list.length) return [];
-      if (categoryId === "near") {
-        return [...list].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
+      const [fitLo, fitHi] = timeFitRange(selected);
+      if (categoryId === "recommend") {
+        const fitted = list.filter((item) => item.minutes >= fitLo && item.minutes <= fitHi);
+        return [...fitted]
+          .sort((a, b) => Math.abs(a.minutes - selected) - Math.abs(b.minutes - selected))
+          .slice(0, 8);
+      }
+      if (categoryId === "quick") {
+        const within = list.filter((item) => item.minutes <= selected);
+        return [...within].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
       }
       if (categoryId === "relaxed") {
-        const filtered = list.filter((item) => (item.town.flavors || []).includes("のんびり"));
+        const within = list.filter((item) => item.minutes <= selected);
+        const filtered = within.filter((item) => (item.town.flavors || []).includes("のんびり"));
         return [...filtered].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
       }
-      const target = maxMinutes * 0.45;
-      return [...list]
-        .sort((a, b) => Math.abs(a.minutes - target) - Math.abs(b.minutes - target))
-        .slice(0, 8);
+      return [];
     }
 
     function formatRoute(path) {
@@ -449,26 +502,33 @@
 
     function renderTownList() {
       const items = pickCategory(reachableTowns, selectedCategory, selectedMinutes);
+      const [fitLo, fitHi] = timeFitRange(selectedMinutes);
       townList.innerHTML = "";
       if (!items.length) {
-        townList.innerHTML = "<div class=\"empty-msg\">この条件では寄れる町がありません。<br>時間を長くするか、出発地を変えてください。</div>";
+        const hint =
+          selectedCategory === "recommend"
+            ? `おすすめは移動 ${fitLo}〜${fitHi} 分程度の町を表示します。`
+            : "この条件では寄れる町がありません。";
+        townList.innerHTML =
+          `<div class="empty-msg">${hint}<br>時間を変えるか、出発地を変えてください。</div>`;
       } else {
         items.forEach((item) => {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "town-card";
           const flavors = (item.town.flavors || []).slice(0, 3).join("・");
+          const transferHint = item.transfers > 0 ? ` · 乗換${item.transfers}` : "";
           btn.innerHTML =
             `<div class="town-name">${item.town.name}</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
-            `<div class="town-meta">だいたい ${item.minutes} 分${flavors ? ` · ${flavors}` : ""}</div>`;
+            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${flavors ? ` · ${flavors}` : ""}</div>`;
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
       }
-      const offGraph = towns.filter((t) => !t.in_graph).length;
+      const cat = CATEGORIES.find((c) => c.id === selectedCategory);
       step3Meta.textContent =
-        `候補 ${items.length} 件（MVP路線外 ${offGraph} 町は未掲載）`;
+        `表示 ${items.length} 件 · ${cat.label} · おすすめは ${fitLo}〜${fitHi} 分 · 全 ${reachableTowns.length} 町が到達可能`;
     }
 
     function showResult(item) {
@@ -478,6 +538,8 @@
       resultTownName.textContent = item.town.name;
       resultTownTagline.textContent = item.town.tagline;
       resultRoute.textContent = formatRoute(item.path);
+      resultTransfers.textContent =
+        `乗換 ${item.transfers} 回（乗換は目安 +${TRANSFER_PENALTY} 分/回を加算）`;
       resultFlavors.innerHTML = "";
       (item.town.flavors || []).forEach((f) => {
         const span = document.createElement("span");

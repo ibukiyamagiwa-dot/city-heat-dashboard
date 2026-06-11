@@ -40,6 +40,7 @@ def main() -> None:
             "source": graph.get("source"),
             "stats": graph.get("stats"),
         },
+        "routing": graph.get("routing") or {},
         "graph_edges": graph_edges,
         "departure_shortcuts": towns["departure_shortcuts"],
         "stations": index,

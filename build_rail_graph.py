@@ -144,6 +144,24 @@ def build_nodes(stops: list[dict]) -> dict[str, dict]:
     return nodes
 
 
+def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
+    r = 6371.0
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dlon / 2) ** 2
+    return r * 2 * math.asin(math.sqrt(a))
+
+
+def ride_minutes(
+    lon1: float, lat1: float, lon2: float, lat2: float, routing: dict,
+) -> int:
+    km = haversine_km(lon1, lat1, lon2, lat2)
+    speed = routing.get("speed_kmh", 35)
+    minimum = routing.get("min_ride_minutes", 2)
+    return max(minimum, round(km / speed * 60))
+
+
 def sort_stops_on_line(line_stops: list[dict], line_name: str, ring_lines: list[str]) -> list[dict]:
     if any(r in line_name for r in ring_lines):
         cx, cy = YAMANOTE_CENTER
@@ -160,6 +178,7 @@ def sort_stops_on_line(line_stops: list[dict], line_name: str, ring_lines: list[
 
 def build_edges(stops: list[dict], nodes: dict[str, dict], cfg: dict) -> list[dict]:
     g2n = {n["group_code"]: nid for nid, n in nodes.items()}
+    routing = cfg.get("routing") or {}
 
     by_line: dict[str, list[dict]] = defaultdict(list)
     seen: set[tuple[str, str]] = set()
@@ -182,19 +201,23 @@ def build_edges(stops: list[dict], nodes: dict[str, dict], cfg: dict) -> list[di
                 node_ids.append(nid)
         for i in range(len(node_ids) - 1):
             a, b = node_ids[i], node_ids[i + 1]
+            na, nb = nodes[a], nodes[b]
+            mins = ride_minutes(na["lon"], na["lat"], nb["lon"], nb["lat"], routing)
             edges[(a, b, line_name)] = {
-                "from": a, "to": b, "line": line_name, "kind": "ride", "minutes": 3,
+                "from": a, "to": b, "line": line_name, "kind": "ride", "minutes": mins,
             }
             edges[(b, a, line_name)] = {
-                "from": b, "to": a, "line": line_name, "kind": "ride", "minutes": 3,
+                "from": b, "to": a, "line": line_name, "kind": "ride", "minutes": mins,
             }
         if any(r in line_name for r in ring_lines) and len(node_ids) >= 3:
             a, b = node_ids[-1], node_ids[0]
+            na, nb = nodes[a], nodes[b]
+            mins = ride_minutes(na["lon"], na["lat"], nb["lon"], nb["lat"], routing)
             edges[(a, b, line_name)] = {
-                "from": a, "to": b, "line": line_name, "kind": "ride", "minutes": 3,
+                "from": a, "to": b, "line": line_name, "kind": "ride", "minutes": mins,
             }
             edges[(b, a, line_name)] = {
-                "from": b, "to": a, "line": line_name, "kind": "ride", "minutes": 3,
+                "from": b, "to": a, "line": line_name, "kind": "ride", "minutes": mins,
             }
 
     return list(edges.values())
@@ -232,14 +255,17 @@ def build_graph(fetch: bool = False) -> dict:
 
     nodes_map = build_nodes(stops)
     edges = build_edges(stops, nodes_map, cfg)
+    routing = cfg.get("routing") or {}
     return {
-        "version": "0.2",
+        "version": "0.3",
         "source": N02_VERSION,
         "source_note": SOURCE_NOTE,
         "note": (
             "N02 駅 stop を group_code で物理ノード化。"
-            "路線内エッジは同一 N02_003 上の stop を並べて隣接接続（簡略）。"
+            "路線内エッジは隣接 stop を距離ベースの所要時間で接続。"
+            "乗換ペナルティは UI 側で加算（routing.transfer_penalty_minutes）。"
         ),
+        "routing": routing,
         "filters": {
             "bbox": cfg["bbox"],
             "lines": cfg["include_line_contains"],
@@ -266,7 +292,7 @@ def main() -> None:
 
     stats = graph["stats"]
     print(f"Wrote {GRAPH_PATH} - nodes={stats['nodes']} edges={stats['edges']} stops={stats['stops']}")
-    print(f"Wrote {INDEX_PATH} — {len(index)} entries")
+    print(f"Wrote {INDEX_PATH} - {len(index)} entries")
 
 
 if __name__ == "__main__":

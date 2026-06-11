@@ -14,10 +14,10 @@
       "name": "下北沢",
       "tagline": "古着とライブの町",
       "flavors": ["サブカル", "古着", "ライブ"],
-      "hub_node_id": null,
+      "hub_node_id": "g_003908",
       "lat": 35.661772,
       "lon": 139.668306,
-      "in_graph": false
+      "in_graph": true
     },
     {
       "id": "nakano",
@@ -34,10 +34,10 @@
       "name": "吉祥寺",
       "tagline": "公園と雑貨の町",
       "flavors": ["のんびり", "雑貨", "カフェ"],
-      "hub_node_id": null,
+      "hub_node_id": "g_003584",
       "lat": 35.703119,
       "lon": 139.579749,
-      "in_graph": false
+      "in_graph": true
     },
     {
       "id": "yanaka",
@@ -234,10 +234,10 @@
       "name": "お台場",
       "tagline": "ベイエリアの散歩",
       "flavors": ["海沿い", "夜景"],
-      "hub_node_id": null,
+      "hub_node_id": "g_004112",
       "lat": 35.626446,
       "lon": 139.775114,
-      "in_graph": false
+      "in_graph": true
     },
     {
       "id": "ryogoku",
@@ -264,30 +264,30 @@
       "name": "自由が丘",
       "tagline": "スイーツと雑貨",
       "flavors": ["カフェ", "のんびり"],
-      "hub_node_id": null,
+      "hub_node_id": "g_004196",
       "lat": 35.607324,
       "lon": 139.668789,
-      "in_graph": false
+      "in_graph": true
     },
     {
       "id": "koenji",
       "name": "高円寺",
       "tagline": "古着とライブバー",
       "flavors": ["サブカル", "古着"],
-      "hub_node_id": null,
+      "hub_node_id": "g_003573",
       "lat": 35.705784,
       "lon": 139.649098,
-      "in_graph": false
+      "in_graph": true
     },
     {
       "id": "sangenchaya",
       "name": "三軒茶屋",
       "tagline": "三角地帯と居酒屋",
       "flavors": ["食", "ナイト"],
-      "hub_node_id": null,
+      "hub_node_id": "g_004016",
       "lat": 35.643687,
       "lon": 139.670346,
-      "in_graph": false
+      "in_graph": true
     }
   ]
 }
