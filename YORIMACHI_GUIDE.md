@@ -66,7 +66,7 @@ Set-Location "C:\Users\ibuki\OneDrive\デスクトップ\卒業制作"
 | 2 | `data/towns.json`（28町） | ✅ |
 | 3 | `yorimachi.html` Step 1 | ✅ |
 | 4 | Step 2 時間選択 | ✅ |
-| 5 | Step 3 寄り町候補 | 未 |
+| 5 | Step 3 寄り町候補 | ✅ |
 
 ## 関連 URL
 

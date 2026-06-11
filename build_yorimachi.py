@@ -18,6 +18,16 @@ def main() -> None:
     towns = json.loads(TOWNS_PATH.read_text(encoding="utf-8"))
     index = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
 
+    graph_edges = [
+        {
+            "from": e["from"],
+            "to": e["to"],
+            "minutes": e["minutes"],
+            "line": e.get("line"),
+        }
+        for e in graph["edges"]
+    ]
+
     payload = {
         "generated_at": __import__("datetime").date.today().isoformat(),
         "app": {
@@ -30,6 +40,7 @@ def main() -> None:
             "source": graph.get("source"),
             "stats": graph.get("stats"),
         },
+        "graph_edges": graph_edges,
         "departure_shortcuts": towns["departure_shortcuts"],
         "stations": index,
         "towns": towns["towns"],

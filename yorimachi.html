@@ -126,6 +126,55 @@
     .time-btn.selected {
       border-color: var(--accent); background: var(--accent-light); color: var(--accent);
     }
+    .category-row {
+      display: flex; gap: 6px; margin-bottom: 14px;
+    }
+    .category-btn {
+      flex: 1; font: inherit; font-size: 13px; font-weight: 700;
+      border: 2px solid var(--border); border-radius: 999px;
+      background: #fff; padding: 10px 6px; cursor: pointer;
+    }
+    .category-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .category-btn.selected {
+      border-color: var(--accent); background: var(--accent); color: #fff;
+    }
+    .town-list { display: flex; flex-direction: column; gap: 8px; }
+    .town-card {
+      width: 100%; text-align: left; font: inherit;
+      border: 2px solid var(--border); border-radius: 14px;
+      background: #fff; padding: 14px 14px; cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .town-card:hover { border-color: var(--accent); background: var(--accent-light); }
+    .town-name { font-size: 17px; font-weight: 700; }
+    .town-tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .town-meta { font-size: 12px; color: var(--accent); margin-top: 6px; font-weight: 700; }
+    .empty-msg {
+      padding: 20px 14px; text-align: center; color: var(--muted);
+      font-size: 14px; border: 1px dashed var(--border); border-radius: 12px;
+    }
+    .result-headline {
+      font-size: 18px; font-weight: 700; margin: 0 0 12px;
+      color: var(--accent); line-height: 1.4;
+    }
+    .result-town { margin-bottom: 14px; }
+    .result-town h2 { font-size: 22px; margin: 0 0 4px; }
+    .result-town p { margin: 0; color: var(--muted); font-size: 14px; }
+    .route-box {
+      padding: 12px 14px; border-radius: 12px;
+      background: #f0f4f2; border: 1px solid var(--border);
+      font-size: 13px; line-height: 1.6;
+    }
+    .route-box .route-label {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      margin-bottom: 6px; display: block;
+    }
+    .flavor-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .flavor-tag {
+      font-size: 11px; font-weight: 700; padding: 4px 10px;
+      border-radius: 999px; background: var(--accent-light);
+      color: var(--accent); border: 1px solid #b7e4c7;
+    }
     .meta { font-size: 12px; color: var(--muted); margin-top: 12px; }
     footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
     footer a { color: var(--accent); }
@@ -177,9 +226,46 @@
           使える時間: <strong id="selectedTimeLabel">—</strong>
         </div>
 
-        <button class="btn" id="toStep3Btn" type="button" disabled>寄り町を選ぶ（準備中）</button>
+        <button class="btn" id="toStep3Btn" type="button" disabled>寄り町を選ぶ</button>
         <button class="btn-secondary" id="backToStep1Btn" type="button">出発地を変える</button>
-        <p class="meta">Step 3 は次の実装予定です。</p>
+      </section>
+    </div>
+
+    <div id="step3Screen" class="screen">
+      <section class="panel">
+        <div class="context-box" id="step3Context">
+          <strong id="step3FromName">—</strong> から · 使える時間 <strong id="step3Minutes">—</strong>
+        </div>
+
+        <label>今日の寄り町</label>
+        <p class="meta" style="margin-top:0;margin-bottom:12px;">ふらっと寄れる町から選ぶ</p>
+
+        <div class="category-row" id="categoryRow"></div>
+        <div class="town-list" id="townList"></div>
+        <p class="meta" id="step3Meta"></p>
+
+        <button class="btn-secondary" id="backToStep2Btn" type="button">時間を変える</button>
+      </section>
+    </div>
+
+    <div id="resultScreen" class="screen">
+      <section class="panel">
+        <p class="result-headline" id="resultHeadline">—</p>
+
+        <div class="result-town">
+          <h2 id="resultTownName">—</h2>
+          <p id="resultTownTagline">—</p>
+        </div>
+
+        <div class="route-box">
+          <span class="route-label">だいたいのルート</span>
+          <span id="resultRoute">—</span>
+        </div>
+
+        <div class="flavor-tags" id="resultFlavors"></div>
+
+        <button class="btn-secondary" id="backToStep3Btn" type="button">別の町を見る</button>
+        <button class="btn-secondary" id="restartBtn" type="button">最初からやり直す</button>
       </section>
     </div>
 
@@ -196,6 +282,7 @@
     "use strict";
     const DATA = window.YORIMACHI_DATA;
     const stations = DATA.stations;
+    const towns = DATA.towns;
     const shortcuts = DATA.departure_shortcuts;
     const TIME_OPTIONS = [
       { minutes: 15, hint: "ちょい寄り" },
@@ -203,12 +290,22 @@
       { minutes: 45, hint: "ゆったり" },
       { minutes: 60, hint: "のんびり" },
     ];
+    const CATEGORIES = [
+      { id: "recommend", label: "おすすめ" },
+      { id: "near", label: "近場" },
+      { id: "relaxed", label: "のんびり" },
+    ];
 
     let selectedId = null;
     let selectedMinutes = null;
+    let selectedCategory = "recommend";
+    let reachableTowns = [];
+    const adj = buildAdj(DATA.graph_edges || []);
 
     const step1Screen = document.getElementById("step1Screen");
     const step2Screen = document.getElementById("step2Screen");
+    const step3Screen = document.getElementById("step3Screen");
+    const resultScreen = document.getElementById("resultScreen");
     const step1Label = document.getElementById("step1Label");
     const step2Label = document.getElementById("step2Label");
     const step3Label = document.getElementById("step3Label");
@@ -224,9 +321,96 @@
     const selectedTimeLabel = document.getElementById("selectedTimeLabel");
     const toStep3Btn = document.getElementById("toStep3Btn");
     const backToStep1Btn = document.getElementById("backToStep1Btn");
+    const step3FromName = document.getElementById("step3FromName");
+    const step3Minutes = document.getElementById("step3Minutes");
+    const categoryRow = document.getElementById("categoryRow");
+    const townList = document.getElementById("townList");
+    const step3Meta = document.getElementById("step3Meta");
+    const backToStep2Btn = document.getElementById("backToStep2Btn");
+    const resultHeadline = document.getElementById("resultHeadline");
+    const resultTownName = document.getElementById("resultTownName");
+    const resultTownTagline = document.getElementById("resultTownTagline");
+    const resultRoute = document.getElementById("resultRoute");
+    const resultFlavors = document.getElementById("resultFlavors");
+    const backToStep3Btn = document.getElementById("backToStep3Btn");
+    const restartBtn = document.getElementById("restartBtn");
 
     const byId = {};
     stations.forEach((s) => { byId[s.id] = s; });
+
+    function buildAdj(edges) {
+      const graph = {};
+      edges.forEach((e) => {
+        if (!graph[e.from]) graph[e.from] = [];
+        graph[e.from].push({ to: e.to, minutes: e.minutes, line: e.line });
+      });
+      return graph;
+    }
+
+    function shortestPath(fromId, toId) {
+      if (fromId === toId) return { minutes: 0, path: [fromId] };
+      const dist = { [fromId]: 0 };
+      const prev = {};
+      const heap = [fromId];
+      const visited = new Set();
+
+      while (heap.length) {
+        heap.sort((a, b) => (dist[a] ?? Infinity) - (dist[b] ?? Infinity));
+        const u = heap.shift();
+        if (visited.has(u)) continue;
+        visited.add(u);
+        if (u === toId) break;
+        (adj[u] || []).forEach((edge) => {
+          const alt = dist[u] + edge.minutes;
+          if (alt < (dist[edge.to] ?? Infinity)) {
+            dist[edge.to] = alt;
+            prev[edge.to] = u;
+            heap.push(edge.to);
+          }
+        });
+      }
+
+      if (dist[toId] === undefined) return null;
+
+      const path = [];
+      let cur = toId;
+      while (cur) {
+        path.unshift(cur);
+        cur = prev[cur];
+      }
+      return { minutes: dist[toId], path };
+    }
+
+    function computeReachable(fromId, maxMinutes) {
+      const results = [];
+      towns.forEach((town) => {
+        if (!town.in_graph || !town.hub_node_id) return;
+        if (town.hub_node_id === fromId) return;
+        const route = shortestPath(fromId, town.hub_node_id);
+        if (!route || route.minutes > maxMinutes) return;
+        results.push({ town, minutes: route.minutes, path: route.path });
+      });
+      return results;
+    }
+
+    function pickCategory(list, categoryId, maxMinutes) {
+      if (!list.length) return [];
+      if (categoryId === "near") {
+        return [...list].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
+      }
+      if (categoryId === "relaxed") {
+        const filtered = list.filter((item) => (item.town.flavors || []).includes("のんびり"));
+        return [...filtered].sort((a, b) => a.minutes - b.minutes).slice(0, 8);
+      }
+      const target = maxMinutes * 0.45;
+      return [...list]
+        .sort((a, b) => Math.abs(a.minutes - target) - Math.abs(b.minutes - target))
+        .slice(0, 8);
+    }
+
+    function formatRoute(path) {
+      return path.map((id) => byId[id]?.name || id).join(" → ");
+    }
 
     function setStepLabels(activeStep) {
       const labels = [step1Label, step2Label, step3Label];
@@ -236,17 +420,80 @@
         if (step < activeStep) el.classList.add("done");
         else if (step === activeStep) el.classList.add("active");
       });
+      if (activeStep > 3) {
+        labels.forEach((el) => {
+          el.classList.remove("active");
+          el.classList.add("done");
+        });
+      }
     }
 
     function showScreen(screen) {
       step1Screen.classList.toggle("active", screen === 1);
       step2Screen.classList.toggle("active", screen === 2);
-      setStepLabels(screen);
+      step3Screen.classList.toggle("active", screen === 3);
+      resultScreen.classList.toggle("active", screen === 4);
+      setStepLabels(screen > 3 ? 4 : screen);
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (screen === 2) {
         step2FromName.textContent = byId[selectedId].name;
         updateTimeSelection();
       }
+      if (screen === 3) {
+        step3FromName.textContent = byId[selectedId].name;
+        step3Minutes.textContent = `${selectedMinutes} 分`;
+        reachableTowns = computeReachable(selectedId, selectedMinutes);
+        renderTownList();
+      }
+    }
+
+    function renderTownList() {
+      const items = pickCategory(reachableTowns, selectedCategory, selectedMinutes);
+      townList.innerHTML = "";
+      if (!items.length) {
+        townList.innerHTML = "<div class=\"empty-msg\">この条件では寄れる町がありません。<br>時間を長くするか、出発地を変えてください。</div>";
+      } else {
+        items.forEach((item) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "town-card";
+          const flavors = (item.town.flavors || []).slice(0, 3).join("・");
+          btn.innerHTML =
+            `<div class="town-name">${item.town.name}</div>` +
+            `<div class="town-tagline">${item.town.tagline}</div>` +
+            `<div class="town-meta">だいたい ${item.minutes} 分${flavors ? ` · ${flavors}` : ""}</div>`;
+          btn.addEventListener("click", () => showResult(item));
+          townList.appendChild(btn);
+        });
+      }
+      const offGraph = towns.filter((t) => !t.in_graph).length;
+      step3Meta.textContent =
+        `候補 ${items.length} 件（MVP路線外 ${offGraph} 町は未掲載）`;
+    }
+
+    function showResult(item) {
+      const fromName = byId[selectedId].name;
+      resultHeadline.textContent =
+        `今日の寄り町：${fromName} → ${item.town.name}（だいたい ${item.minutes} 分）`;
+      resultTownName.textContent = item.town.name;
+      resultTownTagline.textContent = item.town.tagline;
+      resultRoute.textContent = formatRoute(item.path);
+      resultFlavors.innerHTML = "";
+      (item.town.flavors || []).forEach((f) => {
+        const span = document.createElement("span");
+        span.className = "flavor-tag";
+        span.textContent = f;
+        resultFlavors.appendChild(span);
+      });
+      showScreen(4);
+    }
+
+    function selectCategory(id) {
+      selectedCategory = id;
+      document.querySelectorAll(".category-btn").forEach((btn) => {
+        btn.classList.toggle("selected", btn.dataset.id === id);
+      });
+      renderTownList();
     }
 
     function selectMinutes(minutes) {
@@ -350,10 +597,34 @@
 
     toStep3Btn.addEventListener("click", () => {
       if (!selectedId || !selectedMinutes) return;
-      alert(
-        `Step 3（寄り町候補）は準備中です。\n` +
-        `出発: ${byId[selectedId].name}\n使える時間: ${selectedMinutes} 分`
-      );
+      showScreen(3);
+    });
+
+    backToStep2Btn.addEventListener("click", () => showScreen(2));
+    backToStep3Btn.addEventListener("click", () => showScreen(3));
+    restartBtn.addEventListener("click", () => {
+      selectedId = null;
+      selectedMinutes = null;
+      selectCategory("recommend");
+      searchEl.value = "";
+      selectedBox.classList.remove("show");
+      timeSelectedBox.classList.remove("show");
+      toStep2Btn.disabled = true;
+      toStep3Btn.disabled = true;
+      document.querySelectorAll(".shortcut-btn").forEach((btn) => btn.classList.remove("selected"));
+      document.querySelectorAll(".time-btn").forEach((btn) => btn.classList.remove("selected"));
+      showScreen(1);
+    });
+
+    CATEGORIES.forEach((cat) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "category-btn";
+      btn.dataset.id = cat.id;
+      btn.textContent = cat.label;
+      if (cat.id === selectedCategory) btn.classList.add("selected");
+      btn.addEventListener("click", () => selectCategory(cat.id));
+      categoryRow.appendChild(btn);
     });
 
     TIME_OPTIONS.forEach((opt) => {
