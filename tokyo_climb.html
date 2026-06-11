@@ -11,31 +11,71 @@
     crossorigin=""
   />
   <style>
-    :root {
-      --bg: #f8fafc;
+    /* 案2＝metro（主） / 案1＝roguelite（対照） */
+    :root, [data-theme="metro"] {
+      --bg: #f2f8fa;
       --panel: #ffffff;
-      --panel2: #fff7ed;
-      --border: #e5e7eb;
-      --text: #1f2937;
-      --muted: #64748b;
+      --panel2: #eaf4fb;
+      --border: #d0d7de;
+      --text: #1f2d37;
+      --muted: #657085;
       --high: #e60012;
-      --mid: #f39800;
-      --low: #059669;
-      --mystery: #94a3b8;
-      --accent: #f39800;
-      --accent-strong: #e60012;
-      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
-      --brand-gradient: linear-gradient(90deg, #e60012, #f39800, #fff100);
+      --mid: #f9b700;
+      --low: #31a934;
+      --mystery: #9fa0a0;
+      --accent: #153d6f;
+      --accent-strong: #153d6f;
+      --accent-light: #caf1fa;
+      --shadow: 0 12px 30px rgba(21, 61, 111, .08);
+      --brand-gradient: linear-gradient(90deg, #153d6f, #2a6cb8);
+      --path-color: #153d6f;
+      --map-h: 380px;
+      --gauge-v: linear-gradient(90deg, #f9b700, #e60012);
+      --gauge-s: linear-gradient(90deg, #38bdf8, #153d6f);
+      --boss-flash: radial-gradient(circle, rgba(202, 241, 250, .55), transparent 55%);
+      --overlay-bg: rgba(21, 61, 111, .45);
+    }
+    [data-theme="roguelite"] {
+      --bg: #1a1a1a;
+      --panel: #242424;
+      --panel2: #1e2a2e;
+      --border: #333;
+      --text: #ffffff;
+      --muted: #b0bec5;
+      --high: #ff4d4d;
+      --mid: #ffa726;
+      --low: #66bb6a;
+      --mystery: #b0bec5;
+      --accent: #00e5ff;
+      --accent-strong: #00e5ff;
+      --accent-light: rgba(0, 229, 255, .12);
+      --shadow: 0 12px 30px rgba(0, 0, 0, .45);
+      --brand-gradient: linear-gradient(90deg, #00e5ff, #0091ea);
+      --path-color: #00e5ff;
+      --map-h: 220px;
+      --gauge-v: linear-gradient(90deg, #00e5ff, #ff4d4d);
+      --gauge-s: linear-gradient(90deg, #0091ea, #5c6bc0);
+      --boss-flash: radial-gradient(circle, rgba(0, 229, 255, .4), transparent 55%);
+      --overlay-bg: rgba(0, 0, 0, .72);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255, 241, 0, .18), transparent 30%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, #f1f5f9 100%);
+      background: var(--bg);
       color: var(--text);
       line-height: 1.55;
+      transition: background .25s, color .25s;
+    }
+    [data-theme="metro"] body {
+      background:
+        radial-gradient(circle at top left, rgba(202, 241, 250, .45), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 50%, #e8f0f5 100%);
+    }
+    [data-theme="roguelite"] body {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(0, 229, 255, .08), transparent 40%),
+        linear-gradient(180deg, #111 0%, var(--bg) 100%);
     }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
     h1 { font-size: 1.5rem; margin: 0; letter-spacing: .04em; }
@@ -63,31 +103,58 @@
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 12px; border-radius: 999px;
-      background: #fff7ed; border: 1px solid #fed7aa;
-      font-size: 13px; color: #9a3412; font-weight: 700;
+      background: var(--accent-light); border: 1px solid var(--border);
+      font-size: 13px; color: var(--text); font-weight: 700;
     }
+    [data-theme="metro"] .badge { color: #153d6f; }
     .day-tab {
-      background: #fff; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 999px;
       padding: 6px 14px; font-size: 13px; font-weight: 700; color: var(--text);
       cursor: pointer;
     }
     .day-tab.active { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+    [data-theme="roguelite"] .day-tab.active { color: #1a1a1a; }
     .btn {
       background: var(--accent-strong); color: #fff; border: none; border-radius: 10px;
       padding: 9px 16px; font-size: 14px; font-weight: 700; cursor: pointer;
+      transition: box-shadow .2s, transform .1s;
     }
-    .btn.secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
-    .btn:disabled { opacity: .45; cursor: default; }
+    [data-theme="roguelite"] .btn {
+      box-shadow: 0 0 12px rgba(0, 229, 255, .35);
+    }
+    [data-theme="roguelite"] .btn:hover {
+      box-shadow: 0 0 20px rgba(0, 229, 255, .55);
+    }
+    .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
+    .btn:disabled { opacity: .45; cursor: default; box-shadow: none; }
+    .theme-switch {
+      display: inline-flex; border: 1px solid var(--border); border-radius: 999px;
+      overflow: hidden; background: var(--panel);
+    }
+    .theme-switch button {
+      border: none; background: transparent; padding: 6px 12px;
+      font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer;
+    }
+    .theme-switch button.active {
+      background: var(--accent-strong); color: #fff;
+    }
+    [data-theme="roguelite"] .theme-switch button.active { color: #1a1a1a; }
     .layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-items: start; }
     @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-    #map { width: 100%; height: 380px; border-radius: 10px; border: 1px solid var(--border); }
+    [data-theme="roguelite"] .layout.climb-active {
+      grid-template-columns: 1fr;
+    }
+    [data-theme="roguelite"] .layout.climb-active #mapPanel { order: 2; }
+    [data-theme="roguelite"] .layout.climb-active #dagPanel { order: 1; }
+    [data-theme="roguelite"] .layout.climb-active #map { height: var(--map-h); }
+    #map { width: 100%; height: var(--map-h); border-radius: 10px; border: 1px solid var(--border); transition: height .25s; }
     .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
     .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
     #dagScroll { overflow-x: auto; }
     #dagSvg { display: block; margin: 0 auto; }
     .dag-node { cursor: default; }
     .dag-node.clickable { cursor: pointer; }
-    .dag-node.clickable circle { stroke: #1f2937; stroke-width: 3; animation: pulse 1.2s infinite; }
+    .dag-node.clickable circle { stroke: var(--accent); stroke-width: 3; animation: pulse 1.2s infinite; }
     @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: .25; } }
     .trail { font-size: 20px; letter-spacing: 2px; margin: 6px 0; word-break: break-all; }
     #log { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
@@ -96,11 +163,11 @@
     #shareText {
       width: 100%; font-family: inherit; font-size: 13px;
       border: 1px solid var(--border); border-radius: 10px; padding: 10px; resize: vertical;
-      background: #fffbeb;
+      background: var(--panel2); color: var(--text);
     }
     .boss-banner {
-      background: linear-gradient(90deg, #fff7ed, #fffbeb);
-      border: 1px solid #fed7aa; border-radius: 12px; padding: 10px 14px;
+      background: var(--panel2);
+      border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px;
       font-weight: 700; margin-bottom: 10px; display: none;
     }
     .boss-banner.boss-enter { animation: bossSlide .55s ease-out; }
@@ -110,14 +177,14 @@
     }
     .boss-flash {
       position: fixed; inset: 0; pointer-events: none; z-index: 9000;
-      background: radial-gradient(circle, rgba(255,241,0,.35), transparent 55%);
+      background: var(--boss-flash);
       opacity: 0; transition: opacity .35s ease;
     }
     .boss-flash.show { opacity: 1; }
     .phase-bar {
       display: flex; align-items: center; justify-content: center; gap: 8px;
       margin: 12px 0 0; padding: 10px 12px;
-      background: #f1f5f9; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--panel2); border-radius: 12px; border: 1px solid var(--border);
     }
     .phase-step {
       padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;
@@ -125,7 +192,11 @@
     }
     .phase-step.active {
       background: var(--accent-strong); color: #fff;
-      box-shadow: 0 4px 12px rgba(230,0,18,.25);
+      box-shadow: 0 4px 12px rgba(21, 61, 111, .2);
+    }
+    [data-theme="roguelite"] .phase-step.active {
+      color: #1a1a1a;
+      box-shadow: 0 0 16px rgba(0, 229, 255, .45);
     }
     .phase-step.done { color: var(--text); }
     .phase-arrow { color: #cbd5e1; font-size: 12px; user-select: none; }
@@ -144,11 +215,12 @@
       height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden;
       border: 1px solid var(--border);
     }
+    [data-theme="roguelite"] .gauge-track { background: #333; }
     .gauge-fill {
       height: 100%; border-radius: 999px; width: 0%; transition: width .35s ease;
     }
-    .gauge-fill.voltage { background: linear-gradient(90deg, #f39800, #e60012); }
-    .gauge-fill.strain { background: linear-gradient(90deg, #38bdf8, #6366f1); }
+    .gauge-fill.voltage { background: var(--gauge-v); }
+    .gauge-fill.strain { background: var(--gauge-s); }
     .gauge-val { text-align: right; font-size: 15px; }
     .gauge.pop .gauge-track { animation: gaugePop .45s ease; }
     .gauge.strain-warn .gauge-track { box-shadow: 0 0 0 2px rgba(230,0,18,.35); }
@@ -167,13 +239,17 @@
     .choice-grid.cols-2 { grid-template-columns: 1fr 1fr; }
     @media (max-width: 520px) { .choice-grid.cols-2 { grid-template-columns: 1fr; } }
     .choice-btn {
-      display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto;
+      display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto auto;
       gap: 2px 8px; align-items: center;
-      background: #fff; border: 2px solid var(--border); border-radius: 12px;
+      background: var(--panel); border: 2px solid var(--border); border-radius: 12px;
       padding: 10px 12px; cursor: pointer; font-size: 14px; text-align: left;
       transition: border-color .15s, transform .1s, box-shadow .15s;
+      color: var(--text);
     }
-    .choice-btn:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(243,152,0,.15); }
+    .choice-btn:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(21, 61, 111, .12); }
+    [data-theme="roguelite"] .choice-btn:hover {
+      box-shadow: 0 0 16px rgba(0, 229, 255, .25);
+    }
     .choice-btn:active { transform: scale(.98); }
     .choice-btn .c-dot {
       width: 14px; height: 14px; border-radius: 50%; grid-row: 1 / 3;
@@ -183,7 +259,7 @@
     .choice-btn .c-td { font-size: 12px; font-weight: 700; color: var(--muted); justify-self: end; }
     .choice-btn .c-warn { grid-column: 3; grid-row: 1; font-size: 14px; }
     .choice-btn .c-sub {
-      grid-column: 2 / 4; color: var(--muted); font-size: 11.5px;
+      grid-column: 2 / 4; grid-row: 2; color: var(--muted); font-size: 11.5px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .legend-wrap { margin-top: 10px; }
@@ -193,8 +269,41 @@
     }
     .legend { display: none; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 13px; color: var(--muted); }
     .legend.open { display: flex; }
+    .choice-btn .c-meta {
+      grid-column: 2 / 4; color: var(--muted); font-size: 11px;
+    }
+    .context-box {
+      background: var(--panel2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 13px;
+    }
+    .context-box strong { color: var(--accent); }
+    [data-theme="metro"] .context-box strong { color: #153d6f; }
+    .results-table {
+      width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0;
+    }
+    .results-table th, .results-table td {
+      padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left;
+    }
+    .results-table th { color: var(--muted); font-weight: 700; width: 42%; }
+    .trail-list {
+      list-style: none; margin: 8px 0 0; padding: 0; max-height: 200px; overflow-y: auto;
+    }
+    .trail-list li {
+      display: flex; align-items: center; gap: 8px; padding: 6px 4px;
+      border-bottom: 1px dashed var(--border); font-size: 13px;
+    }
+    .trail-list .t-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .trail-list .t-hop { color: var(--muted); font-size: 11px; min-width: 48px; }
+    .metro-only { display: block; }
+    .rogue-only { display: none; }
+    [data-theme="roguelite"] .metro-only { display: none; }
+    [data-theme="roguelite"] .rogue-only { display: block; }
+    [data-theme="roguelite"] .trail.emoji-trail { display: block; }
+    [data-theme="metro"] .trail.emoji-trail { display: none; }
     .icon-btn {
-      background: #fff; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 999px;
       width: 32px; height: 32px; font-size: 15px; font-weight: 700; cursor: pointer;
       color: var(--muted); line-height: 1;
     }
@@ -220,13 +329,13 @@
     .tutorial-actions .btn { width: 100%; margin-top: 0; }
     .tutorial-overlay {
       position: fixed; inset: 0; z-index: 10000;
-      background: rgba(15,23,42,.55); display: flex; align-items: center; justify-content: center;
+      background: var(--overlay-bg); display: flex; align-items: center; justify-content: center;
       padding: 20px; backdrop-filter: blur(4px);
     }
     .tutorial-overlay.hidden { display: none; }
     .tutorial-card {
-      background: #fff; border-radius: 16px; padding: 24px 22px; max-width: 360px;
-      box-shadow: 0 24px 60px rgba(15,23,42,.2); text-align: center;
+      background: var(--panel); border-radius: 16px; padding: 24px 22px; max-width: 360px;
+      box-shadow: var(--shadow); text-align: center; border: 1px solid var(--border);
     }
     .tutorial-card h2 { margin: 0 0 12px; font-size: 1.35rem; }
     .tutorial-card p { margin: 0 0 10px; color: var(--muted); font-size: 14px; line-height: 1.6; }
@@ -240,10 +349,11 @@
     }
     #footerDetails { margin-top: 8px; }
     #footerDetails[hidden] { display: none; }
-    .footer-link { margin: 8px 0 0; font-size: 12px; }
+    footer.panel a { color: var(--accent-strong); }
+    #dagSvg text.dag-label { fill: var(--muted); }
   </style>
 </head>
-<body>
+<body data-theme="metro">
   <div id="bossFlash" class="boss-flash" aria-hidden="true"></div>
 
   <div id="tutorialOverlay" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
@@ -252,9 +362,9 @@
       <ol class="tutorial-steps">
         <li><span class="step-num">1</span><span>地図で<strong>スタート駅</strong>をタップ（色＝話題の変化 TD）</span></li>
         <li><span class="step-num">2</span><span>今日の<strong>ボス駅</strong>が決まる。分岐マップか下の候補から<strong>次の駅</strong>を選ぶ</span></li>
-        <li><span class="step-num">3</span><span>ボスに到達したら<strong>シェア</strong>。⚡ボルテージ／💧消耗は道中の結果</span></li>
+        <li><span class="step-num">3</span><span>ボスに到達したら<strong>シェア</strong>。ゲージは道中の結果（案内板＝話題度/探索コスト、ローグ＝ボルテージ/消耗）</span></li>
       </ol>
-      <p class="muted" style="font-size:12px;margin:8px 0 0;">灰色❓＝データなし（tier B 駅など）</p>
+      <p class="muted" style="font-size:12px;margin:8px 0 0;">灰色❓＝データなし（tier B 駅など）。右上で<strong>案内板／ローグ</strong>テーマを切替可能</p>
       <div class="tutorial-actions">
         <button class="btn" id="tutorialStart" type="button">始める</button>
         <button class="btn secondary" id="tutorialClose" type="button">閉じる</button>
@@ -269,6 +379,10 @@
       <div class="header-row">
         <h1>🗼 TOKYO CLIMB</h1>
         <span class="spacer"></span>
+        <div class="theme-switch" role="group" aria-label="UIテーマ">
+          <button type="button" id="themeMetro" class="active" data-theme="metro">案内板</button>
+          <button type="button" id="themeRogue" data-theme="roguelite">ローグ</button>
+        </div>
         <button type="button" class="btn secondary" id="tutorialBtn" style="padding:6px 12px;font-size:13px;">📖 チュートリアル</button>
         <button class="icon-btn" id="helpBtn" type="button" title="チュートリアルを見る">?</button>
         <span class="badge" id="weatherBadge">--</span>
@@ -285,8 +399,13 @@
       </nav>
     </section>
 
-    <div class="layout">
+    <div class="layout" id="mainLayout">
       <div>
+        <section class="panel metro-only" id="contextPanel">
+          <h2>今日のコンテキスト</h2>
+          <div class="context-box" id="contextText">読み込み中…</div>
+        </section>
+
         <section class="panel" id="mapPanel">
           <h2 id="mapTitle">スタート駅を選ぶ</h2>
           <div id="map"></div>
@@ -309,24 +428,31 @@
 
       <div>
         <section class="panel" id="runPanel">
-          <h2>今日のラン</h2>
+          <h2 id="runPanelTitle">今日のラン</h2>
           <div class="boss-banner" id="bossBanner"></div>
           <div id="phaseHint" class="phase-hint">地図の駅をタップ</div>
           <div class="gauge-row">
             <div class="gauge" id="voltageGauge">
-              <span class="gauge-label">⚡ ボルテージ</span>
+              <span class="gauge-label" id="voltageLabel">⚡ 話題度</span>
               <div class="gauge-track"><div class="gauge-fill voltage" id="voltageGaugeFill"></div></div>
               <span class="gauge-val" id="voltage">0</span>
             </div>
             <div class="gauge" id="strainGauge">
-              <span class="gauge-label">💧 消耗</span>
+              <span class="gauge-label" id="strainLabel">💧 探索コスト</span>
               <div class="gauge-track"><div class="gauge-fill strain" id="strainGaugeFill"></div></div>
               <span class="gauge-val" id="strain">0</span>
             </div>
           </div>
           <div class="progress-stat">🚉 <span id="progress">-</span></div>
-          <div class="trail" id="trail"></div>
+          <ul class="trail-list metro-only panel-hidden" id="trailList"></ul>
+          <div class="trail emoji-trail rogue-only" id="trail"></div>
           <div id="choices"></div>
+          <div class="metro-only panel-hidden" id="resultsWrap">
+            <h2 style="margin-top:14px;font-size:1rem;">ラン結果</h2>
+            <table class="results-table" id="resultsTable">
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
         </section>
 
         <section class="panel panel-hidden" id="logPanel">
@@ -370,7 +496,9 @@
     const GRAPH = DATA.graph;
     const DAYS = DATA.daily.days;
 
-    const TYPE_COLOR = { high: "#e60012", mid: "#f39800", low: "#059669", mystery: "#94a3b8" };
+    const TYPE_COLOR_METRO = { high: "#e60012", mid: "#f9b700", low: "#31a934", mystery: "#9fa0a0" };
+    const TYPE_COLOR_ROGUE = { high: "#ff4d4d", mid: "#ffa726", low: "#66bb6a", mystery: "#b0bec5" };
+    function typeColor() { return currentTheme === "roguelite" ? TYPE_COLOR_ROGUE : TYPE_COLOR_METRO; }
     const TYPE_EMOJI = { high: "🔴", mid: "🟠", low: "🟢", mystery: "❓" };
     const TYPE_LABEL = { high: "急上昇", mid: "上昇", low: "静か", mystery: "未知" };
 
@@ -431,13 +559,129 @@
     let voltage = 0, strain = 0;
     let prevVoltage = 0, prevStrain = 0;
     let trail = [], visited = [], takenEdges = new Set();
-    let map, markers = {}, routeLine = null;
+    let map, markers = {}, routeLine = null, tileLayer = null;
 
     const PHASE_ORDER = ["pick", "climb", "done"];
     const TUTORIAL_KEY = "tokyo_climb_tutorial_done";
+    const THEME_KEY = "tokyo_climb_theme";
+    let currentTheme = "metro";
+
+    const edgeLine = {};
+    GRAPH.edges.forEach((e) => {
+      edgeLine[e.from + ">" + e.to] = e.line;
+      edgeLine[e.to + ">" + e.from] = e.line;
+    });
+    function getEdgeLine(from, to) { return edgeLine[from + ">" + to] || "—"; }
+    function isTransferLine(line) {
+      return line.includes("乗換") || line.includes("簡略") || line.includes("徒歩");
+    }
 
     function dayData() { return DAYS[dayIdx]; }
     function st(id) { return stationsToday[id]; }
+
+    function setTheme(name) {
+      currentTheme = name === "roguelite" ? "roguelite" : "metro";
+      document.body.dataset.theme = currentTheme;
+      document.getElementById("themeMetro").classList.toggle("active", currentTheme === "metro");
+      document.getElementById("themeRogue").classList.toggle("active", currentTheme === "roguelite");
+      localStorage.setItem(THEME_KEY, currentTheme);
+      updateGaugeLabels();
+      updateContextPanel();
+      if (map && tileLayer) {
+        map.removeLayer(tileLayer);
+        tileLayer = createTileLayer().addTo(map);
+      }
+      if (map && Object.keys(markers).length) {
+        paintMarkers();
+        drawRoute();
+      }
+      if (dag) renderDag();
+      renderTrailList();
+      if (phase === "done") renderRunResults();
+      document.getElementById("mainLayout").classList.toggle("climb-active", phase === "climb" && currentTheme === "roguelite");
+    }
+
+    function updateGaugeLabels() {
+      const vLabel = document.getElementById("voltageLabel");
+      const sLabel = document.getElementById("strainLabel");
+      if (currentTheme === "roguelite") {
+        vLabel.textContent = "⚡ ボルテージ";
+        sLabel.textContent = "💧 消耗";
+      } else {
+        vLabel.textContent = "⚡ 話題度";
+        sLabel.textContent = "💧 探索コスト";
+      }
+    }
+
+    function updateContextPanel() {
+      const el = document.getElementById("contextText");
+      if (!el) return;
+      const d = dayData();
+      const w = d.weather;
+      const dt = new Date(d.date + "T12:00:00+09:00");
+      const dow = ["日", "月", "火", "水", "木", "金", "土"][dt.getDay()];
+      const isWeekend = dt.getDay() === 0 || dt.getDay() === 6;
+      let high = 0, mid = 0;
+      d.stations.forEach((s) => {
+        if (s.type === "high") high++;
+        else if (s.type === "mid") mid++;
+      });
+      const tdMode = d.td_mode === "trends" ? "Google Trends" : d.td_mode;
+      el.innerHTML =
+        `<strong>${d.date}</strong>（${dow}）・${isWeekend ? "週末" : "平日"}<br>` +
+        `天気 ${w.icon} ${w.summary} ${w.temperature_c}°C ／ データ ${tdMode}<br>` +
+        `急上昇 ${high}駅・上昇 ${mid}駅（48駅中 tier A 37駅に TD 観測）`;
+    }
+
+    function peakTd() {
+      let best = null, bestVal = -Infinity;
+      visited.forEach((id) => {
+        const v = tdVal(st(id));
+        if (v > bestVal) { bestVal = v; best = st(id); }
+      });
+      return best;
+    }
+
+    function renderTrailList() {
+      const ul = document.getElementById("trailList");
+      if (!ul) return;
+      ul.innerHTML = "";
+      if (phase === "pick" || !visited.length) {
+        ul.classList.add("panel-hidden");
+        return;
+      }
+      ul.classList.remove("panel-hidden");
+      visited.forEach((id, i) => {
+        const s = st(id);
+        const li = document.createElement("li");
+        const hop = i === 0 ? "START" : i === visited.length - 1 && id === bossId ? "BOSS" : `${i} hop`;
+        li.innerHTML =
+          `<span class="t-hop">${hop}</span>` +
+          `<span class="t-dot" style="background:${typeColor()[s.type]}"></span>` +
+          `<span>${s.name}</span>` +
+          `<span class="muted" style="margin-left:auto">${s.type === "mystery" ? "—" : fmtTd(s)}</span>`;
+        ul.appendChild(li);
+      });
+    }
+
+    function renderRunResults() {
+      const wrap = document.getElementById("resultsWrap");
+      const body = document.getElementById("resultsBody");
+      if (!wrap || !body || phase !== "done") {
+        if (wrap) wrap.classList.add("panel-hidden");
+        return;
+      }
+      wrap.classList.remove("panel-hidden");
+      const peak = peakTd();
+      const rows = [
+        ["ホップ数", `${Math.max(visited.length - 1, 0)} / ${dag ? dag.L : "—"}`],
+        ["話題度ピーク", peak && peak.td != null ? `${peak.name} ${fmtTd(peak)}` : "—"],
+        ["話題度（累積）", String(voltage)],
+        ["探索コスト（残）", String(strain)],
+        ["ボス駅", st(bossId).name + " " + fmtTd(st(bossId))],
+      ];
+      body.innerHTML = rows.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("");
+    }
 
     function openTutorial() {
       document.getElementById("tutorialOverlay").classList.remove("hidden");
@@ -477,7 +721,9 @@
         const remaining = dag.L - curLayer;
         hint.textContent = `光っている駅を選ぶ（あと ${remaining} ホップ）`;
       } else if (phase === "done") {
-        hint.textContent = "登頂！ シェアして今日のランを残す";
+        hint.textContent = currentTheme === "roguelite"
+          ? "CLEAR! シェアして記録を残す"
+          : "登頂！ シェアして今日のランを残す";
       }
 
       document.getElementById("dagPanel").classList.toggle("panel-hidden", phase === "pick");
@@ -485,6 +731,12 @@
       document.getElementById("sharePanel").classList.toggle("panel-hidden", phase !== "done");
       document.getElementById("mapTitle").textContent =
         phase === "pick" ? "スタート駅を選ぶ" : "今日のルート";
+      document.getElementById("runPanelTitle").textContent =
+        phase === "done" ? "クリア！" : "今日のラン";
+      document.getElementById("mainLayout").classList.toggle("climb-active", phase === "climb" && currentTheme === "roguelite");
+      renderTrailList();
+      if (phase === "done") renderRunResults();
+      else document.getElementById("resultsWrap")?.classList.add("panel-hidden");
     }
 
     function showBossEntrance() {
@@ -670,12 +922,22 @@
       return "#cbd5e1";
     }
 
-    function initMap() {
-      map = L.map("map", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
-      L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
+    function createTileLayer() {
+      if (currentTheme === "roguelite") {
+        return L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CARTO',
+        });
+      }
+      return L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
         maxZoom: 18,
         attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>',
-      }).addTo(map);
+      });
+    }
+
+    function initMap() {
+      map = L.map("map", { scrollWheelZoom: false }).setView([35.685, 139.74], 12);
+      tileLayer = createTileLayer().addTo(map);
       GRAPH.edges.forEach((e) => {
         const a = nodeById[e.from], b = nodeById[e.to];
         const isTransfer = e.line.includes("簡略") || e.line.includes("乗換") || e.line.includes("徒歩");
@@ -709,9 +971,9 @@
         const clickable = nextSet.has(n.id);
         const dim = phase === "climb" && !clickable && !isVisited && !isBoss && !isStart;
         markers[n.id].setStyle({
-          fillColor: TYPE_COLOR[s.type],
+          fillColor: typeColor()[s.type],
           radius: clickable ? 12 : isBoss ? 11 : isStart ? 9 : 7,
-          color: clickable ? "#1f2937" : isBoss ? "#1f2937" : "#fff",
+          color: clickable ? (currentTheme === "roguelite" ? "#00e5ff" : "#153d6f") : isBoss ? (currentTheme === "roguelite" ? "#00e5ff" : "#153d6f") : "#fff",
           weight: clickable || isBoss || isStart ? 3 : 2,
           fillOpacity: dim ? 0.35 : 0.95,
         });
@@ -727,7 +989,7 @@
       if (visited.length < 2) return;
       routeLine = L.polyline(
         visited.map((id) => [nodeById[id].lat, nodeById[id].lon]),
-        { color: "#e60012", weight: 4, opacity: .9 }
+        { color: getComputedStyle(document.body).getPropertyValue("--path-color").trim() || "#153d6f", weight: 4, opacity: .9 }
       ).addTo(map);
     }
 
@@ -750,13 +1012,15 @@
         });
       });
 
+      const pathCol = getComputedStyle(document.body).getPropertyValue("--path-color").trim() || "#153d6f";
+      const idleCol = currentTheme === "roguelite" ? "#444" : "#cbd5e1";
       let html = "";
       dag.edges.forEach((key) => {
         const [u, v] = key.split(">");
         const a = pos[u], b = pos[v];
         const onPath = takenEdges.has(key);
         html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"
-          stroke="${onPath ? "#e60012" : "#cbd5e1"}" stroke-width="${onPath ? 4 : 2}" />`;
+          stroke="${onPath ? pathCol : idleCol}" stroke-width="${onPath ? 4 : 2}" />`;
       });
 
       const nextSet = clickableNexts();
@@ -766,16 +1030,17 @@
           const p = pos[id];
           const isBoss = id === bossId, isCur = id === curNode, isVisited = visited.includes(id);
           const clickable = nextSet.has(id);
-          const fill = TYPE_COLOR[s.type];
+          const fill = typeColor()[s.type];
           const r = isBoss ? 20 : 15;
+          const strokeCol = isCur ? (currentTheme === "roguelite" ? "#00e5ff" : "#153d6f") : "#ffffff";
           html += `<g class="dag-node${clickable ? " clickable" : ""}" data-id="${id}">
             <circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}"
-              stroke="${isCur ? "#1f2937" : "#ffffff"}" stroke-width="${isCur ? 4 : 2}"
+              stroke="${strokeCol}" stroke-width="${isCur ? 4 : 2}"
               opacity="${isVisited || clickable || isBoss ? 1 : .45}"/>
             <text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">${
               isBoss ? "👑" : s.type === "mystery" ? "?" : k === 0 ? "▶" : ""
             }</text>
-            <text x="${p.x}" y="${p.y + r + 14}" text-anchor="middle" font-size="11" fill="#334155">${s.name}</text>
+            <text class="dag-label" x="${p.x}" y="${p.y + r + 14}" text-anchor="middle" font-size="11">${s.name}</text>
           </g>`;
         });
       });
@@ -810,12 +1075,16 @@
         btn.className = "choice-btn";
         const tdTxt = s.type === "mystery" ? "不明" : fmtTd(s);
         const warn = w.is_rain && s.outdoor ? '<span class="c-warn">⚠</span>' : "";
+        const line = getEdgeLine(curNode, id);
+        const xfer = isTransferLine(line) ? "乗換あり" : "直通";
+        const costHint = w.is_rain && s.outdoor ? "消耗+1 の可能性" : shortDilemma(id);
         btn.innerHTML =
-          `<span class="c-dot" style="background:${TYPE_COLOR[s.type]}"></span>` +
+          `<span class="c-dot" style="background:${typeColor()[s.type]}"></span>` +
           `<span class="c-name">${s.name}</span>` +
           `<span class="c-td">${tdTxt}</span>` +
           warn +
-          `<span class="c-sub">${shortDilemma(id)}</span>`;
+          `<span class="c-sub">${costHint}</span>` +
+          `<span class="c-meta">${line} ・ ${xfer}</span>`;
         btn.onclick = () => moveTo(id);
         grid.appendChild(btn);
       });
@@ -913,11 +1182,13 @@
       phase = "done";
       const names = visited.map((id) => st(id).name);
       const d = dayData().date.replaceAll("-", "/");
+      const vLabel = currentTheme === "roguelite" ? "ボルテージ" : "話題度";
+      const sLabel = currentTheme === "roguelite" ? "消耗" : "探索コスト";
       const text =
         `TOKYO CLIMB ${d} 🗼\n` +
         `${names[0]} → ${names.slice(1, -1).join(" → ")}${names.length > 2 ? " → " : ""}👑${names[names.length - 1]}\n` +
         `${trail.join("→")}\n` +
-        `⚡ボルテージ${voltage}・💧消耗${strain}\n` +
+        `⚡${vLabel}${voltage}・💧${sLabel}${strain}\n` +
         `#TOKYOCLIMB`;
       document.getElementById("shareText").value = text;
       renderStatus();
@@ -933,6 +1204,10 @@
       document.getElementById("bossBanner").classList.remove("boss-enter");
       document.getElementById("choices").innerHTML = "";
       document.getElementById("log").innerHTML = '<li class="muted">まだ記録はありません。</li>';
+      document.getElementById("trailList").innerHTML = "";
+      document.getElementById("trailList").classList.add("panel-hidden");
+      document.getElementById("resultsWrap")?.classList.add("panel-hidden");
+      document.getElementById("trail").textContent = "";
       if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
       map.setView([35.685, 139.74], 12);
       paintMarkers(); renderStatus();
@@ -943,6 +1218,7 @@
       stationsToday = {};
       dayData().stations.forEach((s) => { stationsToday[s.id] = s; });
       document.querySelectorAll(".day-tab").forEach((b, k) => b.classList.toggle("active", k === i));
+      updateContextPanel();
       resetRun();
     }
 
@@ -958,6 +1234,13 @@
         tabs.appendChild(b);
       });
       initMap();
+
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      setTheme(savedTheme === "roguelite" ? "roguelite" : "metro");
+
+      document.getElementById("themeMetro").onclick = () => setTheme("metro");
+      document.getElementById("themeRogue").onclick = () => setTheme("roguelite");
+
       setDay(DAYS.length - 1);
       document.getElementById("resetBtn").onclick = resetRun;
 
