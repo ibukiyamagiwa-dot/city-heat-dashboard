@@ -185,6 +185,23 @@ def load_osm_cache() -> dict:
     return payload.get("towns") or {}
 
 
+def event_on_date(ev: dict, day: date) -> bool:
+    es = ev.get("start")
+    ee = ev.get("end") or es
+    if not es:
+        return False
+    try:
+        d_start = date.fromisoformat(es)
+        d_end = date.fromisoformat(ee) if ee else d_start
+    except ValueError:
+        return False
+    return d_start <= day <= d_end
+
+
+def filter_events_for_day(events: list[dict], day: date) -> list[dict]:
+    return [e for e in events if event_on_date(e, day)]
+
+
 def load_events_cache() -> tuple[list[dict], str, dict]:
     if not EVENTS_CACHE_PATH.exists():
         return [], "none", {}
@@ -344,6 +361,14 @@ def main() -> None:
         print(f"WARN: weather fetch failed: {exc}")
         weather_bundle = {"date": date.today().isoformat(), "today": None, "forecast": {}}
 
+    event_day_str = weather_bundle.get("date") or date.today().isoformat()
+    try:
+        event_day = date.fromisoformat(event_day_str)
+    except ValueError:
+        event_day = date.today()
+    events_list = filter_events_for_day(events_list, event_day)
+    events_match_mode = "today_only"
+
     day_candidates = set()
     for days in trends_stations.values():
         day_candidates.update(days.keys())
@@ -387,12 +412,14 @@ def main() -> None:
     if events_cache_raw:
         events_meta = {
             "updated_at": events_cache_raw.get("updated_at"),
+            "display_mode": "today_only",
+            "display_date": event_day.isoformat(),
             "window_start": events_cache_raw.get("window_start"),
             "window_end": events_cache_raw.get("window_end"),
             "count": len(events_list),
-            "window_total": len(events_cache_raw.get("events") or []),
+            "today_total": len(events_cache_raw.get("events") or []),
             "fetch_log": events_cache_raw.get("fetch_log"),
-            "source_counts": events_cache_raw.get("window_source_counts"),
+            "source_counts": events_cache_raw.get("today_source_counts"),
         }
 
     payload = {
@@ -431,8 +458,8 @@ def main() -> None:
             "match_radius_m": EVENT_MATCH_RADIUS_M,
             "match_mode": events_match_mode,
             "note": (
-                "今日〜7日の window イベントを座標付き優先で町マッチ。"
-                "Doorkeeper は当日更新。connpass は CONNPASS_API_KEY 設定時。"
+                "今日開催のみを座標付き優先で町マッチ。"
+                "Doorkeeper は当日更新。fetch は python tools/fetch_tokyo_events.py を毎日推奨。"
             ),
             **events_meta,
         },

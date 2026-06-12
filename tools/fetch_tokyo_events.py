@@ -186,6 +186,10 @@ def event_in_window(ev: dict, start: date, end: date) -> bool:
     return d_start <= end and d_end >= start
 
 
+def event_on_date(ev: dict, day: date) -> bool:
+    return event_in_window(ev, day, day)
+
+
 def http_get_json(url: str, headers: dict | None = None, timeout: int = 60) -> object:
     req = Request(url, headers=headers or {"User-Agent": "yorimachi/events"}, method="GET")
     with urlopen(req, timeout=timeout) as resp:
@@ -441,7 +445,12 @@ def count_by_kind(events: list[dict]) -> dict[str, int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--days", type=int, default=7, help="今日から何日先まで")
+    parser.add_argument(
+        "--days",
+        type=int,
+        default=0,
+        help="今日から何日先まで（0=今日のみ。寄り町 UI は今日開催のみ表示）",
+    )
     parser.add_argument("--skip-fetch", action="store_true")
     args = parser.parse_args()
 
@@ -489,27 +498,34 @@ def main() -> None:
             print("  connpass: skipped (set CONNPASS_API_KEY)", flush=True)
 
     merged = merge_events(all_parts)
-    filtered = [e for e in merged if event_in_window(e, today, window_end)]
-    with_coords = [e for e in filtered if e.get("lat") is not None and e.get("lon") is not None]
+    in_window = [e for e in merged if event_in_window(e, today, window_end)]
+    today_only = [e for e in merged if event_on_date(e, today)]
+    with_coords = [
+        e for e in today_only if e.get("lat") is not None and e.get("lon") is not None
+    ]
 
     payload = {
         "updated_at": today.isoformat(),
+        "display_mode": "today_only",
+        "display_date": today.isoformat(),
         "window_start": today.isoformat(),
         "window_end": window_end.isoformat(),
         "source": "複数ソース（区市OD・Doorkeeper・connpass・Big Sight）",
         "trust_level": "medium",
         "license": "各ソースのライセンスに準拠（CC BY 等）",
         "fetch_log": fetch_log,
-        "events": filtered,
+        "events": today_only,
+        "events_window": in_window,
         "events_with_coords": len(with_coords),
         "events_all": merged,
         "source_counts": count_by_kind(merged),
-        "window_source_counts": count_by_kind(filtered),
+        "today_source_counts": count_by_kind(today_only),
+        "window_source_counts": count_by_kind(in_window),
     }
     CACHE_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Wrote {CACHE_PATH} window={len(filtered)} "
-        f"(coords={len(with_coords)}) total={len(merged)} log={fetch_log}",
+        f"Wrote {CACHE_PATH} today={len(today_only)} "
+        f"(coords={len(with_coords)}) window={len(in_window)} total={len(merged)} log={fetch_log}",
         flush=True,
     )
 
