@@ -12,22 +12,24 @@
   />
   <style>
     :root {
-      --bg: #eef4f0;
+      --bg: #faf7f2;
       --panel: #ffffff;
-      --panel-soft: #f7fbf9;
-      --border: #d0ddd5;
-      --text: #1f2d28;
-      --muted: #5f6f66;
-      --accent: #2d6a4f;
-      --accent-deep: #1b4332;
-      --accent-mid: #40916c;
-      --accent-light: #d8f3dc;
-      --accent-glow: rgba(45, 106, 79, .14);
-      --warm: #c2410c;
-      --warm-bg: #fff7ed;
-      --shadow: 0 12px 32px rgba(27, 67, 50, .09);
-      --shadow-sm: 0 4px 14px rgba(27, 67, 50, .06);
-      --brand-gradient: linear-gradient(120deg, #1b4332, #2d6a4f 45%, #40916c 75%, #74c69d);
+      --panel-soft: #f3f7f4;
+      --border: #d4e0d8;
+      --text: #1a2e24;
+      --muted: #5c6f64;
+      --accent: #3d6b4f;
+      --accent-deep: #1f4332;
+      --accent-mid: #4a8c68;
+      --accent-light: #dcefe3;
+      --accent-pale: #edf6f0;
+      --accent-glow: rgba(61, 107, 79, .16);
+      --cream: #faf7f2;
+      --warm: #c45c26;
+      --shadow: 0 16px 40px rgba(31, 67, 50, .08);
+      --shadow-sm: 0 6px 20px rgba(31, 67, 50, .07);
+      --brand-gradient: linear-gradient(135deg, #1f4332, #3d6b4f 50%, #6aab82);
+      --radius-xl: 22px;
       --radius-lg: 18px;
       --radius-md: 14px;
       --radius-sm: 10px;
@@ -38,9 +40,9 @@
       margin: 0;
       font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
       background:
-        radial-gradient(ellipse 80% 50% at 15% -5%, rgba(216, 243, 220, .85), transparent 55%),
-        radial-gradient(circle at 95% 8%, rgba(149, 213, 178, .35), transparent 28%),
-        linear-gradient(180deg, #fff 0%, var(--bg) 55%, #e6efe9 100%);
+        radial-gradient(ellipse 70% 45% at 10% 0%, rgba(220, 239, 227, .9), transparent 50%),
+        radial-gradient(circle at 90% 5%, rgba(180, 210, 190, .35), transparent 30%),
+        linear-gradient(180deg, #fffefb 0%, var(--bg) 50%, #eef4ee 100%);
       color: var(--text);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
@@ -48,11 +50,11 @@
     .wrap { max-width: 520px; margin: 0 auto; padding: 20px 16px 56px; }
     .site-header {
       position: sticky; top: 0; z-index: 40;
-      margin: 0 -16px; padding: 16px 16px 12px;
-      background: rgba(238, 244, 240, .82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(208, 221, 213, .65);
+      margin: 0 -16px; padding: 14px 16px 10px;
+      background: rgba(250, 247, 242, .88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212, 224, 216, .7);
     }
     .brand-row { display: flex; align-items: flex-start; gap: 12px; }
     .brand-mark {
@@ -114,17 +116,23 @@
     .panel {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px 18px;
-      margin-top: 16px;
-      box-shadow: var(--shadow);
-      position: relative; overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: 22px 18px 20px;
+      margin-top: 14px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
     }
-    .panel::before {
-      content: ""; display: block; height: 4px;
-      margin: -20px -18px 16px;
-      background: var(--brand-gradient);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    .screen-head { margin-bottom: 18px; }
+    .screen-kicker {
+      font-size: 10px; font-weight: 800; letter-spacing: .14em;
+      color: var(--accent-mid); text-transform: uppercase; margin: 0 0 4px;
+    }
+    .screen-title {
+      font-size: 1.25rem; font-weight: 800; margin: 0;
+      color: var(--accent-deep); letter-spacing: .04em;
+    }
+    .screen-sub {
+      font-size: 13px; color: var(--muted); margin: 6px 0 0;
     }
     label {
       display: block; font-size: 15px; font-weight: 800;
@@ -161,21 +169,35 @@
     #suggestions li:hover, #suggestions li.active { background: var(--accent-light); }
     #suggestions .lines { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .shortcut-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 10px;
+      margin-top: 8px;
     }
     .shortcut-btn {
-      font: inherit; font-size: 14px; font-weight: 700;
-      border: 2px solid var(--border); border-radius: var(--radius-md);
-      background: #fff; padding: 14px 10px; cursor: pointer;
-      transition: border-color .2s, background .2s, transform .15s, box-shadow .2s;
+      font: inherit; aspect-ratio: 1;
+      border: none; border-radius: 50%;
+      background: var(--brand-gradient);
+      color: #fff; padding: 8px 6px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; box-shadow: var(--shadow-sm);
+      transition: transform .2s var(--ease), box-shadow .2s;
+    }
+    .shortcut-btn:nth-child(2) { background: linear-gradient(145deg, #356859, #588157); }
+    .shortcut-btn:nth-child(3) { background: linear-gradient(145deg, #2f5d48, #6aab82); }
+    .shortcut-btn:nth-child(4) { background: linear-gradient(145deg, #1f4332, #4a8c68); }
+    .shortcut-btn:nth-child(5) { background: linear-gradient(145deg, #3d6b4f, #7cb992); }
+    .shortcut-icon { font-size: 22px; line-height: 1; }
+    .shortcut-label { font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+    .shortcut-en {
+      font-size: 8px; font-weight: 700; opacity: .75; letter-spacing: .08em;
+      text-transform: uppercase;
     }
     .shortcut-btn:hover {
-      border-color: var(--accent); background: var(--accent-light);
-      transform: translateY(-1px); box-shadow: var(--shadow-sm);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 28px var(--accent-glow);
     }
     .shortcut-btn.selected {
-      border-color: var(--accent); background: var(--accent-light);
-      color: var(--accent-deep); box-shadow: inset 0 0 0 1px rgba(45, 106, 79, .15);
+      outline: 3px solid #fff; outline-offset: 2px;
+      box-shadow: 0 0 0 3px var(--accent-mid), var(--shadow);
     }
     .selected-box {
       margin-top: 14px; padding: 12px 14px; border-radius: var(--radius-md);
@@ -242,32 +264,25 @@
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
     }
     .time-btn {
-      font: inherit; font-size: 22px; font-weight: 800;
-      border: 2px solid var(--border); border-radius: var(--radius-lg);
-      background: #fff; padding: 20px 10px 18px; cursor: pointer;
-      transition: border-color .2s, background .2s, transform .15s, box-shadow .2s;
-      position: relative; overflow: hidden;
-    }
-    .time-btn::before {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 120%, var(--accent-glow), transparent 65%);
-      opacity: 0; transition: opacity .25s;
+      font: inherit; font-size: 26px; font-weight: 800;
+      border: none; border-radius: var(--radius-xl);
+      background: var(--accent-pale); padding: 22px 10px 20px; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      color: var(--accent-deep); box-shadow: inset 0 0 0 1px var(--border);
     }
     .time-btn span {
       display: block; font-size: 11px; font-weight: 700;
-      color: var(--muted); margin-top: 6px; letter-spacing: .04em;
-      position: relative;
+      color: var(--muted); margin-top: 8px; letter-spacing: .06em;
     }
     .time-btn:hover {
-      border-color: var(--accent); background: var(--accent-light);
+      background: var(--accent-light);
       transform: translateY(-2px); box-shadow: var(--shadow-sm);
     }
-    .time-btn:hover::before { opacity: 1; }
     .time-btn.selected {
-      border-color: var(--accent); background: var(--accent-light);
-      color: var(--accent-deep); box-shadow: var(--shadow-sm);
+      background: var(--brand-gradient); color: #fff;
+      box-shadow: var(--shadow-sm);
     }
-    .time-btn.selected::before { opacity: 1; }
+    .time-btn.selected span { color: rgba(255,255,255,.85); }
     .category-row {
       display: flex; gap: 6px; margin-bottom: 14px;
       overflow-x: auto; padding-bottom: 4px;
@@ -326,48 +341,56 @@
       background: #faf5ff; border: 1px solid #e9d5ff; font-size: 14px;
     }
     .event-box a { color: #6b21a8; font-weight: 700; }
-    .town-list { display: flex; flex-direction: column; gap: 10px; }
+    .town-list { display: flex; flex-direction: column; gap: 16px; }
     .town-card {
       width: 100%; text-align: left; font: inherit;
-      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      border: none; border-radius: var(--radius-xl);
       background: #fff; padding: 0; cursor: pointer;
-      transition: border-color .2s, box-shadow .2s, transform .15s;
-      display: grid; grid-template-columns: 4px 1fr auto;
+      transition: transform .2s var(--ease), box-shadow .2s;
       overflow: hidden; box-shadow: var(--shadow-sm);
     }
-    .town-card-accent {
-      background: var(--brand-gradient);
-      opacity: .85;
-    }
-    .town-card-body { padding: 14px 14px 12px; min-width: 0; }
-    .town-card-aside {
-      padding: 14px 12px; display: flex; flex-direction: column;
-      align-items: flex-end; justify-content: center; gap: 4px;
-      background: var(--panel-soft); border-left: 1px solid var(--border);
-    }
     .town-card:hover {
-      border-color: var(--accent-mid);
-      box-shadow: 0 8px 24px var(--accent-glow);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
     }
-    .town-card.station { background: #fafcfb; }
-    .town-card.station .town-card-accent {
-      background: repeating-linear-gradient(
-        180deg, var(--muted) 0 4px, transparent 4px 8px
-      );
-      opacity: .35;
+    .town-card.station .town-card-cover { opacity: .92; }
+    .town-card-cover {
+      position: relative; height: 140px; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: flex-start;
     }
-    .town-card.station .town-tagline { font-size: 12px; }
-    .town-name { font-size: 17px; font-weight: 800; color: var(--accent-deep); }
+    .town-card-cover-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .town-card-cover-icon {
+      position: absolute; top: 12px; right: 14px;
+      font-size: 28px; opacity: .35; filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+    }
+    .town-card-cover-name {
+      position: relative; z-index: 1;
+      padding: 10px 14px; font-size: 11px; font-weight: 800;
+      letter-spacing: .12em; color: rgba(255,255,255,.9);
+      text-transform: uppercase;
+    }
+    .town-card-cover::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.35) 100%);
+    }
+    .town-card-body { padding: 14px 16px 16px; }
+    .town-card-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+    }
+    .town-name { font-size: 18px; font-weight: 800; color: var(--accent-deep); }
     .town-time-pill {
-      font-size: 13px; font-weight: 800; color: var(--accent-deep);
-      background: var(--accent-light); border: 1px solid #b7e4c7;
-      border-radius: 999px; padding: 4px 10px; white-space: nowrap;
+      flex-shrink: 0; font-size: 12px; font-weight: 800; color: var(--accent-deep);
+      background: var(--accent-light); border-radius: 999px;
+      padding: 5px 11px; white-space: nowrap;
     }
-    .town-tagline { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
-    .town-meta { font-size: 11px; color: var(--accent-mid); margin-top: 6px; font-weight: 700; }
+    .town-tagline { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .town-meta { font-size: 11px; color: var(--accent-mid); margin-top: 8px; font-weight: 700; }
     .town-card-body .trend-badge,
     .town-card-body .comfort-badge { margin-top: 8px; }
+    .town-card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .btn-more-towns {
       width: 100%; margin-top: 4px; padding: 14px;
       border: 2px dashed var(--border); border-radius: var(--radius-md);
@@ -383,22 +406,63 @@
       padding: 20px 14px; text-align: center; color: var(--muted);
       font-size: 14px; border: 1px dashed var(--border); border-radius: 12px;
     }
+    .result-cover-wrap {
+      margin: -22px -18px 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      overflow: hidden;
+    }
+    .result-cover {
+      position: relative; height: 180px;
+      display: flex; align-items: flex-end;
+    }
+    .result-cover-img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .result-cover-icon {
+      position: absolute; top: 16px; right: 18px; font-size: 36px; opacity: .3;
+    }
+    .result-cover::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,.45) 100%);
+    }
+    .result-cover-text {
+      position: relative; z-index: 1; padding: 16px 18px; color: #fff;
+    }
+    .result-cover-text .result-headline {
+      color: rgba(255,255,255,.85); margin-bottom: 4px;
+    }
+    .result-cover-text h2 {
+      font-size: 1.6rem; margin: 0; font-weight: 800; letter-spacing: .04em;
+    }
     .result-hero {
-      margin: -4px 0 16px; padding: 16px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, var(--accent-light), #fff 60%);
-      border: 1px solid #b7e4c7;
+      margin: 16px 0; padding: 0;
+      background: none; border: none;
     }
-    .result-headline {
-      font-size: 13px; font-weight: 700; margin: 0 0 8px;
-      color: var(--accent-mid); letter-spacing: .04em;
+    .result-town p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+    .result-plan {
+      margin: 18px 0; padding: 18px 16px;
+      background: var(--accent-pale); border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
     }
-    .result-town { margin-bottom: 0; }
-    .result-town h2 {
-      font-size: clamp(1.4rem, 5vw, 1.75rem); margin: 0 0 6px;
-      color: var(--accent-deep); letter-spacing: .02em;
+    .result-plan-head {
+      font-size: 15px; font-weight: 800; color: var(--accent-deep); margin: 0 0 4px;
     }
-    .result-town p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .result-plan-sub {
+      font-size: 11px; color: var(--muted); margin: 0 0 14px; letter-spacing: .04em;
+    }
+    .result-plan-list {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .result-plan-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 14px; line-height: 1.5;
+    }
+    .result-plan-num {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+      background: var(--brand-gradient); color: #fff;
+      display: grid; place-items: center;
+      font-size: 12px; font-weight: 800;
+    }
     .route-box {
       padding: 14px 16px; border-radius: var(--radius-md);
       background: var(--panel-soft); border: 1px solid var(--border);
@@ -436,7 +500,15 @@
       color: var(--accent-mid); text-transform: uppercase;
       margin: 14px 0 8px;
     }
-    footer {
+    .panel-result { padding-top: 0; overflow: hidden; }
+    .result-headline {
+      font-size: 11px; font-weight: 700; margin: 0;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
       margin-top: 28px; padding-top: 18px;
       border-top: 1px solid var(--border);
       font-size: 12px; color: var(--muted);
@@ -457,7 +529,7 @@
         <div class="brand-copy">
           <h1>寄り町</h1>
           <p class="sub">空いた時間に、寄れる町を。</p>
-          <span class="hero-badge">YORIMACHI · 東京近郊</span>
+          <span class="hero-badge">A relaxing journey to towns</span>
         </div>
       </div>
       <nav class="stepper" aria-label="進行ステップ">
@@ -481,32 +553,39 @@
 
     <div id="step1Screen" class="screen active">
       <section class="panel">
-        <label for="search">どこから出る？</label>
+        <div class="screen-head">
+          <p class="screen-kicker">Step 1</p>
+          <h2 class="screen-title">出発駅・エリア</h2>
+        </div>
+        <label for="search" class="visually-hidden">どこから出る？</label>
         <div class="search-wrap">
           <input id="search" type="search" placeholder="駅名・エリアで検索" autocomplete="off" />
           <ul id="suggestions" role="listbox"></ul>
         </div>
 
-        <p class="meta-label">よく使うエリア</p>
+        <p class="meta-label">人気の駅・エリア</p>
         <div class="shortcut-grid" id="shortcuts"></div>
 
         <div class="selected-box" id="selectedBox">
           出発: <strong id="selectedName">—</strong>
         </div>
 
-        <button class="btn" id="toStep2Btn" type="button" disabled>時間を選ぶ</button>
+        <button class="btn" id="toStep2Btn" type="button" disabled>次へ</button>
         <p class="meta" id="step1Meta">出発駅を選ぶと次へ進めます。</p>
       </section>
     </div>
 
     <div id="step2Screen" class="screen">
       <section class="panel">
+        <div class="screen-head">
+          <p class="screen-kicker">Step 2</p>
+          <h2 class="screen-title">寄り道する時間</h2>
+          <p class="screen-sub">今日はどれくらい？</p>
+        </div>
         <div class="context-box" id="step2Context">
           <strong id="step2FromName">—</strong> から出発
         </div>
 
-        <label>どのくらい寄れる？</label>
-        <p class="meta" style="margin-top:0;margin-bottom:12px;">移動に使えるだいたいの時間</p>
         <div class="time-grid" id="timeGrid"></div>
 
         <div class="selected-box" id="timeSelectedBox">
@@ -520,12 +599,13 @@
 
     <div id="step3Screen" class="screen">
       <section class="panel">
+        <div class="screen-head">
+          <p class="screen-kicker">Step 3</p>
+          <h2 class="screen-title">おすすめの町一覧</h2>
+        </div>
         <div class="context-box" id="step3Context">
           <strong id="step3FromName">—</strong> から · 使える時間 <strong id="step3Minutes">—</strong>
         </div>
-
-        <label>今日の寄り町</label>
-        <p class="meta" style="margin-top:0;margin-bottom:12px;">ふらっと寄れる町から選ぶ</p>
 
         <div class="pick-row">
           <button class="btn" id="pickRandomBtn" type="button">🎲 ふらっと1町</button>
@@ -546,18 +626,27 @@
     </div>
 
     <div id="resultScreen" class="screen">
-      <section class="panel">
+      <section class="panel panel-result">
+        <div class="result-cover-wrap">
+          <div class="result-cover" id="resultCover">
+            <div class="result-cover-text">
+              <p class="result-headline" id="resultHeadline">—</p>
+              <h2 id="resultTownName">—</h2>
+            </div>
+          </div>
+        </div>
+
         <div class="result-hero">
-          <p class="result-headline" id="resultHeadline">—</p>
           <div class="result-town">
-            <h2 id="resultTownName">—</h2>
             <p id="resultTownTagline">—</p>
             <span class="trend-badge unknown" id="resultTrendBadge" style="display:none;"></span>
           </div>
         </div>
 
-        <div class="today-hint" id="resultTodayHint" style="display:none;">
-          今日やること: <strong id="resultTodayHintText">—</strong>
+        <div class="result-plan" id="resultPlan">
+          <p class="result-plan-head">今日のおすすめ</p>
+          <p class="result-plan-sub">Things to do today</p>
+          <ol class="result-plan-list" id="resultPlanList"></ol>
         </div>
 
         <div class="map-legend">
@@ -631,6 +720,107 @@
     const LIST_INITIAL = 12;
     const LIST_EXPAND_STEP = 24;
 
+    const SHORTCUT_META = {
+      "新宿": { icon: "🏙️", en: "Shinjuku" },
+      "渋谷": { icon: "🎬", en: "Shibuya" },
+      "東京": { icon: "🚉", en: "Tokyo" },
+      "池袋": { icon: "🛍️", en: "Ikebukuro" },
+      "品川": { icon: "🚄", en: "Shinagawa" },
+    };
+    const FLAVOR_ICONS = {
+      "サブカル": "🎸", "古着": "👕", "ライブ": "🎤", "書店": "📚",
+      "のんびり": "🌳", "公園": "🌿", "カフェ": "☕", "グルメ": "🍜",
+      "雑貨": "🎁", "アート": "🎨", "神社": "⛩️", "下町": "🏮",
+      "海": "🌊", "温泉": "♨️", "夜景": "🌃", "商店街": "🏪",
+      "散歩": "🚶", "酒場": "🍶", "映像": "🎬", "デザイン": "✏️",
+    };
+    const COVER_PALETTE = [
+      ["#1f4332", "#4a8c68"],
+      ["#2f5d48", "#6aab82"],
+      ["#356859", "#7cb992"],
+      ["#184e35", "#588157"],
+      ["#3d6b4f", "#95c9a8"],
+    ];
+    const TOWN_IMAGE_IDS = new Set([
+      "kichijoji", "shimokitazawa", "daikanyama", "nakano",
+      "yanaka", "asakusa", "jiyugaoka", "monzen",
+    ]);
+
+    function townVisual(town) {
+      let idx = 0;
+      const id = town.id || town.name || "";
+      for (let i = 0; i < id.length; i++) idx += id.charCodeAt(i);
+      const [c1, c2] = COVER_PALETTE[idx % COVER_PALETTE.length];
+      const flavors = town.flavors || [];
+      const icon = FLAVOR_ICONS[flavors[0]] || (town.tier === "station" ? "🚉" : "🌿");
+      return { gradient: `linear-gradient(145deg, ${c1} 0%, ${c2} 100%)`, icon };
+    }
+
+    function townImagePath(town) {
+      if (town.image) return town.image;
+      if (town.id && TOWN_IMAGE_IDS.has(town.id)) {
+        return `assets/towns/${town.id}.svg`;
+      }
+      return null;
+    }
+
+    function townCoverBlockHtml(town) {
+      const v = townVisual(town);
+      const imgPath = townImagePath(town);
+      const imgHtml = imgPath
+        ? `<img class="town-card-cover-img" src="${imgPath}" alt="" loading="lazy" onerror="this.remove()" />`
+        : "";
+      return `<div class="town-card-cover" style="background:${v.gradient}">${imgHtml}`
+        + `<span class="town-card-cover-icon">${v.icon}</span>`
+        + `<span class="town-card-cover-name">${town.name}</span></div>`;
+    }
+
+    function setResultCover(town) {
+      const v = townVisual(town);
+      resultCover.style.background = v.gradient;
+      let img = resultCover.querySelector(".result-cover-img");
+      if (!img) {
+        img = document.createElement("img");
+        img.className = "result-cover-img";
+        resultCover.insertBefore(img, resultCover.firstChild);
+      }
+      const path = townImagePath(town);
+      if (path) {
+        img.src = path;
+        img.alt = "";
+        img.style.display = "";
+        img.onerror = () => { img.style.display = "none"; };
+      } else {
+        img.style.display = "none";
+      }
+      let icon = resultCover.querySelector(".result-cover-icon");
+      if (!icon) {
+        icon = document.createElement("span");
+        icon.className = "result-cover-icon";
+        resultCover.appendChild(icon);
+      }
+      icon.textContent = v.icon;
+    }
+
+    function buildTodayPlan(town) {
+      const main = todayHintForTown(town);
+      const flavors = town.flavors || [];
+      const steps = [main];
+      if (flavors[0]) steps.push(`${town.name}で${flavors[0]}を楽しむ`);
+      if (flavors[1]) steps.push(`${flavors[1]}スポットを1軒寄る`);
+      else steps.push(`${town.tagline}をのんびり満喫`);
+      return [...new Set(steps)].slice(0, 3);
+    }
+
+    function renderTodayPlan(town) {
+      resultPlanList.innerHTML = "";
+      buildTodayPlan(town).forEach((text, i) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="result-plan-num">${i + 1}</span><span>${text}</span>`;
+        resultPlanList.appendChild(li);
+      });
+    }
+
     let selectedId = null;
     let selectedMinutes = null;
     let selectedCategory = "recommend";
@@ -677,8 +867,8 @@
     const pickHotBtn = document.getElementById("pickHotBtn");
     const shuffleListBtn = document.getElementById("shuffleListBtn");
     const resultTrendBadge = document.getElementById("resultTrendBadge");
-    const resultTodayHint = document.getElementById("resultTodayHint");
-    const resultTodayHintText = document.getElementById("resultTodayHintText");
+    const resultCover = document.getElementById("resultCover");
+    const resultPlanList = document.getElementById("resultPlanList");
     const step3Weather = document.getElementById("step3Weather");
     const resultEventBox = document.getElementById("resultEventBox");
     const resultEventText = document.getElementById("resultEventText");
@@ -1159,21 +1349,20 @@
           const isStation = item.town.tier === "station";
           btn.className = isStation ? "town-card station" : "town-card";
           const flavors = (item.town.flavors || []).slice(0, 3).join(" · ");
-          const transferHint = item.transfers > 0 ? ` · 乗換${item.transfers}` : "";
           const tierHint = isStation ? " · 駅周辺" : "";
           btn.innerHTML =
-            `<span class="town-card-accent" aria-hidden="true"></span>` +
+            townCoverBlockHtml(item.town) +
             `<div class="town-card-body">` +
+            `<div class="town-card-head">` +
             `<div class="town-name">${item.town.name}</div>` +
+            `<span class="town-time-pill">${item.minutes}分</span>` +
+            `</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
             `<div class="town-meta">${tierHint.replace(/^ · /, "")}${flavors ? (tierHint ? " · " : "") + flavors : ""}</div>` +
+            `<div class="town-card-badges">` +
             trendBadgeHtml(item.town.trends) +
             comfortBadgeHtml(item.town, selectedCategory) +
-            `</div>` +
-            `<div class="town-card-aside">` +
-            `<span class="town-time-pill">${item.minutes}分</span>` +
-            (transferHint ? `<span class="meta" style="margin:0;font-size:10px;">${transferHint.replace(/^ · /, "")}</span>` : "") +
-            `</div>`;
+            `</div></div>`;
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
@@ -1199,9 +1388,11 @@
 
     function showResult(item) {
       const fromName = byId[selectedId].name;
-      resultHeadline.textContent = `今日の寄り町 · ${fromName} → ${item.town.name}`;
+      resultHeadline.textContent = `寄り道プラン · ${fromName} → ${item.town.name}`;
       resultTownName.textContent = item.town.name;
       resultTownTagline.textContent = `${item.town.tagline} · 約 ${item.minutes} 分`;
+      setResultCover(item.town);
+      renderTodayPlan(item.town);
       if (item.town.trends && item.town.trends.td != null) {
         resultTrendBadge.style.display = "inline-block";
         resultTrendBadge.className = `trend-badge ${item.town.trends.mood || "neutral"}`;
@@ -1212,9 +1403,6 @@
       } else {
         resultTrendBadge.style.display = "none";
       }
-      const hint = todayHintForTown(item.town);
-      resultTodayHint.style.display = "block";
-      resultTodayHintText.textContent = hint;
       resultRoute.textContent = formatRoute(item.path);
       resultTransfers.textContent =
         `乗換 ${item.transfers} 回（乗換は目安 +${TRANSFER_PENALTY} 分/回を加算）`;
@@ -1346,7 +1534,11 @@
       btn.type = "button";
       btn.className = "shortcut-btn";
       btn.dataset.id = sc.node_id;
-      btn.textContent = sc.label;
+      const meta = SHORTCUT_META[sc.label] || { icon: "📍", en: sc.label };
+      btn.innerHTML =
+        `<span class="shortcut-icon">${meta.icon}</span>`
+        + `<span class="shortcut-label">${sc.label}</span>`
+        + `<span class="shortcut-en">${meta.en}</span>`;
       btn.addEventListener("click", () => selectStation(sc.node_id));
       shortcutsEl.appendChild(btn);
     });
