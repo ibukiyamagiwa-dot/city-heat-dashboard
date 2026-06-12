@@ -1,0 +1,7 @@
+# 東京都オープンデータ API（イベント一覧）
+# 追加時: https://spec.api.metro.tokyo.lg.jp/spec/search で「イベント一覧」を検索
+sources:
+  - org: 中央区
+    api_id: t131024d0000000041-e5e6d00248bbe97738bfb80d0d3d3e00-0
+  - org: 文京区
+    api_id: t131059d0000000001-630186c15946c72991dddc3808cd46dc-0

@@ -162,6 +162,23 @@
       background: #fffbeb; border: 1px solid #fde68a; font-size: 14px;
     }
     .today-hint strong { color: #92400e; }
+    .weather-banner {
+      margin-bottom: 14px; padding: 12px 14px; border-radius: 12px;
+      background: #f0f9ff; border: 1px solid #bae6fd; font-size: 14px;
+    }
+    .weather-banner.hot-day { background: #fff7ed; border-color: #fed7aa; }
+    .weather-banner.rain-day { background: #f0f9ff; border-color: #7dd3fc; }
+    .comfort-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 999px; margin-top: 4px;
+      background: #f0f4f2; color: var(--muted); border: 1px solid var(--border);
+    }
+    .comfort-badge.high { background: #d8f3dc; color: #1b4332; border-color: #95d5b2; }
+    .event-box {
+      margin-top: 14px; padding: 14px; border-radius: 12px;
+      background: #faf5ff; border: 1px solid #e9d5ff; font-size: 14px;
+    }
+    .event-box a { color: #6b21a8; font-weight: 700; }
     .town-list { display: flex; flex-direction: column; gap: 8px; }
     .town-card {
       width: 100%; text-align: left; font: inherit;
@@ -297,6 +314,7 @@
           <button class="btn-secondary" id="shuffleListBtn" type="button">候補をシャッフル</button>
         </div>
 
+        <div class="weather-banner" id="step3Weather" style="display:none;"></div>
         <div class="category-row wrap" id="categoryRow"></div>
         <div class="town-list" id="townList"></div>
         <p class="meta" id="step3Meta"></p>
@@ -333,6 +351,10 @@
         </div>
 
         <div class="flavor-tags" id="resultFlavors"></div>
+        <div class="event-box" id="resultEventBox" style="display:none;">
+          <strong>近くのイベント</strong>
+          <div id="resultEventText"></div>
+        </div>
         <p class="meta" id="resultModelNote"></p>
 
         <button class="btn-secondary" id="backToStep3Btn" type="button">別の町を見る</button>
@@ -371,11 +393,16 @@
     const FIT_MARGIN = ROUTING.time_fit_margin_minutes ?? 5;
     const TRENDS_META = DATA.trends_meta || {};
     const TREND_THRESH = TRENDS_META.thresholds || { hot: 8, up: 3, calm: -3 };
+    const WEATHER = DATA.weather_today || {};
+    const WEATHER_TODAY = WEATHER.today || null;
     const CATEGORIES = [
       { id: "recommend", label: "おすすめ" },
       { id: "hot", label: "いま話題" },
       { id: "quick", label: "すぐ行ける" },
       { id: "relaxed", label: "のんびり" },
+      { id: "rain", label: "雨の日" },
+      { id: "heat", label: "暑い日" },
+      { id: "events", label: "イベント" },
     ];
     const LIST_INITIAL = 12;
     const LIST_EXPAND_STEP = 24;
@@ -427,6 +454,9 @@
     const resultTrendBadge = document.getElementById("resultTrendBadge");
     const resultTodayHint = document.getElementById("resultTodayHint");
     const resultTodayHintText = document.getElementById("resultTodayHintText");
+    const step3Weather = document.getElementById("step3Weather");
+    const resultEventBox = document.getElementById("resultEventBox");
+    const resultEventText = document.getElementById("resultEventText");
 
     let resultMap = null;
     let resultMapLayers = [];
@@ -535,6 +565,44 @@
       return town.tier === "station" ? 1 : 0;
     }
 
+    function comfortRank(score) {
+      if (score === "high") return 2;
+      if (score === "mid") return 1;
+      return 0;
+    }
+
+    function renderStep3Weather() {
+      if (!WEATHER_TODAY) {
+        step3Weather.style.display = "none";
+        return;
+      }
+      const w = WEATHER_TODAY;
+      const hot = w.is_hot;
+      const rain = w.is_rain;
+      step3Weather.className = "weather-banner" + (hot ? " hot-day" : "") + (rain ? " rain-day" : "");
+      const temp = w.temperature_max_c != null ? `${w.temperature_max_c}℃` : "—";
+      const precip = w.precipitation_mm != null ? `降水 ${w.precipitation_mm}mm` : "";
+      step3Weather.innerHTML =
+        `${w.icon || ""} 今日の天気（${WEATHER.date || ""}）: <strong>${w.summary || "—"}</strong> ` +
+        `最高 ${temp}` + (precip ? ` · ${precip}` : "") +
+        (rain ? " · 雨の日タブ向き" : "") + (hot ? " · 暑い日タブ向き" : "");
+      step3Weather.style.display = "block";
+    }
+
+    function comfortBadgeHtml(town, categoryId) {
+      if (categoryId === "rain" && town.rain_score) {
+        return `<span class="comfort-badge ${town.rain_score}">屋内向き ${town.rain_score}</span>`;
+      }
+      if (categoryId === "heat" && town.heat_score) {
+        return `<span class="comfort-badge ${town.heat_score}">涼しめ ${town.heat_score}</span>`;
+      }
+      if (categoryId === "events" && town.events_near && town.events_near.length) {
+        const ev = town.events_near[0];
+        return `<span class="comfort-badge high">🎪 ${ev.event_name}</span>`;
+      }
+      return "";
+    }
+
     function diversifySort(items, categoryId, selected) {
       const keyed = items.map((item) => ({
         item,
@@ -563,6 +631,31 @@
           if (ta !== tb) return tb - ta;
           return a.jitter - b.jitter;
         });
+      } else if (categoryId === "rain") {
+        keyed.sort((a, b) => {
+          const ra = comfortRank(a.item.town.rain_score);
+          const rb = comfortRank(b.item.town.rain_score);
+          if (ra !== rb) return rb - ra;
+          const tr = tierRank(a.item.town) - tierRank(b.item.town);
+          if (tr !== 0) return tr;
+          return a.jitter - b.jitter;
+        });
+      } else if (categoryId === "heat") {
+        keyed.sort((a, b) => {
+          const ha = comfortRank(a.item.town.heat_score);
+          const hb = comfortRank(b.item.town.heat_score);
+          if (ha !== hb) return hb - ha;
+          const tr = tierRank(a.item.town) - tierRank(b.item.town);
+          if (tr !== 0) return tr;
+          return a.jitter - b.jitter;
+        });
+      } else if (categoryId === "events") {
+        keyed.sort((a, b) => {
+          const da = a.item.town.events_near?.[0]?.distance_m ?? 99999;
+          const db = b.item.town.events_near?.[0]?.distance_m ?? 99999;
+          if (da !== db) return da - db;
+          return a.jitter - b.jitter;
+        });
       }
       return keyed.map((k) => k.item);
     }
@@ -581,6 +674,24 @@
         filtered = list
           .filter((item) => item.minutes <= selected)
           .filter((item) => (item.town.flavors || []).includes("のんびり"));
+      } else if (categoryId === "rain") {
+        filtered = list.filter((item) => {
+          const score = item.town.rain_score;
+          return score === "high" || score === "mid";
+        });
+        if (WEATHER_TODAY && WEATHER_TODAY.is_rain) {
+          filtered = filtered.filter((item) => item.town.rain_score === "high");
+        }
+      } else if (categoryId === "heat") {
+        filtered = list.filter((item) => {
+          const score = item.town.heat_score;
+          return score === "high" || score === "mid";
+        });
+        if (WEATHER_TODAY && WEATHER_TODAY.is_hot) {
+          filtered = filtered.filter((item) => item.town.heat_score === "high");
+        }
+      } else if (categoryId === "events") {
+        filtered = list.filter((item) => item.town.events_near && item.town.events_near.length > 0);
       }
       return diversifySort(filtered, categoryId, selected);
     }
@@ -770,6 +881,7 @@
         step3Minutes.textContent = `${selectedMinutes} 分`;
         listDisplayLimit = LIST_INITIAL;
         reachableTowns = computeReachable(selectedId, selectedMinutes);
+        renderStep3Weather();
         renderTownList();
       }
     }
@@ -785,6 +897,12 @@
           hint = `おすすめは移動 ${fitLo}〜${fitHi} 分程度の町を表示します。`;
         } else if (selectedCategory === "hot") {
           hint = "いま話題は Google Trends の前日比が高い町を表示します（データがある町のみ）。";
+        } else if (selectedCategory === "rain") {
+          hint = "雨の日は屋内向きスコア（OSM）が高い町。今日が雨なら high のみ。";
+        } else if (selectedCategory === "heat") {
+          hint = "暑い日は公園・緑地が多い町（OSM）。今日が暑い日なら high のみ。";
+        } else if (selectedCategory === "events") {
+          hint = "東京都オープンデータのイベントが近い町（2.5km 以内）。";
         }
         townList.innerHTML =
           `<div class="empty-msg">${hint}<br>時間を変えるか、出発地を変えてください。</div>`;
@@ -801,7 +919,8 @@
             `<div class="town-name">${item.town.name}</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
             `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${tierHint}${flavors ? ` · ${flavors}` : ""}</div>` +
-            trendBadgeHtml(item.town.trends);
+            trendBadgeHtml(item.town.trends) +
+            comfortBadgeHtml(item.town, selectedCategory);
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
@@ -854,6 +973,23 @@
         span.textContent = f;
         resultFlavors.appendChild(span);
       });
+      const ev = item.town.event_pick || (item.town.events_near && item.town.events_near[0]);
+      if (ev) {
+        const place = ev.place_name ? ` @ ${ev.place_name}` : "";
+        const dist = ev.distance_m ? `（約 ${ev.distance_m}m）` : "";
+        const dates = ev.start_date || ev.start || "";
+        const link = ev.url
+          ? `<a href="${ev.url}" target="_blank" rel="noopener">詳細</a>`
+          : "";
+        resultEventBox.style.display = "block";
+        resultEventText.innerHTML =
+          `${ev.event_name}${place}${dist}<br>` +
+          (dates ? `<span class="meta">${dates}</span><br>` : "") +
+          link;
+      } else {
+        resultEventBox.style.display = "none";
+        resultEventText.innerHTML = "";
+      }
       resultModelNote.textContent =
         "地図の破線は代表駅から町中心への目安。所要時間は距離ベースの簡略モデル（乗換 +"
         + `${TRANSFER_PENALTY} 分/回）で、実際の運行・混雑とは異なる場合があります。`;

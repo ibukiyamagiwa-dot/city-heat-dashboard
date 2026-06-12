@@ -1,0 +1,7157 @@
+{
+  "updated_at": "2026-06-12",
+  "source": "OpenStreetMap Overpass（半径700m）",
+  "towns": {
+    "shimokitazawa": {
+      "counts": {
+        "cinema": 1,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 6,
+        "cafe": 50,
+        "park": 16,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 5,
+        "sports_centre": 1,
+        "department_store": 3,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 74,
+        "heat_raw": 50,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 6,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 50,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 5,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nakano": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 5,
+        "cafe": 28,
+        "park": 20,
+        "garden": 2,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 42,
+        "heat_raw": 64,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 5,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 28,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 20,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kichijoji": {
+      "counts": {
+        "cinema": 3,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 52,
+        "park": 9,
+        "garden": 0,
+        "wood": 7,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 2,
+        "mall": 7,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 83,
+        "heat_raw": 41,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 3,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 52,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yanaka": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 4,
+        "arts_centre": 2,
+        "theatre": 0,
+        "cafe": 41,
+        "park": 13,
+        "garden": 2,
+        "wood": 13,
+        "stadium": 1,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 59,
+        "heat_raw": 69,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 4,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 41,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "asakusa": {
+      "counts": {
+        "cinema": 0,
+        "museum": 7,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 7,
+        "cafe": 101,
+        "park": 12,
+        "garden": 10,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 3,
+        "mall": 12,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 153,
+        "heat_raw": 58,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 7,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 101,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 12,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ueno": {
+      "counts": {
+        "cinema": 4,
+        "museum": 13,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 5,
+        "cafe": 77,
+        "park": 5,
+        "garden": 3,
+        "wood": 52,
+        "stadium": 0,
+        "nightclub": 10,
+        "sports_centre": 2,
+        "department_store": 4,
+        "mall": 4,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 144,
+        "heat_raw": 125,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 4,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 13,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 5,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 77,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 5,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 10,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "akihabara": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 2,
+        "arts_centre": 1,
+        "theatre": 6,
+        "cafe": 209,
+        "park": 13,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 5,
+        "sports_centre": 4,
+        "department_store": 1,
+        "mall": 5,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 247,
+        "heat_raw": 39,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 6,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 209,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 5,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kagurazaka": {
+      "counts": {
+        "cinema": 1,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 5,
+        "theatre": 0,
+        "cafe": 66,
+        "park": 10,
+        "garden": 0,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 79,
+        "heat_raw": 34,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 5,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 66,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ginza": {
+      "counts": {
+        "cinema": 7,
+        "museum": 11,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 13,
+        "cafe": 115,
+        "park": 16,
+        "garden": 3,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 4,
+        "sports_centre": 0,
+        "department_store": 7,
+        "mall": 11,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 205,
+        "heat_raw": 60,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 7,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 11,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 13,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 115,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 4,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nihombashi": {
+      "counts": {
+        "cinema": 1,
+        "museum": 8,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 82,
+        "park": 11,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 8,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 123,
+        "heat_raw": 33,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 8,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 82,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "omotesando": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 138,
+        "park": 11,
+        "garden": 5,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 4,
+        "sports_centre": 4,
+        "department_store": 1,
+        "mall": 7,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 173,
+        "heat_raw": 45,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 138,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 4,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shibuya": {
+      "counts": {
+        "cinema": 7,
+        "museum": 5,
+        "library": 2,
+        "arts_centre": 3,
+        "theatre": 7,
+        "cafe": 151,
+        "park": 15,
+        "garden": 9,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 25,
+        "sports_centre": 1,
+        "department_store": 10,
+        "mall": 8,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 251,
+        "heat_raw": 63,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 7,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 5,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 3,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 151,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 15,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 25,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ebisu": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 2,
+        "cafe": 52,
+        "park": 13,
+        "garden": 22,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 66,
+        "heat_raw": 87,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 52,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nakameguro": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 35,
+        "park": 14,
+        "garden": 2,
+        "wood": 6,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 49,
+        "heat_raw": 58,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 35,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 14,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "roppongi": {
+      "counts": {
+        "cinema": 1,
+        "museum": 7,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 2,
+        "cafe": 39,
+        "park": 13,
+        "garden": 15,
+        "wood": 24,
+        "stadium": 0,
+        "nightclub": 9,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 70,
+        "heat_raw": 117,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 7,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 39,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 9,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yoyogi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 36,
+        "park": 8,
+        "garden": 1,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 4,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 53,
+        "heat_raw": 30,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 36,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "okubo": {
+      "counts": {
+        "cinema": 1,
+        "museum": 1,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 8,
+        "cafe": 23,
+        "park": 24,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 3,
+        "department_store": 2,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 48,
+        "heat_raw": 72,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 8,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 23,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 24,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kinshicho": {
+      "counts": {
+        "cinema": 2,
+        "museum": 1,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 41,
+        "park": 15,
+        "garden": 0,
+        "wood": 4,
+        "stadium": 0,
+        "nightclub": 4,
+        "sports_centre": 8,
+        "department_store": 1,
+        "mall": 5,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 73,
+        "heat_raw": 53,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 2,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 41,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 15,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 4,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "monzen": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 13,
+        "park": 24,
+        "garden": 21,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 20,
+        "heat_raw": 114,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 13,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 24,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "odaiba": {
+      "counts": {
+        "cinema": 1,
+        "museum": 4,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 10,
+        "park": 8,
+        "garden": 7,
+        "wood": 4,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 5,
+        "marina": 0,
+        "beach": 1
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 32,
+        "heat_raw": 46,
+        "outdoor_raw": 3,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 10,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ryogoku": {
+      "counts": {
+        "cinema": 0,
+        "museum": 8,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 23,
+        "park": 14,
+        "garden": 3,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 4,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 46,
+        "heat_raw": 48,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 8,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 23,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 14,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "daikanyama": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 66,
+        "park": 13,
+        "garden": 9,
+        "wood": 4,
+        "stadium": 0,
+        "nightclub": 3,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 84,
+        "heat_raw": 65,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 66,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 3,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "jiyugaoka": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 39,
+        "park": 5,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 47,
+        "heat_raw": 15,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 39,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 5,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "koenji": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 40,
+        "park": 10,
+        "garden": 0,
+        "wood": 13,
+        "stadium": 0,
+        "nightclub": 5,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 51,
+        "heat_raw": 56,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 40,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 5,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ikebukuro": {
+      "counts": {
+        "cinema": 6,
+        "museum": 4,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 7,
+        "cafe": 102,
+        "park": 17,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 8,
+        "sports_centre": 0,
+        "department_store": 1,
+        "mall": 9,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 158,
+        "heat_raw": 53,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 6,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 102,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 8,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shinagawa": {
+      "counts": {
+        "cinema": 1,
+        "museum": 3,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 24,
+        "park": 10,
+        "garden": 9,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 40,
+        "heat_raw": 50,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 24,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "meguro": {
+      "counts": {
+        "cinema": 1,
+        "museum": 5,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 16,
+        "park": 17,
+        "garden": 15,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 36,
+        "heat_raw": 83,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 5,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 16,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "gotanda": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 21,
+        "park": 16,
+        "garden": 5,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 39,
+        "heat_raw": 62,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 21,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kitasenju": {
+      "counts": {
+        "cinema": 1,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 24,
+        "park": 16,
+        "garden": 4,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 1,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 31,
+        "heat_raw": 62,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 24,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kiyosumi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 13,
+        "park": 24,
+        "garden": 2,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 23,
+        "heat_raw": 76,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 13,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 24,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "tsukiji": {
+      "counts": {
+        "cinema": 0,
+        "museum": 5,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 3,
+        "cafe": 53,
+        "park": 23,
+        "garden": 0,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 3,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 80,
+        "heat_raw": 71,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 5,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 53,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 23,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shimbashi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 7,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 6,
+        "cafe": 82,
+        "park": 11,
+        "garden": 3,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 6,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 115,
+        "heat_raw": 39,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 7,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 6,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 82,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 6,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yurakucho": {
+      "counts": {
+        "cinema": 7,
+        "museum": 11,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 7,
+        "cafe": 89,
+        "park": 6,
+        "garden": 7,
+        "wood": 4,
+        "stadium": 0,
+        "nightclub": 3,
+        "sports_centre": 0,
+        "department_store": 7,
+        "mall": 13,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 176,
+        "heat_raw": 40,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 7,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 11,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 89,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 6,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 3,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "takadanobaba": {
+      "counts": {
+        "cinema": 1,
+        "museum": 2,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 25,
+        "park": 17,
+        "garden": 8,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 3,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 39,
+        "heat_raw": 67,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 25,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "mejiro": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 18,
+        "park": 10,
+        "garden": 9,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 29,
+        "heat_raw": 50,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 18,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "sugamo": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 22,
+        "park": 15,
+        "garden": 23,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 4,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 31,
+        "heat_raw": 93,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 22,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 15,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "futakotamagawa": {
+      "counts": {
+        "cinema": 1,
+        "museum": 3,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 21,
+        "park": 4,
+        "garden": 2,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 34,
+        "heat_raw": 22,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 21,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 4,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "asagaya": {
+      "counts": {
+        "cinema": 1,
+        "museum": 0,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 2,
+        "cafe": 30,
+        "park": 8,
+        "garden": 0,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 44,
+        "heat_raw": 30,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 30,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "gakuenmae": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 6,
+        "park": 7,
+        "garden": 1,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 10,
+        "heat_raw": 27,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 6,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "komazawa": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 11,
+        "park": 11,
+        "garden": 3,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 19,
+        "heat_raw": 43,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 11,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nishinippori": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 25,
+        "park": 20,
+        "garden": 0,
+        "wood": 12,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 29,
+        "heat_raw": 84,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 25,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 20,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "komagome": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 20,
+        "park": 19,
+        "garden": 19,
+        "wood": 5,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 3,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 29,
+        "heat_raw": 105,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 20,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 19,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yotsuya": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 21,
+        "park": 10,
+        "garden": 21,
+        "wood": 4,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 28,
+        "heat_raw": 80,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 21,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "sendagaya": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 17,
+        "park": 8,
+        "garden": 3,
+        "wood": 9,
+        "stadium": 1,
+        "nightclub": 0,
+        "sports_centre": 4,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 32,
+        "heat_raw": 48,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 17,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "toranomon": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 59,
+        "park": 8,
+        "garden": 7,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 72,
+        "heat_raw": 38,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 59,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "azabujuban": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 0,
+        "cafe": 27,
+        "park": 8,
+        "garden": 3,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 39,
+        "heat_raw": 36,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 27,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shirokanedai": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 8,
+        "park": 9,
+        "garden": 39,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 13,
+        "heat_raw": 105,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 8,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "oimachi": {
+      "counts": {
+        "cinema": 1,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 13,
+        "park": 16,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 21,
+        "heat_raw": 48,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 13,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "osaki": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 3,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 21,
+        "park": 24,
+        "garden": 8,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 37,
+        "heat_raw": 90,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 3,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 21,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 24,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ouji": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 3,
+        "cafe": 15,
+        "park": 22,
+        "garden": 3,
+        "wood": 8,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 28,
+        "heat_raw": 88,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 15,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 22,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "iidabashi": {
+      "counts": {
+        "cinema": 1,
+        "museum": 4,
+        "library": 0,
+        "arts_centre": 3,
+        "theatre": 0,
+        "cafe": 60,
+        "park": 7,
+        "garden": 2,
+        "wood": 2,
+        "stadium": 2,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 74,
+        "heat_raw": 29,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 3,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 60,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 2,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "korakuen": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 3,
+        "cafe": 26,
+        "park": 7,
+        "garden": 7,
+        "wood": 6,
+        "stadium": 2,
+        "nightclub": 0,
+        "sports_centre": 3,
+        "department_store": 1,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 47,
+        "heat_raw": 47,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 26,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 2,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "myogadani": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 6,
+        "park": 11,
+        "garden": 13,
+        "wood": 7,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 11,
+        "heat_raw": 73,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 6,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kojimachi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 44,
+        "park": 7,
+        "garden": 15,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 54,
+        "heat_raw": 55,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 44,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ichigaya": {
+      "counts": {
+        "cinema": 0,
+        "museum": 3,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 17,
+        "park": 5,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 28,
+        "heat_raw": 17,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 17,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 5,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kudanshita": {
+      "counts": {
+        "cinema": 0,
+        "museum": 6,
+        "library": 3,
+        "arts_centre": 2,
+        "theatre": 2,
+        "cafe": 58,
+        "park": 9,
+        "garden": 2,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 81,
+        "heat_raw": 31,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 6,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 3,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 58,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "tabata": {
+      "counts": {
+        "cinema": 1,
+        "museum": 1,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 5,
+        "park": 16,
+        "garden": 0,
+        "wood": 7,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 16,
+        "heat_raw": 62,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 5,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "otsuka": {
+      "counts": {
+        "cinema": 1,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 3,
+        "cafe": 13,
+        "park": 16,
+        "garden": 8,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 24,
+        "heat_raw": 68,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 13,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "higashinakano": {
+      "counts": {
+        "cinema": 1,
+        "museum": 1,
+        "library": 3,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 12,
+        "park": 16,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 25,
+        "heat_raw": 48,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 3,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 12,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 16,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nakanosakaue": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 13,
+        "park": 21,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 21,
+        "heat_raw": 63,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 13,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 21,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shiodome": {
+      "counts": {
+        "cinema": 0,
+        "museum": 6,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 7,
+        "cafe": 60,
+        "park": 10,
+        "garden": 48,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 6,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 89,
+        "heat_raw": 128,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 6,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 60,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 6,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "takanawadai": {
+      "counts": {
+        "cinema": 1,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 12,
+        "park": 7,
+        "garden": 15,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 28,
+        "heat_raw": 57,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 12,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shinjuku": {
+      "counts": {
+        "cinema": 8,
+        "museum": 3,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 10,
+        "cafe": 137,
+        "park": 7,
+        "garden": 2,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 12,
+        "sports_centre": 3,
+        "department_store": 25,
+        "mall": 10,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 254,
+        "heat_raw": 25,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 8,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 10,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 137,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 12,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "mitaka": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 14,
+        "park": 14,
+        "garden": 4,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 22,
+        "heat_raw": 56,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 14,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 14,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yoyogihara": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 17,
+        "park": 15,
+        "garden": 4,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 25,
+        "heat_raw": 53,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 17,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 15,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yoyogikoen": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 17,
+        "park": 8,
+        "garden": 1,
+        "wood": 2,
+        "stadium": 1,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 21,
+        "heat_raw": 30,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 17,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "hachobori": {
+      "counts": {
+        "cinema": 0,
+        "museum": 5,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 39,
+        "park": 26,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 2,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 55,
+        "heat_raw": 80,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 5,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 39,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 26,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kayabacho": {
+      "counts": {
+        "cinema": 0,
+        "museum": 6,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 59,
+        "park": 19,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 2,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 79,
+        "heat_raw": 59,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 6,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 59,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 19,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kasumigaseki": {
+      "counts": {
+        "cinema": 2,
+        "museum": 3,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 4,
+        "cafe": 39,
+        "park": 4,
+        "garden": 5,
+        "wood": 5,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 1,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 57,
+        "heat_raw": 32,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 2,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 4,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 39,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 4,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nagatacho": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 4,
+        "arts_centre": 0,
+        "theatre": 3,
+        "cafe": 54,
+        "park": 5,
+        "garden": 31,
+        "wood": 2,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 70,
+        "heat_raw": 81,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 4,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 54,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 5,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "shirokanetakanawa": {
+      "counts": {
+        "cinema": 0,
+        "museum": 5,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 4,
+        "park": 7,
+        "garden": 70,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 15,
+        "heat_raw": 167,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 5,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 4,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yoga": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 5,
+        "park": 5,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 4,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 11,
+        "heat_raw": 17,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 5,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 5,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "sangubashi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 0,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 11,
+        "park": 7,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 17,
+        "heat_raw": 23,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 11,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kitasando": {
+      "counts": {
+        "cinema": 1,
+        "museum": 3,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 25,
+        "park": 6,
+        "garden": 2,
+        "wood": 5,
+        "stadium": 1,
+        "nightclub": 1,
+        "sports_centre": 3,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 40,
+        "heat_raw": 32,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 3,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 25,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 6,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "senzoku": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 9,
+        "park": 12,
+        "garden": 8,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 16,
+        "heat_raw": 54,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 9,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 12,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "sendagi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 2,
+        "theatre": 0,
+        "cafe": 46,
+        "park": 24,
+        "garden": 2,
+        "wood": 16,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 58,
+        "heat_raw": 108,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 46,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 24,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "asakusabashi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 2,
+        "theatre": 0,
+        "cafe": 49,
+        "park": 13,
+        "garden": 3,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 63,
+        "heat_raw": 45,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 49,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kuramae": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 0,
+        "cafe": 44,
+        "park": 17,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 56,
+        "heat_raw": 53,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 44,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ningyocho": {
+      "counts": {
+        "cinema": 1,
+        "museum": 7,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 66,
+        "park": 12,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 2,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 91,
+        "heat_raw": 38,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 7,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 66,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 12,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "hamadayama": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 8,
+        "park": 18,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 11,
+        "heat_raw": 54,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 8,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 18,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nishiogikubo": {
+      "counts": {
+        "cinema": 0,
+        "museum": 0,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 0,
+        "cafe": 11,
+        "park": 9,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 13,
+        "heat_raw": 29,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 11,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "seijogakuen": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 4,
+        "park": 10,
+        "garden": 2,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 14,
+        "heat_raw": 40,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 4,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 10,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "okachimachi": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 1,
+        "cafe": 65,
+        "park": 9,
+        "garden": 3,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 1,
+        "department_store": 2,
+        "mall": 5,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 85,
+        "heat_raw": 33,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 65,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "tokyo": {
+      "counts": {
+        "cinema": 0,
+        "museum": 11,
+        "library": 0,
+        "arts_centre": 1,
+        "theatre": 0,
+        "cafe": 86,
+        "park": 11,
+        "garden": 10,
+        "wood": 6,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 0,
+        "department_store": 5,
+        "mall": 6,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 132,
+        "heat_raw": 65,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 11,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 86,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "harajuku": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 3,
+        "cafe": 101,
+        "park": 11,
+        "garden": 15,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 6,
+        "department_store": 1,
+        "mall": 9,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 137,
+        "heat_raw": 69,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 3,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 101,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 11,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "toyosu": {
+      "counts": {
+        "cinema": 1,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 20,
+        "park": 13,
+        "garden": 7,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 1,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 32,
+        "heat_raw": 53,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 1,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 20,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "sangenchaya": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 34,
+        "park": 17,
+        "garden": 2,
+        "wood": 6,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 45,
+        "heat_raw": 67,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 34,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ochanomizu": {
+      "counts": {
+        "cinema": 2,
+        "museum": 6,
+        "library": 5,
+        "arts_centre": 2,
+        "theatre": 7,
+        "cafe": 190,
+        "park": 9,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 1,
+        "sports_centre": 2,
+        "department_store": 0,
+        "mall": 3,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 234,
+        "heat_raw": 29,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "cinema",
+          "label": "映画館",
+          "count": 2,
+          "tag": "amenity=cinema",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 6,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 5,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 7,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 190,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 9,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "kanda": {
+      "counts": {
+        "cinema": 0,
+        "museum": 6,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 101,
+        "park": 13,
+        "garden": 1,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 2,
+        "sports_centre": 1,
+        "department_store": 1,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 126,
+        "heat_raw": 41,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 6,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 101,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 13,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 2,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "ogikubo": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 1,
+        "theatre": 4,
+        "cafe": 26,
+        "park": 12,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 3,
+        "department_store": 0,
+        "mall": 2,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 42,
+        "heat_raw": 36,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 1,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 4,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 26,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 12,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "yutenji": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 4,
+        "park": 8,
+        "garden": 0,
+        "wood": 1,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 9,
+        "heat_raw": 26,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "low"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 4,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 8,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "nezu": {
+      "counts": {
+        "cinema": 0,
+        "museum": 9,
+        "library": 5,
+        "arts_centre": 2,
+        "theatre": 1,
+        "cafe": 40,
+        "park": 7,
+        "garden": 4,
+        "wood": 40,
+        "stadium": 1,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 72,
+        "heat_raw": 109,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 9,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 5,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "arts_centre",
+          "label": "アートセンター",
+          "count": 2,
+          "tag": "amenity=arts_centre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 40,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 7,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "minowa": {
+      "counts": {
+        "cinema": 0,
+        "museum": 1,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 0,
+        "cafe": 11,
+        "park": 17,
+        "garden": 0,
+        "wood": 0,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 1,
+        "department_store": 0,
+        "mall": 1,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 18,
+        "heat_raw": 51,
+        "outdoor_raw": 0,
+        "rain_comfort": "low",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 1,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 11,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 17,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "irya": {
+      "counts": {
+        "cinema": 0,
+        "museum": 4,
+        "library": 2,
+        "arts_centre": 0,
+        "theatre": 2,
+        "cafe": 29,
+        "park": 15,
+        "garden": 2,
+        "wood": 3,
+        "stadium": 0,
+        "nightclub": 0,
+        "sports_centre": 0,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 43,
+        "heat_raw": 55,
+        "outdoor_raw": 0,
+        "rain_comfort": "mid",
+        "heat_comfort": "mid"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 4,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 2,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 2,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 29,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 15,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    },
+    "gaiemmae": {
+      "counts": {
+        "cinema": 0,
+        "museum": 2,
+        "library": 1,
+        "arts_centre": 0,
+        "theatre": 1,
+        "cafe": 59,
+        "park": 20,
+        "garden": 2,
+        "wood": 4,
+        "stadium": 1,
+        "nightclub": 1,
+        "sports_centre": 7,
+        "department_store": 0,
+        "mall": 0,
+        "marina": 0,
+        "beach": 0
+      },
+      "fetched_at": "2026-06-12",
+      "scores": {
+        "rain_raw": 74,
+        "heat_raw": 72,
+        "outdoor_raw": 0,
+        "rain_comfort": "high",
+        "heat_comfort": "high"
+      },
+      "research_tags": [
+        {
+          "id": "museum",
+          "label": "博物館・美術館",
+          "count": 2,
+          "tag": "tourism=museum",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "library",
+          "label": "図書館",
+          "count": 1,
+          "tag": "amenity=library",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "theatre",
+          "label": "劇場",
+          "count": 1,
+          "tag": "amenity=theatre",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "cafe",
+          "label": "カフェ",
+          "count": 59,
+          "tag": "amenity=cafe",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "park",
+          "label": "公園",
+          "count": 20,
+          "tag": "leisure=park",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "stadium",
+          "label": "スタジアム",
+          "count": 1,
+          "tag": "leisure=stadium",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        },
+        {
+          "id": "nightclub",
+          "label": "クラブ",
+          "count": 1,
+          "tag": "amenity=nightclub",
+          "trust_level": "low",
+          "source": "OpenStreetMap Overpass API"
+        }
+      ],
+      "radius_m": 700,
+      "source": "OpenStreetMap Overpass API",
+      "trust_level": "low"
+    }
+  }
+}

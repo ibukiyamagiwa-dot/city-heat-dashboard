@@ -4,16 +4,26 @@
 from __future__ import annotations
 
 import json
+import math
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 
+import yaml
+
 BASE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE_DIR / "tools"))
+from yorimachi_weather import weather_today as fetch_weather_today  # noqa: E402
 GRAPH_PATH = BASE_DIR / "rail_graph.json"
 TOWNS_PATH = BASE_DIR / "data" / "towns.json"
 INDEX_PATH = BASE_DIR / "stations_index.json"
 TRENDS_CACHE_PATH = BASE_DIR / "td_trends_cache.json"
 YORIMACHI_TRENDS_CACHE_PATH = BASE_DIR / "yorimachi_trends_cache.json"
+OSM_CACHE_PATH = BASE_DIR / "town_osm_cache.json"
+EVENTS_CACHE_PATH = BASE_DIR / "events_cache.json"
+FLOW_PATH = BASE_DIR / "data" / "station_flow.yaml"
 OUT_PATH = BASE_DIR / "yorimachi_data.js"
+EVENT_MATCH_RADIUS_M = 2500
 
 TRENDS_TD_HIGH = 8.0
 TRENDS_TD_MID = 3.0
@@ -156,6 +166,146 @@ def make_station_town(station: dict) -> dict:
     }
 
 
+def haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371000.0
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(a))
+
+
+def load_osm_cache() -> dict:
+    if not OSM_CACHE_PATH.exists():
+        return {}
+    try:
+        payload = json.loads(OSM_CACHE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return payload.get("towns") or {}
+
+
+def load_events_cache() -> tuple[list[dict], str]:
+    if not EVENTS_CACHE_PATH.exists():
+        return [], "none"
+    try:
+        payload = json.loads(EVENTS_CACHE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return [], "none"
+    window = payload.get("events") or []
+    if window:
+        return window, "window"
+    geo = [
+        e
+        for e in (payload.get("events_all") or [])
+        if e.get("lat") is not None and e.get("lon") is not None
+    ]
+    if geo:
+        return geo, "geo_fallback_stale"
+    return [], "none"
+
+
+def load_station_flow() -> dict[str, int]:
+    if not FLOW_PATH.exists():
+        return {}
+    try:
+        payload = yaml.safe_load(FLOW_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return payload.get("by_slug") or {}
+
+
+def tier_from_rank(rank: int, total: int) -> str:
+    if total <= 1:
+        return "mid"
+    pct = rank / (total - 1)
+    if pct >= 0.67:
+        return "high"
+    if pct >= 0.34:
+        return "mid"
+    return "low"
+
+
+def build_flow_lookup(index: list[dict], by_slug: dict[str, int]) -> dict[str, dict]:
+    """hub_node_id → flow_score tier + daily_passengers."""
+    node_slug = {st["id"]: st.get("slug") for st in index}
+    node_flow: dict[str, int] = {}
+    for node_id, slug in node_slug.items():
+        if slug and slug in by_slug:
+            node_flow[node_id] = by_slug[slug]
+    ordered = sorted(node_flow.items(), key=lambda x: x[1])
+    tiers = {node: tier_from_rank(i, len(ordered)) for i, (node, _) in enumerate(ordered)}
+    out: dict[str, dict] = {}
+    for node_id, passengers in node_flow.items():
+        out[node_id] = {
+            "daily_passengers": passengers,
+            "flow_score": tiers.get(node_id, "mid"),
+            "station_slug": node_slug.get(node_id),
+            "source": "国土数値情報 駅別乗降客数（station_flow.yaml）",
+            "trust_level": "medium",
+        }
+    return out
+
+
+def match_events_near_town(town: dict, events: list[dict]) -> list[dict]:
+    lat, lon = town.get("lat"), town.get("lon")
+    if lat is None or lon is None:
+        return []
+    matched: list[dict] = []
+    for ev in events:
+        elat, elon = ev.get("lat"), ev.get("lon")
+        if elat is None or elon is None:
+            continue
+        dist = haversine_m(lat, lon, elat, elon)
+        if dist > EVENT_MATCH_RADIUS_M:
+            continue
+        row = dict(ev)
+        row["distance_m"] = round(dist)
+        matched.append(row)
+    matched.sort(key=lambda e: e["distance_m"])
+    return matched[:5]
+
+
+def enrich_town_phase3(
+    town: dict,
+    osm_towns: dict,
+    flow_by_node: dict[str, dict],
+    events: list[dict],
+) -> dict:
+    out = dict(town)
+    tid = town.get("id")
+    hub = town.get("hub_node_id")
+
+    if tid and tid in osm_towns:
+        osm = osm_towns[tid]
+        scores = osm.get("scores") or {}
+        out["research_tags"] = osm.get("research_tags") or []
+        out["comfort"] = {
+            "rain": scores.get("rain_comfort", "mid"),
+            "heat": scores.get("heat_comfort", "mid"),
+            "source": osm.get("source"),
+            "trust_level": osm.get("trust_level", "low"),
+        }
+        out["rain_score"] = scores.get("rain_comfort", "mid")
+        out["heat_score"] = scores.get("heat_comfort", "mid")
+    elif town.get("tier") == "station":
+        out.setdefault("comfort", {"rain": "mid", "heat": "mid", "trust_level": "low"})
+        out.setdefault("rain_score", "mid")
+        out.setdefault("heat_score", "mid")
+
+    if hub and hub in flow_by_node:
+        out["flow"] = flow_by_node[hub]
+        out["flow_score"] = flow_by_node[hub]["flow_score"]
+
+    if town.get("tier") != "station" or tid in osm_towns:
+        near = match_events_near_town(town, events)
+        if near:
+            out["events_near"] = near
+            out["event_pick"] = near[0]
+
+    return out
+
+
 def merge_station_towns(curated: list[dict], index: list[dict]) -> list[dict]:
     """手選り町の hub でカバーされていない駅を tier=station として追加。"""
     hubs = {
@@ -178,6 +328,16 @@ def main() -> None:
     trends_stations = load_trends_cache()
     trends_towns = load_yorimachi_trends_cache()
     yorimachi_trends_meta = load_yorimachi_trends_meta()
+    osm_towns = load_osm_cache()
+    events_list, events_match_mode = load_events_cache()
+    flow_by_slug = load_station_flow()
+    flow_by_node = build_flow_lookup(index, flow_by_slug)
+
+    try:
+        weather_bundle = fetch_weather_today()
+    except Exception as exc:
+        print(f"WARN: weather fetch failed: {exc}")
+        weather_bundle = {"date": date.today().isoformat(), "today": None, "forecast": {}}
 
     day_candidates = set()
     for days in trends_stations.values():
@@ -189,10 +349,11 @@ def main() -> None:
 
     curated = towns["towns"]
     merged = merge_station_towns(curated, index)
-    enriched_towns = [
-        enrich_town_trends(t, trends_stations, trends_towns, day_str, prev_str)
-        for t in merged
-    ]
+    enriched_towns = []
+    for t in merged:
+        row = enrich_town_trends(t, trends_stations, trends_towns, day_str, prev_str)
+        row = enrich_town_phase3(row, osm_towns, flow_by_node, events_list)
+        enriched_towns.append(row)
     curated_n = sum(1 for t in enriched_towns if t.get("tier") != "station")
     station_n = len(enriched_towns) - curated_n
 
@@ -213,6 +374,22 @@ def main() -> None:
     proxy_source_td = sum(
         1 for t in enriched_towns if t.get("trends", {}).get("source") == "google_trends_proxy"
     )
+    with_osm = sum(1 for t in enriched_towns if t.get("research_tags"))
+    with_flow = sum(1 for t in enriched_towns if t.get("flow_score"))
+    with_events = sum(1 for t in enriched_towns if t.get("events_near"))
+
+    events_meta = {}
+    if EVENTS_CACHE_PATH.exists():
+        try:
+            ec = json.loads(EVENTS_CACHE_PATH.read_text(encoding="utf-8"))
+            events_meta = {
+                "updated_at": ec.get("updated_at"),
+                "window_start": ec.get("window_start"),
+                "window_end": ec.get("window_end"),
+                "count": len(events_list),
+            }
+        except Exception:
+            pass
 
     payload = {
         "generated_at": date.today().isoformat(),
@@ -227,6 +404,34 @@ def main() -> None:
             "stats": graph.get("stats"),
         },
         "routing": graph.get("routing") or {},
+        "weather_today": weather_bundle,
+        "weather_meta": {
+            "source": "Open-Meteo（東京駅周辺・予報）",
+            "trust_level": "high",
+            "note": "雨の日・暑い日タブは today の is_rain / is_hot で切り替え。",
+        },
+        "osm_meta": {
+            "source": "OpenStreetMap Overpass API",
+            "trust_level": "low",
+            "cached_towns": len(osm_towns),
+            "cache_path": "town_osm_cache.json",
+        },
+        "flow_meta": {
+            "source": "国土数値情報 駅別乗降客数（station_flow.yaml）",
+            "trust_level": "medium",
+            "stations_matched": len(flow_by_node),
+        },
+        "events_meta": {
+            "source": "東京都オープンデータ API（区市イベント一覧）",
+            "trust_level": "medium",
+            "match_radius_m": EVENT_MATCH_RADIUS_M,
+            "match_mode": events_match_mode,
+            "note": (
+                "match_mode=window は今日〜7日。"
+                "0件時は座標付き過去イベントで近傍デモ（geo_fallback_stale）。"
+            ),
+            **events_meta,
+        },
         "trends_meta": {
             "source": "Google Trends（Phase2 町名 + Phase1 駅代理）",
             "trust_level": "low",
@@ -264,7 +469,8 @@ def main() -> None:
     print(
         f"Wrote {OUT_PATH} - stations={len(index)} towns={len(enriched_towns)} "
         f"(curated={curated_n} station={station_n}) trends_td={with_trends} "
-        f"(town={town_source_td} proxy={proxy_source_td}) date={day_str}"
+        f"(town={town_source_td} proxy={proxy_source_td}) "
+        f"osm={with_osm} flow={with_flow} events={with_events} date={day_str}"
     )
 
 
