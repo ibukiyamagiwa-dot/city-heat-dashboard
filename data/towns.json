@@ -1,6 +1,6 @@
 {
   "version": "0.2",
-  "note": "寄り町マスタ。tier=curated は手選り、tier=station は build_yorimachi で自動付与。trends_key は td_trends_cache.json の駅ID（代理）。",
+  "note": "寄り町マスタ。tier=curated は手選り、tier=station は build_yorimachi で自動付与。trends_key は td_trends_cache.json の駅ID（代理）。 image=assets/towns/* from Wikimedia Commons (fetch_town_images_wikimedia.py).",
   "departure_shortcuts": [
     {
       "label": "新宿",
@@ -49,7 +49,10 @@
         "high_td": "話題のイベント・新店をチェック",
         "low_td": "路地をのんびり散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/shimokitazawa.jpg",
+      "image_credit": "urbzoo / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Shimokitazawa,_Tokyo_(26004063414).jpg"
     },
     {
       "id": "nakano",
@@ -70,7 +73,10 @@
         "high_td": "サブカルスポットを1軒回る",
         "low_td": "中野坂上までゆっくり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/nakano.jpg",
+      "image_credit": "Captain945 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E4%B8%AD%E9%87%8E%E8%BB%8A%E7%AB%99%E6%9C%88%E5%8F%B0.jpg"
     },
     {
       "id": "kichijoji",
@@ -92,7 +98,10 @@
         "high_td": "話題の雑貨店へ寄る",
         "low_td": "公園ベンチで夕方まで"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/kichijoji.jpg",
+      "image_credit": "やねまか / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E3%82%AD%E3%83%A9%E3%83%AA%E3%83%8A%E4%BA%AC%E7%8E%8B%E5%90%89%E7%A5%A5%E5%AF%BA%E3%83%BB%E3%82%A2%E3%83%88%E3%83%AC%E5%90%89%E7%A5%A5%E5%AF%BA.jpg"
     },
     {
       "id": "yanaka",
@@ -113,7 +122,10 @@
         "high_td": "谷中銀座をブラブラ",
         "low_td": "静かな坂道をのんびり"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/yanaka.jpg",
+      "image_credit": "喜斎立祥 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL1308753_%E6%9D%B1%E4%BA%AC%E8%B0%B7%E4%B8%AD%E5%A4%A9%E7%8E%8B%E5%AF%BA%E3%81%82%E3%81%95%E3%81%8E%E6%A1%9C.jpg"
     },
     {
       "id": "asakusa",
@@ -134,7 +146,10 @@
         "high_td": "話題のスポットをチェック",
         "low_td": "川沿いを静かに散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/asakusa.jpg",
+      "image_credit": "Print artist:   Utagawa Kuniyoshi (歌川国芳) / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Asakusa_%E6%B5%85%E8%8D%89_(BM_2008,3037.03002).jpg"
     },
     {
       "id": "ueno",
@@ -155,7 +170,10 @@
         "high_td": "話題のイベントを覗く",
         "low_td": "公園でゆっくり過ごす"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/ueno.jpg",
+      "image_credit": "Tiger@西北 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%97%A5%E6%9C%AC%E4%B8%9C%E4%BA%AC%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9B%AD%E4%B8%8A%E9%87%8E%E5%8B%95%E7%89%A9%E5%85%AC%E5%9C%92,_Ueno_Zoo%EF%BC%88Ueno_Zoological_Gardens%EF%BC%89_-_panoramio.jpg"
     },
     {
       "id": "akihabara",
@@ -176,7 +194,10 @@
         "high_td": "話題のポップカルチャーをチェック",
         "low_td": "混雑前に裏通りを歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/akihabara.jpg",
+      "image_credit": "Basile Morin / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Claw_cranes_with_kawaii_stuffed_mascots_and_a_woman_playing,_Akihabara,_Chiyoda,_Tokyo,_Japan.jpg"
     },
     {
       "id": "kagurazaka",
@@ -197,7 +218,10 @@
         "high_td": "話題の店を1軒予約",
         "low_td": "石畳をのんびり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/kagurazaka.jpg",
+      "image_credit": "Yasuhiro from Tokyo, Japan / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Kagurazaka_Tokyo_Japan.jpg"
     },
     {
       "id": "ginza",
@@ -218,7 +242,10 @@
         "high_td": "話題のショップを覗く",
         "low_td": "路地裏カフェで一息"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/ginza.jpg",
+      "image_credit": "Basile Morin / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Exterior_view_of_the_illuminated_facade_of_Maison_Herm%C3%A8s,_Ginza,_Tokyo,_Japan.jpg"
     },
     {
       "id": "nihombashi",
@@ -239,7 +266,10 @@
         "high_td": "話題のエリアをチェック",
         "low_td": "ビジネス街の静かな路地へ"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/nihombashi.jpg",
+      "image_credit": "Utagawa Yoshitora / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL-DC_1312522-Utagawa_Yoshitora-%E6%9D%B1%E4%BA%AC%E6%97%A5%E6%9C%AC%E6%A9%8B%E9%A6%AC%E8%BB%8A%E9%81%93%E9%80%9A%E8%A1%8C%E5%9B%B3-%E6%98%8E%E6%B2%BB2-cmb.jpg"
     },
     {
       "id": "tokyo",
@@ -260,7 +290,10 @@
         "high_td": "グランルーフの話題店へ",
         "low_td": "駅周辺を短く散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/tokyo.jpg",
+      "image_credit": "arashio1 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:028_%E6%9D%B1%E4%BA%AC%E9%A7%85%E5%91%A8%E8%BE%BA_-_panoramio.jpg"
     },
     {
       "id": "harajuku",
@@ -281,7 +314,10 @@
         "high_td": "話題のファッション店へ",
         "low_td": "代々木公園側を散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/harajuku.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:View_from_%E3%82%A6%E3%82%A3%E3%82%BA%E5%8E%9F%E5%AE%BF.jpg"
     },
     {
       "id": "omotesando",
@@ -302,7 +338,10 @@
         "high_td": "話題のブティックを覗く",
         "low_td": "カフェでゆっくり"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/omotesando.jpg",
+      "image_credit": "RuinDig/Yuki Uchida / Wikimedia Commons / CC BY 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Omotesando-Tokyo---2024-07-05_02.jpg"
     },
     {
       "id": "shibuya",
@@ -323,7 +362,10 @@
         "high_td": "いま話題のスポットへ",
         "low_td": "混雑前に路地を散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/shibuya.jpg",
+      "image_credit": "Yoshio Kohara / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo_Shibuya_%E6%9D%B1%E4%BA%AC_%E6%B8%8B%E8%B0%B7%E9%A7%85_-_panoramio.jpg"
     },
     {
       "id": "ebisu",
@@ -344,7 +386,10 @@
         "high_td": "話題のビアホールへ",
         "low_td": "坂道をのんびり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/ebisu.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Mochi_pounding_at_%E6%81%B5%E6%AF%94%E5%AF%BF%E7%A4%BE%E4%BC%9A%E6%95%99%E8%82%B2%E9%A4%A8_(49894).jpg"
     },
     {
       "id": "nakameguro",
@@ -365,7 +410,10 @@
         "high_td": "話題のカフェを1軒",
         "low_td": "川沿いを静かに歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/nakameguro.jpg",
+      "image_credit": "RGB256 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Nakameguro_Station.jpg"
     },
     {
       "id": "roppongi",
@@ -386,7 +434,10 @@
         "high_td": "話題の展示・夜景をチェック",
         "low_td": "丘の上を短く散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/roppongi.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Landscape_seen_from_top_floors_of_%E4%BD%8F%E5%8F%8B%E4%B8%8D%E5%8B%95%E7%94%A3%E5%85%AD%E6%9C%AC%E6%9C%A8%E9%80%9A%E3%83%93%E3%83%AB_6.jpg"
     },
     {
       "id": "yoyogi",
@@ -407,7 +458,10 @@
         "high_td": "話題のライブ・イベントへ",
         "low_td": "公園のベンチで読書"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/yoyogi.jpg",
+      "image_credit": "Basile Morin / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Shinjuku_Gyoen_National_Garden_and_NTT_DoCoMo_Yoyogi_Building,_Tokyo,_Japan.jpg"
     },
     {
       "id": "okubo",
@@ -428,7 +482,10 @@
         "high_td": "話題の韓国街グルメへ",
         "low_td": "路地をのんびり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/okubo.png",
+      "image_credit": "講談社ヤンマガch / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:SAKURAKO_OKUBO_(%E5%A4%A7%E4%B9%85%E4%BF%9D%E6%A1%9C%E5%AD%90).png"
     },
     {
       "id": "kinshicho",
@@ -449,7 +506,10 @@
         "high_td": "話題のエンタメをチェック",
         "low_td": "北口の静かな路地へ"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/kinshicho.jpg",
+      "image_credit": "くろふね / Wikimedia Commons / CC BY 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%84%E3%83%AA%E3%83%BC%EF%BC%88%E3%82%BF%E3%83%AF%E3%83%BC%E3%83%93%E3%83%A5%E3%83%BC%E9%80%9A%E3%82%8A%E3%83%BB%E3%82%A2%E3%83%AB%E3%82%AB%E3%82%AD%E3%83%83%E3%83%88%E9%8C%A6%E7%B3%B8%E7%94%BA%EF%BC%8920241104-IMG_2395.jpg"
     },
     {
       "id": "monzen",
@@ -470,7 +530,10 @@
         "high_td": "話題の店を1軒",
         "low_td": "運河を眺めながら散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/monzen.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-metro_Monzen-nakacho-STA_JR-Okachimachi-STA-Gate.jpg"
     },
     {
       "id": "toyosu",
@@ -491,7 +554,10 @@
         "high_td": "話題の施設をチェック",
         "low_td": "海風を感じて散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/toyosu.jpg",
+      "image_credit": "kanesue / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E8%B1%8A%E6%B4%B2_-_panoramio_(13).jpg"
     },
     {
       "id": "odaiba",
@@ -512,7 +578,10 @@
         "high_td": "話題の夜景スポットへ",
         "low_td": "海辺をゆっくり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/odaiba.jpg",
+      "image_credit": "googolnobunaga / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E3%81%8A%E5%8F%B0%E5%A0%B4%E3%81%8B%E3%82%89%E3%81%AE%E9%A2%A8%E6%99%AF-Scenery_from_Odaiba_-_panoramio.jpg"
     },
     {
       "id": "ryogoku",
@@ -533,7 +602,10 @@
         "high_td": "相撲・下町の話題をチェック",
         "low_td": "江戸情緒の路地を散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/ryogoku.jpg",
+      "image_credit": "Utagawa Hiroshige / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Ryogoku_Yanagibashi_(Kawachiya)-%E6%B1%9F%E6%88%B8%E9%AB%98%E5%90%8D%E4%BC%9A%E4%BA%AD%E5%B0%BD_%E4%B8%A1%E5%9B%BD%E6%9F%B3%E6%A9%8B_%E6%B2%B3%E5%86%85%E5%B1%8B-Tea-house_at_the_Willow_Bridge_MET_DP123292.jpg"
     },
     {
       "id": "daikanyama",
@@ -554,7 +626,10 @@
         "high_td": "話題の店を覗く",
         "low_td": "丘の上をのんびり"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/daikanyama.jpg",
+      "image_credit": "Nobuyuki Hayashi / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Daikan-Yama_station(%E4%BB%A3%E5%AE%98%E5%B1%B1%E9%A7%85)_Tunnel.jpg"
     },
     {
       "id": "jiyugaoka",
@@ -575,7 +650,10 @@
         "high_td": "話題のスイーツ店へ",
         "low_td": "住宅街を散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/jiyugaoka.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Jiyugaoka_post_office.jpg"
     },
     {
       "id": "koenji",
@@ -596,7 +674,10 @@
         "high_td": "話題のライブバーへ",
         "low_td": "路地をのんびり歩く"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/koenji.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Punk_bar_and_motorcycles_in_%E6%9D%B1%E9%AB%98%E5%86%86%E5%AF%BA.jpg"
     },
     {
       "id": "sangenchaya",
@@ -617,7 +698,10 @@
         "high_td": "話題の店を1軒",
         "low_td": "坂道を短く散歩"
       },
-      "tier": "curated"
+      "tier": "curated",
+      "image": "assets/towns/sangenchaya.jpg",
+      "image_credit": "Suikotei / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Daitokyo_Credit_Union_Sangen-jaya_Branch.jpg"
     },
     {
       "id": "ikebukuro",
@@ -638,7 +722,10 @@
         "default": "サブカルを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ikebukuro.jpg",
+      "image_credit": "RuinDig/Yuki Uchida / Wikimedia Commons / CC BY 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Ikebukuro-Tokyo---2024-05_094.jpg"
     },
     {
       "id": "shinagawa",
@@ -659,7 +746,10 @@
         "default": "港を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shinagawa.jpg",
+      "image_credit": "Utagawa Hiroshige / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%97%A5%E6%9C%AC%E6%B9%8A%E5%B0%BD_%E6%9D%B1%E9%83%BD%E5%93%81%E5%B7%9D-Toto,_Shinagawa_MET_DP121546.jpg"
     },
     {
       "id": "meguro",
@@ -680,7 +770,10 @@
         "default": "坂道を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/meguro.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Buildings_in_Meguro-_%E7%9B%AE%E9%BB%92%E5%B7%A5%E6%A5%AD%E4%BC%9A%E9%A4%A8.jpg"
     },
     {
       "id": "gotanda",
@@ -701,7 +794,10 @@
         "default": "五反田を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/gotanda.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Buildings_in_Gotanda_16.jpg"
     },
     {
       "id": "kitasenju",
@@ -722,7 +818,10 @@
         "default": "下町を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kitasenju.jpg",
+      "image_credit": "OiMax from Tokyo, Japan / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Kado-ya_Yari-kake-dango_shop_in_Kitasenju,_Tokyo_(%E3%81%8B%E3%81%A9%E3%82%84%E3%81%AE%E6%A7%8D%E3%81%8B%E3%81%91%E3%81%A0%E3%82%93%E3%81%94,_%E5%8C%97%E5%8D%83%E4%BD%8F,_%E6%9D%B1%E4%BA%AC)_(2005-11-13_12.35.26).jpg"
     },
     {
       "id": "kiyosumi",
@@ -743,7 +842,10 @@
         "default": "倉庫を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kiyosumi.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Kiyosumi-shirakawa-STA_Kiyosumi-dori-Ave-Gate.jpg"
     },
     {
       "id": "tsukiji",
@@ -764,7 +866,10 @@
         "default": "市場跡を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/tsukiji.jpg",
+      "image_credit": "bryan... / Wikimedia Commons / CC BY-SA 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E7%AF%89%E5%9C%B0%E5%B8%82%E5%A0%B4,_%E6%9D%B1%E4%BA%AC,_%E6%97%A5%E6%9C%AC,_%E3%81%A4%E3%81%8D%E3%81%98%E3%81%84%E3%81%A1%E3%81%B0,_%E3%81%A4%E3%81%8D%E3%81%98%E3%81%97%E3%81%98%E3%82%87%E3%81%86,_%E3%81%A8%E3%81%86%E3%81%8D%E3%82%87%E3%81%86,_%E3%81%AB%E3%81%A3%E3%81%BD%E3%82%93,_%E3%81%AB%E3%81%BB%E3%82%93,_Tsukiji_fish_market,_Tsukiji_Market,_Tsukiji_shijpo,_Tokyo,_Japan,_Nippon,_Nihon_(22695979646).jpg"
     },
     {
       "id": "shimbashi",
@@ -785,7 +890,10 @@
         "default": "ビジネス街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shimbashi.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Nakano-Shimbashi-STA_Gate.jpg"
     },
     {
       "id": "yurakucho",
@@ -806,7 +914,10 @@
         "default": "高架下を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yurakucho.jpg",
+      "image_credit": "キネマ旬報社 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:11%E6%9C%89%E6%A5%BD%E7%94%BA%E3%83%BB%E6%97%A5%E6%9C%AC%E5%8A%87%E5%A0%B4.jpg"
     },
     {
       "id": "ochanomizu",
@@ -827,7 +938,10 @@
         "default": "楽器街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ochanomizu.jpg",
+      "image_credit": "Roman SUZUKI / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Ochanomizu_-_%E5%BE%A1%E8%8C%B6%E3%83%8E%E6%B0%B4_-_panoramio.jpg"
     },
     {
       "id": "kanda",
@@ -848,7 +962,10 @@
         "default": "古書店を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kanda.jpg",
+      "image_credit": "Unknown authorUnknown author / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E5%B8%82%E7%A5%9E%E7%94%B0%E9%9D%92%E6%9E%9C%E5%B8%82%E5%A0%B4_%E9%96%8B%E5%A0%B4%E8%A8%98%E5%BF%B5_%E6%98%AD%E5%92%8C3%E5%B9%B412%E6%9C%88_(Tokyo_City_Kanda_Seika_Market,_Opening_Memorial,_1928-12-01)_-_%E5%B8%82%E5%A0%B4%E5%A4%96%E6%99%AF_(exterior_of_market).jpg"
     },
     {
       "id": "takadanobaba",
@@ -869,7 +986,10 @@
         "default": "ラーメンを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/takadanobaba.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Takadanobaba-STA_3-entrance.jpg"
     },
     {
       "id": "mejiro",
@@ -890,7 +1010,10 @@
         "default": "目白を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/mejiro.jpg",
+      "image_credit": "柳田亮 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E7%9B%AE%E7%99%BD%E9%A7%85_Mejiro_Station_-_panoramio.jpg"
     },
     {
       "id": "sugamo",
@@ -911,7 +1034,10 @@
         "default": "地蔵通りを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/sugamo.jpg",
+      "image_credit": "Unknown authorUnknown author / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%AE%89%E9%83%A8%E7%A3%AF%E9%9B%84%EF%BC%88%E5%B7%A3%E9%B4%A8%E5%B1%85%E4%BD%8F%E6%99%82%E4%BB%A3%EF%BC%89.jpg"
     },
     {
       "id": "futakotamagawa",
@@ -932,7 +1058,10 @@
         "default": "河川を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/futakotamagawa.jpg",
+      "image_credit": "kanesue / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E4%BA%8C%E5%AD%90%E7%8E%89%E5%B7%9D_-_panoramio.jpg"
     },
     {
       "id": "ogikubo",
@@ -953,7 +1082,10 @@
         "default": "ラーメンを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ogikubo.jpg",
+      "image_credit": "User:Kentin / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Promenade_ogikubo_suginami_tokyo_2009.JPG"
     },
     {
       "id": "asagaya",
@@ -974,7 +1106,10 @@
         "default": "ジャズを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/asagaya.jpg",
+      "image_credit": "Rickard Törnblad / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Street_in_Asagaya,_Tokyo,_Japan_-_October_2015.jpg"
     },
     {
       "id": "gakuenmae",
@@ -995,7 +1130,10 @@
         "default": "学芸大学を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/gakuenmae.jpg",
+      "image_credit": "Romanonn / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E5%AD%A6%E8%8A%B8%E5%A4%A7%E5%AD%A6%E9%99%84%E5%B1%9E%E5%B9%BC%E7%A8%9A%E5%9C%92%E5%B0%8F%E9%87%91%E4%BA%95%E5%9C%92%E8%88%8E.jpg"
     },
     {
       "id": "yutenji",
@@ -1016,7 +1154,10 @@
         "default": "坂を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yutenji.jpg",
+      "image_credit": "小池 隆 / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E7%A5%90%E5%A4%A9%E5%AF%BA%E8%A1%A8%E9%96%80.JPG"
     },
     {
       "id": "komazawa",
@@ -1037,7 +1178,10 @@
         "default": "公園を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/komazawa.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Komazawa-daigaku-STA_Gate.jpg"
     },
     {
       "id": "nishinippori",
@@ -1058,7 +1202,10 @@
         "default": "繊維街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/nishinippori.jpg",
+      "image_credit": "柳田亮 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E8%A5%BF%E6%97%A5%E6%9A%AE%E9%87%8C%E9%A7%85_Nishi-Nippori_Station_-_panoramio.jpg"
     },
     {
       "id": "komagome",
@@ -1079,7 +1226,10 @@
         "default": "庭園を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/komagome.jpg",
+      "image_credit": "yamai36 / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E9%A7%92%E8%BE%BC%E5%AF%8C%E5%A3%AB%E7%A5%9E%E7%A4%BE_Komagome_huji_jinja_-_panoramio.jpg"
     },
     {
       "id": "yotsuya",
@@ -1100,7 +1250,10 @@
         "default": "路地裏を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yotsuya.jpg",
+      "image_credit": "豊国,国久 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL1311401_%E5%9B%9B%E3%83%84%E8%B0%B7.jpg"
     },
     {
       "id": "sendagaya",
@@ -1121,7 +1274,10 @@
         "default": "国技館を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/sendagaya.jpg",
+      "image_credit": "Carbonium / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Sendagaya_-_%E5%8D%83%E9%A7%84%E3%83%B6%E8%B0%B7_-_panoramio.jpg"
     },
     {
       "id": "toranomon",
@@ -1142,7 +1298,10 @@
         "default": "虎ノ門を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/toranomon.jpg",
+      "image_credit": "Carbonium / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Toranomon_(Tiger%27s_Gate)_-_%E8%99%8E%E3%83%8E%E9%96%80_-_panoramio.jpg"
     },
     {
       "id": "azabujuban",
@@ -1163,7 +1322,10 @@
         "default": "商店街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/azabujuban.jpg",
+      "image_credit": "Nyao148 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Azabujuban-Sta-3.JPG"
     },
     {
       "id": "shirokanedai",
@@ -1184,7 +1346,10 @@
         "default": "坂道を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shirokanedai.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Buildings_in_Shirokanedai.jpg"
     },
     {
       "id": "oimachi",
@@ -1205,7 +1370,10 @@
         "default": "大井町を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/oimachi.jpg",
+      "image_credit": "daidarabotti / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E4%BA%95%E7%94%BA%E9%A7%85_-_panoramio.jpg"
     },
     {
       "id": "osaki",
@@ -1226,7 +1394,10 @@
         "default": "再開発を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/osaki.jpg",
+      "image_credit": "日本将棋連盟 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E5%B4%8E%E7%86%8A%E9%9B%84Kumao%C5%8Csaki.jpg"
     },
     {
       "id": "ouji",
@@ -1247,7 +1418,10 @@
         "default": "荒川を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ouji.jpg",
+      "image_credit": "Carbonium / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Ouji_Inari_Shrine_-_%E7%8E%8B%E5%AD%90%E7%A8%B2%E8%8D%B7%E7%A5%9E%E7%A4%BE_-_panoramio.jpg"
     },
     {
       "id": "nezu",
@@ -1268,7 +1442,10 @@
         "default": "神社を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/nezu.jpg",
+      "image_credit": "喜斎立祥 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL1308746_%E6%9D%B1%E4%BA%AC%E6%A0%B9%E6%B4%A5%E3%81%B0%E3%82%89.jpg"
     },
     {
       "id": "minowa",
@@ -1289,7 +1466,10 @@
         "default": "三ノ輪を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/minowa.jpg",
+      "image_credit": "Toomore Chiang from Taipei, Taiwan / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E9%83%BD%E9%9B%BB%E8%8D%92%E5%B7%9D_%E4%B8%89%E3%83%8E%E8%BC%AA%E6%A9%8B_Tokyo,_Japan_Kodak_ColorPlus_Nikon_FM2_(28769458734).jpg"
     },
     {
       "id": "irya",
@@ -1310,7 +1490,10 @@
         "default": "入谷を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/irya.jpg",
+      "image_credit": "Nori Norisa / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%85%A5%E8%B0%B7%E9%A7%85_2015_%E3%82%A4%E3%83%BC%E3%82%AA%E3%83%B3_(21487690626).jpg"
     },
     {
       "id": "iidabashi",
@@ -1331,7 +1514,10 @@
         "default": "神田川を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/iidabashi.jpg",
+      "image_credit": "賢太郎 森川 from 埼玉県さいたま市浦和区, 日本 / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%A2%85%E9%85%92150%E9%A3%AF%E7%94%B0%E6%A9%8B_(32422673823).jpg"
     },
     {
       "id": "korakuen",
@@ -1352,7 +1538,10 @@
         "default": "遊園地を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/korakuen.jpg",
+      "image_credit": "不明 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%BE%8C%E6%A5%BD%E5%9C%92%EF%BC%881931%E5%B9%B4%EF%BC%89.jpg"
     },
     {
       "id": "myogadani",
@@ -1373,7 +1562,10 @@
         "default": "坂道を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/myogadani.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Myogadani-STA_Kasuga-dori-Gate.jpg"
     },
     {
       "id": "kojimachi",
@@ -1394,7 +1586,10 @@
         "default": "半蔵門を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kojimachi.jpg",
+      "image_credit": "arashio1 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:040_%E9%BA%B9%E7%94%BA_-_panoramio.jpg"
     },
     {
       "id": "ichigaya",
@@ -1415,7 +1610,10 @@
         "default": "護国神社を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ichigaya.jpg",
+      "image_credit": "もうもうむーすん / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%B8%82%E3%83%B6%E8%B0%B7%E8%A6%8B%E9%99%84.jpg"
     },
     {
       "id": "kudanshita",
@@ -1436,7 +1634,10 @@
         "default": "武道館を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kudanshita.jpg",
+      "image_credit": "bryan... / Wikimedia Commons / CC BY-SA 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%AE%B5%E4%B8%8B,_%E4%B9%9D%E6%AE%B5%E4%B8%8B%E7%AB%99,_%E6%9D%B1%E4%BA%AC%E5%9C%B0%E4%B8%8B%E9%90%B5,_%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%BA%A4%E9%80%9A%E5%B1%80,_%E9%83%BD%E7%87%9F%E5%9C%B0%E4%B8%8B%E9%90%B5,_%E6%9D%B1%E4%BA%AC,_%E6%97%A5%E6%9C%AC,_%E4%B9%9D%E6%AE%B5%E4%B8%8B%E9%A7%85,_%E6%9D%B1%E4%BA%AC%E3%83%A1%E3%83%88%E3%83%AD,_Kudanshita,_Kudanshita_Station,_Tokyo,_Japan_(13753277604).jpg"
     },
     {
       "id": "tabata",
@@ -1457,7 +1658,10 @@
         "default": "田端を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/tabata.jpg",
+      "image_credit": "柳田亮 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E7%94%B0%E7%AB%AF%E9%A7%85_Tabata_Station_-_panoramio.jpg"
     },
     {
       "id": "otsuka",
@@ -1478,7 +1682,10 @@
         "default": "商店街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/otsuka.jpg",
+      "image_credit": "Maxakisan / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Reiko_Otsuka_(%E5%A4%A7%E5%A1%9A%E7%8E%B2%E5%AD%90).jpg"
     },
     {
       "id": "higashinakano",
@@ -1499,7 +1706,10 @@
         "default": "古着を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/higashinakano.jpg",
+      "image_credit": "User:Kentin / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Unison_square_higashinakano_nakano_tokyo_2009-2.JPG"
     },
     {
       "id": "nakanosakaue",
@@ -1520,7 +1730,10 @@
         "default": "ビル街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/nakanosakaue.jpg",
+      "image_credit": "LERK / Wikimedia Commons / CC BY 2.5",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:TokyoMetro-nakanosakaue-platform.jpg"
     },
     {
       "id": "shiodome",
@@ -1541,7 +1754,10 @@
         "default": "高層ビューを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shiodome.jpg",
+      "image_credit": "Utagawa Kuniteru II（1830-1874） / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E6%B1%90%E7%95%99%E9%89%84%E9%81%93%E8%92%B8%E6%B0%97%E8%BB%8A%E9%80%9A%E8%A1%8C%E5%9B%B3-Illustration_of_a_Steam_Locomotive_Passing_Shiodome_in_Tokyo_(T%C5%8Dky%C5%8D_Shiodome_testud%C5%8D_j%C5%8Dkisha_ts%C5%ABk%C5%8D_zu)_MET_DP147709.jpg"
     },
     {
       "id": "takanawadai",
@@ -1562,7 +1778,10 @@
         "default": "坂道を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/takanawadai.jpg",
+      "image_credit": "Nyao148 / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Takanawadai-Sta-A1.JPG"
     },
     {
       "id": "shinjuku",
@@ -1583,7 +1802,10 @@
         "default": "摩天楼を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shinjuku.jpg",
+      "image_credit": "Guilhem Vellut / Wikimedia Commons / CC BY 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%96%B0%E5%AE%BF%E8%AA%BF%E7%90%86%E5%B8%AB%E5%B0%82%E9%96%80%E5%AD%A6%E6%A0%A1_%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E8%A5%BF%E6%96%B0%E5%AE%BF6%E4%B8%81%E7%9B%AE.jpg"
     },
     {
       "id": "mitaka",
@@ -1604,7 +1826,10 @@
         "default": "三鷹を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/mitaka.jpg",
+      "image_credit": "きじばる / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%8B%9D%E6%B7%B5%E7%A5%9E%E7%A4%BE%E3%81%AE%E6%8B%9D%E6%AE%BF(%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%89%E9%B7%B9%E5%B8%82%E6%96%B0%E5%B7%9D).jpg"
     },
     {
       "id": "yoyogihara",
@@ -1625,7 +1850,10 @@
         "default": "カフェを1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yoyogihara.jpg",
+      "image_credit": "Rsa / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Yoyogi-uehara-STeastexit.JPG"
     },
     {
       "id": "yoyogikoen",
@@ -1646,7 +1874,10 @@
         "default": "公園を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yoyogikoen.jpg",
+      "image_credit": "Hanonimas / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E9%83%BD%E7%AB%8B_%E4%BB%A3%E3%80%85%E6%9C%A8%E5%85%AC%E5%9C%92.jpg"
     },
     {
       "id": "hachobori",
@@ -1667,7 +1898,10 @@
         "default": "運河を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/hachobori.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Takaracho-STA_Hachobori-2chome-District-Gate.jpg"
     },
     {
       "id": "kayabacho",
@@ -1688,7 +1922,10 @@
         "default": "茅場町を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kayabacho.jpg",
+      "image_credit": "nakashi from Chofu, Tokyo, JAPAN / Wikimedia Commons / CC BY-SA 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Marathon_Grand_Championship_%E3%83%9E%E3%83%A9%E3%82%BD%E3%83%B3%E3%82%B0%E3%83%A9%E3%83%B3%E3%83%89%E3%83%81%E3%83%A3%E3%83%B3%E3%83%94%E3%82%AA%E3%83%B3%E3%82%B7%E3%83%83%E3%83%97_(@_kayabacho_%E8%8C%85%E5%A0%B4%E7%94%BA)_(48734972863).jpg"
     },
     {
       "id": "kasumigaseki",
@@ -1709,7 +1946,10 @@
         "default": "官公庁を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kasumigaseki.jpg",
+      "image_credit": "Mont Blank rich / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E9%9C%9E%E3%83%B6%E9%96%A2%E9%A7%85.jpg"
     },
     {
       "id": "nagatacho",
@@ -1730,7 +1970,10 @@
         "default": "国会を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/nagatacho.jpg",
+      "image_credit": "AMANO Jun-ichi / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Nagatach%C5%8D_%E6%B0%B8%E7%94%B0%E7%94%BA%E3%81%AE%E8%A3%8F%E9%80%9A%E3%82%8A_-_panoramio.jpg"
     },
     {
       "id": "shirokanetakanawa",
@@ -1751,7 +1994,10 @@
         "default": "坂を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/shirokanetakanawa.jpg",
+      "image_credit": "Japanbird / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%BA%A4%E9%80%9A%E5%B1%80_%E7%99%BD%E9%87%91%E5%8F%B0_180%E5%86%86%E5%8C%BA%E9%96%93_%E5%B0%8F%E5%85%90.jpg"
     },
     {
       "id": "yoga",
@@ -1772,7 +2018,10 @@
         "default": "用賀を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/yoga.jpg",
+      "image_credit": "Senkaku Islands / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E7%94%A8%E8%B3%80%E6%9C%AC%E7%B7%9A%E6%96%99%E9%87%91%E6%89%80%E3%81%A8%E7%94%A8%E8%B3%80%E3%83%91%E3%83%BC%E3%82%AD%E3%83%B3%E3%82%B0%E3%82%A8%E3%83%AA%E3%82%A2.jpg"
     },
     {
       "id": "gaiemmae",
@@ -1793,7 +2042,10 @@
         "default": "競技場を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/gaiemmae.jpg",
+      "image_credit": "ウィ貴公子 / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%A4%96%E8%8B%91%E5%89%8D%E4%BA%A4%E5%B7%AE%E7%82%B9_2025%E5%B9%B411%E6%9C%8816%E6%97%A5%E3%81%AE%E6%9D%B1%E4%BA%AC_202511161448_IMG_3187.jpg"
     },
     {
       "id": "sangubashi",
@@ -1814,7 +2066,10 @@
         "default": "参宮橋を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/sangubashi.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%8F%82%E5%AE%AE%E6%A9%8B%E5%85%AC%E5%9C%92.jpg"
     },
     {
       "id": "kitasando",
@@ -1835,7 +2090,10 @@
         "default": "北参道を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kitasando.jpg",
+      "image_credit": "C.L. Kao (eddie5150) / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:(20130309)%E5%8C%97%E5%8F%82%E9%81%93%E3%81%8B%E3%82%89%E5%AE%9D%E7%89%A9%E6%AE%BF%E9%80%94%E4%B8%AD%E3%80%82_-_panoramio.jpg"
     },
     {
       "id": "senzoku",
@@ -1856,7 +2114,10 @@
         "default": "千石を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/senzoku.jpg",
+      "image_credit": "kitakame / Wikimedia Commons / CC BY 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%8D%83%E7%9F%B3%E7%94%BA%E3%81%AE%E6%A1%9C_-_panoramio.jpg"
     },
     {
       "id": "sendagi",
@@ -1877,7 +2138,10 @@
         "default": "千駄木を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/sendagi.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Sendagi-STA_Platform1.jpg"
     },
     {
       "id": "asakusabashi",
@@ -1898,7 +2162,10 @@
         "default": "問屋街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/asakusabashi.jpg",
+      "image_credit": "Hiroshige III / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL-DC_2542937_38-Utagawa_Hiroshige_III-%E6%9D%B1%E4%BA%AC%E9%96%8B%E5%8C%96%E4%B8%89%E5%8D%81%E5%85%AD%E6%99%AF_%E5%8D%81%E5%85%AB_%E6%9F%B3%E6%A9%8B%E3%82%88%E3%82%8A%E6%B5%85%E8%8D%89%E6%A9%8B-crd.jpg"
     },
     {
       "id": "kuramae",
@@ -1919,7 +2186,10 @@
         "default": "職人街を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/kuramae.jpg",
+      "image_credit": "emi moriya from Tokyo, Japan / Wikimedia Commons / CC BY-SA 2.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E3%81%A8%E3%81%86%E3%81%B5%E5%B1%8B_%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8F%B0%E6%9D%B1%E5%8C%BA%E8%94%B5%E5%89%8D_2017-08-11.jpg"
     },
     {
       "id": "ningyocho",
@@ -1940,7 +2210,10 @@
         "default": "老舗を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/ningyocho.jpg",
+      "image_credit": "豊国,国久 / Wikimedia Commons / Public domain",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:NDL1311354_%E4%BA%BA%E5%BD%A2%E7%94%BA.jpg"
     },
     {
       "id": "hamadayama",
@@ -1961,7 +2234,10 @@
         "default": "浜田山を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/hamadayama.jpg",
+      "image_credit": "Syced / Wikimedia Commons / CC0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E6%9D%89%E4%B8%A6%E5%8C%BA%E7%AB%8B%E6%B5%9C%E7%94%B0%E5%B1%B1%E5%B0%8F%E5%AD%A6%E6%A0%A1.jpg"
     },
     {
       "id": "nishiogikubo",
@@ -1982,7 +2258,10 @@
         "default": "古着を1軒回る",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/nishiogikubo.jpg",
+      "image_credit": "東京特許許可局 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:JR_Nishi_Ogikubo_sta_001.jpg"
     },
     {
       "id": "seijogakuen",
@@ -2003,7 +2282,10 @@
         "default": "成城学園前を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/seijogakuen.jpg",
+      "image_credit": "MaedaAkihiko / Wikimedia Commons / CC BY-SA 4.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Seijogakuen-Mae-STA_Platform1-2.jpg"
     },
     {
       "id": "okachimachi",
@@ -2024,7 +2306,10 @@
         "default": "御徒町を散歩",
         "high_td": "話題のスポットをチェック",
         "low_td": "路地をのんびり歩く"
-      }
+      },
+      "image": "assets/towns/okachimachi.jpg",
+      "image_credit": "柳田亮 / Wikimedia Commons / CC BY-SA 3.0",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:%E5%BE%A1%E5%BE%92%E7%94%BA%E9%A7%85_Okachimachi_Station_-_panoramio.jpg"
     }
   ]
 }
