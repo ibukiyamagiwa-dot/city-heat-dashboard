@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>認知距離マップ — 地図の「近さ」は、測り方で変わる</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2332;
+      --panel-soft: #243044;
+      --border: #334155;
+      --text: #e8edf4;
+      --muted: #94a3b8;
+      --geo: #38bdf8;
+      --poi: #fbbf24;
+      --text-dist: #a78bfa;
+      --accent: #34d399;
+      --shadow: 0 18px 40px rgba(0, 0, 0, .35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
+      background: radial-gradient(circle at 20% 0%, #1e293b, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      min-height: 100vh;
+    }
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .sidebar {
+      padding: 24px 20px 32px;
+      border-right: 1px solid var(--border);
+      background: rgba(15, 20, 25, .92);
+      overflow-y: auto;
+    }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 8px 0 6px;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      line-height: 1.25;
+    }
+    .lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    select, input[type="range"] {
+      width: 100%;
+    }
+    select {
+      appearance: none;
+      background: var(--panel-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 15px;
+    }
+    .mode-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      flex: 1;
+      min-width: 90px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .mode-btn.active[data-mode="geo"] {
+      border-color: var(--geo);
+      background: rgba(56, 189, 248, .15);
+      color: var(--geo);
+    }
+    .mode-btn.active[data-mode="poi"] {
+      border-color: var(--poi);
+      background: rgba(251, 191, 36, .12);
+      color: var(--poi);
+    }
+    .mode-btn.active[data-mode="text"] {
+      border-color: var(--text-dist);
+      background: rgba(167, 139, 250, .12);
+      color: var(--text-dist);
+    }
+    .mode-btn.active[data-mode="both"] {
+      border-color: var(--accent);
+      background: rgba(52, 211, 153, .12);
+      color: var(--accent);
+    }
+    .range-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .swatch {
+      width: 28px;
+      height: 4px;
+      border-radius: 999px;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .compare-col h3 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .compare-col.geo h3 { color: var(--geo); }
+    .compare-col.poi h3 { color: var(--poi); }
+    .compare-col.text h3 { color: var(--text-dist); }
+    ol.rank-list {
+      margin: 0;
+      padding-left: 1.15rem;
+      font-size: 13px;
+    }
+    ol.rank-list li { margin-bottom: 4px; }
+    .surprise {
+      color: var(--poi);
+      font-weight: 700;
+    }
+    .meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    #map {
+      min-height: 420px;
+      height: 100%;
+      background: #111827;
+    }
+    @media (max-width: 960px) {
+      #map { min-height: 360px; height: 360px; }
+    }
+    .anchor-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, .12);
+      border: 1px solid rgba(52, 211, 153, .35);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="eyebrow">Phase A · Cognitive Distance Map</div>
+      <h1>認知距離マップ</h1>
+      <p class="lead" id="pageTagline">地図の「近さ」は、測り方で変わる。</p>
+
+      <div class="panel">
+        <label for="anchorSelect">基準の町</label>
+        <select id="anchorSelect"></select>
+        <div class="anchor-chip" id="anchorChip"></div>
+      </div>
+
+      <div class="panel">
+        <label>表示する距離</label>
+        <div class="mode-row" id="modeRow">
+          <button type="button" class="mode-btn active" data-mode="both">両方</button>
+          <button type="button" class="mode-btn" data-mode="geo">地理</button>
+          <button type="button" class="mode-btn" data-mode="poi">機能</button>
+          <button type="button" class="mode-btn" data-mode="text">記述</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <label for="topN">近い町 Top N</label>
+        <input id="topN" type="range" min="3" max="15" value="10" />
+        <div class="range-meta">
+          <span>3</span>
+          <span id="topNLabel">10</span>
+          <span>15</span>
+        </div>
+      </div>
+
+      <div class="panel compare-grid" id="comparePanel">
+        <div class="compare-col geo">
+          <h3>地理 Top N</h3>
+          <ol class="rank-list" id="geoList"></ol>
+        </div>
+        <div class="compare-col poi">
+          <h3>機能 Top N</h3>
+          <ol class="rank-list" id="poiList"></ol>
+        </div>
+        <div class="compare-col text">
+          <h3>記述 Top N</h3>
+          <ol class="rank-list" id="textList"></ol>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="legend">
+          <div class="legend-item"><span class="swatch" style="background:var(--geo)"></span>地理距離（電車・分）</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--poi)"></span>機能距離（POI 構成）</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--text-dist)"></span>記述距離（tagline）</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--accent); opacity:.8"></span>基準の町</div>
+        </div>
+        <p class="meta" id="buildMeta"></p>
+      </div>
+    </aside>
+
+    <main id="map"></main>
+  </div>
+
+  <script src="cognitive_map_data.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script>
+    const DATA = COGNITIVE_MAP_DATA;
+    const townById = Object.fromEntries(DATA.towns.map((t) => [t.id, t]));
+
+    let map;
+    let layerGroup;
+    let mode = "both";
+    let topN = 10;
+    let anchorId = DATA.towns[0]?.id;
+
+    function topNeighbors(matrix, anchor, n) {
+      const row = matrix[anchor] || {};
+      return Object.entries(row)
+        .filter(([id, value]) => id !== anchor && value != null)
+        .sort((a, b) => Number(a[1]) - Number(b[1]))
+        .slice(0, n)
+        .map(([id, value]) => ({ id, value: Number(value) }));
+    }
+
+    function formatGeo(minutes) {
+      return `${minutes}分`;
+    }
+
+    function formatPoi(distance) {
+      return `距離 ${distance.toFixed(3)}`;
+    }
+
+    function renderLists() {
+      const geoTop = topNeighbors(DATA.geo_minutes, anchorId, topN);
+      const poiTop = topNeighbors(DATA.poi_distance, anchorId, topN);
+      const textTop = topNeighbors(DATA.text_distance, anchorId, topN);
+      const geoIds = new Set(geoTop.map((x) => x.id));
+
+      const geoList = document.getElementById("geoList");
+      const poiList = document.getElementById("poiList");
+      const textList = document.getElementById("textList");
+      geoList.innerHTML = geoTop.map(({ id, value }) => {
+        const town = townById[id];
+        return `<li>${town.name} <span style="color:var(--muted)">${formatGeo(value)}</span></li>`;
+      }).join("");
+
+      poiList.innerHTML = poiTop.map(({ id, value }) => {
+        const town = townById[id];
+        const surprise = geoIds.has(id) ? "" : ' <span class="surprise">★</span>';
+        return `<li>${town.name}${surprise} <span style="color:var(--muted)">${formatPoi(value)}</span></li>`;
+      }).join("");
+
+      textList.innerHTML = textTop.map(({ id, value }) => {
+        const town = townById[id];
+        const surprise = geoIds.has(id) ? "" : ' <span class="surprise">★</span>';
+        return `<li>${town.name}${surprise} <span style="color:var(--muted)">${formatPoi(value)}</span></li>`;
+      }).join("");
+
+      const anchor = townById[anchorId];
+      document.getElementById("anchorChip").textContent =
+        `${anchor.name} · ${anchor.tagline || ""}`;
+    }
+
+    function lineWeight(value, kind) {
+      if (kind === "geo") {
+        const max = 60;
+        return Math.max(2, 8 - (value / max) * 6);
+      }
+      return Math.max(2, 8 - value * 6);
+    }
+
+    function drawMap() {
+      if (!map) {
+        map = L.map("map", { zoomControl: true });
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; CARTO',
+          subdomains: "abcd",
+          maxZoom: 19,
+        }).addTo(map);
+        layerGroup = L.layerGroup().addTo(map);
+      }
+
+      layerGroup.clearLayers();
+      const anchor = townById[anchorId];
+      const bounds = [];
+
+      const anchorMarker = L.circleMarker([anchor.lat, anchor.lon], {
+        radius: 10,
+        color: "#34d399",
+        fillColor: "#34d399",
+        fillOpacity: 0.95,
+        weight: 2,
+      }).bindTooltip(anchor.name, { permanent: false, direction: "top" });
+      layerGroup.addLayer(anchorMarker);
+      bounds.push([anchor.lat, anchor.lon]);
+
+      const layers = [];
+      if (mode === "both" || mode === "geo") {
+        layers.push({ key: "geo", color: getComputedStyle(document.documentElement).getPropertyValue("--geo").trim(), matrix: DATA.geo_minutes, label: "地理" });
+      }
+      if (mode === "both" || mode === "poi") {
+        layers.push({ key: "poi", color: getComputedStyle(document.documentElement).getPropertyValue("--poi").trim(), matrix: DATA.poi_distance, label: "機能" });
+      }
+      if (mode === "text") {
+        layers.push({ key: "text", color: getComputedStyle(document.documentElement).getPropertyValue("--text-dist").trim(), matrix: DATA.text_distance, label: "記述" });
+      }
+
+      layers.forEach((layer) => {
+        const neighbors = topNeighbors(layer.matrix, anchorId, topN);
+        neighbors.forEach(({ id, value }) => {
+          const town = townById[id];
+          const latlngs = [[anchor.lat, anchor.lon], [town.lat, town.lon]];
+          const line = L.polyline(latlngs, {
+            color: layer.color,
+            weight: lineWeight(value, layer.key),
+            opacity: mode === "both" ? 0.72 : 0.9,
+            dashArray: layer.key === "poi" ? "6 8" : layer.key === "text" ? "2 6" : null,
+          }).bindTooltip(`${layer.label}: ${town.name}`, { sticky: true });
+          layerGroup.addLayer(line);
+
+          const marker = L.circleMarker([town.lat, town.lon], {
+            radius: 6,
+            color: layer.color,
+            fillColor: "#1a2332",
+            fillOpacity: 0.95,
+            weight: 2,
+          }).bindPopup(`<strong>${town.name}</strong><br>${town.tagline || ""}`);
+          layerGroup.addLayer(marker);
+          bounds.push([town.lat, town.lon]);
+        });
+      });
+
+      if (bounds.length === 1) {
+        map.setView(bounds[0], 13);
+      } else {
+        map.fitBounds(bounds, { padding: [40, 40] });
+      }
+    }
+
+    function renderAll() {
+      renderLists();
+      drawMap();
+    }
+
+    function initControls() {
+      const select = document.getElementById("anchorSelect");
+      DATA.towns.forEach((town) => {
+        const opt = document.createElement("option");
+        opt.value = town.id;
+        opt.textContent = town.name;
+        select.appendChild(opt);
+      });
+      if (townById.shimokitazawa) {
+        anchorId = "shimokitazawa";
+      }
+      select.value = anchorId;
+
+      select.addEventListener("change", () => {
+        anchorId = select.value;
+        renderAll();
+      });
+
+      document.getElementById("topN").addEventListener("input", (e) => {
+        topN = Number(e.target.value);
+        document.getElementById("topNLabel").textContent = String(topN);
+        renderAll();
+      });
+
+      document.getElementById("modeRow").addEventListener("click", (e) => {
+        const btn = e.target.closest(".mode-btn");
+        if (!btn) return;
+        mode = btn.dataset.mode;
+        document.querySelectorAll(".mode-btn").forEach((el) => el.classList.remove("active"));
+        btn.classList.add("active");
+        renderAll();
+      });
+
+      document.getElementById("pageTagline").textContent = DATA.tagline || "";
+      document.getElementById("buildMeta").textContent =
+        `生成: ${DATA.built_at || "-"} · 町 ${DATA.stats?.town_count || DATA.towns.length} · ` +
+        `${DATA.sources?.geo?.label || "地理"} / ${DATA.sources?.poi?.label || "機能"}`;
+    }
+
+    initControls();
+    renderAll();
+  </script>
+</body>
+</html>
