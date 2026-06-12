@@ -395,6 +395,7 @@
     const TREND_THRESH = TRENDS_META.thresholds || { hot: 8, up: 3, calm: -3 };
     const WEATHER = DATA.weather_today || {};
     const WEATHER_TODAY = WEATHER.today || null;
+    const EVENTS_META = DATA.events_meta || {};
     const CATEGORIES = [
       { id: "recommend", label: "おすすめ" },
       { id: "hot", label: "いま話題" },
@@ -902,7 +903,7 @@
         } else if (selectedCategory === "heat") {
           hint = "暑い日は公園・緑地が多い町（OSM）。今日が暑い日なら high のみ。";
         } else if (selectedCategory === "events") {
-          hint = "東京都オープンデータのイベントが近い町（2.5km 以内）。";
+          hint = "今日〜7日のイベントが近い町（Doorkeeper・区市OD 等・2.5km 以内）。";
         }
         townList.innerHTML =
           `<div class="empty-msg">${hint}<br>時間を変えるか、出発地を変えてください。</div>`;
@@ -981,10 +982,12 @@
         const link = ev.url
           ? `<a href="${ev.url}" target="_blank" rel="noopener">詳細</a>`
           : "";
+        const src = ev.source || ev.source_kind || "";
         resultEventBox.style.display = "block";
         resultEventText.innerHTML =
           `${ev.event_name}${place}${dist}<br>` +
           (dates ? `<span class="meta">${dates}</span><br>` : "") +
+          (src ? `<span class="meta">出典: ${src}</span><br>` : "") +
           link;
       } else {
         resultEventBox.style.display = "none";

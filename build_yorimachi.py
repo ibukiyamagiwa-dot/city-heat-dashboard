@@ -185,24 +185,29 @@ def load_osm_cache() -> dict:
     return payload.get("towns") or {}
 
 
-def load_events_cache() -> tuple[list[dict], str]:
+def load_events_cache() -> tuple[list[dict], str, dict]:
     if not EVENTS_CACHE_PATH.exists():
-        return [], "none"
+        return [], "none", {}
     try:
         payload = json.loads(EVENTS_CACHE_PATH.read_text(encoding="utf-8"))
     except Exception:
-        return [], "none"
+        return [], "none", {}
     window = payload.get("events") or []
+    with_coords = [
+        e for e in window if e.get("lat") is not None and e.get("lon") is not None
+    ]
+    if with_coords:
+        return with_coords, "window", payload
     if window:
-        return window, "window"
+        return window, "window_no_coords", payload
     geo = [
         e
         for e in (payload.get("events_all") or [])
         if e.get("lat") is not None and e.get("lon") is not None
     ]
     if geo:
-        return geo, "geo_fallback_stale"
-    return [], "none"
+        return geo, "geo_fallback_stale", payload
+    return [], "none", payload
 
 
 def load_station_flow() -> dict[str, int]:
@@ -329,7 +334,7 @@ def main() -> None:
     trends_towns = load_yorimachi_trends_cache()
     yorimachi_trends_meta = load_yorimachi_trends_meta()
     osm_towns = load_osm_cache()
-    events_list, events_match_mode = load_events_cache()
+    events_list, events_match_mode, events_cache_raw = load_events_cache()
     flow_by_slug = load_station_flow()
     flow_by_node = build_flow_lookup(index, flow_by_slug)
 
@@ -379,17 +384,16 @@ def main() -> None:
     with_events = sum(1 for t in enriched_towns if t.get("events_near"))
 
     events_meta = {}
-    if EVENTS_CACHE_PATH.exists():
-        try:
-            ec = json.loads(EVENTS_CACHE_PATH.read_text(encoding="utf-8"))
-            events_meta = {
-                "updated_at": ec.get("updated_at"),
-                "window_start": ec.get("window_start"),
-                "window_end": ec.get("window_end"),
-                "count": len(events_list),
-            }
-        except Exception:
-            pass
+    if events_cache_raw:
+        events_meta = {
+            "updated_at": events_cache_raw.get("updated_at"),
+            "window_start": events_cache_raw.get("window_start"),
+            "window_end": events_cache_raw.get("window_end"),
+            "count": len(events_list),
+            "window_total": len(events_cache_raw.get("events") or []),
+            "fetch_log": events_cache_raw.get("fetch_log"),
+            "source_counts": events_cache_raw.get("window_source_counts"),
+        }
 
     payload = {
         "generated_at": date.today().isoformat(),
@@ -422,13 +426,13 @@ def main() -> None:
             "stations_matched": len(flow_by_node),
         },
         "events_meta": {
-            "source": "東京都オープンデータ API（区市イベント一覧）",
+            "source": "複数ソース（区市OD・Doorkeeper・connpass・Big Sight）",
             "trust_level": "medium",
             "match_radius_m": EVENT_MATCH_RADIUS_M,
             "match_mode": events_match_mode,
             "note": (
-                "match_mode=window は今日〜7日。"
-                "0件時は座標付き過去イベントで近傍デモ（geo_fallback_stale）。"
+                "今日〜7日の window イベントを座標付き優先で町マッチ。"
+                "Doorkeeper は当日更新。connpass は CONNPASS_API_KEY 設定時。"
             ),
             **events_meta,
         },
