@@ -585,6 +585,13 @@
       return diversifySort(filtered, categoryId, selected);
     }
 
+    function trendsSourceLabel(trends) {
+      if (!trends || trends.td == null) return "";
+      if (trends.source === "google_trends_town") return "町名検索";
+      if (trends.source === "google_trends_proxy") return "駅代理";
+      return "検索";
+    }
+
     function trendBadgeHtml(trends) {
       if (!trends || trends.td == null) {
         return `<span class="trend-badge unknown">検索データなし</span>`;
@@ -593,7 +600,8 @@
       const sign = td > 0 ? "+" : "";
       const mood = trends.mood || "neutral";
       const labels = { hot: "いま話題", up: "やや上昇", calm: "静かめ", neutral: "横ばい" };
-      return `<span class="trend-badge ${mood}">検索 ${sign}${td}% · ${labels[mood] || mood}</span>`;
+      const src = trendsSourceLabel(trends);
+      return `<span class="trend-badge ${mood}">${src} ${sign}${td}% · ${labels[mood] || mood}</span>`;
     }
 
     function todayHintForTown(town) {
@@ -827,7 +835,9 @@
         resultTrendBadge.style.display = "inline-block";
         resultTrendBadge.className = `trend-badge ${item.town.trends.mood || "neutral"}`;
         const sign = item.town.trends.td > 0 ? "+" : "";
-        resultTrendBadge.textContent = `Google検索 ${sign}${item.town.trends.td}%（${TRENDS_META.date || ""}）`;
+        const src = trendsSourceLabel(item.town.trends);
+        resultTrendBadge.textContent =
+          `${src} ${sign}${item.town.trends.td}%（${TRENDS_META.date || ""}）`;
       } else {
         resultTrendBadge.style.display = "none";
       }
