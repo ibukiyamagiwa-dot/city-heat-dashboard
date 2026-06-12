@@ -12,59 +12,145 @@
   />
   <style>
     :root {
-      --bg: #f4f7f5;
+      --bg: #eef4f0;
       --panel: #ffffff;
-      --border: #d5ddd8;
+      --panel-soft: #f7fbf9;
+      --border: #d0ddd5;
       --text: #1f2d28;
       --muted: #5f6f66;
       --accent: #2d6a4f;
+      --accent-deep: #1b4332;
+      --accent-mid: #40916c;
       --accent-light: #d8f3dc;
-      --shadow: 0 10px 28px rgba(45, 106, 79, .08);
+      --accent-glow: rgba(45, 106, 79, .14);
+      --warm: #c2410c;
+      --warm-bg: #fff7ed;
+      --shadow: 0 12px 32px rgba(27, 67, 50, .09);
+      --shadow-sm: 0 4px 14px rgba(27, 67, 50, .06);
+      --brand-gradient: linear-gradient(120deg, #1b4332, #2d6a4f 45%, #40916c 75%, #74c69d);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
+      font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
       background:
-        radial-gradient(circle at 10% 0%, rgba(216, 243, 220, .7), transparent 35%),
-        linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+        radial-gradient(ellipse 80% 50% at 15% -5%, rgba(216, 243, 220, .85), transparent 55%),
+        radial-gradient(circle at 95% 8%, rgba(149, 213, 178, .35), transparent 28%),
+        linear-gradient(180deg, #fff 0%, var(--bg) 55%, #e6efe9 100%);
       color: var(--text);
       line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
-    .wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px 48px; }
-    h1 { font-size: 1.75rem; margin: 0; letter-spacing: .06em; }
-    .sub { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 20px 16px 56px; }
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      margin: 0 -16px; padding: 16px 16px 12px;
+      background: rgba(238, 244, 240, .82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(208, 221, 213, .65);
+    }
+    .brand-row { display: flex; align-items: flex-start; gap: 12px; }
+    .brand-mark {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px;
+      background: var(--brand-gradient);
+      box-shadow: 0 6px 18px var(--accent-glow);
+      display: grid; place-items: center;
+      font-size: 22px; line-height: 1;
+    }
+    .brand-copy { flex: 1; min-width: 0; }
+    h1 {
+      font-size: clamp(1.55rem, 5vw, 1.85rem); margin: 0;
+      letter-spacing: .08em; font-weight: 800; color: var(--accent-deep);
+    }
+    .sub {
+      color: var(--muted); font-size: 13px; margin: 4px 0 0;
+      line-height: 1.45;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 8px; padding: 4px 10px; border-radius: 999px;
+      background: var(--accent-light); border: 1px solid #b7e4c7;
+      font-size: 11px; font-weight: 700; color: var(--accent-deep);
+    }
+    .stepper { margin-top: 16px; }
+    .stepper-track {
+      height: 4px; border-radius: 999px; background: #dce8e0;
+      overflow: hidden; margin-bottom: 10px;
+    }
+    .stepper-fill {
+      height: 100%; width: 0%; border-radius: inherit;
+      background: var(--brand-gradient);
+      transition: width .45s var(--ease);
+    }
+    .steps { display: flex; gap: 8px; }
+    .step {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      text-align: center; font-size: 10px; font-weight: 700; color: var(--muted);
+    }
+    .step-dot {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 800;
+      background: #eef2ef; border: 2px solid var(--border);
+      transition: background .25s, border-color .25s, color .25s, transform .25s;
+    }
+    .step.active .step-dot {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+      box-shadow: 0 4px 12px var(--accent-glow); transform: scale(1.06);
+    }
+    .step.done .step-dot {
+      background: var(--accent-light); color: var(--accent); border-color: #95d5b2;
+      font-size: 0;
+    }
+    .step.done .step-dot::after { content: "✓"; font-size: 12px; }
+    .step-label { line-height: 1.2; }
+    .step.active .step-label { color: var(--accent-deep); }
+    .step.done .step-label { color: var(--accent); }
     .panel {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 16px;
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
       margin-top: 16px;
       box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
     }
-    .steps {
-      display: flex; gap: 6px; margin-top: 18px;
+    .panel::before {
+      content: ""; display: block; height: 4px;
+      margin: -20px -18px 16px;
+      background: var(--brand-gradient);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
-    .step {
-      flex: 1; text-align: center; font-size: 11px; font-weight: 700;
-      padding: 8px 4px; border-radius: 999px; color: var(--muted);
-      background: #eef2ef; border: 1px solid var(--border);
+    label {
+      display: block; font-size: 15px; font-weight: 800;
+      margin-bottom: 8px; color: var(--accent-deep);
     }
-    .step.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .step.done { background: var(--accent-light); color: var(--accent); }
-    label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
     .search-wrap { position: relative; }
     #search {
       width: 100%; font: inherit; font-size: 16px;
-      border: 2px solid var(--border); border-radius: 12px;
-      padding: 12px 14px; background: #fff;
+      border: 2px solid var(--border); border-radius: var(--radius-md);
+      padding: 13px 14px 13px 42px; background: #fff;
+      transition: border-color .2s, box-shadow .2s;
     }
-    #search:focus { outline: none; border-color: var(--accent); }
+    .search-wrap::before {
+      content: "🔍"; position: absolute; left: 14px; top: 14px;
+      font-size: 15px; pointer-events: none; opacity: .55;
+    }
+    #search:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+    #search:focus-visible { outline: none; }
     #suggestions {
-      list-style: none; margin: 6px 0 0; padding: 0;
-      border: 1px solid var(--border); border-radius: 12px;
+      list-style: none; margin: 8px 0 0; padding: 0;
+      border: 1px solid var(--border); border-radius: var(--radius-md);
       background: #fff; max-height: 220px; overflow-y: auto;
-      display: none;
+      display: none; box-shadow: var(--shadow-sm);
     }
     #suggestions.open { display: block; }
     #suggestions li {
@@ -78,76 +164,137 @@
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;
     }
     .shortcut-btn {
-      font: inherit; font-size: 15px; font-weight: 700;
-      border: 2px solid var(--border); border-radius: 12px;
-      background: #fff; padding: 14px 12px; cursor: pointer;
-      transition: border-color .15s, background .15s;
+      font: inherit; font-size: 14px; font-weight: 700;
+      border: 2px solid var(--border); border-radius: var(--radius-md);
+      background: #fff; padding: 14px 10px; cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s, box-shadow .2s;
     }
-    .shortcut-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .shortcut-btn:hover {
+      border-color: var(--accent); background: var(--accent-light);
+      transform: translateY(-1px); box-shadow: var(--shadow-sm);
+    }
     .shortcut-btn.selected {
-      border-color: var(--accent); background: var(--accent-light); color: var(--accent);
+      border-color: var(--accent); background: var(--accent-light);
+      color: var(--accent-deep); box-shadow: inset 0 0 0 1px rgba(45, 106, 79, .15);
     }
     .selected-box {
-      margin-top: 14px; padding: 12px 14px; border-radius: 12px;
-      background: var(--accent-light); border: 1px solid #b7e4c7;
-      font-size: 14px; display: none;
+      margin-top: 14px; padding: 12px 14px; border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-light), #ecfdf5);
+      border: 1px solid #b7e4c7; font-size: 14px; display: none;
+      animation: fadeUp .35s var(--ease);
     }
     .selected-box.show { display: block; }
     .btn {
       display: block; width: 100%; margin-top: 16px;
-      background: var(--accent); color: #fff; border: none;
-      border-radius: 12px; padding: 14px; font: inherit;
-      font-size: 15px; font-weight: 700; cursor: pointer;
+      background: var(--brand-gradient); color: #fff; border: none;
+      border-radius: var(--radius-md); padding: 15px 14px; font: inherit;
+      font-size: 15px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 6px 20px var(--accent-glow);
+      transition: transform .15s, box-shadow .2s, opacity .2s;
     }
-    .btn:disabled { opacity: .4; cursor: default; }
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(45, 106, 79, .22);
+    }
+    .btn:active:not(:disabled) { transform: translateY(0); }
+    .btn:disabled { opacity: .38; cursor: default; box-shadow: none; }
+    .btn:focus-visible, .btn-secondary:focus-visible, .shortcut-btn:focus-visible,
+    .time-btn:focus-visible, .town-card:focus-visible, .category-btn:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px;
+    }
     .btn-secondary {
       display: block; width: 100%; margin-top: 10px;
-      background: #fff; color: var(--accent);
-      border: 2px solid var(--border); border-radius: 12px;
-      padding: 12px; font: inherit; font-size: 14px; font-weight: 700;
+      background: #fff; color: var(--accent-deep);
+      border: 2px solid var(--border); border-radius: var(--radius-md);
+      padding: 13px; font: inherit; font-size: 14px; font-weight: 700;
       cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s;
     }
-    .btn-secondary:hover { border-color: var(--accent); background: var(--accent-light); }
-    .screen { display: none; }
-    .screen.active { display: block; }
+    .btn-secondary:hover {
+      border-color: var(--accent); background: var(--accent-light);
+      transform: translateY(-1px);
+    }
+    .btn-warm {
+      background: linear-gradient(120deg, #9a3412, #c2410c 50%, #ea580c) !important;
+      box-shadow: 0 6px 20px rgba(194, 65, 12, .18) !important;
+    }
+    .btn-warm:hover:not(:disabled) {
+      box-shadow: 0 10px 26px rgba(194, 65, 12, .28) !important;
+    }
+    .screen {
+      display: none; opacity: 0; transform: translateY(10px);
+    }
+    .screen.active {
+      display: block;
+      animation: fadeUp .4s var(--ease) forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .context-box {
-      margin-bottom: 14px; padding: 12px 14px; border-radius: 12px;
-      background: #f0f4f2; border: 1px solid var(--border); font-size: 14px;
+      margin-bottom: 16px; padding: 12px 14px; border-radius: var(--radius-md);
+      background: var(--panel-soft); border: 1px solid var(--border);
+      font-size: 14px; border-left: 4px solid var(--accent-mid);
     }
-    .context-box strong { color: var(--accent); }
+    .context-box strong { color: var(--accent-deep); }
     .time-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
     }
     .time-btn {
-      font: inherit; font-size: 20px; font-weight: 700;
-      border: 2px solid var(--border); border-radius: 14px;
-      background: #fff; padding: 22px 12px; cursor: pointer;
-      transition: border-color .15s, background .15s;
+      font: inherit; font-size: 22px; font-weight: 800;
+      border: 2px solid var(--border); border-radius: var(--radius-lg);
+      background: #fff; padding: 20px 10px 18px; cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .time-btn::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 120%, var(--accent-glow), transparent 65%);
+      opacity: 0; transition: opacity .25s;
     }
     .time-btn span {
-      display: block; font-size: 12px; font-weight: 400;
-      color: var(--muted); margin-top: 4px;
+      display: block; font-size: 11px; font-weight: 700;
+      color: var(--muted); margin-top: 6px; letter-spacing: .04em;
+      position: relative;
     }
-    .time-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .time-btn:hover {
+      border-color: var(--accent); background: var(--accent-light);
+      transform: translateY(-2px); box-shadow: var(--shadow-sm);
+    }
+    .time-btn:hover::before { opacity: 1; }
     .time-btn.selected {
-      border-color: var(--accent); background: var(--accent-light); color: var(--accent);
+      border-color: var(--accent); background: var(--accent-light);
+      color: var(--accent-deep); box-shadow: var(--shadow-sm);
     }
+    .time-btn.selected::before { opacity: 1; }
     .category-row {
       display: flex; gap: 6px; margin-bottom: 14px;
+      overflow-x: auto; padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .category-row::-webkit-scrollbar { display: none; }
     .category-btn {
-      flex: 1; font: inherit; font-size: 13px; font-weight: 700;
+      flex: 0 0 auto; font: inherit; font-size: 12px; font-weight: 700;
       border: 2px solid var(--border); border-radius: 999px;
-      background: #fff; padding: 10px 6px; cursor: pointer;
+      background: #fff; padding: 9px 14px; cursor: pointer;
+      white-space: nowrap;
+      transition: border-color .2s, background .2s, color .2s;
     }
     .category-btn:hover { border-color: var(--accent); background: var(--accent-light); }
     .category-btn.selected {
       border-color: var(--accent); background: var(--accent); color: #fff;
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
-    .category-row.wrap { flex-wrap: wrap; }
-    .category-row.wrap .category-btn { flex: 1 1 calc(33% - 6px); min-width: 88px; }
-    .pick-row { display: flex; gap: 8px; margin-bottom: 14px; }
-    .pick-row .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 12px 8px; }
+    .category-row.wrap { flex-wrap: nowrap; }
+    .pick-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .pick-row .btn { margin-top: 0; flex: 1; font-size: 13px; padding: 13px 8px; }
+    .pick-hint {
+      font-size: 12px; color: var(--muted); margin: -4px 0 14px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      background: var(--panel-soft); border: 1px dashed var(--border);
+    }
     .trend-badge {
       display: inline-block; font-size: 10px; font-weight: 700;
       padding: 2px 8px; border-radius: 999px; margin-top: 6px;
@@ -179,41 +326,83 @@
       background: #faf5ff; border: 1px solid #e9d5ff; font-size: 14px;
     }
     .event-box a { color: #6b21a8; font-weight: 700; }
-    .town-list { display: flex; flex-direction: column; gap: 8px; }
+    .town-list { display: flex; flex-direction: column; gap: 10px; }
     .town-card {
       width: 100%; text-align: left; font: inherit;
-      border: 2px solid var(--border); border-radius: 14px;
-      background: #fff; padding: 14px 14px; cursor: pointer;
-      transition: border-color .15s, background .15s;
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      background: #fff; padding: 0; cursor: pointer;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+      display: grid; grid-template-columns: 4px 1fr auto;
+      overflow: hidden; box-shadow: var(--shadow-sm);
     }
-    .town-card:hover { border-color: var(--accent); background: var(--accent-light); }
-    .town-card.station { border-style: dashed; background: #fafcfb; }
+    .town-card-accent {
+      background: var(--brand-gradient);
+      opacity: .85;
+    }
+    .town-card-body { padding: 14px 14px 12px; min-width: 0; }
+    .town-card-aside {
+      padding: 14px 12px; display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: center; gap: 4px;
+      background: var(--panel-soft); border-left: 1px solid var(--border);
+    }
+    .town-card:hover {
+      border-color: var(--accent-mid);
+      box-shadow: 0 8px 24px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .town-card.station { background: #fafcfb; }
+    .town-card.station .town-card-accent {
+      background: repeating-linear-gradient(
+        180deg, var(--muted) 0 4px, transparent 4px 8px
+      );
+      opacity: .35;
+    }
     .town-card.station .town-tagline { font-size: 12px; }
-    .town-name { font-size: 17px; font-weight: 700; }
-    .btn-more-towns {
-      width: 100%; margin-top: 4px; padding: 12px;
-      border: 2px dashed var(--border); border-radius: 14px;
-      background: #fff; color: var(--accent); font-weight: 700;
-      font-size: 14px; cursor: pointer;
+    .town-name { font-size: 17px; font-weight: 800; color: var(--accent-deep); }
+    .town-time-pill {
+      font-size: 13px; font-weight: 800; color: var(--accent-deep);
+      background: var(--accent-light); border: 1px solid #b7e4c7;
+      border-radius: 999px; padding: 4px 10px; white-space: nowrap;
     }
-    .btn-more-towns:hover { border-color: var(--accent); background: var(--accent-light); }
-    .town-tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .town-meta { font-size: 12px; color: var(--accent); margin-top: 6px; font-weight: 700; }
+    .town-tagline { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+    .town-meta { font-size: 11px; color: var(--accent-mid); margin-top: 6px; font-weight: 700; }
+    .town-card-body .trend-badge,
+    .town-card-body .comfort-badge { margin-top: 8px; }
+    .btn-more-towns {
+      width: 100%; margin-top: 4px; padding: 14px;
+      border: 2px dashed var(--border); border-radius: var(--radius-md);
+      background: var(--panel-soft); color: var(--accent-deep); font-weight: 700;
+      font-size: 14px; cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s;
+    }
+    .btn-more-towns:hover {
+      border-color: var(--accent); background: var(--accent-light);
+      transform: translateY(-1px);
+    }
     .empty-msg {
       padding: 20px 14px; text-align: center; color: var(--muted);
       font-size: 14px; border: 1px dashed var(--border); border-radius: 12px;
     }
-    .result-headline {
-      font-size: 18px; font-weight: 700; margin: 0 0 12px;
-      color: var(--accent); line-height: 1.4;
+    .result-hero {
+      margin: -4px 0 16px; padding: 16px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--accent-light), #fff 60%);
+      border: 1px solid #b7e4c7;
     }
-    .result-town { margin-bottom: 14px; }
-    .result-town h2 { font-size: 22px; margin: 0 0 4px; }
-    .result-town p { margin: 0; color: var(--muted); font-size: 14px; }
+    .result-headline {
+      font-size: 13px; font-weight: 700; margin: 0 0 8px;
+      color: var(--accent-mid); letter-spacing: .04em;
+    }
+    .result-town { margin-bottom: 0; }
+    .result-town h2 {
+      font-size: clamp(1.4rem, 5vw, 1.75rem); margin: 0 0 6px;
+      color: var(--accent-deep); letter-spacing: .02em;
+    }
+    .result-town p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
     .route-box {
-      padding: 12px 14px; border-radius: 12px;
-      background: #f0f4f2; border: 1px solid var(--border);
-      font-size: 13px; line-height: 1.6;
+      padding: 14px 16px; border-radius: var(--radius-md);
+      background: var(--panel-soft); border: 1px solid var(--border);
+      font-size: 13px; line-height: 1.65;
     }
     .route-box .route-label {
       font-size: 11px; font-weight: 700; color: var(--muted);
@@ -226,9 +415,9 @@
       color: var(--accent); border: 1px solid #b7e4c7;
     }
     #resultMap {
-      width: 100%; height: 220px; margin-bottom: 14px;
-      border-radius: 12px; border: 1px solid var(--border);
-      background: #eef2ef;
+      width: 100%; height: 240px; margin-bottom: 14px;
+      border-radius: var(--radius-md); border: 1px solid var(--border);
+      background: #eef2ef; box-shadow: inset 0 2px 8px rgba(27, 67, 50, .06);
     }
     .map-legend {
       display: flex; flex-wrap: wrap; gap: 10px 14px;
@@ -241,20 +430,52 @@
     .map-legend .lg-start::before { background: var(--accent); }
     .map-legend .lg-hub::before { background: #40916c; }
     .map-legend .lg-town::before { background: #b7e4c7; border: 1px solid var(--accent); }
-    .meta { font-size: 12px; color: var(--muted); margin-top: 12px; }
-    footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
-    footer a { color: var(--accent); }
+    .meta { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+    .meta-label {
+      font-size: 11px; font-weight: 800; letter-spacing: .08em;
+      color: var(--accent-mid); text-transform: uppercase;
+      margin: 14px 0 8px;
+    }
+    footer {
+      margin-top: 28px; padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer code {
+      background: var(--panel-soft); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 5px; font-size: 11px;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <h1>寄り町</h1>
-      <p class="sub">空いた時間に、寄れる町を。</p>
-      <nav class="steps" aria-label="進行ステップ">
-        <span class="step active" id="step1Label">1. 出発</span>
-        <span class="step" id="step2Label">2. 時間</span>
-        <span class="step" id="step3Label">3. 寄り町</span>
+    <header class="site-header">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">🌿</div>
+        <div class="brand-copy">
+          <h1>寄り町</h1>
+          <p class="sub">空いた時間に、寄れる町を。</p>
+          <span class="hero-badge">YORIMACHI · 東京近郊</span>
+        </div>
+      </div>
+      <nav class="stepper" aria-label="進行ステップ">
+        <div class="stepper-track"><div class="stepper-fill" id="stepperFill"></div></div>
+        <div class="steps">
+          <span class="step active" id="step1Label">
+            <span class="step-dot">1</span>
+            <span class="step-label">出発</span>
+          </span>
+          <span class="step" id="step2Label">
+            <span class="step-dot">2</span>
+            <span class="step-label">時間</span>
+          </span>
+          <span class="step" id="step3Label">
+            <span class="step-dot">3</span>
+            <span class="step-label">寄り町</span>
+          </span>
+        </div>
       </nav>
     </header>
 
@@ -266,7 +487,7 @@
           <ul id="suggestions" role="listbox"></ul>
         </div>
 
-        <p class="meta" style="margin-top:14px;margin-bottom:0;">よく使うエリア</p>
+        <p class="meta-label">よく使うエリア</p>
         <div class="shortcut-grid" id="shortcuts"></div>
 
         <div class="selected-box" id="selectedBox">
@@ -307,9 +528,10 @@
         <p class="meta" style="margin-top:0;margin-bottom:12px;">ふらっと寄れる町から選ぶ</p>
 
         <div class="pick-row">
-          <button class="btn" id="pickRandomBtn" type="button">今日の1町（ふらっと）</button>
-          <button class="btn" id="pickHotBtn" type="button" style="background:#40916c;">今日の1町（話題）</button>
+          <button class="btn" id="pickRandomBtn" type="button">🎲 ふらっと1町</button>
+          <button class="btn btn-warm" id="pickHotBtn" type="button">🔥 話題の1町</button>
         </div>
+        <p class="pick-hint">迷ったらランダムで決められます。リストから選ぶこともできます。</p>
         <div class="pick-row">
           <button class="btn-secondary" id="shuffleListBtn" type="button">候補をシャッフル</button>
         </div>
@@ -325,12 +547,13 @@
 
     <div id="resultScreen" class="screen">
       <section class="panel">
-        <p class="result-headline" id="resultHeadline">—</p>
-
-        <div class="result-town">
-          <h2 id="resultTownName">—</h2>
-          <p id="resultTownTagline">—</p>
-          <span class="trend-badge unknown" id="resultTrendBadge" style="display:none;"></span>
+        <div class="result-hero">
+          <p class="result-headline" id="resultHeadline">—</p>
+          <div class="result-town">
+            <h2 id="resultTownName">—</h2>
+            <p id="resultTownTagline">—</p>
+            <span class="trend-badge unknown" id="resultTrendBadge" style="display:none;"></span>
+          </div>
         </div>
 
         <div class="today-hint" id="resultTodayHint" style="display:none;">
@@ -422,6 +645,7 @@
     const step1Label = document.getElementById("step1Label");
     const step2Label = document.getElementById("step2Label");
     const step3Label = document.getElementById("step3Label");
+    const stepperFill = document.getElementById("stepperFill");
     const searchEl = document.getElementById("search");
     const suggestEl = document.getElementById("suggestions");
     const shortcutsEl = document.getElementById("shortcuts");
@@ -881,6 +1105,10 @@
           el.classList.add("done");
         });
       }
+      if (stepperFill) {
+        const pct = activeStep > 3 ? 100 : Math.max(0, ((activeStep - 1) / 2) * 100);
+        stepperFill.style.width = `${pct}%`;
+      }
     }
 
     function showScreen(screen) {
@@ -930,15 +1158,22 @@
           btn.type = "button";
           const isStation = item.town.tier === "station";
           btn.className = isStation ? "town-card station" : "town-card";
-          const flavors = (item.town.flavors || []).slice(0, 3).join("・");
+          const flavors = (item.town.flavors || []).slice(0, 3).join(" · ");
           const transferHint = item.transfers > 0 ? ` · 乗換${item.transfers}` : "";
           const tierHint = isStation ? " · 駅周辺" : "";
           btn.innerHTML =
+            `<span class="town-card-accent" aria-hidden="true"></span>` +
+            `<div class="town-card-body">` +
             `<div class="town-name">${item.town.name}</div>` +
             `<div class="town-tagline">${item.town.tagline}</div>` +
-            `<div class="town-meta">だいたい ${item.minutes} 分${transferHint}${tierHint}${flavors ? ` · ${flavors}` : ""}</div>` +
+            `<div class="town-meta">${tierHint.replace(/^ · /, "")}${flavors ? (tierHint ? " · " : "") + flavors : ""}</div>` +
             trendBadgeHtml(item.town.trends) +
-            comfortBadgeHtml(item.town, selectedCategory);
+            comfortBadgeHtml(item.town, selectedCategory) +
+            `</div>` +
+            `<div class="town-card-aside">` +
+            `<span class="town-time-pill">${item.minutes}分</span>` +
+            (transferHint ? `<span class="meta" style="margin:0;font-size:10px;">${transferHint.replace(/^ · /, "")}</span>` : "") +
+            `</div>`;
           btn.addEventListener("click", () => showResult(item));
           townList.appendChild(btn);
         });
@@ -964,10 +1199,9 @@
 
     function showResult(item) {
       const fromName = byId[selectedId].name;
-      resultHeadline.textContent =
-        `今日の寄り町：${fromName} → ${item.town.name}（だいたい ${item.minutes} 分）`;
+      resultHeadline.textContent = `今日の寄り町 · ${fromName} → ${item.town.name}`;
       resultTownName.textContent = item.town.name;
-      resultTownTagline.textContent = item.town.tagline;
+      resultTownTagline.textContent = `${item.town.tagline} · 約 ${item.minutes} 分`;
       if (item.town.trends && item.town.trends.td != null) {
         resultTrendBadge.style.display = "inline-block";
         resultTrendBadge.className = `trend-badge ${item.town.trends.mood || "neutral"}`;
